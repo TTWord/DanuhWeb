@@ -1,11 +1,23 @@
 const path = require('path');
+const dotEnv = require('dotenv-webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = function webpackConfig(env, args) {
+  const mode = args.mode;
   return {
+    plugins: [
+      new dotEnv({
+        path: mode === 'development' ? `./.env` : `./.env.${mode}`,
+      }),
+      new HtmlWebpackPlugin({
+        filename: 'index.html',
+        template: 'public/index.html',
+      }),
+    ],
     entry: path.join(__dirname, 'src/index.tsx'),
     output: {
       filename: 'main.js',
-      path: path.join(__dirname, 'public'),
+      path: path.join(__dirname, 'dist'),
     },
     resolve: {
       extensions: ['.tsx', '.ts', '.jsx', '.js'],
