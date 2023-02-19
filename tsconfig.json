@@ -4,7 +4,6 @@
     "target": "ESNext",
     "moduleResolution": "node",
     "jsx": "preserve",
-    "baseUrl": "./src",
     "noEmit": true,
     "strict": true,
     "skipLibCheck": true,
@@ -14,7 +13,12 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "isolatedModules": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "allowJs": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": ["src", "types"]
 }

@@ -1,9 +1,10 @@
-import tw from 'twin.macro'
+import Router from '@/routes/Router';
+import tw from 'twin.macro';
 
-const Container = tw.div``
+const Container = tw.div``;
 
 const App = () => {
-  return <Container></Container>
-}
+  return <Router />;
+};
 
-export default App
+export default App;

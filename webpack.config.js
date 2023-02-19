@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require('path');
 
 module.exports = function webpackConfig(env, args) {
   return {
@@ -7,7 +7,12 @@ module.exports = function webpackConfig(env, args) {
       filename: 'main.js',
       path: path.join(__dirname, 'public'),
     },
-    resolve: { extensions: ['.tsx', '.js'] },
+    resolve: {
+      extensions: ['.tsx', '.ts', '.jsx', '.js'],
+      alias: {
+        '@': path.resolve(__dirname, 'src'),
+      },
+    },
     module: {
       rules: [
         {
@@ -28,6 +33,8 @@ module.exports = function webpackConfig(env, args) {
       hot: true,
       open: true,
       static: { directory: path.join(__dirname, 'public') },
+      port: 3000,
+      historyApiFallback: true,
     },
-  }
-}
+  };
+};
