@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Auth from '@/pages/Auth';
 import Intro from '@/pages/Intro';
-import Join from '@/pages/auth/join/Account';
+import Account from '@/pages/auth/join/Account';
 import Login from '@/pages/auth/Login';
 import AuthCode from '@/pages/auth/join/AuthCode';
 import Welcome from '@/pages/auth/join/Welcome';
@@ -18,7 +18,7 @@ const Router = () => {
         <Route path={'/auth/login'} element={<Login />} />
 
         {/* 회원가입 메인 페이지 */}
-        <Route path={'/auth/join'} element={<Join />} />
+        <Route path={'/auth/join/account'} element={<Account />} />
 
         {/* 인증 코드 입력 페이지 */}
         <Route path={'/auth/join/code'} element={<AuthCode />} />
