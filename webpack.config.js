@@ -34,6 +34,17 @@ module.exports = function webpackConfig(env, args) {
           loader: require.resolve('babel-loader'),
           // See .babelrc for further babel config
         },
+        {
+          test: /\.(jpeg|jpg|png|svg)$/,
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                name: 'images/[name].[ext]?[hash]',
+              },
+            },
+          ],
+        },
       ],
     },
     optimization: {

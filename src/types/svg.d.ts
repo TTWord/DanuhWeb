@@ -4,3 +4,8 @@ declare module '<SVG>' {
     stroke?: string;
   }
 }
+
+declare module '*.svg' {
+  const content: any;
+  export default content;
+}
