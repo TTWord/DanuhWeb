@@ -3,7 +3,7 @@ import Header from '@/components/layout/HomeLayout/Header';
 import { Outlet } from 'react-router-dom';
 import tw from 'twin.macro';
 
-const BaseLayout = () => {
+const HomeLayout = () => {
   return (
     <Container>
       <HWrap>
@@ -19,9 +19,9 @@ const BaseLayout = () => {
   );
 };
 
-export default BaseLayout;
+export default HomeLayout;
 
-const HWrap = tw.div`w-full h-[60px] shrink-0 bg-[#f5f5f5]`;
+const HWrap = tw.div`w-full h-[85px] shrink-0`;
 const Container = tw.div`w-full h-[100vh] overflow-hidden flex flex-col`;
 const Content = tw.div`h-full overflow-y-auto`;
-const FWrap = tw.div`w-full h-[70px] bg-[#f5f5f5] shrink-0`;
+const FWrap = tw.div`w-full h-[70px] shrink-0`;
