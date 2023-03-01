@@ -7,3 +7,5 @@ dist/
 .env
 .env.development
 .env.production
+
+db.json
