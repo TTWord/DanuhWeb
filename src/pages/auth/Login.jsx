@@ -1,54 +1,8 @@
 import React, { useEffect, useState } from "react";
-import styled, { css } from "styled-components";
 import BackButtonImg from "@/assets/svg/icons/icon-back-button.svg"
+import LogoImg from "@/assets/svg/icons/logo-img.svg"
+import * as Styled from "@/styles/LoginStyle.jsx"
 
-const WebWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-`;
-const MainWrapper = styled.div`
-  width: 393px;
-  height: 852px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: solid black;
-`;
-const LoginWrapper = styled.div`
-  width: 249px;
-  height: 143px;
-  //margin-bottom: 20px;
-  background-color: #3d3d3d;
-  color: white;
-`;
-const SignInWrapper = styled.div`
-  width: 249px;
-  height: 30px;
-  background-color: #218376;
-  color: white;
-`;
-const AskAccount = styled.div`
-  width: 249px;
-  height: 38px;
-  font-size: 12px;
-`;
-const SingInbutton = styled.button`
-  width: 47px;
-  height: 12px;
-  display: flex;
-  justify-content: center;
-  font-size: 12px;
-`;
-const BackButton = styled.button`
-  width: 100px;
-  height: 100px;
-  position: fixed;
-  top: 10px;
-  left: 30px;
-`;
 /* function BackButton(props) {
   return (
     <BackImg onClick={props.onClick}>
@@ -58,24 +12,41 @@ const BackButton = styled.button`
 }; */
 //<div>{props.text}</div>
 
-
+//onClick={() => { setLoginMain((current => !current)); console.log(isLoginMain); }}
 const Login = () => {
 
   const [isLoginMain, setLoginMain] = useState(false);
 
+  const LoginBox = () => {
+    return (
+      isLoginMain ? 
+      <div>
+        <Styled.LoginInput placeholder="USERNAME"></Styled.LoginInput>
+        <Styled.LoginInput placeholder="PASSWORD" type="password"></Styled.LoginInput>
+      </div>
+      : <Styled.IntroduceText>이미지, PDF, 글을 단어장으로 만들자!</Styled.IntroduceText>
+    );
+  }
+
+
+
   return (
-  <WebWrapper>
-    <MainWrapper>
-      <BackButton onClick={() => { setLoginMain((current => !current)); console.log(isLoginMain); }}><img src={BackButtonImg} alt="BackButton"/></BackButton>
-      <LoginWrapper>
-        111111
-      </LoginWrapper>
-      <SignInWrapper>
-        <AskAccount>계정이 없으신가요?</AskAccount>
-        <SingInbutton>회원가입</SingInbutton>
-      </SignInWrapper>
-    </MainWrapper>
-  </WebWrapper>
+  <Styled.WebWrapper>
+    <Styled.BackButton className={isLoginMain ? "active" : ""}><img src={BackButtonImg} alt="BackButton"/></Styled.BackButton>
+    <div>
+      <Styled.LoginWrapper>
+        <Styled.LogoImg src={LogoImg} alt="logo-img" />
+        <LoginBox/>
+        <Styled.LoginButton onClick={() => {
+          setLoginMain((current => !current));}}>이메일로 로그인</Styled.LoginButton>
+      </Styled.LoginWrapper>
+      <Styled.SignInWrapper>
+        <Styled.AskAccount>계정이 없으신가요?</Styled.AskAccount>
+        <Styled.SignInbutton>회원가입</Styled.SignInbutton>
+      </Styled.SignInWrapper>
+    </div>
+    
+  </Styled.WebWrapper>
 );
 };
 
