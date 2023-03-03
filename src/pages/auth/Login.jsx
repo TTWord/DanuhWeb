@@ -28,21 +28,31 @@ const Login = () => {
     );
   }
 
+  const LoginButton = () => {
+    return (
+      isLoginMain ?
+      <Styled.LoginButton onClick={() => {
+        setLoginMain((current => !current));}}>이메일로 로그인</Styled.LoginButton>
+      : <div>2</div>
+    );
+  }
+
 
 
   return (
   <Styled.WebWrapper>
-    <Styled.BackButton className={isLoginMain ? "active" : ""}><img src={BackButtonImg} alt="BackButton"/></Styled.BackButton>
+    <Styled.BackButton className={isLoginMain ? "active" : ""} onClick={() => {
+          setLoginMain((current => !current));}}><img src={BackButtonImg} alt="BackButton"/></Styled.BackButton>
     <div>
-      <Styled.LoginWrapper>
+      <Styled.LoginWrapper active={isLoginMain}>
         <Styled.LogoImg src={LogoImg} alt="logo-img" />
         <LoginBox/>
         <Styled.LoginButton onClick={() => {
           setLoginMain((current => !current));}}>이메일로 로그인</Styled.LoginButton>
       </Styled.LoginWrapper>
       <Styled.SignInWrapper>
-        <Styled.AskAccount>계정이 없으신가요?</Styled.AskAccount>
-        <Styled.SignInbutton>회원가입</Styled.SignInbutton>
+          <Styled.AskAccount>계정이 없으신가요?</Styled.AskAccount>
+          <Styled.SignInbutton>회원가입</Styled.SignInbutton>
       </Styled.SignInWrapper>
     </div>
     

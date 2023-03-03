@@ -10,7 +10,7 @@ export const WebWrapper = styled.div`
 `;
 export const LoginWrapper = styled.div`
   width: 249px;
-  height: 143px;
+  height: ${(props) => props.active ? '257px' : '143px'};
   display: flex;
   flex-grow: 3;
   flex-direction: column;
