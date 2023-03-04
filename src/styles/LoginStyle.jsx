@@ -69,15 +69,17 @@ export const IntroduceText = styled.div`
 `;
 export const LoginButton = styled.button`
   width: 249px;
-  height: 43px;
+  height: ${(props) => props.buttonType === "login" ? '72px' : '43px'};
   background: linear-gradient(180deg, #734AE7 0%, #4F32A2 100%);
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   font-size: 16px;
   color: white;
 `;
-export const LoginBox = styled.div`
-  
+export const LoginBoxWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
 `;
 export const LoginInput = styled.input`
   width: 248px;
@@ -89,5 +91,4 @@ export const LoginInput = styled.input`
   background: #FFFFFF;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
-  margin-bottom: 11px;
 `
