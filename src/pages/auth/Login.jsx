@@ -21,20 +21,29 @@ const LoginBox = (props) => {
     );
   }
 
-const FunctionLogin = async (signinUsername, signinPassword, navigate, getToken, userToken) => {
+const FunctionLogin = async (signinUsername, signinPassword, navigate, getToken) => {
   try {
     const response = await axios.post(signInURL, {
       username: signinUsername,
-      password: signinPassword });
-    if (response.status === 200) {
-      console.log(response.data);
-      alert(response.data.message);
+      password: signinPassword
+    });
       getToken(response.data.access_token);
       localStorage.setItem("jwtToken", response.data.access_token);
+      alert(response.data.message);
       navigate('/auth');
-    }
   } catch(e) {
-    console.log(e);
+    const errorCode = e.response.status;
+    const errorMessage = e.response.data.message;
+
+    if (errorCode === 403 || errorCode === 409) {
+      alert(errorMessage);
+    } else if (errorCode === 400) {
+      alert("Bad Request");
+    } else if (errorCode === 404) {
+      navigate("*")
+    } else if (errorCode === 405) {
+      alert("Not Allowed");
+    }
   }
 }
 
