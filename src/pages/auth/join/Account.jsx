@@ -4,7 +4,6 @@ import * as Styled from "@/styles/AccountStyles"
 import styled from "styled-components"
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { constSelector } from "recoil";
 
 const sendMailURL = "http://api.tt-word.kr/api/user/sendmail";
 
