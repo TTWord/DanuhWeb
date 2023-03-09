@@ -95,7 +95,6 @@ const AuthCode = () => {
     </AuthInputBox>
 
     <NextButton onClick={()=> {
-      navigate("/auth/join/welcome");
       SignUp(userEmail, userNickname, userPW, inputCode, navigate);
     }}>다음</NextButton>
   </MainWrapper>
