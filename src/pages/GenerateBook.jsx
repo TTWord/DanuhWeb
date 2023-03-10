@@ -4,7 +4,7 @@ import arrowBackImg from "@/assets/svg/icons/icon-arrow-back-button.svg"
 
 const GenerateBook = () => {
 
-  const [textLength, setTextLength] = useState(2000);
+  const [textLength, setTextLength] = useState(0);
 
   return (
     <MainWrapper>
@@ -22,20 +22,20 @@ const GenerateBook = () => {
       </GuideLangWrapper>
       
       <SentenceInputWrapper>
-        <SentenceInput onChange={(e) => {console.log(e.target.value);}} placeholder="영어 문장을 입력해주세요" cols={100}/>
+        <SentenceInput onChange={(e) => {setTextLength(e.target.value.length);}} placeholder="영어 문장을 입력해주세요" cols={100}/>
         <CountInput>{textLength}/2000</CountInput>
       </SentenceInputWrapper>
     </GenerateWrapper>
 
-    <GenerateButton>
-      생성하기
-    </GenerateButton>
+    <GenerateButton onClick={() => {
+      console.log(textLength);
+    }}>생성하기</GenerateButton>
 
     </MainWrapper>
   );
 };
 /*
-
+글자수 2000자 넘길 경우 더 이상 입력못하게 or 문장이 잘리게 해야함 or 문장 길다고 경고하며 input 거부
 */
 
 
