@@ -11,6 +11,7 @@ import HomeLayout from '@/containers/layout/HomeLayout';
 
 import GenerateBook from '@/pages/GenerateBook';
 import CreateBook from '@/pages/CreateBook';
+import Book from '@/pages/Book';
 
 const Router = () => {
   return (
@@ -46,6 +47,8 @@ const Router = () => {
         {/* 단어장 만들기 페이지 */}
         <Route path={'/auth/book/create'} element={<CreateBook />} />
 
+        {/* 단어장 페이지 */}
+        <Route path={'/auth/book'} element={<Book />} />
 
         {/* 404 */}
         <Route path={'*'} element={<div>404</div>} />
