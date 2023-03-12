@@ -1,7 +1,6 @@
 import Additional from '@/containers/Home/Additional';
 import { useState } from 'react';
-import { keyframes } from 'styled-components';
-import { css, styled } from 'twin.macro';
+import { styled } from 'twin.macro';
 
 const Home = () => {
   const [plusStatus, setPlusStatus] = useState(true);
@@ -26,8 +25,8 @@ const Home = () => {
           </Strong>
           <P>2015.03.02</P>
           <Status>
-            <Gage percentage={'20%'}>
-              <ColorGage percentage={'20%'} />
+            <Gage percentage={'50%'}>
+              <ColorGage percentage={'50%'} />
             </Gage>
           </Status>
         </Item>

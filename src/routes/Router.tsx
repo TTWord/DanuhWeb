@@ -9,16 +9,21 @@ import Welcome from '@/pages/auth/join/Welcome';
 import Home from '@/pages/Home';
 import HomeLayout from '@/containers/layout/HomeLayout';
 
-import GenerateBook from '@/pages/GenerateBook';
-import CreateBook from '@/pages/CreateBook';
+import GenerateBook from '@/pages/book/GenerateBook';
+import CreateBook from '@/pages/book/CreateBook';
 import Book from '@/pages/Book';
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
+        {/* 홈화면 (모바일 하단 메뉴 중 첫번째 메뉴) */}
+        <Route element={<HomeLayout />}>
+          <Route path={'/'} element={<Home />} />
+        </Route>
+
         {/* 인트로 페이지 */}
-        <Route path={'/'} element={<Intro />} />
+        <Route path={'/intro'} element={<Intro />} />
 
         {/* 로그인 페이지 */}
         <Route path={'/auth/login'} element={<Login />} />
@@ -35,20 +40,15 @@ const Router = () => {
         {/* 인트로 후 메인 페이지 */}
         <Route path={'/auth'} element={<Auth />} />
 
-        {/* 홈화면 (모바일 하단 메뉴 중 첫번째 메뉴) */}
-        <Route element={<HomeLayout />}>
-          <Route path={'/home'} element={<Home />} />
-        </Route>
-
-      {/* 화면 구현 테스트를 위해 임시 코드 작성 */}
+        {/* 화면 구현 테스트를 위해 임시 코드 작성 */}
         {/* 단어장 생성기 페이지 */}
-        <Route path={'/auth/book/generate'} element={<GenerateBook />} />
+        <Route path={'/book/generate'} element={<GenerateBook />} />
 
         {/* 단어장 만들기 페이지 */}
-        <Route path={'/auth/book/create'} element={<CreateBook />} />
+        <Route path={'/book/create'} element={<CreateBook />} />
 
         {/* 단어장 페이지 */}
-        <Route path={'/auth/book'} element={<Book />} />
+        <Route path={'/book'} element={<Book />} />
 
         {/* 404 */}
         <Route path={'*'} element={<div>404</div>} />
