@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 import sharingImg from "@/assets/svg/icons/icon-sharing.svg"
 import plusImg from "@/assets/svg/icons/icon-plus.svg"
 import arrowBackImg from "@/assets/svg/icons/icon-arrow-back-button.svg"
 import checkImg from "@/assets/svg/icons/icon-check-mark.svg"
-import axios from "axios";
 
 const getBookURL = "http://api.tt-word.kr/api/word?book_id="
 const bookID = 1;
@@ -58,6 +60,13 @@ const Book = () => {
             return <NewWord key={items.id} word={items.word} meaning={items.mean}/>;
           })}
 
+          <NewWord word={word} meaning={meaning}/>
+          <NewWord word={word} meaning={meaning}/>
+          <NewWord word={word} meaning={meaning}/>
+          <NewWord word={word} meaning={meaning}/>
+          <NewWord word={word} meaning={meaning}/>
+          <NewWord word={word} meaning={meaning}/>
+          <NewWord word={word} meaning={meaning}/>
           <NewWord word={word} meaning={meaning}/>
 
         </BookContainer>
@@ -179,6 +188,7 @@ const BookFooter = styled.div`
   height: 85px;
   display: flex;
   justify-content: center;
+  background-color: transparent;
 `
 const IconWrapper = styled.div`
   width: 330px;
