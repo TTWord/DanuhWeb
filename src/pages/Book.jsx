@@ -15,7 +15,7 @@ const instance = axios.create({ baseURL: 'http://api.tt-word.kr/api' });
 
 const api = {
   getBook: async bookID => {
-    const response = await instance.get(`/word/${bookID}`);
+    const response = await instance.get(`word?book_id=${bookID}`);
     return response;
   },
 };
@@ -33,7 +33,7 @@ const NewWord = props => {
   );
 };
 
-const getBook = async (getBookURL, bookID, setTest) => {
+const getBook = async (bookID, setTest) => {
   try {
     const response = await api.getBook(bookID);
     setTest(response.data.data);
@@ -44,13 +44,14 @@ const getBook = async (getBookURL, bookID, setTest) => {
 };
 
 const Book = () => {
+  const navigate = useNavigate();
   const word = 'just';
   const meaning = '단지';
   const bookName = '단어장1'; // 메인화면으로 부터 이름 받기
   const [test, setTest] = useState([]);
 
   useEffect(() => {
-    getBook(getBookURL, bookID, setTest);
+    getBook(bookID, setTest);
   }, []);
 
   console.log(test[0]);
@@ -59,7 +60,7 @@ const Book = () => {
   return (
     <MainWrapper>
       <BookHeader>
-        <BackButton>
+        <BackButton onClick={() => { navigate(-1); }}>
           <img src={arrowBackImg} alt="arrowBackImg" />
         </BackButton>
         <HeaderText>{bookName}</HeaderText>
@@ -72,6 +73,9 @@ const Book = () => {
           );
         })}
 
+        <NewWord word={word} meaning={meaning} />
+        <NewWord word={word} meaning={meaning} />
+        <NewWord word={word} meaning={meaning} />
         <NewWord word={word} meaning={meaning} />
         <NewWord word={word} meaning={meaning} />
         <NewWord word={word} meaning={meaning} />
@@ -101,12 +105,12 @@ export default Book;
 //== 스타일 정의 ==//
 //-- 전체 wrapper --//
 const MainWrapper = styled.div`
+  width: 100%;
+  height: 844px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 27px;
-  //없앨 CSS
-  border: 1px solid black;
 `;
 
 //-- Header 영역 --//
@@ -137,8 +141,9 @@ const HeaderText = styled.div`
 const BookContainer = styled.div`
   width: 100%;
   height: 638px;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   display: flex;
+  padding-top: 2px;
+  padding-bottom: 27px;
   flex-direction: column;
   align-items: center;
   gap: 18px;
@@ -151,7 +156,7 @@ const BookContainer = styled.div`
   }
 `;
 const WordWrapper = styled.div`
-  width: 330px;
+  width: 100%;
   height: 100px;
   background: #ffffff;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
@@ -198,10 +203,11 @@ const ChekImg = styled.img`
 //-- 하단 아이콘 --//
 const BookFooter = styled.div`
   width: 100%;
-  height: 85px;
+  //height: 85px;
   display: flex;
   justify-content: center;
   background-color: transparent;
+  background-color: rgba( 255, 255, 255, 0.5 );
 `;
 const IconWrapper = styled.div`
   width: 330px;
