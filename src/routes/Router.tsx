@@ -12,6 +12,7 @@ import HomeLayout from '@/containers/layout/HomeLayout';
 import GenerateBook from '@/pages/book/GenerateBook';
 import CreateBook from '@/pages/book/CreateBook';
 import Book from '@/pages/Book';
+import AddWord from '@/pages/book/AddWord';
 
 const Router = () => {
   return (
@@ -49,6 +50,9 @@ const Router = () => {
 
         {/* 단어장 페이지 */}
         <Route path={'/book'} element={<Book />} />
+
+        {/* 단어 추가 페이지 */}
+        <Route path={'/book/addword'} element={<AddWord />} />
 
         {/* 404 */}
         <Route path={'*'} element={<div>404</div>} />
