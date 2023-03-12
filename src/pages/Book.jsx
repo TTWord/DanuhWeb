@@ -3,11 +3,48 @@ import styled from "styled-components";
 import sharingImg from "@/assets/svg/icons/icon-sharing.svg"
 import plusImg from "@/assets/svg/icons/icon-plus.svg"
 import arrowBackImg from "@/assets/svg/icons/icon-arrow-back-button.svg"
+import checkImg from "@/assets/svg/icons/icon-check-mark.svg"
+import axios from "axios";
+
+const getBookURL = "http://api.tt-word.kr/api/word?book_id="
+const bookID = 1;
+
+const NewWord = (props) => {
+  return (
+    <WordWrapper>
+      <WordBox>
+        <Word>{props.word}</Word>
+        <Meaning>{props.meaning}</Meaning>
+      </WordBox>
+      <ChekImg src={checkImg} alt="checkImg"></ChekImg> {/* 체크에 관련된 조건 추가할 것 */}
+    </WordWrapper>
+  );
+}
+
+const getBook = async (getBookURL, bookID, setTest) => {
+  try{
+    const response = await axios.get(`${getBookURL}${bookID}`);
+    setTest(response.data.data);
+    //alert(response.data.message);
+  }catch(e){
+    console.log(e);
+  }
+}
 
 const Book = () => {
 
-  const bookName = "단어장1"
+  const word = "just";
+  const meaning = "단지"
+  const bookName = "단어장1" // 메인화면으로 부터 이름 받기
+  const [test, setTest] = useState([]);
 
+  useEffect(() => {
+    getBook(getBookURL, bookID, setTest);
+  }, []);
+
+  console.log(test[0]);
+  // map 함수 돌려서 WordBox에 값 넣기
+  // <NewWord word={word} meaning={meaning}/>
   return (
       <MainWrapper>
         <BookHeader>
@@ -15,17 +52,16 @@ const Book = () => {
           <HeaderText>{bookName}</HeaderText>
         </BookHeader>
         
-        <WordWrapper>
-          <WordBox>1</WordBox>
-          <WordBox>2</WordBox>
-          <WordBox>3</WordBox>
-          <WordBox>4</WordBox>
-          <WordBox>5</WordBox>
-          <WordBox>6</WordBox>
-          <WordBox>7</WordBox>
-          <WordBox>8</WordBox>
-          <WordBox>9</WordBox>
-        </WordWrapper>
+        <BookContainer>
+          
+          {test.map((items) => {
+            return <NewWord key={items.id} word={items.word} meaning={items.mean}/>;
+          })}
+
+          <NewWord word={word} meaning={meaning}/>
+
+        </BookContainer>
+
         <BookFooter>
           <IconWrapper>
             <SharingButton><img src={sharingImg} alt="sharingButton" /></SharingButton>
@@ -76,7 +112,7 @@ const HeaderText = styled.div`
 `
 
 //-- 단어 --//
-const WordWrapper = styled.div`
+const BookContainer = styled.div`
   width: 100%;
   height: 638px;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
@@ -92,15 +128,52 @@ const WordWrapper = styled.div`
     flex: 0 0 auto;
   }
 `
-const WordBox = styled.div`
+const WordWrapper = styled.div`
   width: 330px;
   height: 100px;
   background: #FFFFFF;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
   border-radius: 6px;
+  display: flex;
+  align-items: center;
+  position: relative;
+`
+const WordBox = styled.div`
+  position: absolute;
+  left: 29px;
+  top: 20px;
+  width: auto;
+  height: 58px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+`
+const Word = styled.div`
+  //width: 50px;
+  height: 24px;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 24px;
+  text-align: center;
+  color: #333333;
+`
+const Meaning = styled.div`
+  //width: 31px;
+  height: 16px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 16px;
+  color: #333333;
+`
+const ChekImg = styled.img`
+  position: absolute;
+  right: 24px;
+  top: 32px;
+  width: 36px;
+  height: 36px;
 `
 
-//-- 아이콘 --//
+//-- 하단 아이콘 --//
 const BookFooter = styled.div`
   width: 100%;
   height: 85px;
