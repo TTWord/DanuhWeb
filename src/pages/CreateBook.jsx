@@ -96,7 +96,6 @@ const BookInput = styled.input`
   ::placeholder{
     color: #9A9A9A;
   }
-  text-align: center;
   margin-left: 22px;
 `
 const CreateButton = styled.button`
