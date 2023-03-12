@@ -44,14 +44,11 @@ export default GenerateBook;
 //== 스타일 정의 ==//
 //-- 전체 wrapper --//
 const MainWrapper = styled.div`
-  width: 393px;
-  height: 852px;
+  height: 844px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 18px;
-  //없앨 CSS
-  border: 1px solid black;
 `
 //-- Header 영역 --//
 const BookHeader = styled.div`
