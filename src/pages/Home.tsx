@@ -1,6 +1,5 @@
 import Additional from '@/containers/Home/Additional';
-import { instance } from '@/util/instance';
-import axios from 'axios';
+import { instance } from '@/instance';
 import { useEffect, useState } from 'react';
 import { styled } from 'twin.macro';
 
