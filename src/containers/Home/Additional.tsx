@@ -151,7 +151,7 @@ const AdditionalItem = styled.div<{
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 12px;
+  font-size: 0;
   transition: all 0.3s;
   right: 30px;
   bottom: 30px;
@@ -163,5 +163,6 @@ const AdditionalItem = styled.div<{
       height: 50px;
       bottom: ${targetPos};
       right: 0px;
+      font-size: 12px;
     `}
 `;

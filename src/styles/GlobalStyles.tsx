@@ -26,10 +26,13 @@ const CustomStyles = createGlobalStyle`
     font-family: 'GmarketSans', sans-serif;
     font-size: 10px;
     font-weight: 500;
+    width: 100%;
+    height: 100%;
   }
 
   body > div {
     font-size: 16px;
+    height: 100%;
   }
 `;
 

@@ -1,9 +1,19 @@
 import Additional from '@/containers/Home/Additional';
-import { useState } from 'react';
+import { instance } from '@/util/instance';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { styled } from 'twin.macro';
 
 const Home = () => {
   const [plusStatus, setPlusStatus] = useState(true);
+
+  useEffect(() => {
+    const getData = () => {
+      instance.get('/api/book').then(res => {
+        console.log(res);
+      });
+    };
+  }, []);
 
   return (
     <Container>
