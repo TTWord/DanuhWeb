@@ -72,18 +72,6 @@ const Book = () => {
             <NewWord key={items.id} word={items.word} meaning={items.mean} />
           );
         })}
-
-        <NewWord word={word} meaning={meaning} />
-        <NewWord word={word} meaning={meaning} />
-        <NewWord word={word} meaning={meaning} />
-        <NewWord word={word} meaning={meaning} />
-        <NewWord word={word} meaning={meaning} />
-        <NewWord word={word} meaning={meaning} />
-        <NewWord word={word} meaning={meaning} />
-        <NewWord word={word} meaning={meaning} />
-        <NewWord word={word} meaning={meaning} />
-        <NewWord word={word} meaning={meaning} />
-        <NewWord word={word} meaning={meaning} />
       </BookContainer>
 
       <BookFooter>
@@ -91,7 +79,9 @@ const Book = () => {
           <SharingButton>
             <img src={sharingImg} alt="sharingButton" />
           </SharingButton>
-          <PlusButton>
+          <PlusButton onClick={()  => {
+            navigate("/book/addword");
+          }}>
             <img src={plusImg} alt="sharingButton" />
           </PlusButton>
         </IconWrapper>
