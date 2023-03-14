@@ -1,11 +1,34 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-
+import { instance } from "@/instance";
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 
+const addWordUrl = "http://api.tt-word.kr/api/word";
+
+const addWord = async (book_id, word, mean, navigate) => {
+    try{
+        const response = await axios.post(addWordUrl, {
+            "book_id": book_id,
+            "word": word,
+            "mean": mean
+        });
+        navigate(-1);
+        alert(response.data.message);
+    } catch (e){
+
+    }
+}
+
 const AddWord = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const book_id = 1;
+
+    const [word, setWord] = useState("");
+    const [mean, setMean] = useState("");
 
     return (
         <MainWrapper>
@@ -19,17 +42,25 @@ const AddWord = () => {
             <Container>
                 <WordBox>
                     <TextDiv>단어</TextDiv>
-                    <Input type="text" placeholder="단어를 입력해주세요"/>
+                    <Input type="text" placeholder="단어를 입력해주세요" onChange={(e) => { 
+                        setWord(e.target.value);
+                    }}/>
                 </WordBox>
 
                 <WordBox>
                     <TextDiv>뜻</TextDiv>
-                    <Input type="text" placeholder="뜻 입력해주세요"/>
+                    <Input type="text" placeholder="뜻 입력해주세요" onChange={(e) => {
+                        setMean(e.target.value);
+                    }}/>
                 </WordBox>
 
-                <CreateButton>
-                    생성
-                </CreateButton>
+                <CreateButton onClick={() => { 
+                    if (word === "" && mean === ""){
+                        alert("미입력칸이 있습니다.");
+                    }else{
+                        addWord(book_id, word, mean, navigate);
+                    }
+                    }}>생성</CreateButton>
             </Container>
         </MainWrapper>
     );
