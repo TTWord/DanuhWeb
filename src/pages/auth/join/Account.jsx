@@ -26,28 +26,16 @@ const AuthInputBox = (props) => {
 const FunctionSignin = async (userEmail,userNickname, userPW, navigate) => {
   try {
     const response = await axios.post(sendMailURL, {
-        user_id: userEmail,
-        to_email: userEmail,
-        subject: "TTWord 인증코드입니다.",
-        body: "Content"
+        to_email: userEmail
       });
-      const getVerificationCode = response.data.verification_id;
-      console.log(getVerificationCode);
-      alert(response.data.message);
       navigate('/auth/join/code', {state: {
       userEmail: userEmail,
       userPW: userPW, 
-      userNickname: userNickname,
-      getCode: getVerificationCode
+      userNickname: userNickname
       }});
+      alert(response.data.message);
     } catch(e) {
       console.log(1313);
-      // const errorCode = e.response.status;
-      // const errorMessage = e.response.data.message;
-      // if (errorCode === 409){
-      //   console.log(errorMessage);
-      // }
-      // }
     }
 }
 
