@@ -21,16 +21,17 @@ const LoginBox = (props) => {
     );
   }
 
-const FunctionLogin = async (signinUsername, signinPassword, navigate, getToken) => {
+const FunctionLogin = async (signinUsername, signinPassword, navigate, getToken, userToken) => {
   try {
     const response = await axios.post(signInURL, {
       username: signinUsername,
       password: signinPassword
     });
       getToken(response.data.access_token);
-      localStorage.setItem("jwtToken", response.data.access_token);
+      localStorage.setItem("accessToken", response.data.access_token);
+      console.log(response.data.access_token);
+      navigate('/');
       alert(response.data.message);
-      navigate('/auth');
   } catch(e) {
     const errorCode = e.response.status;
     const errorMessage = e.response.data.message;
