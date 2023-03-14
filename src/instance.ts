@@ -4,11 +4,15 @@ import axios from 'axios';
 export const instance = axios.create({
   baseURL: process.env.SERVER_NAME,
   timeout: 10000,
-  withCredentials: true,
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json;charset=UTF-8',
+    'Access-Control-Allow-Origin': '*',
+  },
 });
 
 instance.interceptors.request.use(config => {
-  const accessToken = localStorage.get('accessToken');
+  const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken) {
     config.headers!.Authorization = `Bearer ${accessToken}`;
@@ -22,6 +26,10 @@ instance.interceptors.response.use(
     return response;
   },
   error => {
+    if (error.response.status === 401) {
+      localStorage.removeItem('accessToken');
+      window.location.href = '/auth/login';
+    }
     return error;
   },
 );

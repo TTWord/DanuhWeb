@@ -7,11 +7,13 @@ const Home = () => {
   const [plusStatus, setPlusStatus] = useState(true);
 
   useEffect(() => {
-    const getData = () => {
-      instance.get('/api/book').then(res => {
-        console.log(res);
-      });
+    const getData = async () => {
+      const response = await instance.get('/book');
+
+      console.log(response);
     };
+
+    getData();
   }, []);
 
   return (
