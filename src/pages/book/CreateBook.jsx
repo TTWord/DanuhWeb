@@ -26,8 +26,8 @@ export default CreateBook;
 
 //== 스타일 정의 ==/
 const MainWrapper = styled.div`
-  width: 393px;
-  height: 852px;
+  width: 100%;
+  height: 844px;
   display: flex;
   flex-direction: column;
   align-items: center;
