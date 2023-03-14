@@ -3,21 +3,16 @@ import styled from "styled-components";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const Welcome = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const signupValues = location.state;
   const userName = signupValues.userNickname;
   const userEmail = signupValues.userEmail;
-  // const userName = "GRIDY";
-  // const userEmail = "tnqhd1139@gmail.com";
-  console.log(signupValues);
-  // const [userName, setUserName] = useState("");
-  // const [userEmail, setUserEmail] = useState("");
-
+  
   // Title 변경
   useEffect(() => {
     document.querySelector("title").innerHTML = "Welcome";
-    // setUserName(signinValues.userNickname);
-    // setUserEmail(signinValues.userEmail);
+    setTimeout(() => {navigate("/auth/login");}, 3000);
   }, []);
 
   return (
