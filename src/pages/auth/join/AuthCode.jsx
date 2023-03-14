@@ -32,10 +32,7 @@ const AuthCode = () => {
 
   const userEmail = signinValues.userEmail;
   const userNickname = signinValues.userNickname;
-  const userPW = signinValues.userPW
-  const getCode = signinValues.getCode;
-  //const test = `${getCode.slice(0,3)} ${getCode.slice(3)}`
-  //console.log(getCode);
+  const userPW = signinValues.userPW;
 
   // 카운트 다운
   const [minutes, setMinutes] = useState(3); // 1분으로 초기화
@@ -70,7 +67,7 @@ const AuthCode = () => {
 
   const getInputCode = (e) => {
     const inputUserCode = e.target.value;
-    setInputCode(`${inputUserCode.slice(0,3)} ${inputUserCode.slice(3)}`);
+    setInputCode(inputUserCode);
   }
 
   return (
