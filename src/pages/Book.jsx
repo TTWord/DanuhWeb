@@ -201,19 +201,22 @@ const ChekImg = styled.img`
 `;
 
 //-- 하단 아이콘 --//
+// fixed로 하여 수정 예정
 const BookFooter = styled.div`
   width: 100%;
   //height: 85px;
   display: flex;
-  justify-content: center;
+  justify-content: end;
   background-color: transparent;
-  background-color: rgba( 255, 255, 255, 0.5 );
+  //background-color: rgba( 255, 255, 255, 0.5 );
 `;
 const IconWrapper = styled.div`
   width: 330px;
   display: flex;
   justify-content: end;
   gap: 15px;
+  background-color: transparent;
+  //background-color: rgba( 255, 255, 255, 0.5 );
 `;
 const Circle = styled.button`
   width: 58px;
