@@ -18,19 +18,16 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
+        {/* 인트로 페이지 */}
+        <Route path={'/'} element={<Intro />} />
+
         {/* 홈화면 (모바일 하단 메뉴 중 첫번째 메뉴) */}
         <Route element={<HomeLayout />}>
-          <Route path={'/'} element={<Home />} />
+          <Route path={'/home'} element={<Home />} />
         </Route>
-
-        {/* 인트로 페이지 */}
-        <Route path={'/intro'} element={<Intro />} />
 
         {/* 로그인 페이지 */}
         <Route path={'/auth/login'} element={<Login />} />
-
-        {/* 회원가입 메인 페이지 */}
-        <Route path={'/auth/join/account'} element={<Account />} />
 
         {/* 인증 코드 입력 페이지 */}
         <Route path={'/auth/join/code'} element={<AuthCode />} />
@@ -39,7 +36,7 @@ const Router = () => {
         <Route path={'/auth/join/welcome'} element={<Welcome />} />
 
         {/* 인트로 후 메인 페이지 */}
-        <Route path={'/auth'} element={<Auth />} />
+        {/* <Route path={'/auth'} element={<Auth />} /> */}
 
         {/* 화면 구현 테스트를 위해 임시 코드 작성 */}
         {/* 단어장 생성기 페이지 */}
