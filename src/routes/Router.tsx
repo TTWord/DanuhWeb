@@ -1,55 +1,67 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import Auth from '@/pages/Auth';
-import Intro from '@/pages/Intro';
-import Account from '@/pages/auth/join/Account';
-import Login from '@/pages/auth/Login';
-import AuthCode from '@/pages/auth/join/AuthCode';
-import Welcome from '@/pages/auth/join/Welcome';
-import Home from '@/pages/Home';
-import HomeLayout from '@/containers/layout/HomeLayout';
+import LoginPage from '@/pages/LoginPage';
+import AuthCodePage from '@/pages/auth/join/AuthCodePage';
+import WelcomePage from '@/pages/auth/join/WelcomePage';
+import BookPage from '@/pages/BookPage';
+import HomeLayout from '@/components/layout/HomeLayout';
 
-import GenerateBook from '@/pages/book/GenerateBook';
-import CreateBook from '@/pages/book/CreateBook';
-import Book from '@/pages/Book';
-import AddWord from '@/pages/book/AddWord';
+import GenerateBook from '@/pages/book/GenerateBookPage';
+import CreateBook from '@/pages/book/CreateBookPage';
+import BookDetPage from '@/pages/book/BookDetPage';
+import StartPage from '@/pages/StartPage';
+import CreateWord from '@/pages/book/CreateWordPage';
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
         {/* 인트로 페이지 */}
-        <Route path={'/'} element={<Intro />} />
+        <Route path={'/'} element={<StartPage />} />
 
         {/* 홈화면 (모바일 하단 메뉴 중 첫번째 메뉴) */}
-        <Route element={<HomeLayout />}>
-          <Route path={'/home'} element={<Home />} />
-        </Route>
 
-        {/* 로그인 페이지 */}
-        <Route path={'/auth/login'} element={<Login />} />
+        {/* 단어장 */}
+        <Route
+          path={'/book/*'}
+          element={
+            <Routes>
+              {/* Book Page */}
+              <Route element={<HomeLayout />}>
+                <Route path={'/'} element={<BookPage />} />
+              </Route>
 
-        {/* 인증 코드 입력 페이지 */}
-        <Route path={'/auth/join/code'} element={<AuthCode />} />
+              {/* 단어장 생성기 페이지 */}
+              <Route path={'/generate'} element={<GenerateBook />} />
 
-        {/* 회원 가입 후 환영 페이지 */}
-        <Route path={'/auth/join/welcome'} element={<Welcome />} />
+              {/* 단어장 만들기 페이지 */}
+              <Route path={'/create'} element={<CreateBook />} />
 
-        {/* 인트로 후 메인 페이지 */}
-        {/* <Route path={'/auth'} element={<Auth />} /> */}
+              {/* 단어장 페이지 */}
+              <Route path={'/:id'} element={<BookDetPage />} />
 
-        {/* 화면 구현 테스트를 위해 임시 코드 작성 */}
-        {/* 단어장 생성기 페이지 */}
-        <Route path={'/book/generate'} element={<GenerateBook />} />
+              {/* 단어 추가 페이지 */}
+              <Route path={'/:id/create'} element={<CreateWord />} />
+            </Routes>
+          }
+        />
 
-        {/* 단어장 만들기 페이지 */}
-        <Route path={'/book/create'} element={<CreateBook />} />
+        {/* 로그인 & 회원가입 */}
+        <Route
+          path={'/auth/*'}
+          element={
+            <Routes>
+              {/* 로그인 페이지 */}
+              <Route path={'/'} element={<LoginPage />} />
 
-        {/* 단어장 페이지 */}
-        <Route path={'/book'} element={<Book />} />
+              {/* 인증 코드 입력 페이지 */}
+              <Route path={'/join/code'} element={<AuthCodePage />} />
 
-        {/* 단어 추가 페이지 */}
-        <Route path={'/book/addword'} element={<AddWord />} />
+              {/* 회원 가입 후 환영 페이지 */}
+              <Route path={'/join/welcome'} element={<WelcomePage />} />
+            </Routes>
+          }
+        />
 
         {/* 404 */}
         <Route path={'*'} element={<div>404</div>} />

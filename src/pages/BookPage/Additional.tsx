@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled, { css, keyframes } from 'styled-components';
 
 interface AdditionalProps {
@@ -7,6 +8,8 @@ interface AdditionalProps {
 }
 
 const Additional: React.FC<AdditionalProps> = ({ isActive, setActive }) => {
+  const navigate = useNavigate();
+
   return (
     <Container>
       <PlusBox onClick={() => setActive(current => !current)}>
@@ -15,10 +18,22 @@ const Additional: React.FC<AdditionalProps> = ({ isActive, setActive }) => {
         <PlusIcon isActive={isActive} />
       </PlusBox>
       <AdditionalItems isActive={isActive}>
-        <AdditionalItem isActive={isActive} targetPos={'200px'}>
+        <AdditionalItem
+          isActive={isActive}
+          targetPos={'200px'}
+          onClick={() => {
+            navigate('/book/create');
+          }}
+        >
           단어장 만들기
         </AdditionalItem>
-        <AdditionalItem isActive={isActive} targetPos={'140px'}>
+        <AdditionalItem
+          isActive={isActive}
+          targetPos={'140px'}
+          onClick={() => {
+            navigate('/book/generate');
+          }}
+        >
           단어장 생성기
         </AdditionalItem>
         <AdditionalItem isActive={isActive} targetPos={'80px'}>
