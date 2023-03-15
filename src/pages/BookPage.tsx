@@ -1,53 +1,62 @@
-import Additional from '@/containers/Home/Additional';
+import Additional from '@/pages/BookPage/Additional';
 import { instance } from '@/instance';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { styled } from 'twin.macro';
+import { useNavigate } from 'react-router-dom';
 
-const Home = () => {
-  const [plusStatus, setPlusStatus] = useState(true);
+const generateDateText = (dateText: string) => {
+  const date = new Date(dateText);
+
+  return `${date.getFullYear()}.${(date.getMonth() + 1)
+    .toString()
+    .padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`;
+};
+
+const HomePage = () => {
+  const [plusStatus, setPlusStatus] = useState(false);
+  const [books, setBooks] = useState<any>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
-      const response = await instance.get('/book');
+      const { data: response } = await instance.get('/book');
 
-      console.log(response);
+      if (response.status === 'OK') {
+        setBooks(response.data);
+      }
     };
 
     getData();
   }, []);
 
+  const onItemClick = useCallback((bookId: number) => {
+    navigate(`/book/${bookId}`);
+  }, []);
+
   return (
     <Container>
       <Items>
-        <Item>
-          <Strong>
-            단어장 제목<Span>Gridy</Span>
-          </Strong>
-          <P>2015.03.02</P>
-          <Status>
-            <Gage percentage={'100%'}>
-              <ColorGage percentage={'100%'} />
-            </Gage>
-          </Status>
-        </Item>
-        <Item>
-          <Strong>
-            단어장 제목<Span>Gridy</Span>
-          </Strong>
-          <P>2015.03.02</P>
-          <Status>
-            <Gage percentage={'50%'}>
-              <ColorGage percentage={'50%'} />
-            </Gage>
-          </Status>
-        </Item>
+        {books.map((book: any) => (
+          <Item key={book.id} onClick={() => onItemClick(book.id)}>
+            <Strong>
+              {book.name}
+              <Span>제작자명</Span>
+            </Strong>
+            <P>{generateDateText(book.created_at)}</P>
+            <Status>
+              <Gage percentage={'100%'}>
+                <ColorGage percentage={'100%'} />
+              </Gage>
+            </Status>
+          </Item>
+        ))}
       </Items>
       <Additional isActive={plusStatus} setActive={setPlusStatus} />
     </Container>
   );
 };
 
-export default Home;
+export default HomePage;
 
 const Container = styled.div`
   position: relative;
