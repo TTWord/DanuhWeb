@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate, useParams } from 'react-router-dom';
 import { instance } from '@/instance';
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 
-const addWordUrl = 'http://api.tt-word.kr/api/word';
-
 const addWord = async (book_id, word, mean, navigate) => {
   try {
-    const response = await axios.post(addWordUrl, {
+    const response = await instance.post(addWordUrl, {
       book_id: book_id,
       word: word,
       mean: mean,
@@ -20,10 +17,9 @@ const addWord = async (book_id, word, mean, navigate) => {
 };
 
 const CreateWordPage = () => {
-  const location = useLocation();
   const navigate = useNavigate();
 
-  const book_id = 1;
+  const book_id = useParams().id;
 
   const [word, setWord] = useState('');
   const [mean, setMean] = useState('');
