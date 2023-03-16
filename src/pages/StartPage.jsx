@@ -3,15 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import logoImg from '@/assets/svg/icons/logo-img.svg';
 
-// 로그인 페이지 주소
-const loginPage = '/auth';
-
 const StartPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => {
-      navigate(loginPage);
+      navigate('/auth');
     }, 3000);
   }, []);
 
@@ -28,7 +25,7 @@ export default StartPage;
 //스타일 정의
 const MainWrapper = styled.div`
   width: 100%;
-  height: 852px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -37,13 +34,10 @@ const MainWrapper = styled.div`
 `;
 const LogoImg = styled.img`
   width: 107px;
-  height: 48px;
+  margin-bottom: 10px;
 `;
 const IntroText = styled.div`
-  width: 197px;
-  height: 12px;
   font-weight: 300;
   font-size: 12px;
-  line-height: 12px;
   color: #5c369a;
 `;

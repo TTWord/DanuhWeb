@@ -3,6 +3,7 @@ import { instance } from '@/instance';
 import { useCallback, useEffect, useState } from 'react';
 import { styled } from 'twin.macro';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from 'react-query';
 
 const generateDateText = (dateText: string) => {
   const date = new Date(dateText);
