@@ -1,16 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import BackButtonImg from '@/assets/svg/icons/icon-back-button.svg';
 import LogoImg from '@/assets/svg/icons/logo-img.svg';
 import * as Styled from '@/styles/LoginStyle.jsx';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { instance } from '@/instance';
 
-const signInURL = 'http://api.tt-word.kr/api/user/signin';
-
-//onClick={() => { setLoginMain((current => !current)); console.log(isLoginMain); }}
-//(e) => {const current_username = e.target.value; setUsername(current_username);}
 const LoginBox = props => {
-  //console.log(state.state);
   return props.state ? (
     <Styled.LoginBoxWrapper>
       <Styled.LoginInput
@@ -40,13 +35,12 @@ const FunctionLogin = async (
   userToken,
 ) => {
   try {
-    const response = await axios.post(signInURL, {
+    const response = await instance.post('/user/signin', {
       username: signinUsername,
       password: signinPassword,
     });
     getToken(response.data.access_token);
     localStorage.setItem('accessToken', response.data.access_token);
-    console.log(response.data.access_token);
     navigate('/book');
     alert(response.data.message);
   } catch (e) {
@@ -67,10 +61,6 @@ const FunctionLogin = async (
 
 const LoginPage = () => {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    console.log(signInURL);
-  }, []);
 
   const [isLoginMain, setLoginMain] = useState(false);
   const [username, setUsername] = useState('');
@@ -127,15 +117,13 @@ const LoginPage = () => {
         </Styled.LoginWrapper>
         <Styled.SignInWrapper>
           <Styled.AskAccount>계정이 없으신가요?</Styled.AskAccount>
-          <Link to="/auth/join/account">
-            <Styled.SignInbutton
-              onClick={() => {
-                navigate('/auth/join/account');
-              }}
-            >
-              회원가입
-            </Styled.SignInbutton>
-          </Link>
+          <Styled.SignInbutton
+            onClick={() => {
+              navigate('/auth/join');
+            }}
+          >
+            회원가입
+          </Styled.SignInbutton>
         </Styled.SignInWrapper>
       </div>
     </Styled.WebWrapper>
