@@ -56,13 +56,10 @@ export default CreateBookPage;
 //== 스타일 정의 ==/
 const MainWrapper = styled.div`
   width: 100%;
-  height: 844px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 300px;
-  //없앨 CSS
-  border: 1px solid black;
 `;
 //-- Header 영역 --//
 const BookHeader = styled.div`
@@ -73,6 +70,7 @@ const BookHeader = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-shrink: 0;
 `;
 const BackButton = styled.button`
   margin-left: 30px;
@@ -89,13 +87,13 @@ const HeaderText = styled.div`
 `;
 //-- 단어장 만드는 영역 --//
 const CreateContainer = styled.div`
-  width: 337px;
-  height: 182px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 16px;
+  padding-bottom: 80px;
 `;
 
 const BookNameDiv = styled.div`
