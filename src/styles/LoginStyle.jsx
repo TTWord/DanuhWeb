@@ -2,7 +2,7 @@ import styled, { css, isStyledComponent } from 'styled-components';
 
 export const WebWrapper = styled.div`
   width: 100%;
-  height: 852px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -72,6 +72,7 @@ export const IntroduceText = styled.div`
 `;
 
 export const LoginButton = styled.button`
+  margin-top: 20px;
   width: 249px;
   height: ${props => (props.buttonType === 'login' ? '72px' : '43px')};
   background: linear-gradient(180deg, #734ae7 0%, #4f32a2 100%);

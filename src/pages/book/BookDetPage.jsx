@@ -6,20 +6,8 @@ import { instance } from '@/instance';
 import sharingImg from '@/assets/svg/icons/icon-sharing.svg';
 import plusImg from '@/assets/svg/icons/icon-plus.svg';
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
-import checkImg from '@/assets/svg/icons/icon-check-mark.svg';
 
-const NewWord = props => {
-  return (
-    <WordWrapper>
-      <WordBox>
-        <Word>{props.word}</Word>
-        <Meaning>{props.meaning}</Meaning>
-      </WordBox>
-      <ChekImg src={checkImg} alt="checkImg"></ChekImg>{' '}
-      {/* 체크에 관련된 조건 추가할 것 */}
-    </WordWrapper>
-  );
-};
+import NewWord from './BookDetPage/NewWord';
 
 const getBook = async (bookId, setWord) => {
   try {
@@ -98,7 +86,7 @@ export default BookDet;
 //-- 전체 wrapper --//
 const MainWrapper = styled.div`
   width: 100%;
-  //height: 844px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -113,7 +101,7 @@ const BookHeader = styled.div`
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   display: flex;
   align-items: center;
-  gap: 12px;
+  flex-shrink: 0;
 `;
 const BackButton = styled.button`
   margin-left: 30px;
@@ -132,10 +120,12 @@ const HeaderText = styled.div`
 //-- 단어 --//
 const BookContainer = styled.div`
   width: 100%;
-  height: 638px;
+  height: 100%;
   display: flex;
   padding-top: 2px;
-  padding-bottom: 27px;
+  padding-bottom: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
   flex-direction: column;
   align-items: center;
   gap: 18px;
@@ -147,51 +137,6 @@ const BookContainer = styled.div`
     flex: 0 0 auto;
   }
 `;
-const WordWrapper = styled.div`
-  width: 100%;
-  height: 100px;
-  background: #ffffff;
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  position: relative;
-`;
-const WordBox = styled.div`
-  position: absolute;
-  left: 29px;
-  top: 20px;
-  width: auto;
-  height: 58px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-`;
-const Word = styled.div`
-  //width: 50px;
-  height: 24px;
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 24px;
-  text-align: center;
-  color: #333333;
-`;
-const Meaning = styled.div`
-  //width: 31px;
-  height: 16px;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 16px;
-  color: #333333;
-`;
-const ChekImg = styled.img`
-  position: absolute;
-  right: 24px;
-  top: 32px;
-  width: 36px;
-  height: 36px;
-`;
-
 //-- 하단 아이콘 --//
 // fixed로 하여 수정 예정
 const BookFooter = styled.div`
@@ -218,8 +163,11 @@ const Circle = styled.button`
   align-items: center;
 `;
 const SharingButton = styled(Circle)`
-  position: relative;
+  position: fixed;
   background: linear-gradient(180deg, #3a98b6 0%, #50998c 100%);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  right: 110px;
+  bottom: 30px;
   img {
     position: absolute;
     left: 13px;
@@ -228,6 +176,9 @@ const SharingButton = styled(Circle)`
   }
 `;
 const PlusButton = styled(Circle)`
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
   justify-content: center;
   background: linear-gradient(180deg, #703ab6 0%, #774178 100%);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
