@@ -1,24 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate, useParams } from 'react-router-dom';
+import { instance } from '@/instance';
 
 import sharingImg from '@/assets/svg/icons/icon-sharing.svg';
 import plusImg from '@/assets/svg/icons/icon-plus.svg';
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 import checkImg from '@/assets/svg/icons/icon-check-mark.svg';
-
-const getBookURL = 'http://api.tt-word.kr/api/word?book_id=';
-const bookID = 1;
-
-const instance = axios.create({ baseURL: 'http://api.tt-word.kr/api' });
-
-const api = {
-  getBook: async bookID => {
-    const response = await instance.get(`word?book_id=${bookID}`);
-    return response;
-  },
-};
 
 const NewWord = props => {
   return (
@@ -33,41 +21,53 @@ const NewWord = props => {
   );
 };
 
-const getBook = async (bookID, setTest) => {
+const getBook = async (bookId, setWord) => {
   try {
-    const response = await api.getBook(bookID);
-    setTest(response.data.data);
+    const response = await instance.get(`/word?book_id=${bookId}`);
+    setWord(response.data.data);
     //alert(response.data.message);
   } catch (e) {
     console.log(e);
   }
 };
 
-const Book = () => {
+const getBookName = async (bookId, setBookName) => {
+  try {
+    const response = await instance.get(`/book/${bookId}`);
+    setBookName(response.data.data.name);
+  } catch (e) {
+    //console.log(e);
+  }
+};
+
+const BookDet = () => {
   const navigate = useNavigate();
-  const word = 'just';
-  const meaning = '단지';
-  const bookName = '단어장1'; // 메인화면으로 부터 이름 받기
-  const [test, setTest] = useState([]);
+  const bookId = useParams().id;
+  const [bookName, setBookName] = useState('');
+  const [word, setWord] = useState([]); // 변수명 수정 필요
 
   useEffect(() => {
-    getBook(bookID, setTest);
+    getBook(bookId, setWord);
+    getBookName(bookId, setBookName);
   }, []);
 
-  console.log(test[0]);
   // map 함수 돌려서 WordBox에 값 넣기
   // <NewWord word={word} meaning={meaning}/>
   return (
     <MainWrapper>
       <BookHeader>
-        <BackButton onClick={() => { navigate(-1); }}>
+        <BackButton
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
           <img src={arrowBackImg} alt="arrowBackImg" />
         </BackButton>
         <HeaderText>{bookName}</HeaderText>
       </BookHeader>
 
       <BookContainer>
-        {test.map(items => {
+        {word.map(items => {
           return (
             <NewWord key={items.id} word={items.word} meaning={items.mean} />
           );
@@ -79,9 +79,11 @@ const Book = () => {
           <SharingButton>
             <img src={sharingImg} alt="sharingButton" />
           </SharingButton>
-          <PlusButton onClick={()  => {
-            navigate("/book/addword");
-          }}>
+          <PlusButton
+            onClick={() => {
+              navigate(`/book/${bookId}/create`);
+            }}
+          >
             <img src={plusImg} alt="sharingButton" />
           </PlusButton>
         </IconWrapper>
@@ -90,13 +92,13 @@ const Book = () => {
   );
 };
 
-export default Book;
+export default BookDet;
 
 //== 스타일 정의 ==//
 //-- 전체 wrapper --//
 const MainWrapper = styled.div`
   width: 100%;
-  height: 844px;
+  //height: 844px;
   display: flex;
   flex-direction: column;
   align-items: center;
