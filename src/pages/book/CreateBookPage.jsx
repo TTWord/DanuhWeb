@@ -1,12 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
+import { instance } from '@/instance';
+import { useNavigate } from 'react-router-dom';
+
+// 생성한 단어장 전송하는 기능
+const createBook = async bookName => {
+  const response = await instance.post('', {
+    book_name: bookName,
+  });
+};
 
 const CreateBookPage = () => {
+  const navigate = useNavigate();
+
+  const [newBook, setNewBook] = useState('');
+
   return (
     <MainWrapper>
       <BookHeader>
-        <BackButton>
+        <BackButton
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
           <img src={arrowBackImg} alt="arrowBackImg" />
         </BackButton>
         <HeaderText>단어장 만들기</HeaderText>
@@ -15,9 +32,20 @@ const CreateBookPage = () => {
       <CreateContainer>
         <BookNameDiv>단어장 이름</BookNameDiv>
         <BookInputWrapper>
-          <BookInput placeholder="단어장 이름을 입력해주세요"></BookInput>
+          <BookInput
+            placeholder="단어장 이름을 입력해주세요"
+            onChange={e => {
+              setNewBook(e.target.value);
+            }}
+          ></BookInput>
         </BookInputWrapper>
-        <CreateButton>생성</CreateButton>
+        <CreateButton
+          onClick={() => {
+            //새로 생성한 단어장 전송하는 함수 부분
+          }}
+        >
+          생성
+        </CreateButton>
       </CreateContainer>
     </MainWrapper>
   );
