@@ -3,13 +3,12 @@ import { useNavigate } from 'react-router-dom';
 
 const useLogin = () => {
   const navigate = useNavigate();
-  const login = async (username, password, getToken, userToken) => {
+  const login = async (username, password) => {
     try {
       const response = await instance.post('/user/signin', {
         username,
         password,
       });
-      getToken(response.data.access_token);
       localStorage.setItem('accessToken', response.data.access_token);
       navigate('/book');
       alert(response.data.message);
