@@ -6,11 +6,12 @@ import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 
 const addWord = async (book_id, word, mean, navigate) => {
   try {
-    const response = await instance.post(addWordUrl, {
+    const response = await instance.post('/word', {
       book_id: book_id,
       word: word,
       mean: mean,
     });
+    console.log(response);
     navigate(-1);
     alert(response.data.message);
   } catch (e) {}
@@ -62,6 +63,7 @@ const CreateWordPage = () => {
 
         <CreateButton
           onClick={() => {
+            console.log(111);
             if (word === '' && mean === '') {
               alert('미입력칸이 있습니다.');
             } else {

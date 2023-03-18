@@ -57,7 +57,12 @@ const BookDet = () => {
       <BookContainer>
         {word.map(items => {
           return (
-            <NewWord key={items.id} word={items.word} meaning={items.mean} />
+            <NewWord
+              key={items.id}
+              bookId={items.id}
+              word={items.word}
+              mean={items.mean}
+            />
           );
         })}
       </BookContainer>
