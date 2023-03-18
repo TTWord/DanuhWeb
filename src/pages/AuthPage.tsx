@@ -7,25 +7,20 @@ import logoImg from '@/assets/svg/icons/logo-img.svg';
 const AuthPage = () => {
   const navigate = useNavigate();
 
+  const goLogin = () => {
+    navigate('/auth/login');
+  };
+  const goJoin = () => {
+    navigate('/auth/join');
+  };
+
   return (
     <WebWrapper>
       <Logo src={logoImg} alt="logoImg" />
       <Introduce>이미지, PDF, 글을 단어장으로 만들자!</Introduce>
-      <EmailLogin
-        onClick={() => {
-          navigate('/auth/login');
-        }}
-      >
-        이메일로 로그인
-      </EmailLogin>
+      <EmailLogin onClick={goLogin}>이메일로 로그인</EmailLogin>
       <AskAccount>계정이 없으신가요?</AskAccount>
-      <SignInButton
-        onClick={() => {
-          navigate('/auth/join');
-        }}
-      >
-        회원가입
-      </SignInButton>
+      <SignInButton onClick={goJoin}>회원가입</SignInButton>
     </WebWrapper>
   );
 };
