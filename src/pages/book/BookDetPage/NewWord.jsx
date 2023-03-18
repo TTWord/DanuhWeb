@@ -1,15 +1,36 @@
 import styled from 'styled-components';
+import { instance } from '@/instance';
+import { useNavigate } from 'react-router-dom';
 
-import iconCheckMark from '@/assets/svg/icons/icon-check-mark.svg';
+import plusIcon from '@/assets/svg/icons/icon-add.svg';
 
-const NewWord = ({ word, meaning, checkImg }) => {
+const deleteWord = async (bookId, word, mean) => {
+  try {
+    const response = await instance.delete(`/word/${bookId}`);
+    window.location.reload();
+    alert(response.data.message);
+  } catch (e) {
+    alert('Error');
+  }
+};
+
+const NewWord = ({ bookId, word, mean }) => {
   return (
     <WordWrapper>
       <WordBox>
         <Word>{word}</Word>
-        <Meaning>{meaning}</Meaning>
+        <Meaning>{mean}</Meaning>
       </WordBox>
-      <CheckImg src={iconCheckMark} alt="checkImg" />
+
+      <DeleteButton>
+        <img
+          src={plusIcon}
+          alt="plusIcon"
+          onClick={() => {
+            deleteWord(bookId, word, mean);
+          }}
+        />
+      </DeleteButton>
       {/* 체크에 관련된 조건 추가할 것 */}
     </WordWrapper>
   );
@@ -54,10 +75,18 @@ const Meaning = styled.div`
   line-height: 16px;
   color: #333333;
 `;
-const CheckImg = styled.img`
+const DeleteButton = styled.button`
   position: absolute;
   right: 24px;
   top: 32px;
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  background: #e45454;
+  img {
+    width: 30px;
+    height: 30px;
+  }
 `;
