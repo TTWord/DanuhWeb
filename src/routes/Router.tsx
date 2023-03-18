@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
+import AuthPage from '@/pages/AuthPage';
 import LoginPage from '@/pages/LoginPage';
 import JoinPage from '@/pages/auth/join/JoinPage';
 import AuthCodePage from '@/pages/auth/join/AuthCodePage';
@@ -57,7 +58,10 @@ const Router = () => {
           element={
             <Routes>
               {/* 로그인 메인 페이지 */}
-              <Route path={'/'} element={<LoginPage />} />
+              <Route path={'/'} element={<AuthPage />} />
+
+              {/* 로그인 메인 페이지 */}
+              <Route path={'/login'} element={<LoginPage />} />
 
               {/* 회원가입 페이지 */}
               <Route path={'/join'} element={<JoinPage />} />
