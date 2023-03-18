@@ -5,10 +5,16 @@ import { instance } from '@/instance';
 import { useNavigate } from 'react-router-dom';
 
 // 생성한 단어장 전송하는 기능
-const createBook = async bookName => {
-  const response = await instance.post('', {
-    book_name: bookName,
-  });
+const createBook = async (bookName, navigate) => {
+  try {
+    const response = await instance.post('/book', {
+      name: bookName,
+    });
+    navigate(-1);
+    alert(response.data.comment);
+  } catch (e) {
+    alert('Error!');
+  }
 };
 
 const CreateBookPage = () => {
@@ -41,7 +47,7 @@ const CreateBookPage = () => {
         </BookInputWrapper>
         <CreateButton
           onClick={() => {
-            //새로 생성한 단어장 전송하는 함수 부분
+            createBook(newBook, navigate);
           }}
         >
           생성
@@ -78,8 +84,6 @@ const BackButton = styled.button`
   height: 36px;
 `;
 const HeaderText = styled.div`
-  width: 146px;
-  height: 24px;
   font-weight: 500;
   font-size: 24px;
   line-height: 24px;
@@ -97,8 +101,6 @@ const CreateContainer = styled.div`
 `;
 
 const BookNameDiv = styled.div`
-  width: 123px;
-  height: 24px;
   font-weight: 500;
   font-size: 24px;
   line-height: 24px;
@@ -114,8 +116,6 @@ const BookInputWrapper = styled.div`
   align-items: center;
 `;
 const BookInput = styled.input`
-  width: 194px;
-  height: 16px;
   color: black;
   font-size: 16px;
   line-height: 16px;
