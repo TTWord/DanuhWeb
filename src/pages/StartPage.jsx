@@ -32,10 +32,12 @@ const MainWrapper = styled.div`
   align-items: center;
   gap: 12px;
 `;
+
 const LogoImg = styled.img`
-  width: 107px;
+  width: 180px;
   margin-bottom: 10px;
 `;
+
 const IntroText = styled.div`
   font-weight: 300;
   font-size: 12px;
