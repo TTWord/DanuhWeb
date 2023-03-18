@@ -109,8 +109,6 @@ const BackButton = styled.button`
   height: 36px;
 `;
 const HeaderText = styled.div`
-  width: 146px;
-  height: 24px;
   font-weight: 500;
   font-size: 24px;
   line-height: 24px;

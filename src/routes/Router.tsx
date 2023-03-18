@@ -12,6 +12,7 @@ import CreateBook from '@/pages/book/CreateBookPage';
 import BookDetPage from '@/pages/book/BookDetPage';
 import StartPage from '@/pages/StartPage';
 import CreateWord from '@/pages/book/CreateWordPage';
+import ChangeBookPage from '@/pages/book/ChangeBookPage';
 
 const Router = () => {
   return (
@@ -38,6 +39,9 @@ const Router = () => {
               {/* 단어장 만들기 페이지 */}
               <Route path={'/create'} element={<CreateBook />} />
 
+              {/* 단어장 수정하기 페이지 */}
+              <Route path={'/:id/change'} element={<ChangeBookPage />} />
+
               {/* 단어장 페이지 */}
               <Route path={'/:id'} element={<BookDetPage />} />
 
@@ -52,7 +56,7 @@ const Router = () => {
           path={'/auth/*'}
           element={
             <Routes>
-              {/* 로그인 페이지 */}
+              {/* 로그인 메인 페이지 */}
               <Route path={'/'} element={<LoginPage />} />
 
               {/* 회원가입 페이지 */}

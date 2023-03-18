@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 import { instance } from '@/instance';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 // 생성한 단어장 전송하는 기능
-const createBook = async (bookName, navigate) => {
+const changeBookName = async (bookId, bookName, navigate) => {
   try {
-    const response = await instance.post('/book', {
+    const response = await instance.put(`/book/${bookId}`, {
       name: bookName,
     });
     navigate(-1);
@@ -17,10 +17,24 @@ const createBook = async (bookName, navigate) => {
   }
 };
 
+const getBookName = async (bookId, setBookName) => {
+  try {
+    const response = await instance.get(`/book/${bookId}`);
+    setBookName(response.data.data.name);
+  } catch (e) {
+    //console.log(e);
+  }
+};
+
 const CreateBookPage = () => {
   const navigate = useNavigate();
-
+  const bookId = useParams().id;
+  const [bookName, setBookName] = useState('');
   const [newBook, setNewBook] = useState('');
+
+  useEffect(() => {
+    getBookName(bookId, setBookName);
+  }, []);
 
   return (
     <MainWrapper>
@@ -32,14 +46,14 @@ const CreateBookPage = () => {
         >
           <img src={arrowBackImg} alt="arrowBackImg" />
         </BackButton>
-        <HeaderText>단어장 만들기</HeaderText>
+        <HeaderText>단어장 수정하기</HeaderText>
       </BookHeader>
 
       <CreateContainer>
         <BookNameDiv>단어장 이름</BookNameDiv>
         <BookInputWrapper>
           <BookInput
-            placeholder="단어장 이름을 입력해주세요"
+            placeholder={bookName}
             onChange={e => {
               setNewBook(e.target.value);
             }}
@@ -47,10 +61,10 @@ const CreateBookPage = () => {
         </BookInputWrapper>
         <CreateButton
           onClick={() => {
-            createBook(newBook, navigate);
+            changeBookName(bookId, newBook, navigate);
           }}
         >
-          생성
+          수정
         </CreateButton>
       </CreateContainer>
     </MainWrapper>
