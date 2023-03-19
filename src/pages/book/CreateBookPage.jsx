@@ -113,15 +113,17 @@ const BookInputWrapper = styled.div`
   border-radius: 16px;
   display: flex;
   align-items: center;
+  padding: 0 22px 0 22px;
 `;
 const BookInput = styled.input`
+  width: 100%;
   color: black;
   font-size: 16px;
   line-height: 16px;
   ::placeholder {
     color: #9a9a9a;
   }
-  margin-left: 22px;
+  outline: none;
 `;
 const CreateButton = styled.button`
   width: 337px;

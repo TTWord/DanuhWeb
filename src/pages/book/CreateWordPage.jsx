@@ -144,7 +144,8 @@ const Input = styled.input`
   background: #ffffff;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
-  padding-left: 22px;
+  padding: 0 22px 0 22px;
+  outline: none;
 `;
 const CreateButton = styled.button`
   width: 100%;

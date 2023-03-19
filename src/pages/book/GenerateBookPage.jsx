@@ -22,10 +22,14 @@ const GenerateBookPage = () => {
   const [sentense, setSentense] = useState('');
   const navigate = useNavigate();
 
+  const goBack = () => {
+    navigate(-1);
+  };
+
   return (
     <MainWrapper>
       <BookHeader>
-        <BackButton>
+        <BackButton onClick={goBack}>
           <img src={arrowBackImg} alt="arrowBackImg" />
         </BackButton>
         <HeaderText>단어장 생성기</HeaderText>
@@ -130,12 +134,12 @@ const BookNamingWrapper = styled.div`
   border-radius: 11px;
   display: flex;
   align-items: center;
-  position: relative;
+  padding: 0 14px 0 14px;
 `;
 const BookNaming = styled.input`
-  position: absolute;
-  left: 14px;
+  width: 100%;
   font-size: 16px;
+  outline: none;
 `;
 //-- 단어장 생성기 영역 --//
 const GenerateWrapper = styled.div`
