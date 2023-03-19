@@ -11,7 +11,6 @@ const changeBookName = async (bookId, bookName, navigate) => {
       name: bookName,
     });
     navigate(-1);
-    alert(response.data.comment);
   } catch (e) {
     alert('Error!');
   }

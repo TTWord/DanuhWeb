@@ -11,10 +11,10 @@ const addWord = async (book_id, word, mean, navigate) => {
       word: word,
       mean: mean,
     });
-    console.log(response);
     navigate(-1);
-    alert(response.data.message);
-  } catch (e) {}
+  } catch (e) {
+    alert('Error');
+  }
 };
 
 const CreateWordPage = () => {

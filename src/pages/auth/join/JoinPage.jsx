@@ -35,9 +35,8 @@ const FunctionSignin = async (userEmail, userNickname, userPW, navigate) => {
         userNickname: userNickname,
       },
     });
-    alert(response.data.message);
   } catch (e) {
-    console.log(1313);
+    console.log(e);
   }
 };
 

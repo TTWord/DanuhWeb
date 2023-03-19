@@ -11,9 +11,7 @@ const generateBook = async (bookName, sentense, navigate) => {
       text: sentense,
     });
     navigate(-1);
-    alert(response.date.comment);
   } catch (e) {
-    //console.log(e);
     alert('Error');
   }
 };

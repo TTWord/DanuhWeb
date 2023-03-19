@@ -14,7 +14,6 @@ const SignUp = async (userEmail, userNickname, userPW, inputCode, navigate) => {
       nickname: userNickname,
       certification_id: inputCode,
     });
-    alert(response.data.message);
     navigate('/auth/join/welcome', {
       state: {
         userNickname: userNickname,

@@ -11,7 +11,6 @@ const useLogin = () => {
       });
       localStorage.setItem('accessToken', response.data.access_token);
       navigate('/book');
-      alert(response.data.message);
     } catch (e) {
       const errorCode = e.response.status;
       const errorMessage = e.response.data.message;
