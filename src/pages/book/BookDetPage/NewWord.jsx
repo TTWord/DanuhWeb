@@ -1,20 +1,17 @@
 import styled from 'styled-components';
 import { instance } from '@/instance';
-import { useNavigate } from 'react-router-dom';
 
 import plusIcon from '@/assets/svg/icons/icon-add.svg';
 
-const deleteWord = async (bookId, word, mean) => {
+const deleteWord = async (wordId, word, mean) => {
   try {
-    const response = await instance.delete(`/word/${bookId}`);
-    window.location.reload();
-    alert(response.data.message);
+    const response = await instance.delete(`/word/${wordId}`);
   } catch (e) {
     alert('Error');
   }
 };
 
-const NewWord = ({ bookId, word, mean }) => {
+const NewWord = ({ wordId, word, mean }) => {
   return (
     <WordWrapper>
       <WordBox>
@@ -27,7 +24,7 @@ const NewWord = ({ bookId, word, mean }) => {
           src={plusIcon}
           alt="plusIcon"
           onClick={() => {
-            deleteWord(bookId, word, mean);
+            deleteWord(wordId, word, mean);
           }}
         />
       </DeleteButton>

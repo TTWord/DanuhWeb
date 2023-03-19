@@ -37,7 +37,7 @@ const BookDet = () => {
   useEffect(() => {
     getBook(bookId, setWord);
     getBookName(bookId, setBookName);
-  }, []);
+  }, [word]);
 
   // map 함수 돌려서 WordBox에 값 넣기
   // <NewWord word={word} meaning={meaning}/>
@@ -59,7 +59,7 @@ const BookDet = () => {
           return (
             <NewWord
               key={items.id}
-              bookId={items.id}
+              wordId={items.id}
               word={items.word}
               mean={items.mean}
             />
@@ -77,7 +77,7 @@ const BookDet = () => {
               navigate(`/book/${bookId}/create`);
             }}
           >
-            <img src={plusImg} alt="sharingButton" />
+            <img src={plusImg} alt="plusImg" />
           </PlusButton>
         </IconWrapper>
       </BookFooter>
