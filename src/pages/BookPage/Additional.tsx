@@ -25,7 +25,7 @@ const Additional: React.FC<AdditionalProps> = ({ isActive, setActive }) => {
             navigate('/book/create');
           }}
         >
-          단어장 만들기
+          <Text>단어장 만들기</Text>
         </AdditionalItem>
         <AdditionalItem
           isActive={isActive}
@@ -34,10 +34,10 @@ const Additional: React.FC<AdditionalProps> = ({ isActive, setActive }) => {
             navigate('/book/generate');
           }}
         >
-          단어장 생성기
+          <Text>단어장 생성기</Text>
         </AdditionalItem>
         <AdditionalItem isActive={isActive} targetPos={'80px'}>
-          단어장 다운로드
+          <Text>단어장 다운로드</Text>
         </AdditionalItem>
       </AdditionalItems>
     </Container>
@@ -150,6 +150,7 @@ const AdditionalItems = styled.div<{
   flex-direction: column;
 `;
 
+const Text = styled.div``;
 const AdditionalItem = styled.div<{
   isActive: boolean;
   targetPos: string;
@@ -166,10 +167,15 @@ const AdditionalItem = styled.div<{
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0;
   transition: all 0.3s;
   right: 30px;
   bottom: 30px;
+
+  ${Text} {
+    font-size: 12px;
+    transform: scale(0);
+    transition: all 0.3s;
+  }
 
   ${({ isActive, targetPos }) =>
     isActive &&
@@ -178,6 +184,9 @@ const AdditionalItem = styled.div<{
       height: 50px;
       bottom: ${targetPos};
       right: 0px;
-      font-size: 12px;
+
+      ${Text} {
+        transform: scale(1);
+      }
     `}
 `;

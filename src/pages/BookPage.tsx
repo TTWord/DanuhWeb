@@ -22,7 +22,11 @@ const HomePage = () => {
     getData();
   }, []);
 
-  const onRemove = useCallback(async (bookId: number) => {
+  const onClickUpdate = useCallback(async (bookId: number) => {
+    navigate(`/book/${bookId}/change`);
+  }, []);
+
+  const onClickRemove = useCallback(async (bookId: number) => {
     const { data: response } = await instance.delete(`/book/${bookId}`);
 
     if (response.status === 'OK') {
@@ -50,7 +54,8 @@ const HomePage = () => {
             key={book.id}
             book={book}
             onItemClick={onItemClick}
-            onRemove={onRemove}
+            onClickUpdate={onClickUpdate}
+            onClickRemove={onClickRemove}
           />
         ))}
       </Items>

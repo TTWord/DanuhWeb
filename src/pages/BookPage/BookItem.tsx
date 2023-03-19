@@ -15,12 +15,17 @@ const generateDateText = (dateText: string) => {
 interface BookItemProps {
   book: any;
   onItemClick: (bookId: number) => void;
-  onRemove: (bookId: number) => void;
+  onClickUpdate: (bookId: number) => void;
+  onClickRemove: (bookId: number) => void;
 }
 
-const BookItem: React.FC<BookItemProps> = ({ book, onItemClick, onRemove }) => {
+const BookItem: React.FC<BookItemProps> = ({
+  book,
+  onItemClick,
+  onClickUpdate,
+  onClickRemove,
+}) => {
   const [isOptionOpen, setOptionOpen] = useState(false);
-  const navigate = useNavigate();
 
   return (
     <Item key={book.id} onClick={() => onItemClick(book.id)}>
@@ -38,14 +43,8 @@ const BookItem: React.FC<BookItemProps> = ({ book, onItemClick, onRemove }) => {
           e.stopPropagation();
         }}
       >
-        <OptionItem
-          onClick={() => {
-            navigate(`/book/${book.id}/change`);
-          }}
-        >
-          수정하기
-        </OptionItem>
-        <OptionItem onClick={() => onRemove(book.id)}>삭제하기</OptionItem>
+        <OptionItem onClick={() => onClickUpdate(book.id)}>수정하기</OptionItem>
+        <OptionItem onClick={() => onClickRemove(book.id)}>삭제하기</OptionItem>
       </OptionItems>
       <Strong>
         {book.name}
@@ -138,6 +137,7 @@ const Status = styled.div`
   height: 10px;
   background-color: black;
   border-radius: 0 0 5px 5px;
+  overflow: hidden;
 `;
 
 const Gage = styled.div<{
