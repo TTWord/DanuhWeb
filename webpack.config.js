@@ -19,7 +19,6 @@ module.exports = function webpackConfig(env, args) {
       filename: 'main.js',
       path: path.join(__dirname, 'dist'),
       publicPath: '/',
-      sourceMapFilename: '[name].js.map',
     },
     devtool: 'source-map',
     resolve: {
