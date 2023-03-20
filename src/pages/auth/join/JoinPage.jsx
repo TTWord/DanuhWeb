@@ -170,11 +170,12 @@ const CodeBox = styled.div`
 `;
 const AuthInput = styled.input`
   width: 229px;
-  height: 10px;
+  height: 12px;
   font-weight: 300;
   font-size: 10px;
   line-height: 10px;
   color: #666666;
+  outline: none;
 `;
 
 const NextButton = styled.button`
