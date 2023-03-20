@@ -1,3 +1,4 @@
+import { api } from '@/api';
 import { instance } from '@/instance';
 import { useNavigate } from 'react-router-dom';
 
@@ -5,13 +6,12 @@ const useLogin = () => {
   const navigate = useNavigate();
   const login = async (username, password) => {
     try {
-      const response = await instance.post('/user/signin', {
-        username,
-        password,
-      });
+      const response = await api.auth.login(username, password);
+      console.log(response);
       localStorage.setItem('accessToken', response.data.access_token);
       navigate('/book');
     } catch (e) {
+      console.log(e);
       const errorCode = e.response.status;
       const errorMessage = e.response.data.message;
 
