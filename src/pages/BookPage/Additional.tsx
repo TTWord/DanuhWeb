@@ -21,18 +21,14 @@ const Additional: React.FC<AdditionalProps> = ({ isActive, setActive }) => {
         <AdditionalItem
           isActive={isActive}
           targetPos={'200px'}
-          onClick={() => {
-            navigate('/book/create');
-          }}
+          onClick={() => navigate('/book/create')}
         >
           <Text>단어장 만들기</Text>
         </AdditionalItem>
         <AdditionalItem
           isActive={isActive}
           targetPos={'140px'}
-          onClick={() => {
-            navigate('/book/generate');
-          }}
+          onClick={() => navigate('/book/generate')}
         >
           <Text>단어장 생성기</Text>
         </AdditionalItem>

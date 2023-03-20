@@ -19,7 +19,9 @@ module.exports = function webpackConfig(env, args) {
       filename: 'main.js',
       path: path.join(__dirname, 'dist'),
       publicPath: '/',
+      sourceMapFilename: '[name].js.map',
     },
+    devtool: 'source-map',
     resolve: {
       extensions: ['.tsx', '.ts', '.jsx', '.js'],
       alias: {
@@ -44,6 +46,12 @@ module.exports = function webpackConfig(env, args) {
               },
             },
           ],
+        },
+        {
+          test: [/\.js$/, /\.ts?$/, /\.jsx?$/, /\.tsx?$/],
+          enforce: 'pre',
+          exclude: /node_modules/,
+          use: ['source-map-loader'],
         },
       ],
     },
