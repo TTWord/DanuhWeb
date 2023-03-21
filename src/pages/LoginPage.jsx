@@ -47,7 +47,6 @@ const LoginPage = () => {
         <CustomTextBox
           onClick={() => {
             usernameRef.current.focus();
-            setUsernameFocused(true);
           }}
         >
           <Placeholder isFocused={usernameFocused || username.length > 0}>
@@ -56,6 +55,7 @@ const LoginPage = () => {
           <CustomTextEnter
             type="email"
             ref={usernameRef}
+            onFocus={() => setUsernameFocused(true)}
             onBlur={() => setUsernameFocused(false)}
             onChange={onChangeUsername}
             value={username}
@@ -73,6 +73,7 @@ const LoginPage = () => {
           <CustomTextEnter
             type="password"
             ref={passwordRef}
+            onFocus={() => setPasswordFocused(true)}
             onBlur={() => setPasswordFocused(false)}
             onChange={onChangePassword}
             value={password}
