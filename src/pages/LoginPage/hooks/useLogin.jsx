@@ -6,8 +6,7 @@ const useLogin = () => {
   const navigate = useNavigate();
   const login = async (username, password) => {
     try {
-      const response = await api.auth.login(username, password);
-      console.log(response);
+      const { data: response } = await api.auth.login(username, password);
       localStorage.setItem('accessToken', response.data.access_token);
       navigate('/book');
     } catch (e) {

@@ -34,8 +34,6 @@ const LoginPage = () => {
   const passwordRef = useRef();
   const [passwordFocused, setPasswordFocused] = useState(false);
 
-  console.log(passwordFocused);
-
   return (
     <WebWrapper>
       <BackButton onClick={goBack}>
@@ -43,50 +41,51 @@ const LoginPage = () => {
       </BackButton>
 
       <Logo src={logoImg} alt="logoImg" />
-      <LoginWrapper>
-        <CustomTextBox
-          onClick={() => {
-            usernameRef.current.focus();
-          }}
-        >
-          <Placeholder isFocused={usernameFocused || username.length > 0}>
-            USERNAME
-          </Placeholder>
-          <CustomTextEnter
-            type="email"
-            ref={usernameRef}
-            onFocus={() => setUsernameFocused(true)}
-            onBlur={() => setUsernameFocused(false)}
-            onChange={onChangeUsername}
-            value={username}
-          />
-        </CustomTextBox>
-        <CustomTextBox
-          onClick={() => {
-            passwordRef.current.focus();
-            setPasswordFocused(true);
-          }}
-        >
-          <Placeholder isFocused={passwordFocused || password.length > 0}>
-            PASSWORD
-          </Placeholder>
-          <CustomTextEnter
-            type="password"
-            ref={passwordRef}
-            onFocus={() => setPasswordFocused(true)}
-            onBlur={() => setPasswordFocused(false)}
-            onChange={onChangePassword}
-            value={password}
-          />
-        </CustomTextBox>
-      </LoginWrapper>
-      <LoginButton
-        onClick={() => {
+      <LoginForm
+        onSubmit={e => {
+          e.preventDefault();
           login(username, password);
         }}
       >
-        로그인
-      </LoginButton>
+        <LoginWrapper>
+          <CustomTextBox
+            onClick={() => {
+              usernameRef.current.focus();
+            }}
+          >
+            <Placeholder isFocused={usernameFocused || username.length > 0}>
+              USERNAME
+            </Placeholder>
+            <CustomTextEnter
+              type="email"
+              ref={usernameRef}
+              onFocus={() => setUsernameFocused(true)}
+              onBlur={() => setUsernameFocused(false)}
+              onChange={onChangeUsername}
+              value={username}
+            />
+          </CustomTextBox>
+          <CustomTextBox
+            onClick={() => {
+              passwordRef.current.focus();
+              setPasswordFocused(true);
+            }}
+          >
+            <Placeholder isFocused={passwordFocused || password.length > 0}>
+              PASSWORD
+            </Placeholder>
+            <CustomTextEnter
+              type="password"
+              ref={passwordRef}
+              onFocus={() => setPasswordFocused(true)}
+              onBlur={() => setPasswordFocused(false)}
+              onChange={onChangePassword}
+              value={password}
+            />
+          </CustomTextBox>
+        </LoginWrapper>
+        <LoginButton>로그인</LoginButton>
+      </LoginForm>
       <AskAccount>계정이 없으신가요?</AskAccount>
       <SignInButton onClick={goJoin}>회원가입</SignInButton>
     </WebWrapper>
@@ -193,3 +192,5 @@ const SignInButton = styled.button`
   font-size: 12px;
   color: #8062b2;
 `;
+
+const LoginForm = styled.form``;
