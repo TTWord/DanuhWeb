@@ -7,10 +7,10 @@ const useLogin = () => {
   const login = async (username, password) => {
     try {
       const { data: response } = await api.auth.login(username, password);
-      localStorage.setItem('accessToken', response.data.access_token);
+      localStorage.setItem('access_Token', response.data.data.access_token);
       navigate('/book');
     } catch (e) {
-      console.log(e);
+      //console.log(e);
       const errorCode = e.response.status;
       const errorMessage = e.response.data.message;
 
