@@ -27,7 +27,7 @@ instance.interceptors.response.use(
   },
   error => {
     if (error.response.status === 401) {
-      localStorage.removeItem('accessToken');
+      localStorage.removeItem('access_Token');
       window.location.href = '/auth';
     }
     return error;
