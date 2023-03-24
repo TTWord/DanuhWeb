@@ -1,38 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import BackButtonImg from '@/assets/svg/icons/icon-back-button.svg';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
-
-const signupURL = 'http://api.tt-word.kr/api/user/signup';
-
-const SignUp = async (userEmail, userNickname, userPW, inputCode, navigate) => {
-  try {
-    const response = await axios.post(signupURL, {
-      username: userEmail,
-      password: userPW,
-      nickname: userNickname,
-      certification_id: inputCode,
-    });
-    navigate('/auth/join/welcome', {
-      state: {
-        userNickname: userNickname,
-        userEmail: userEmail,
-      },
-    });
-  } catch (e) {
-    console.log(e);
-  }
-};
+import { globalState } from '@/recoil';
+import { useRecoilValue } from 'recoil';
+import useSignup from '../hooks/useSignup';
 
 const AuthCodePage = () => {
-  // 넘겨받은 데이터
-  const location = useLocation();
-  const signinValues = location.state;
+  const userEmail = useRecoilValue(globalState.auth.setUsername);
+  const userPW = useRecoilValue(globalState.auth.setPassword);
+  const userNickname = useRecoilValue(globalState.auth.setNickname);
 
-  const userEmail = signinValues.userEmail;
-  const userNickname = signinValues.userNickname;
-  const userPW = signinValues.userPW;
+  const signup = useSignup();
 
   // 카운트 다운
   const [minutes, setMinutes] = useState(3); // 1분으로 초기화
@@ -63,11 +42,11 @@ const AuthCodePage = () => {
   // 네비게이트
   const navigate = useNavigate();
 
-  const [inputCode, setInputCode] = useState('');
+  const [authCode, setAuthCode] = useState('');
 
-  const getInputCode = e => {
+  const getAuthCode = e => {
     const inputUserCode = e.target.value;
-    setInputCode(inputUserCode);
+    setAuthCode(inputUserCode);
   };
 
   return (
@@ -95,13 +74,13 @@ const AuthCodePage = () => {
         </CodeCounterBox>
         <AuthInput
           placeholder="이메일에 적혀있는 인증코드를 입력해주세요."
-          onChange={getInputCode}
+          onChange={getAuthCode}
         ></AuthInput>
       </AuthInputBox>
 
       <NextButton
         onClick={() => {
-          SignUp(userEmail, userNickname, userPW, inputCode, navigate);
+          signup(userEmail, userNickname, userPW, authCode);
         }}
       >
         다음
@@ -129,7 +108,6 @@ const BackButton = styled.button`
   left: 26px;
 `;
 const AuthGuideBox = styled.div`
-  width: 146px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -149,8 +127,6 @@ const AuthInputBox = styled.div`
   gap: 6px;
 `;
 const AuthText = styled.div`
-  width: 146px;
-  height: 24px;
   font-weight: 500;
   font-size: 24px;
   line-height: 24px;
@@ -210,9 +186,9 @@ const CounterBox = styled.div`
 `;
 const AuthInput = styled.input`
   width: 229px;
-  height: 10px;
   font-weight: 300;
   font-size: 10px;
   line-height: 10px;
   color: #666666;
+  outline: none;
 `;
