@@ -3,9 +3,9 @@ import BackButtonImg from '@/assets/svg/icons/icon-back-button.svg';
 import * as Styled from '@/styles/AccountStyles';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-
-const sendMailURL = 'http://api.tt-word.kr/api/user/sendmail';
+import useSendmail from '@/pages/auth/hooks/useSendmail';
+import { globalState } from '@/recoil';
+import { useRecoilState } from 'recoil';
 
 const AuthInputBox = props => {
   return (
@@ -23,35 +23,27 @@ const AuthInputBox = props => {
   );
 };
 
-const FunctionSignin = async (userEmail, userNickname, userPW, navigate) => {
-  try {
-    const response = await axios.post(sendMailURL, {
-      to_email: userEmail,
-    });
-    navigate('/auth/join/code', {
-      state: {
-        userEmail: userEmail,
-        userPW: userPW,
-        userNickname: userNickname,
-      },
-    });
-  } catch (e) {
-    console.log(e);
-  }
-};
-
 const JoinPage = () => {
   // Title 변경
   useEffect(() => {
     document.querySelector('title').innerHTML = '회원가입';
   }, []);
 
+  const sendmail = useSendmail();
   const navigate = useNavigate();
 
-  const [userEmail, SetUserEmail] = useState('');
-  const [userPW, SetUserPW] = useState('');
+  //const [userEmail, SetUserEmail] = useState('');
+  //const [userPW, SetUserPW] = useState('');
   const [userPWConfirm, SetUserPWConfirm] = useState('');
-  const [userNickname, SetUserNickname] = useState('');
+  //const [userNickname, SetUserNickname] = useState('');
+
+  const [userEmail, SetUserEmail] = useRecoilState(
+    globalState.auth.setUsername,
+  );
+  const [userPW, SetUserPW] = useRecoilState(globalState.auth.setPassword);
+  const [userNickname, SetUserNickname] = useRecoilState(
+    globalState.auth.setNickname,
+  );
 
   const inputUserEmail = e => {
     SetUserEmail(e.target.value);
@@ -107,7 +99,7 @@ const JoinPage = () => {
 
       <NextButton
         onClick={() => {
-          FunctionSignin(userEmail, userNickname, userPW, navigate);
+          sendmail(userEmail, userPW, userNickname);
         }}
       >
         다음
@@ -173,7 +165,6 @@ const AuthInput = styled.input`
   height: 12px;
   font-weight: 300;
   font-size: 10px;
-  line-height: 10px;
   color: #666666;
   outline: none;
 `;
