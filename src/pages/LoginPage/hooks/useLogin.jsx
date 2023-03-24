@@ -8,6 +8,7 @@ const useLogin = () => {
     try {
       const { data: response } = await api.auth.login(username, password);
       localStorage.setItem('access_Token', response.data.access_token);
+      localStorage.setItem('refresh_Token', response.data.reflash_token);
       navigate('/book');
     } catch (e) {
       const errorCode = e.response.status;
