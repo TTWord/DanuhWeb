@@ -9,4 +9,14 @@ export const authAPI = {
 
     return response;
   },
+
+  sendmail: async (username: string, password: string, nickname: string) => {
+    const response = await instance.post('/auth/sendmail', {
+      username,
+      password,
+      nickname,
+    });
+
+    return response;
+  },
 };
