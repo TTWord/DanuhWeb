@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { globalState } from '@/recoil';
 
 const WelcomePage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const signupValues = location.state;
-  const userName = signupValues.userNickname;
-  const userEmail = signupValues.userEmail;
+  const userEmail = useRecoilValue(globalState.auth.setUsername);
+  const userNickname = useRecoilValue(globalState.auth.setNickname);
 
   // Title 변경
   useEffect(() => {
@@ -20,7 +20,7 @@ const WelcomePage = () => {
   return (
     <MainWrapper>
       <UserNameBox>
-        <div>{userName}</div>님,
+        <div>{userNickname}</div>님,
       </UserNameBox>
       <WelcomeBox>환영합니다</WelcomeBox>
       <UserEmailBox>{userEmail}</UserEmailBox>
@@ -41,8 +41,6 @@ const MainWrapper = styled.div`
   gap: 9px;
 `;
 const UserNameBox = styled.div`
-  width: 76px;
-  height: 16px;
   font-weight: 300;
   font-size: 16px;
   line-height: 16px;
