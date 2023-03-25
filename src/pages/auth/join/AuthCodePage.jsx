@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import BackButtonImg from '@/assets/svg/icons/icon-back-button.svg';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { globalState } from '@/recoil';
 import { useRecoilValue } from 'recoil';
 import useSignup from '../hooks/useSignup';
