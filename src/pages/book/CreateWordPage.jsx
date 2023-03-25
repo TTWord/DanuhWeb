@@ -63,7 +63,6 @@ const CreateWordPage = () => {
 
         <CreateButton
           onClick={() => {
-            console.log(111);
             if (word === '' && mean === '') {
               alert('미입력칸이 있습니다.');
             } else {

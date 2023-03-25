@@ -27,7 +27,7 @@ export const wordAPI = {
   },
 
   deleteWord: async (word_id: string) => {
-    const response = await instance.post(`/word${word_id}`);
+    const response = await instance.delete(`/word/${word_id}`);
 
     return response;
   },
