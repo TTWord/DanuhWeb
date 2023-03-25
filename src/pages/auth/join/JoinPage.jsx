@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import BackButtonImg from '@/assets/svg/icons/icon-back-button.svg';
-import * as Styled from '@/styles/AccountStyles';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import useSendmail from '@/pages/auth/hooks/useSendmail';
@@ -10,12 +9,10 @@ import { useRecoilState } from 'recoil';
 const AuthInputBox = props => {
   return (
     <AuthInputWrapper>
-      <CodeCounterBox>
-        <CodeBox>{props.kind}</CodeBox>
-      </CodeCounterBox>
+      <CodeBox>{props.kind}</CodeBox>
       <AuthInput
         placeholder={props.placeholder}
-        onChange={props.func}
+        onChange={props.onChange}
         type={props.type}
         autoComplete="off"
       ></AuthInput>
@@ -32,18 +29,14 @@ const JoinPage = () => {
   const sendmail = useSendmail();
   const navigate = useNavigate();
 
-  //const [userEmail, SetUserEmail] = useState('');
-  //const [userPW, SetUserPW] = useState('');
-  const [userPWConfirm, SetUserPWConfirm] = useState('');
-  //const [userNickname, SetUserNickname] = useState('');
-
+  const [userNickname, SetUserNickname] = useRecoilState(
+    globalState.auth.setNickname,
+  );
   const [userEmail, SetUserEmail] = useRecoilState(
     globalState.auth.setUsername,
   );
   const [userPW, SetUserPW] = useRecoilState(globalState.auth.setPassword);
-  const [userNickname, SetUserNickname] = useRecoilState(
-    globalState.auth.setNickname,
-  );
+  const [userPWConfirm, SetUserPWConfirm] = useState('');
 
   const inputUserEmail = e => {
     SetUserEmail(e.target.value);
@@ -59,7 +52,7 @@ const JoinPage = () => {
   };
 
   return (
-    <Styled.MainWrapper>
+    <MainWrapper>
       <BackButton
         onClick={() => {
           navigate(-1);
@@ -72,44 +65,56 @@ const JoinPage = () => {
 
       <SignInwrapper>
         <AuthInputBox
+          kind="NICKNAME"
+          placeholder="닉네임을 입력해주세요"
+          type="text"
+          onChange={inputUserNickname}
+        />
+        <AuthInputBox
           kind="USERNAME"
           placeholder="이메일을 입력해주세요"
           type="text"
-          func={inputUserEmail}
+          onChange={inputUserEmail}
         />
         <AuthInputBox
           kind="PASSWORD"
           placeholder="비밀번호를 입력해주세요"
           type="password"
-          func={inputUserPW}
+          onChange={inputUserPW}
         />
         <AuthInputBox
           kind="PASSWORD CONFIRM"
           placeholder="비밀번호를 한번 더 입력해주세요"
           type="password"
-          func={inputUserPWConfirm}
-        />
-        <AuthInputBox
-          kind="NICKNAME"
-          placeholder="닉네임을 입력해주세요"
-          type="text"
-          func={inputUserNickname}
+          onChange={inputUserPWConfirm}
         />
       </SignInwrapper>
 
       <NextButton
         onClick={() => {
-          sendmail(userEmail, userPW, userNickname);
+          if (userPW !== userPWConfirm) {
+            alert('비밀번호가 일치하지 않습니다.');
+          } else {
+            sendmail(userEmail, userPW, userNickname);
+          }
         }}
       >
         다음
       </NextButton>
-    </Styled.MainWrapper>
+    </MainWrapper>
   );
 };
 
 export default JoinPage;
 
+const MainWrapper = styled.div`
+  width: 100%;
+  height: 852px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 const BackButton = styled.button`
   width: 24px;
   height: 24px;
@@ -143,32 +148,20 @@ const AuthInputWrapper = styled.div`
   margin-bottom: 11px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  gap: 6px;
-`;
-const CodeCounterBox = styled.div`
-  width: 229px;
-  display: flex;
-  justify-content: space-between;
+  padding-left: 11px;
 `;
 const CodeBox = styled.div`
-  height: 10px;
-  font-weight: 300;
+  font-weight: 500;
   font-size: 10px;
-  line-height: 10px;
-  text-align: center;
   color: #333333;
 `;
 const AuthInput = styled.input`
-  width: 229px;
-  height: 12px;
   font-weight: 300;
   font-size: 10px;
   color: #666666;
   outline: none;
 `;
-
 const NextButton = styled.button`
   width: 249px;
   height: 72px;
