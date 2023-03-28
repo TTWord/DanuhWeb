@@ -11,7 +11,7 @@ const deleteWord = async (wordId, word, mean) => {
   }
 };
 
-const NewWord = ({ wordId, word, mean }) => {
+const NewWord = ({ wordId, word, mean, getBook }) => {
   return (
     <WordWrapper>
       <WordBox>
@@ -25,6 +25,7 @@ const NewWord = ({ wordId, word, mean }) => {
           alt="plusIcon"
           onClick={() => {
             deleteWord(wordId, word, mean);
+            getBook();
           }}
         />
       </DeleteButton>

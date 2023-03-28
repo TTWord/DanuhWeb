@@ -1,14 +1,12 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css, keyframes } from 'styled-components';
 
-interface AdditionalProps {
-  isActive: boolean;
-  setActive: Dispatch<SetStateAction<boolean>>;
-}
+interface AdditionalProps {}
 
-const Additional: React.FC<AdditionalProps> = ({ isActive, setActive }) => {
+const Additional: React.FC<AdditionalProps> = () => {
   const navigate = useNavigate();
+  const [isActive, setActive] = useState(false);
 
   return (
     <Container>
