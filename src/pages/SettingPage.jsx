@@ -10,6 +10,8 @@ import { instance } from '@/instance';
 import Footer from '@/components/layout/HomeLayout/Footer';
 import nextButton from '@/assets/svg/icons/icon-next-button.svg';
 
+import useLogout from './SettingPage/useLogout';
+
 const ContentBox = props => {
   return (
     <Content>
@@ -43,6 +45,8 @@ const UserSettingPage = () => {
     };
     pic();
   }, []);
+
+  const logout = useLogout();
 
   const navigate = useNavigate();
 
@@ -86,7 +90,7 @@ const UserSettingPage = () => {
         <ContentBox title="공지사항" onClick={moveNoticePage} />
         <ContentBox title="서비스 이용약관" onClick={dummyFunction} />
         <ContentBox title="개인정보 처리방침" onClick={dummyFunction} />
-        <ContentBox title="로그아웃" onClick={dummyFunction} />
+        <ContentBox title="로그아웃" onClick={logout} />
         <ContentBox title="탈퇴하기" onClick={dummyFunction} />
         <ContentBox title="가져오기 / 내보내기" onClick={dummyFunction} />
       </ContentWrapper>
