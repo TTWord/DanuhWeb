@@ -64,5 +64,7 @@ const AskAccount = styled.div`
 `;
 const SignInButton = styled.button`
   font-size: 12px;
+  font-weight: 500;
+  font-weight: bold;
   color: #8062b2;
 `;
