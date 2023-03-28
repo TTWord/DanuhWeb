@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import BookItem from './BookPage/BookItem';
 
 const HomePage = () => {
-  const [plusStatus, setPlusStatus] = useState(false);
   const [books, setBooks] = useState<any>([]);
   const navigate = useNavigate();
 
@@ -59,7 +58,7 @@ const HomePage = () => {
           />
         ))}
       </Items>
-      <Additional isActive={plusStatus} setActive={setPlusStatus} />
+      <Additional />
     </Container>
   );
 };

@@ -9,14 +9,9 @@ import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 
 import NewWord from './BookDetPage/NewWord';
 
-const getBook = async (bookId, setWord) => {
-  try {
-    const response = await instance.get(`/word?book_id=${bookId}`);
-    setWord(response.data.data);
-    //alert(response.data.message);
-  } catch (e) {
-    console.log(e);
-  }
+const getBookAPI = async bookId => {
+  const response = await instance.get(`/word?book_id=${bookId}`);
+  return response;
 };
 
 const getBookName = async (bookId, setBookName) => {
@@ -34,10 +29,21 @@ const BookDet = () => {
   const [bookName, setBookName] = useState('');
   const [word, setWord] = useState([]); // 변수명 수정 필요
 
+  // useEffect(() => {
+  //   console.log('rendering');
+  //   getBook(bookId, setWord);
+  //   getBookName(bookId, setBookName);
+  // }, [word]);
+
+  const getBook = async () => {
+    const response = await getBookAPI(bookId);
+
+    setWord(response.data.data);
+  };
+
   useEffect(() => {
-    getBook(bookId, setWord);
-    getBookName(bookId, setBookName);
-  }, [word]);
+    getBook();
+  }, []);
 
   // map 함수 돌려서 WordBox에 값 넣기
   // <NewWord word={word} meaning={meaning}/>
@@ -62,6 +68,7 @@ const BookDet = () => {
               wordId={items.id}
               word={items.word}
               mean={items.mean}
+              getBook={getBook}
             />
           );
         })}
