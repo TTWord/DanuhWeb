@@ -1,17 +1,11 @@
 import styled from 'styled-components';
-import { instance } from '@/instance';
 
 import plusIcon from '@/assets/svg/icons/icon-add.svg';
+import useDeleteWord from './hooks/useDeleteWord';
 
-const deleteWord = async (wordId, word, mean) => {
-  try {
-    const response = await instance.delete(`/word/${wordId}`);
-  } catch (e) {
-    alert('Error');
-  }
-};
+const NewWord = ({ wordId, word, mean }) => {
+  const deleteWord = useDeleteWord();
 
-const NewWord = ({ wordId, word, mean, getBook }) => {
   return (
     <WordWrapper>
       <WordBox>
@@ -24,8 +18,7 @@ const NewWord = ({ wordId, word, mean, getBook }) => {
           src={plusIcon}
           alt="plusIcon"
           onClick={() => {
-            deleteWord(wordId, word, mean);
-            getBook();
+            console.log(deleteWord(wordId));
           }}
         />
       </DeleteButton>
