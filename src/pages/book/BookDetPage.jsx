@@ -8,32 +8,20 @@ import plusImg from '@/assets/svg/icons/icon-plus.svg';
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 
 import NewWord from './BookDetPage/NewWord';
+import useGetWord from './BookDetPage/hooks/useGetWord';
 
 const getBookAPI = async bookId => {
   const response = await instance.get(`/word?book_id=${bookId}`);
   return response;
 };
 
-const getBookName = async (bookId, setBookName) => {
-  try {
-    const response = await instance.get(`/book/${bookId}`);
-    setBookName(response.data.data.name);
-  } catch (e) {
-    //console.log(e);
-  }
-};
-
 const BookDet = () => {
+  const getWord = useGetWord();
+
   const navigate = useNavigate();
   const bookId = useParams().id;
   const [bookName, setBookName] = useState('');
   const [word, setWord] = useState([]); // 변수명 수정 필요
-
-  // useEffect(() => {
-  //   console.log('rendering');
-  //   getBook(bookId, setWord);
-  //   getBookName(bookId, setBookName);
-  // }, [word]);
 
   const getBook = async () => {
     const response = await getBookAPI(bookId);
@@ -41,12 +29,20 @@ const BookDet = () => {
     setWord(response.data.data);
   };
 
+  const getBookName = async bookId => {
+    try {
+      const response = await instance.get(`/book/${bookId}`);
+      setBookName(response.data.data.name);
+    } catch (e) {
+      //console.log(e);
+    }
+  };
+
   useEffect(() => {
     getBook();
+    getBookName(bookId);
   }, []);
 
-  // map 함수 돌려서 WordBox에 값 넣기
-  // <NewWord word={word} meaning={meaning}/>
   return (
     <MainWrapper>
       <BookHeader>
@@ -76,7 +72,18 @@ const BookDet = () => {
 
       <BookFooter>
         <IconWrapper>
-          <SharingButton>
+          <SharingButton
+            onClick={async () => {
+              // promise 때문에 다시 한번 비동기
+              // 검색해보니 promise 전용 함수를 짜거나 비동기로 구현하라고함
+              const test = await getWord(bookId);
+              console.log(test);
+              //console.log(word);
+              const wordId = 39;
+              const result = word.filter(item => item.id !== wordId);
+              setWord(result);
+            }}
+          >
             <img src={sharingImg} alt="sharingButton" />
           </SharingButton>
           <PlusButton

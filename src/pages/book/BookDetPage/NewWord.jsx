@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import plusIcon from '@/assets/svg/icons/icon-add.svg';
 import useDeleteWord from './hooks/useDeleteWord';
 
-const NewWord = ({ wordId, word, mean }) => {
+const NewWord = ({ wordId, word, mean, getBook }) => {
   const deleteWord = useDeleteWord();
 
   return (
@@ -16,9 +16,10 @@ const NewWord = ({ wordId, word, mean }) => {
       <DeleteButton>
         <img
           src={plusIcon}
-          alt="plusIcon"
+          alt="deleteIcon"
           onClick={() => {
-            console.log(deleteWord(wordId));
+            deleteWord(wordId);
+            getBook();
           }}
         />
       </DeleteButton>
