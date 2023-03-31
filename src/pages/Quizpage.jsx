@@ -5,6 +5,18 @@ import { useNavigate } from 'react-router-dom';
 import Footer from '@/components/layout/HomeLayout/Footer';
 
 const QuizPage = () => {
+  const navigate = useNavigate();
+
+  const goFlashcard = () => {
+    navigate('/quiz/flashcard');
+  };
+  const goChoiceQuiz = () => {
+    navigate('/quiz/choice');
+  };
+  const goShortQuiz = () => {
+    navigate('/quiz/shortanswer');
+  };
+
   return (
     <MainWrapper>
       <HeaderWrapper>
@@ -15,14 +27,14 @@ const QuizPage = () => {
         <Container>
           <QuizTitle>암기하기</QuizTitle>
           <SelectWrapper>
-            <SelectButton>Flashcard</SelectButton>
+            <SelectButton onClick={goFlashcard}>Flashcard</SelectButton>
           </SelectWrapper>
         </Container>
         <Container>
           <QuizTitle>문제 풀기</QuizTitle>
           <SelectWrapper>
-            <SelectButton>객관식</SelectButton>
-            <SelectButton>주관식</SelectButton>
+            <SelectButton onClick={goChoiceQuiz}>객관식</SelectButton>
+            <SelectButton onClick={goShortQuiz}>주관식</SelectButton>
           </SelectWrapper>
         </Container>
       </ContainerWrapper>
@@ -60,22 +72,22 @@ const ContainerWrapper = styled.div`
 `;
 const Container = styled.div`
   width: 100%;
-  padding: 0 14px 0 22px;
   margin-bottom: 48px;
 `;
 const QuizTitle = styled.div`
   width: 100%;
-  padding-bottom: 13px;
+  padding: 0 0 13px 22px;
   font-weight: 400;
   font-size: 24px;
   line-height: 24px;
   color: #333333;
   color: black;
-  border-bottom: 1px solid #ececec;
+  border-bottom: 1px solid black;
   margin-bottom: 19px;
 `;
 const SelectWrapper = styled.div`
   width: 100%;
+  padding: 0 14px 0 22px;
   display: flex;
   flex-wrap: wrap;
 `;
