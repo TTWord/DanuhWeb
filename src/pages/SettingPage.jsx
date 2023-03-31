@@ -2,15 +2,23 @@ import styled from 'styled-components';
 import tw from 'twin.macro';
 import { useNavigate } from 'react-router-dom';
 import { globalState } from '@/recoil';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { useEffect, useState } from 'react';
 
 import { instance } from '@/instance';
-
 import Footer from '@/components/layout/HomeLayout/Footer';
 import nextButton from '@/assets/svg/icons/icon-next-button.svg';
 
 import useLogout from './SettingPage/useLogout';
+
+const getUserInfoAPI = async () => {
+  try {
+    const response = await instance.get('/user/userservice');
+    return response;
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 const ContentBox = props => {
   return (
@@ -23,33 +31,25 @@ const ContentBox = props => {
   );
 };
 
-const getPic = async () => {
-  try {
-    const response = await instance.get('/user/userservice');
-    const pic = response.data.data.file_path;
-    return pic;
-  } catch (e) {
-    console.log(e);
-  }
-};
-
 const UserSettingPage = () => {
-  const username = useRecoilValue(globalState.auth.setUsername);
-  const nickname = useRecoilValue(globalState.auth.setNickname);
+  const [nickname, setNickname] = useRecoilState(globalState.auth.setNickname);
+  const [username, setUsername] = useRecoilState(globalState.auth.setUsername);
   const [profile, setProfile] = useState();
 
   useEffect(() => {
-    const pic = async () => {
-      const result = await getPic();
-      setProfile(result);
+    const getUserInfo = async () => {
+      const response = await getUserInfoAPI();
+      setUsername(response.data.data.username);
+      setNickname(response.data.data.nickname);
+      setProfile(response.data.data.url);
     };
-    pic();
+    getUserInfo();
   }, []);
 
   const logout = useLogout();
-
   const navigate = useNavigate();
 
+  // 해당 페이지로 이동하는 함수들
   const moveProfilePage = () => {
     navigate('/setting/profile');
   };
@@ -128,6 +128,8 @@ const ProfileImg = styled.div`
   width: 96px;
   height: 96px;
   background: #e0e0e0;
+  box-sizing: border-box;
+  border: 1px solid #e0e0e0;
   border-radius: 17px;
   margin-right: 17px;
   display: flex;
@@ -137,7 +139,6 @@ const ProfileImg = styled.div`
   }
 `;
 const ProfileContent = styled.div`
-  //height: 96px;
   display: flex;
   flex-direction: column;
 `;
