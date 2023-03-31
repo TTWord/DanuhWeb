@@ -23,9 +23,11 @@ import NoticePage from '@/pages/setting/NoticePage';
 import NoticeDetPage from '@/pages/setting/NoticeDetPage';
 
 import QuizPage from '@/pages/Quizpage';
-import FlashcardPage from '@/pages/quiz/\bFlashcardPage';
+import FlashcardPage from '@/pages/quiz/FlashcardPage';
 import ChoicePage from '@/pages/quiz/ChoicePage';
 import ShortAnswerPage from '@/pages/quiz/ShortAnswerPage';
+
+import RankingPage from '@/pages/RankingPage';
 
 const Router = () => {
   return (
@@ -80,6 +82,17 @@ const Router = () => {
 
               {/* 주관식 페이지 */}
               <Route path={'/shortanswer'} element={<ShortAnswerPage />} />
+            </Routes>
+          }
+        />
+
+        {/* 랭킹 */}
+        <Route
+          path={'/ranking/*'}
+          element={
+            <Routes>
+              {/* 랭킹 메인 페이지 */}
+              <Route path={'/'} element={<RankingPage />} />
             </Routes>
           }
         />
