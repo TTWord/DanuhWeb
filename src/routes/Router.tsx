@@ -2,13 +2,14 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import StartPage from '@/pages/StartPage';
 import AuthPage from '@/pages/AuthPage';
+import OauthPage from '@/pages/OauthPage';
 import LoginPage from '@/pages/LoginPage';
 import JoinPage from '@/pages/auth/join/JoinPage';
 import AuthCodePage from '@/pages/auth/join/AuthCodePage';
 import WelcomePage from '@/pages/auth/join/WelcomePage';
-import BookPage from '@/pages/BookPage';
-import HomeLayout from '@/components/layout/HomeLayout';
 
+import HomeLayout from '@/components/layout/HomeLayout';
+import BookPage from '@/pages/BookPage';
 import GenerateBook from '@/pages/book/GenerateBookPage';
 import CreateBook from '@/pages/book/CreateBookPage';
 import BookDetPage from '@/pages/book/BookDetPage';
@@ -20,6 +21,11 @@ import ProfilePage from '@/pages/setting/ProfilePage';
 import NotificationPage from '@/pages/setting/NotificationPage';
 import NoticePage from '@/pages/setting/NoticePage';
 import NoticeDetPage from '@/pages/setting/NoticeDetPage';
+
+import QuizPage from '@/pages/Quizpage';
+import FlashcardPage from '@/pages/quiz/\bFlashcardPage';
+import ChoicePage from '@/pages/quiz/ChoicePage';
+import ShortAnswerPage from '@/pages/quiz/ShortAnswerPage';
 
 const Router = () => {
   return (
@@ -58,6 +64,26 @@ const Router = () => {
           }
         />
 
+        {/* 퀴즈 */}
+        <Route
+          path={'/quiz/*'}
+          element={
+            <Routes>
+              {/* 퀴즈 메인 페이지 */}
+              <Route path={'/'} element={<QuizPage />} />
+
+              {/* 플래쉬카드 페이지 */}
+              <Route path={'/flashcard'} element={<FlashcardPage />} />
+
+              {/* 객관식 페이지 */}
+              <Route path={'/choice'} element={<ChoicePage />} />
+
+              {/* 주관식 페이지 */}
+              <Route path={'/shortanswer'} element={<ShortAnswerPage />} />
+            </Routes>
+          }
+        />
+
         {/* 로그인 & 회원가입 */}
         <Route
           path={'/auth/*'}
@@ -66,7 +92,10 @@ const Router = () => {
               {/* 로그인 메인 페이지 */}
               <Route path={'/'} element={<AuthPage />} />
 
-              {/* 로그인 메인 페이지 */}
+              {/* 소셜 로그인 페이지 */}
+              <Route path={'/oauth'} element={<OauthPage />} />
+
+              {/* 이메일 로그인 페이지 */}
               <Route path={'/login'} element={<LoginPage />} />
 
               {/* 회원가입 페이지 */}
