@@ -13,4 +13,8 @@ export const auth = {
     key: 'nickname',
     default: '',
   }),
+  setProfilePic: atom({
+    key: 'profilePic',
+    default: '',
+  }),
 };
