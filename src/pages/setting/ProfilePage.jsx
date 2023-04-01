@@ -1,8 +1,10 @@
 import React, { useRef } from 'react';
-import { useState } from 'react';
 import styled from 'styled-components';
-import backImg from '@/assets/svg/icons/icon-back-button.svg';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+
+import { globalState } from '@/recoil';
+import backImg from '@/assets/svg/icons/icon-back-button.svg';
 import uploadImg from '@/assets/svg/icons/icon-image-upload.svg';
 
 const ProfilePage = () => {
@@ -12,7 +14,9 @@ const ProfilePage = () => {
     navigate(-1);
   };
 
-  const [nickname, setNickname] = useState('박수봉');
+  const username = useRecoilValue(globalState.auth.setUsername);
+  const nickname = useRecoilValue(globalState.auth.setNickname);
+  const profilePic = useRecoilValue(globalState.auth.setProfilePic);
 
   return (
     <MainWrapper>
@@ -25,13 +29,14 @@ const ProfilePage = () => {
 
       <ContentWrapper>
         <ImgWrapper>
+          <ProfilePic src={profilePic} />
           <button>
             <img src={uploadImg} alt="uploadImg" />
           </button>
         </ImgWrapper>
         <Nickname type="text" placeholder={nickname} />
         <Line />
-        <Username>tnqhd1139@naver.com</Username>
+        <Username>{username}</Username>
       </ContentWrapper>
 
       <ApplyButton>적용하기</ApplyButton>
@@ -82,11 +87,19 @@ const ImgWrapper = styled.div`
   background: #e0e0e0;
   border-radius: 20px;
   margin-bottom: 17px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  border: 1px solid #e0e0e0;
   button {
     position: absolute;
     right: 20px;
     bottom: 22px;
   }
+`;
+const ProfilePic = styled.img`
+  width: 216px;
+  height: auto;
 `;
 
 const Nickname = styled.input`
