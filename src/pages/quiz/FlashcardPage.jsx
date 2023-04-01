@@ -1,4 +1,4 @@
-const FlashcardPage = () => {
+const FlashCardPage = () => {
   return (
     <div>
       <div>플래시카드 페이지</div>
@@ -6,4 +6,4 @@ const FlashcardPage = () => {
   );
 };
 
-export default FlashcardPage;
+export default FlashCardPage;
