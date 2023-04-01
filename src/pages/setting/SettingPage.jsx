@@ -9,7 +9,7 @@ import { instance } from '@/instance';
 import Footer from '@/components/layout/HomeLayout/Footer';
 import nextButton from '@/assets/svg/icons/icon-next-button.svg';
 
-import useLogout from '../SettingPage/useLogout';
+import useLogout from './SettingPage/useLogout';
 
 const getUserInfoAPI = async () => {
   try {
