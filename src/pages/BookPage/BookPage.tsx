@@ -3,7 +3,7 @@ import { instance } from '@/instance';
 import { useCallback, useEffect, useState } from 'react';
 import { styled } from 'twin.macro';
 import { useNavigate } from 'react-router-dom';
-import BookItem from './BookPage/BookItem';
+import BookItem from './BookItem';
 
 const HomePage = () => {
   const [books, setBooks] = useState<any>([]);

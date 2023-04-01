@@ -3,13 +3,13 @@ import tw from 'twin.macro';
 import { useNavigate } from 'react-router-dom';
 import { globalState } from '@/recoil';
 import { useRecoilState } from 'recoil';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { instance } from '@/instance';
 import Footer from '@/components/layout/HomeLayout/Footer';
 import nextButton from '@/assets/svg/icons/icon-next-button.svg';
 
-import useLogout from './SettingPage/useLogout';
+import useLogout from '../SettingPage/useLogout';
 
 const getUserInfoAPI = async () => {
   try {
@@ -34,7 +34,7 @@ const ContentBox = props => {
 const UserSettingPage = () => {
   const [nickname, setNickname] = useRecoilState(globalState.auth.setNickname);
   const [username, setUsername] = useRecoilState(globalState.auth.setUsername);
-  const [profile, setProfile] = useState();
+  const [profile, setProfile] = useRecoilState(globalState.auth.setProfilePic);
 
   useEffect(() => {
     const getUserInfo = async () => {

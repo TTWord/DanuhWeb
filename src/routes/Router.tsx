@@ -1,34 +1,35 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import StartPage from '@/pages/StartPage';
-import AuthPage from '@/pages/AuthPage';
-import OauthPage from '@/pages/OauthPage';
-import LoginPage from '@/pages/LoginPage';
+import AuthPage from '@/pages/auth/AuthPage';
+import OauthPage from '@/pages/auth/OauthPage';
+import LoginPage from '@/pages/auth/LoginPage';
 import JoinPage from '@/pages/auth/join/JoinPage';
 import AuthCodePage from '@/pages/auth/join/AuthCodePage';
 import WelcomePage from '@/pages/auth/join/WelcomePage';
 
 import HomeLayout from '@/components/layout/HomeLayout';
-import BookPage from '@/pages/BookPage';
+import BookPage from '@/pages/BookPage/BookPage';
 import GenerateBook from '@/pages/book/GenerateBookPage';
 import CreateBook from '@/pages/book/CreateBookPage';
 import BookDetPage from '@/pages/book/BookDetPage';
 import CreateWord from '@/pages/book/CreateWordPage';
 import ChangeBookPage from '@/pages/book/ChangeBookPage';
 
-import SettingPage from '@/pages/SettingPage';
+import SettingPage from '@/pages/setting/SettingPage';
 import ProfilePage from '@/pages/setting/ProfilePage';
 import NotificationPage from '@/pages/setting/NotificationPage';
 import NoticePage from '@/pages/setting/NoticePage';
 import NoticeDetPage from '@/pages/setting/NoticeDetPage';
 
-import QuizPage from '@/pages/Quizpage';
+import QuizPage from '@/pages/quiz/Quizpage';
 import FlashcardPage from '@/pages/quiz/FlashcardPage';
 import ChoicePage from '@/pages/quiz/ChoicePage';
 import ShortAnswerPage from '@/pages/quiz/ShortAnswerPage';
 
-import RankingPage from '@/pages/RankingPage';
+import RankingPage from '@/pages/ranking/RankingPage';
 
+import TestPage from '@/pages/TestPage';
 const Router = () => {
   return (
     <BrowserRouter>
@@ -96,6 +97,8 @@ const Router = () => {
             </Routes>
           }
         />
+
+        <Route path={'/test'} element={<TestPage />} />
 
         {/* 로그인 & 회원가입 */}
         <Route
