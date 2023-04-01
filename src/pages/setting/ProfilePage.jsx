@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
 import backImg from '@/assets/svg/icons/icon-back-button.svg';
-import sample from '@/assets/sample.png';
 import { useNavigate } from 'react-router-dom';
 import uploadImg from '@/assets/svg/icons/icon-image-upload.svg';
 

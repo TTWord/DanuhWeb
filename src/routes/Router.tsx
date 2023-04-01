@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import StartPage from '@/pages/StartPage';
 import AuthPage from '@/pages/auth/AuthPage';
-import OauthPage from '@/pages/auth/OauthPage';
+import OauthPage from '@/pages/auth/OAuthPage';
 import LoginPage from '@/pages/auth/LoginPage';
 import JoinPage from '@/pages/auth/join/JoinPage';
 import AuthCodePage from '@/pages/auth/join/AuthCodePage';
@@ -22,14 +22,13 @@ import NotificationPage from '@/pages/setting/NotificationPage';
 import NoticePage from '@/pages/setting/NoticePage';
 import NoticeDetPage from '@/pages/setting/NoticeDetPage';
 
-import QuizPage from '@/pages/quiz/Quizpage';
+import QuizPage from '@/pages/quiz/QuizPage';
 import FlashcardPage from '@/pages/quiz/FlashcardPage';
 import ChoicePage from '@/pages/quiz/ChoicePage';
 import ShortAnswerPage from '@/pages/quiz/ShortAnswerPage';
 
 import RankingPage from '@/pages/ranking/RankingPage';
 
-import TestPage from '@/pages/TestPage';
 const Router = () => {
   return (
     <BrowserRouter>
@@ -97,8 +96,6 @@ const Router = () => {
             </Routes>
           }
         />
-
-        <Route path={'/test'} element={<TestPage />} />
 
         {/* 로그인 & 회원가입 */}
         <Route
