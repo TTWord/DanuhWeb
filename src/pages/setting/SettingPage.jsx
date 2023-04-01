@@ -31,7 +31,7 @@ const ContentBox = props => {
   );
 };
 
-const UserSettingPage = () => {
+const SettingPage = () => {
   const [nickname, setNickname] = useRecoilState(globalState.auth.setNickname);
   const [username, setUsername] = useRecoilState(globalState.auth.setUsername);
   const [profile, setProfile] = useRecoilState(globalState.auth.setProfilePic);
@@ -101,7 +101,7 @@ const UserSettingPage = () => {
   );
 };
 
-export default UserSettingPage;
+export default SettingPage;
 
 // 상단 부분
 const HeaderWrapper = styled.div`

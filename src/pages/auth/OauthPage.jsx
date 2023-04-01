@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
-const OauthPage = () => {
+const OAuthPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
@@ -23,7 +23,7 @@ const OauthPage = () => {
   );
 };
 
-export default OauthPage;
+export default OAuthPage;
 
 const MainWrapper = styled.div`
   width: 100%;

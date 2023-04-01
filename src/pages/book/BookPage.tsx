@@ -3,9 +3,9 @@ import { instance } from '@/instance';
 import { useCallback, useEffect, useState } from 'react';
 import { styled } from 'twin.macro';
 import { useNavigate } from 'react-router-dom';
-import BookItem from './BookItem';
+import BookItem from './BookPage/BookItem';
 
-const HomePage = () => {
+const BookPage = () => {
   const [books, setBooks] = useState<any>([]);
   const navigate = useNavigate();
 
@@ -63,7 +63,7 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default BookPage;
 
 const Container = styled.div`
   position: relative;

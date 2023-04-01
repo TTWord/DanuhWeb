@@ -25,7 +25,7 @@ const getBookName = async (bookId, setBookName) => {
   }
 };
 
-const CreateBookPage = () => {
+const ChangeBookPage = () => {
   const navigate = useNavigate();
   const bookId = useParams().id;
   const [bookName, setBookName] = useState('');
@@ -70,7 +70,7 @@ const CreateBookPage = () => {
   );
 };
 
-export default CreateBookPage;
+export default ChangeBookPage;
 
 //== 스타일 정의 ==/
 const MainWrapper = styled.div`

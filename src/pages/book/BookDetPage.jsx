@@ -15,7 +15,7 @@ const getBookAPI = async bookId => {
   return response;
 };
 
-const BookDet = () => {
+const BookDetPage = () => {
   const getWord = useGetWord();
 
   const navigate = useNavigate();
@@ -99,7 +99,7 @@ const BookDet = () => {
   );
 };
 
-export default BookDet;
+export default BookDetPage;
 
 //== 스타일 정의 ==//
 //-- 전체 wrapper --//
