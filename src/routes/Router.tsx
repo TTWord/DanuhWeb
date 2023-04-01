@@ -9,7 +9,7 @@ import AuthCodePage from '@/pages/auth/join/AuthCodePage';
 import WelcomePage from '@/pages/auth/join/WelcomePage';
 
 import HomeLayout from '@/components/layout/HomeLayout';
-import BookPage from '@/pages/BookPage/BookPage';
+import BookPage from '@/pages/book/BookPage/BookPage';
 import GenerateBook from '@/pages/book/GenerateBookPage';
 import CreateBook from '@/pages/book/CreateBookPage';
 import BookDetPage from '@/pages/book/BookDetPage';

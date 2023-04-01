@@ -1,4 +1,4 @@
-import Additional from '@/pages/BookPage/Additional';
+import Additional from '@/pages/book/BookPage/Additional';
 import { instance } from '@/instance';
 import { useCallback, useEffect, useState } from 'react';
 import { styled } from 'twin.macro';
