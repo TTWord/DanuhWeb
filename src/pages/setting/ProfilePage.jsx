@@ -1,22 +1,87 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
 
-import { globalState } from '@/recoil';
+import { instance } from '@/instance';
 import backImg from '@/assets/svg/icons/icon-back-button.svg';
 import uploadImg from '@/assets/svg/icons/icon-image-upload.svg';
 
-const ProfilePage = () => {
-  const navigate = useNavigate();
+const getUserInfoAPI = async () => {
+  try {
+    const response = await instance.get('/user/userservice');
+    return response;
+  } catch (e) {
+    console.log(e);
+  }
+};
 
+const changeProfilePicAPI = async file => {
+  try {
+    const response = await instance.post('/user/userservice', file, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    console.log(response);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const changeNicknameAPI = async newNickname => {
+  try {
+    const response = await instance.put('/user/userservice', {
+      to_nickname: newNickname,
+    });
+    console.log(response);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const ProfilePage = () => {
+  const profilePicRef = useRef();
+  const [file, setFile] = useState(null);
+  const uploadImage = () => {
+    // 파일 업로드
+    const file = profilePicRef.current.files[0];
+    setFile(file);
+    // 업로드한 파일 미리보기
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setProfilePic(reader.result);
+    };
+  };
+
+  // 버튼 클릭하여 none처리한 file input 버튼 클릭
+  const uploadOnClick = () => {
+    profilePicRef.current.click();
+  };
+
+  // 뒤로 가기 기능
+  const navigate = useNavigate();
   const goBack = () => {
     navigate(-1);
   };
 
-  const username = useRecoilValue(globalState.auth.setUsername);
-  const nickname = useRecoilValue(globalState.auth.setNickname);
-  const profilePic = useRecoilValue(globalState.auth.setProfilePic);
+  const [nickname, setNickname] = useState('');
+  const [username, setUsername] = useState('');
+  const [profilePic, setProfilePic] = useState('');
+  const [newNickname, setNewNickname] = useState('');
+  useEffect(() => {
+    const getUserInfo = async () => {
+      const response = await getUserInfoAPI();
+      setUsername(response.data.data.username);
+      setNickname(response.data.data.nickname);
+      setProfilePic(response.data.data.url);
+    };
+    getUserInfo();
+  }, []);
+
+  const changeNickname = e => {
+    setNewNickname(e.target.value);
+  };
 
   return (
     <MainWrapper>
@@ -30,16 +95,40 @@ const ProfilePage = () => {
       <ContentWrapper>
         <ImgWrapper>
           <ProfilePic src={profilePic} />
-          <button>
+          <UploadImg
+            type="file"
+            ref={profilePicRef}
+            onChange={uploadImage}
+            accept=".jpg, .png"
+          />
+          <button onClick={uploadOnClick}>
             <img src={uploadImg} alt="uploadImg" />
           </button>
         </ImgWrapper>
-        <Nickname type="text" placeholder={nickname} />
+        <Nickname
+          type="text"
+          placeholder={nickname}
+          onChange={changeNickname}
+        />
         <Line />
         <Username>{username}</Username>
       </ContentWrapper>
 
-      <ApplyButton>적용하기</ApplyButton>
+      <ProfileForm
+        onSubmit={e => {
+          e.preventDefault();
+          if (file !== null) {
+            const formData = new FormData();
+            formData.append('file', file);
+            changeProfilePicAPI(formData);
+          }
+          if (newNickname !== nickname && newNickname !== '') {
+            changeNicknameAPI(newNickname);
+          }
+        }}
+      >
+        <ApplyButton>적용하기</ApplyButton>
+      </ProfileForm>
     </MainWrapper>
   );
 };
@@ -97,9 +186,14 @@ const ImgWrapper = styled.div`
     bottom: 22px;
   }
 `;
+const UploadImg = styled.input`
+  display: none;
+`;
+
 const ProfilePic = styled.img`
   width: 216px;
   height: auto;
+  border-radius: 20px;
 `;
 
 const Nickname = styled.input`
@@ -110,7 +204,7 @@ const Nickname = styled.input`
   text-align: center;
   color: #000000;
   ::placeholder {
-    color: #000000;
+    color: #e0e0e0;
   }
 `;
 const Line = styled.div`
@@ -137,4 +231,10 @@ const ApplyButton = styled.button`
   line-height: 20px;
   text-align: center;
   color: #ffffff;
+`;
+
+const ProfileForm = styled.form`
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `;
