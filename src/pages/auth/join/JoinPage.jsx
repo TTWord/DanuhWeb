@@ -30,12 +30,10 @@ const JoinPage = () => {
   const navigate = useNavigate();
 
   const [userNickname, SetUserNickname] = useRecoilState(
-    globalState.auth.setNickname,
+    globalState.auth.nickname,
   );
-  const [userEmail, SetUserEmail] = useRecoilState(
-    globalState.auth.setUsername,
-  );
-  const [userPW, SetUserPW] = useRecoilState(globalState.auth.setPassword);
+  const [userEmail, SetUserEmail] = useRecoilState(globalState.auth.username);
+  const [userPW, SetUserPW] = useRecoilState(globalState.auth.password);
   const [userPWConfirm, SetUserPWConfirm] = useState('');
 
   const inputUserEmail = e => {

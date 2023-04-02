@@ -7,7 +7,7 @@ import backImg from '@/assets/svg/icons/icon-back-button.svg';
 
 const NoticeDetpage = () => {
   const navigate = useNavigate();
-  const Title = useRecoilValue(globalState.setting.setNoticeTitle);
+  const Title = useRecoilValue(globalState.setting.noticeTitle);
 
   const goBack = () => {
     navigate(-1);

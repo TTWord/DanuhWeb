@@ -7,9 +7,9 @@ import { useRecoilValue } from 'recoil';
 import useSignup from '../hooks/useSignup';
 
 const AuthCodePage = () => {
-  const userEmail = useRecoilValue(globalState.auth.setUsername);
-  const userPW = useRecoilValue(globalState.auth.setPassword);
-  const userNickname = useRecoilValue(globalState.auth.setNickname);
+  const userEmail = useRecoilValue(globalState.auth.username);
+  const userPW = useRecoilValue(globalState.auth.password);
+  const userNickname = useRecoilValue(globalState.auth.nickname);
 
   const signup = useSignup();
 

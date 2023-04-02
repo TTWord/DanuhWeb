@@ -1,19 +1,19 @@
 import { atom } from 'recoil';
 
 export const auth = {
-  setUsername: atom({
+  username: atom({
     key: 'username',
     default: '',
   }),
-  setPassword: atom({
+  password: atom({
     key: 'password',
     default: '',
   }),
-  setNickname: atom({
+  nickname: atom({
     key: 'nickname',
     default: '',
   }),
-  setProfilePic: atom({
+  profilePic: atom({
     key: 'profilePic',
     default: '',
   }),

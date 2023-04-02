@@ -6,8 +6,8 @@ import { globalState } from '@/recoil';
 
 const WelcomePage = () => {
   const navigate = useNavigate();
-  const userEmail = useRecoilValue(globalState.auth.setUsername);
-  const userNickname = useRecoilValue(globalState.auth.setNickname);
+  const userEmail = useRecoilValue(globalState.auth.username);
+  const userNickname = useRecoilValue(globalState.auth.nickname);
 
   // Title 변경
   useEffect(() => {

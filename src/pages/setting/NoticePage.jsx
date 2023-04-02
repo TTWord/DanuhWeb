@@ -8,7 +8,7 @@ import { useRecoilState } from 'recoil';
 
 const NoticeBox = props => {
   const navigate = useNavigate();
-  const [title, setTitle] = useRecoilState(globalState.setting.setNoticeTitle);
+  const [title, setTitle] = useRecoilState(globalState.setting.noticeTitle);
   return (
     <Content>
       <Title>{props.title}</Title>

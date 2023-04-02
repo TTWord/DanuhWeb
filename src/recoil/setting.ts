@@ -1,7 +1,7 @@
 import { atom } from 'recoil';
 
 export const setting = {
-  setNoticeTitle: atom({
+  noticeTitle: atom({
     key: 'noticeTitle',
     default: '',
   }),
