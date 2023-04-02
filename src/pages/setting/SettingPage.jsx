@@ -136,6 +136,7 @@ const ProfileImg = styled.div`
   align-items: center;
   img {
     width: 96px;
+    border-radius: 17px;
   }
 `;
 const ProfileContent = styled.div`
