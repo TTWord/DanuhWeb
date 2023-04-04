@@ -14,7 +14,7 @@ const useLogin = () => {
       const errorCode = e.response.status;
       const errorMessage = e.response.data.message;
 
-      if (errorCode === 403 || errorCode === 409) {
+      if (errorCode === 409) {
         alert(errorMessage);
       } else if (errorCode === 400) {
         alert('Bad Request');
