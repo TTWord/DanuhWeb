@@ -80,7 +80,7 @@ const AuthCodePage = () => {
 
       <NextButton
         onClick={() => {
-          signup(userEmail, userNickname, userPW, authCode);
+          signup(userEmail, userPW, userNickname, authCode);
         }}
       >
         다음
