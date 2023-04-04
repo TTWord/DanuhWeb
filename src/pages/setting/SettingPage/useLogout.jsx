@@ -4,8 +4,8 @@ import { globalState } from '@/recoil';
 
 const useLogout = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useRecoilState(globalState.auth.setUsername);
-  const [nickname, setNickname] = useRecoilState(globalState.auth.setNickname);
+  const [username, setUsername] = useRecoilState(globalState.auth.username);
+  const [nickname, setNickname] = useRecoilState(globalState.auth.nickname);
 
   const logout = async () => {
     setNickname('');
