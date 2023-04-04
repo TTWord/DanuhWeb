@@ -6,6 +6,7 @@ import QuizRouter from './QuizRouter';
 import RankRouter from './RankRouter';
 import AuthRouter from './AuthRouter';
 import SettingRouter from './SettingRouter';
+import RouteTransitionWrapper from './RouteTransitionWrapper';
 
 const Router = () => {
   return (

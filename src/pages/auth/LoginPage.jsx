@@ -14,7 +14,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
 
   const goBack = () => {
-    navigate(-1);
+    navigate('/auth', { state: { direction: 'navigate-pop' } });
   };
 
   const goJoin = () => {

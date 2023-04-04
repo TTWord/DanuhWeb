@@ -45,6 +45,7 @@ instance.interceptors.response.use(
       localStorage.removeItem('refresh_Token');
       window.location.href = '/auth';
     }
-    return error;
+
+    return Promise.reject(error);
   },
 );

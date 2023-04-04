@@ -25,7 +25,7 @@ const RouteTransition = ({ location, children }: RouteTransitionProps) => {
           });
         }}
       >
-        <CSSTransition exact key={pathname} timeout={1000}>
+        <CSSTransition exact key={pathname} timeout={300}>
           {children}
         </CSSTransition>
       </TransitionGroup>
@@ -39,6 +39,7 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
+  overflow: hidden;
 
   .transition-wrapper {
     width: 100%;
@@ -52,7 +53,7 @@ const Container = styled.div`
   .navigate-pop-enter-active {
     z-index: 1;
     transform: translateX(0);
-    transition: transform 1000ms ease-in-out;
+    transition: transform 300ms ease-in-out;
 
     box-shadow: -5px 0px 25px rgba(0, 0, 0, 0.05);
   }
@@ -63,7 +64,7 @@ const Container = styled.div`
 
   .navigate-pop-exit-active {
     transform: translateX(100%);
-    transition: transform 1000ms ease-in-out;
+    transition: transform 300ms ease-in-out;
   }
 
   .navigate-push-enter {
@@ -73,7 +74,7 @@ const Container = styled.div`
   .navigate-push-enter-active {
     z-index: 1;
     transform: translateX(0);
-    transition: transform 1000ms ease-in-out;
+    transition: transform 300ms ease-in-out;
 
     box-shadow: -5px 0px 25px rgba(0, 0, 0, 0.05);
   }
@@ -84,7 +85,7 @@ const Container = styled.div`
 
   .navigate-push-exit-active {
     transform: translateX(-100%);
-    transition: transform 1000ms ease-in-out;
+    transition: transform 300ms ease-in-out;
   }
 
   .transition-wrapper {
