@@ -17,13 +17,8 @@ export const userAPI = {
     return response;
   },
 
-  deleteAccount: async (username: string) => {
-    const response = await instance.delete('/user/signup', {
-      data: {
-        username,
-      },
-    });
-
+  deleteAccount: async () => {
+    const response = await instance.delete('/user/userservice');
     return response;
   },
 
