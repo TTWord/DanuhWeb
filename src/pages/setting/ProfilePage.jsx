@@ -99,7 +99,7 @@ const ProfilePage = () => {
             type="file"
             ref={profilePicRef}
             onChange={uploadImage}
-            accept=".jpg, .png"
+            accept=".jpg, .png, .jpeg"
           />
           <button onClick={uploadOnClick}>
             <img src={uploadImg} alt="uploadImg" />
