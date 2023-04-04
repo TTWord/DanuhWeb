@@ -10,6 +10,7 @@ import Footer from '@/components/layout/HomeLayout/Footer';
 import nextButton from '@/assets/svg/icons/icon-next-button.svg';
 
 import useLogout from './SettingPage/useLogout';
+import useDeleteAccount from './SettingPage/useDeleteAccount';
 
 const getUserInfoAPI = async () => {
   try {
@@ -32,9 +33,9 @@ const ContentBox = props => {
 };
 
 const SettingPage = () => {
-  const [nickname, setNickname] = useRecoilState(globalState.auth.setNickname);
-  const [username, setUsername] = useRecoilState(globalState.auth.setUsername);
-  const [profile, setProfile] = useRecoilState(globalState.auth.setProfilePic);
+  const [nickname, setNickname] = useRecoilState(globalState.auth.nickname);
+  const [username, setUsername] = useRecoilState(globalState.auth.username);
+  const [profile, setProfile] = useRecoilState(globalState.auth.profilePic);
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -47,6 +48,7 @@ const SettingPage = () => {
   }, []);
 
   const logout = useLogout();
+  const deleteAccount = useDeleteAccount();
   const navigate = useNavigate();
 
   // 해당 페이지로 이동하는 함수들
@@ -91,7 +93,7 @@ const SettingPage = () => {
         <ContentBox title="서비스 이용약관" onClick={dummyFunction} />
         <ContentBox title="개인정보 처리방침" onClick={dummyFunction} />
         <ContentBox title="로그아웃" onClick={logout} />
-        <ContentBox title="탈퇴하기" onClick={dummyFunction} />
+        <ContentBox title="탈퇴하기" onClick={deleteAccount} />
         <ContentBox title="가져오기 / 내보내기" onClick={dummyFunction} />
       </ContentWrapper>
       <FooterWrapper>
