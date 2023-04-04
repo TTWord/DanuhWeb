@@ -19,4 +19,10 @@ export const authAPI = {
 
     return response;
   },
+
+  socialLogin: async (social: string) => {
+    const response = await instance.post(`/auth/${social}`);
+
+    return response;
+  },
 };
