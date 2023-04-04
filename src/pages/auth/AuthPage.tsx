@@ -1,15 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import logoImg from '@/assets/svg/icons/logo-img.svg';
-import { instance } from '@/instance';
+import useSocialLogin from './hooks/useSociallogin';
 
 const AuthPage = () => {
   const navigate = useNavigate();
-
-  const requestKakao = async () => {
-    const response = await instance.post('/auth/kakao');
-    window.location.href = response.data.data.url;
-  };
+  const socialLogin = useSocialLogin();
 
   const goLogin = () => {
     navigate('/auth/login');
@@ -19,8 +15,20 @@ const AuthPage = () => {
     <WebWrapper>
       <Logo src={logoImg} alt="logoImg" />
       <Introduce>이미지, PDF, 글을 단어장으로 만들자!</Introduce>
-      <KakaoLogin onClick={requestKakao}>카카오톡으로 로그인</KakaoLogin>
-      <GoogleLogin>구글 계정으로 로그인</GoogleLogin>
+      <KakaoLogin
+        onClick={() => {
+          socialLogin('kakao');
+        }}
+      >
+        카카오톡으로 로그인
+      </KakaoLogin>
+      <GoogleLogin
+        onClick={() => {
+          socialLogin('google');
+        }}
+      >
+        구글 계정으로 로그인
+      </GoogleLogin>
       <AppleLogin>애플 계정으로 로그인</AppleLogin>
       <EmailLogin onClick={goLogin}>이메일로 로그인</EmailLogin>
 
