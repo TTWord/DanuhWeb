@@ -53,7 +53,7 @@ const JoinPage = () => {
     <MainWrapper>
       <BackButton
         onClick={() => {
-          navigate(-1);
+          navigate('/auth/login', { state: { direction: 'navigate-pop' } });
         }}
       >
         <img src={BackButtonImg} alt="BackButton" />
@@ -107,7 +107,7 @@ export default JoinPage;
 
 const MainWrapper = styled.div`
   width: 100%;
-  height: 852px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -133,7 +133,6 @@ const SignInText = styled.div`
 const SignInwrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 11px;
   margin-top: 28px;
   margin-bottom: 12;
 `;

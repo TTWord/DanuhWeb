@@ -14,9 +14,6 @@ const AuthPage = () => {
   const goLogin = () => {
     navigate('/auth/login');
   };
-  const goJoin = () => {
-    navigate('/auth/join');
-  };
 
   return (
     <WebWrapper>
@@ -26,9 +23,6 @@ const AuthPage = () => {
       <GoogleLogin>구글 계정으로 로그인</GoogleLogin>
       <AppleLogin>애플 계정으로 로그인</AppleLogin>
       <EmailLogin onClick={goLogin}>이메일로 로그인</EmailLogin>
-
-      <AskAccount>계정이 없으신가요?</AskAccount>
-      <SignInButton onClick={goJoin}>회원가입</SignInButton>
 
       <FindIdPW>아이디 찾기 / 비밀번호 찾기</FindIdPW>
     </WebWrapper>
@@ -84,18 +78,6 @@ const EmailLogin = styled(Login)`
   color: white;
 `;
 
-const AskAccount = styled.div`
-  font-size: 12px;
-  margin: 9px 0 8px 0;
-  color: #262626;
-`;
-const SignInButton = styled.button`
-  font-size: 12px;
-  font-weight: 500;
-  font-weight: bold;
-  color: #8062b2;
-  margin-bottom: 54px;
-`;
 const FindIdPW = styled.button`
   width: 100%;
   font-weight: 700;
