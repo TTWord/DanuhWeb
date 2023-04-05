@@ -3,8 +3,19 @@ import { useNavigate } from 'react-router-dom';
 
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 
+const bookList = () => {
+  return 1;
+};
+
 const FlashCardPage = () => {
   const navigate = useNavigate();
+
+  const goWord = () => {
+    navigate('/quiz/flashcard/word');
+  };
+  const goMean = () => {
+    navigate('/quiz/flashcard/mean');
+  };
 
   return (
     <MainWrapper>
@@ -26,8 +37,8 @@ const FlashCardPage = () => {
       </Container>
 
       <Footer>
-        <WordQuizButton>단어암기</WordQuizButton>
-        <MeanQuizButton>뜻암기</MeanQuizButton>
+        <WordQuizButton onClick={goWord}>단어암기</WordQuizButton>
+        <MeanQuizButton onClick={goMean}>뜻암기</MeanQuizButton>
       </Footer>
     </MainWrapper>
   );
