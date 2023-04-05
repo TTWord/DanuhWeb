@@ -22,7 +22,7 @@ const FlashCardPage = () => {
       <Header>
         <BackButton
           onClick={() => {
-            navigate(-1);
+            navigate('/quiz');
           }}
         >
           <img src={arrowBackImg} alt="arrowBackImg" />
