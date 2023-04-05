@@ -1,10 +1,21 @@
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 
+import { globalState } from '@/recoil';
 import Footer from '@/components/layout/HomeLayout/Footer';
 
 const QuizPage = () => {
+  const [activeMenu, setActiveMenu] = useRecoilState(
+    globalState.layout.activeMenuNumber,
+  );
+
+  useEffect(() => {
+    setActiveMenu(1);
+  }, []);
+
   const navigate = useNavigate();
 
   const goFlashcard = () => {

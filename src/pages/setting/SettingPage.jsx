@@ -36,7 +36,9 @@ const SettingPage = () => {
   const [nickname, setNickname] = useRecoilState(globalState.auth.nickname);
   const [username, setUsername] = useRecoilState(globalState.auth.username);
   const [profile, setProfile] = useRecoilState(globalState.auth.profilePic);
-
+  const [activeMenu, setActiveMenu] = useRecoilState(
+    globalState.layout.activeMenuNumber,
+  );
   useEffect(() => {
     const getUserInfo = async () => {
       const response = await getUserInfoAPI();
@@ -45,6 +47,7 @@ const SettingPage = () => {
       setProfile(response.data.data.url);
     };
     getUserInfo();
+    setActiveMenu(3);
   }, []);
 
   const logout = useLogout();
