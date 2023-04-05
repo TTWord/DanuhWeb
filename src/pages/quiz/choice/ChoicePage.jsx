@@ -6,12 +6,16 @@ import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 const ChoicePage = () => {
   const navigate = useNavigate();
 
+  const goQuiz = () => {
+    navigate('/quiz/choice/question');
+  };
+
   return (
     <MainWrapper>
       <Header>
         <BackButton
           onClick={() => {
-            navigate(-1);
+            navigate('/quiz');
           }}
         >
           <img src={arrowBackImg} alt="arrowBackImg" />
@@ -26,8 +30,8 @@ const ChoicePage = () => {
       </Container>
 
       <Footer>
-        <WordQuizButton>단어암기</WordQuizButton>
-        <MeanQuizButton>뜻암기</MeanQuizButton>
+        <WordQuizButton onClick={goQuiz}>단어암기</WordQuizButton>
+        <MeanQuizButton onClick={goQuiz}>뜻암기</MeanQuizButton>
       </Footer>
     </MainWrapper>
   );

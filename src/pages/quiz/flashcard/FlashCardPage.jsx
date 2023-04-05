@@ -3,15 +3,26 @@ import { useNavigate } from 'react-router-dom';
 
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 
-const ShortAnswerPage = () => {
+const bookList = () => {
+  return 1;
+};
+
+const FlashCardPage = () => {
   const navigate = useNavigate();
+
+  const goWord = () => {
+    navigate('/quiz/flashcard/word');
+  };
+  const goMean = () => {
+    navigate('/quiz/flashcard/mean');
+  };
 
   return (
     <MainWrapper>
       <Header>
         <BackButton
           onClick={() => {
-            navigate(-1);
+            navigate('/quiz');
           }}
         >
           <img src={arrowBackImg} alt="arrowBackImg" />
@@ -19,21 +30,21 @@ const ShortAnswerPage = () => {
       </Header>
 
       <Container>
-        <QuizName>주관식</QuizName>
+        <QuizName>FLASHCARD</QuizName>
         <BookSelect>단어장 선택</BookSelect>
         <Book>단어장1</Book>
         <Book>단어장2</Book>
       </Container>
 
       <Footer>
-        <WordQuizButton>단어암기</WordQuizButton>
-        <MeanQuizButton>뜻암기</MeanQuizButton>
+        <WordQuizButton onClick={goWord}>단어암기</WordQuizButton>
+        <MeanQuizButton onClick={goMean}>뜻암기</MeanQuizButton>
       </Footer>
     </MainWrapper>
   );
 };
 
-export default ShortAnswerPage;
+export default FlashCardPage;
 
 const MainWrapper = styled.div`
   position: relative;
