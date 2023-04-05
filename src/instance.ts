@@ -30,7 +30,7 @@ instance.interceptors.response.use(
   },
   error => {
     const errorMessage = error.response.data.message;
-    if (errorMessage === '만료된 토큰입니다.') {
+    if (errorMessage === 'EXPIRED_ACCESS_TOKEN') {
       const getToken = async () => {
         const response = await instance.post('/auth/refreshtoken');
         console.log(response.data.data.access_token);
@@ -38,8 +38,11 @@ instance.interceptors.response.use(
       };
       getToken();
     } else if (
-      errorMessage === '유효하지 않은 토큰입니다.' ||
-      errorMessage === '토큰이 제공되지 않았습니다.'
+      errorMessage === 'ACCESS_TOKEN_NOT_PROVIDED' ||
+      errorMessage === 'INVALID_ACCESS_TOKEN' ||
+      errorMessage === 'REFRESH_TOKEN_NOT_PROVIDED' ||
+      errorMessage === 'EXPIRED_REFRESH_TOKEN' ||
+      errorMessage === 'INVALID_REFRESH_TOKEN'
     ) {
       localStorage.removeItem('access_Token');
       localStorage.removeItem('refresh_Token');
