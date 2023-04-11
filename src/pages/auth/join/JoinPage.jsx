@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import useSendmail from '@/pages/auth/hooks/useSendmail';
 import { globalState } from '@/recoil';
 import { useRecoilState } from 'recoil';
+import { TailSpin } from 'react-loader-spinner';
 
 const AuthInputBox = props => {
   return (
@@ -26,7 +27,7 @@ const JoinPage = () => {
     document.querySelector('title').innerHTML = '회원가입';
   }, []);
 
-  const sendmail = useSendmail();
+  const { isLoading, sendmail } = useSendmail();
   const navigate = useNavigate();
 
   const [userNickname, SetUserNickname] = useRecoilState(
@@ -96,7 +97,22 @@ const JoinPage = () => {
         />
       </SignInwrapper>
 
-      <NextButton onClick={onJoin}>다음</NextButton>
+      <NextButton onClick={onJoin}>
+        {isLoading ? (
+          <TailSpin
+            height="30"
+            width="30"
+            radius="1"
+            color="#ffffff"
+            ariaLabel="three-dots-loading"
+            wrapperStyle={{}}
+            wrapperClassName=""
+            visible={true}
+          />
+        ) : (
+          '다음'
+        )}
+      </NextButton>
     </MainWrapper>
   );
 };
@@ -165,4 +181,7 @@ const NextButton = styled.button`
   border-radius: 10px;
   font-size: 24px;
   color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
