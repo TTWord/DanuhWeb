@@ -15,7 +15,7 @@ const useSendmail = () => {
         nickname,
       );
       setLoading(false);
-      // navigate('/auth/join/code');
+      navigate('/auth/join/code');
     } catch (e) {
       Swal.fire({
         icon: 'error',
