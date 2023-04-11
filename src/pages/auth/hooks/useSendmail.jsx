@@ -1,5 +1,6 @@
 import { api } from '@/api';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const useSendmail = () => {
   const navigate = useNavigate();
@@ -12,7 +13,11 @@ const useSendmail = () => {
       );
       navigate('/auth/join/code');
     } catch (e) {
-      alert('Error!');
+      Swal.fire({
+        icon: 'error',
+        title: '규칙에 맞게 작성하였는지 확인하세요',
+      });
+      console.log(e);
     }
   };
 

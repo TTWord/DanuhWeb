@@ -25,7 +25,7 @@ const RouteTransition = ({ location, children }: RouteTransitionProps) => {
           });
         }}
       >
-        <CSSTransition exact key={pathname} timeout={300}>
+        <CSSTransition exact key={pathname} timeout={600}>
           {children}
         </CSSTransition>
       </TransitionGroup>
@@ -64,7 +64,7 @@ const Container = styled.div`
 
   .navigate-pop-exit-active {
     transform: translateX(100%);
-    transition: transform 300ms ease-in-out;
+    transition: transform 600ms ease-in-out;
   }
 
   .navigate-push-enter {
@@ -85,7 +85,7 @@ const Container = styled.div`
 
   .navigate-push-exit-active {
     transform: translateX(-100%);
-    transition: transform 300ms ease-in-out;
+    transition: transform 600ms ease-in-out;
   }
 
   .transition-wrapper {
