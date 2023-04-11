@@ -49,6 +49,14 @@ const JoinPage = () => {
     SetUserNickname(e.target.value);
   };
 
+  const onJoin = () => {
+    if (userPW !== userPWConfirm) {
+      alert('비밀번호가 일치하지 않습니다.');
+    } else {
+      sendmail(userEmail, userPW, userNickname);
+    }
+  };
+
   return (
     <MainWrapper>
       <BackButton
@@ -62,12 +70,6 @@ const JoinPage = () => {
       <SignInText>회원가입</SignInText>
 
       <SignInwrapper>
-        <AuthInputBox
-          kind="NICKNAME"
-          placeholder="닉네임을 입력해주세요"
-          type="text"
-          onChange={inputUserNickname}
-        />
         <AuthInputBox
           kind="USERNAME"
           placeholder="이메일을 입력해주세요"
@@ -86,19 +88,15 @@ const JoinPage = () => {
           type="password"
           onChange={inputUserPWConfirm}
         />
+        <AuthInputBox
+          kind="NICKNAME"
+          placeholder="닉네임을 입력해주세요"
+          type="text"
+          onChange={inputUserNickname}
+        />
       </SignInwrapper>
 
-      <NextButton
-        onClick={() => {
-          if (userPW !== userPWConfirm) {
-            alert('비밀번호가 일치하지 않습니다.');
-          } else {
-            sendmail(userEmail, userPW, userNickname);
-          }
-        }}
-      >
-        다음
-      </NextButton>
+      <NextButton onClick={onJoin}>다음</NextButton>
     </MainWrapper>
   );
 };
