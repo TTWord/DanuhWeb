@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import logoImg from '@/assets/svg/icons/logo-img.svg';
-import useSocialLogin from './hooks/useSociallogin';
+import useSocialLogin from './hooks/useSocialLogin';
 
 const AuthPage = () => {
   const navigate = useNavigate();
