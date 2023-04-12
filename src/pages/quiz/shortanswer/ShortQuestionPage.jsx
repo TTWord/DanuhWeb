@@ -12,17 +12,11 @@ const ShortQuestionPage = () => {
   const problems = [...useRecoilValue(globalState.quiz.quizList)];
   const [currentQuiz, setCurrentQuiz] = useState([]);
 
-  const [result, setResult] = useState(5);
+  const [result, setResult] = useState(0);
   // 문제 길이
   const length = problems.length;
   // 문제 진행도
   const [number, setNumber] = useState(length !== 0 ? 1 : 0);
-
-  const test = e => {
-    console.log(e.target.innerText); // 버튼 태그 텍스트
-    console.log(result);
-    navigate('/quiz/result', { state: { result: (result / length) * 100 } });
-  };
 
   const next = e => {
     if (e.target.innerText === '다음') {
@@ -33,7 +27,7 @@ const ShortQuestionPage = () => {
       setCurrentQuiz(extractQuiz(problems, number));
       answerRef.current.value = '';
     } else if (e.target.innerText === '제출') {
-      console.log(`${(result / length) * 100}%`);
+      navigate('/quiz/result', { state: { result: (result / length) * 100 } });
     }
   };
 
@@ -53,7 +47,6 @@ const ShortQuestionPage = () => {
   // 문제 가져오기
   const extractQuiz = (value, number) => {
     const result = value[number];
-    console.table(value);
     if (result) {
       return result.answer;
     }
@@ -92,7 +85,6 @@ const ShortQuestionPage = () => {
       <NextButton onClick={next}>
         {number === length ? '제출' : '다음'}
       </NextButton>
-      <NextButton onClick={test}>테스트</NextButton>
     </MainWrapper>
   );
 };

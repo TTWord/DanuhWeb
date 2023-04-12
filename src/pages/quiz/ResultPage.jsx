@@ -2,17 +2,22 @@ import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const ResultPage = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const percentage = location.state.result;
+
+  const goShortQuiz = () => {
+    navigate('/quiz/shortanswer');
+  };
 
   return (
     <MainWrapper>
       <Header>RESULT</Header>
       <ContentWrapper>
         <AnswerRate>정답률</AnswerRate>
-        <Percentage>{percentage}%</Percentage>
+        <Percentage>{percentage || 0}%</Percentage>
       </ContentWrapper>
-      <CompleteButton>완료</CompleteButton>
+      <CompleteButton onClick={goShortQuiz}>완료</CompleteButton>
     </MainWrapper>
   );
 };
