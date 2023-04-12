@@ -29,7 +29,7 @@ const ShortAnswerPage = () => {
     const response = await api.quiz.getShortQuiz(page, 10);
     const quiz = response.data.data.problem;
     setQuizList(quiz);
-    navigate(`/quiz/shortanswer/question/${page}`);
+    navigate(`/quiz/shortanswer/question`);
   };
 
   const goQuiz = async () => {
@@ -47,6 +47,7 @@ const ShortAnswerPage = () => {
         color={color}
         onClick={() => {
           setPage(props.bookId);
+          // 2번 클릭해야 색이 바뀜
           color === '#ffffff' ? setColor('#724fab') : setColor('#ffffff');
         }}
       >
