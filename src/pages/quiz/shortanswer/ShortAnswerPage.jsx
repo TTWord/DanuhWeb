@@ -1,14 +1,60 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-
+import { useState, useEffect } from 'react';
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
+import { api } from '@/api';
+import { globalState } from '@/recoil';
+import { useSetRecoilState } from 'recoil';
 
 const ShortAnswerPage = () => {
   const navigate = useNavigate();
 
-  const goQuiz = () => {
-    navigate('/quiz/shortanswer/question');
+  const [books, setBooks] = useState([]);
+  const [page, setPage] = useState('');
+  const setQuizList = useSetRecoilState(globalState.quiz.quizList);
+
+  const getBookList = async () => {
+    const response = await api.book.getBook();
+
+    if (response.data.status === 'OK') {
+      setBooks(response.data.data);
+    }
   };
+
+  useEffect(() => {
+    getBookList();
+  }, []);
+
+  const getQuiz = async () => {
+    const response = await api.quiz.getShortQuiz(page, 10);
+    const quiz = response.data.data.problem;
+    setQuizList(quiz);
+    navigate(`/quiz/shortanswer/question/${page}`);
+  };
+
+  const goQuiz = async () => {
+    if (page === '') {
+      alert('단어장을 선택해주세요.');
+    } else {
+      getQuiz();
+    }
+  };
+
+  const CreateBookList = props => {
+    const [color, setColor] = useState('#ffffff');
+    return (
+      <Book
+        color={color}
+        onClick={() => {
+          setPage(props.bookId);
+          color === '#ffffff' ? setColor('#724fab') : setColor('#ffffff');
+        }}
+      >
+        <div>{props.bookName}</div>
+      </Book>
+    );
+  };
+
   return (
     <MainWrapper>
       <Header>
@@ -24,14 +70,23 @@ const ShortAnswerPage = () => {
       <Container>
         <QuizName>주관식</QuizName>
         <BookSelect>단어장 선택</BookSelect>
-        <Book>단어장1</Book>
-        <Book>단어장2</Book>
+        <BookWrapper>
+          {books.map(items => {
+            return (
+              <CreateBookList
+                key={items.id}
+                bookId={items.id}
+                bookName={items.name}
+              />
+            );
+          })}
+        </BookWrapper>
       </Container>
 
-      <Footer>
+      <FooterWrapper>
         <WordQuizButton onClick={goQuiz}>단어암기</WordQuizButton>
         <MeanQuizButton onClick={goQuiz}>뜻암기</MeanQuizButton>
-      </Footer>
+      </FooterWrapper>
     </MainWrapper>
   );
 };
@@ -39,13 +94,12 @@ const ShortAnswerPage = () => {
 export default ShortAnswerPage;
 
 const MainWrapper = styled.div`
-  position: relative;
+  position: absolute;
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 27px;
 `;
 
 //-- Header 영역 --//
@@ -87,10 +141,25 @@ const BookSelect = styled.div`
   color: #444444;
   margin-bottom: 27px;
 `;
-const Book = styled.div`
+const BookWrapper = styled.div`
+  width: 100%;
+  height: 252px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+  /* ::-webkit-scrollbar {
+    display: none;
+  } */
+  button {
+    flex: 0 0 auto;
+  }
+`;
+const Book = styled.button`
   width: 279px;
   height: 40px;
-  background: #ffffff;
+  background-color: ${props => props.color || '#ffffff'};
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
   display: flex;
@@ -99,8 +168,8 @@ const Book = styled.div`
   margin-bottom: 13px;
 `;
 
-const Footer = styled.div`
-  position: absolute;
+const FooterWrapper = styled.div`
+  position: fixed;
   bottom: 23px;
   width: 100%;
   height: 72px;
@@ -110,7 +179,7 @@ const Footer = styled.div`
 const WordQuizButton = styled.button`
   width: 158px;
   height: 72px;
-  background: #724fab;
+  background-color: #724fab;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   border-radius: 7px;
   font-weight: 300;

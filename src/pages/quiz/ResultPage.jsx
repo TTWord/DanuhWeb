@@ -1,7 +1,9 @@
 import styled from 'styled-components';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const ResultPage = () => {
-  const percentage = 90;
+  const location = useLocation();
+  const percentage = location.state.result;
 
   return (
     <MainWrapper>
