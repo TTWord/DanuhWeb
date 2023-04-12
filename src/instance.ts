@@ -33,8 +33,8 @@ instance.interceptors.response.use(
     if (errorMessage === 'EXPIRED_ACCESS_TOKEN') {
       const getToken = async () => {
         const response = await instance.post('/auth/refreshtoken');
-        console.log(response.data.data.access_token);
         localStorage.setItem('access_Token', response.data.data.access_token);
+        location.reload(); // 새로고침
       };
       getToken();
     } else if (
