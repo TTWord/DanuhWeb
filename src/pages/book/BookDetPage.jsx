@@ -10,11 +10,6 @@ import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 import NewWord from './BookDetPage/NewWord';
 import useGetWord from './BookDetPage/hooks/useGetWord';
 
-const getBookAPI = async bookId => {
-  const response = await instance.get(`/word/${bookId}`);
-  return response;
-};
-
 const BookDetPage = () => {
   const getWord = useGetWord();
 
@@ -24,9 +19,8 @@ const BookDetPage = () => {
   const [word, setWord] = useState([]); // 변수명 수정 필요
 
   const getBook = async () => {
-    const response = await getBookAPI(bookId);
-
-    setWord(response.data.data);
+    const response = await getWord(bookId);
+    setWord(response);
   };
 
   const getBookName = async bookId => {
