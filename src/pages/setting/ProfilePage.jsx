@@ -125,6 +125,7 @@ const ProfilePage = () => {
           if (newNickname !== nickname && newNickname !== '') {
             changeNicknameAPI(newNickname);
           }
+          navigate('/setting');
         }}
       >
         <ApplyButton>적용하기</ApplyButton>
