@@ -11,7 +11,7 @@ import NewWord from './BookDetPage/NewWord';
 import useGetWord from './BookDetPage/hooks/useGetWord';
 
 const getBookAPI = async bookId => {
-  const response = await instance.get(`/word?book_id=${bookId}`);
+  const response = await instance.get(`/word/${bookId}`);
   return response;
 };
 
