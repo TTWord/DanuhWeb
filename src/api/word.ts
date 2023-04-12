@@ -2,7 +2,7 @@ import { instance } from '@/instance';
 
 export const wordAPI = {
   getWord: async (book_id: string) => {
-    const response = await instance.get(`word/${book_id}`);
+    const response = await instance.get(`/word/${book_id}`);
 
     return response;
   },
