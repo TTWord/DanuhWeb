@@ -6,6 +6,7 @@ import useSendmail from '@/pages/auth/hooks/useSendmail';
 import { globalState } from '@/recoil';
 import { useRecoilState } from 'recoil';
 import { TailSpin } from 'react-loader-spinner';
+import Swal from 'sweetalert2';
 
 const AuthInputBox = props => {
   return (
@@ -52,7 +53,10 @@ const JoinPage = () => {
 
   const onJoin = () => {
     if (userPW !== userPWConfirm) {
-      alert('비밀번호가 일치하지 않습니다.');
+      Swal.fire({
+        icon: 'warning',
+        title: '비밀번호가 일치하지 않습니다.',
+      });
     } else {
       sendmail(userEmail, userPW, userNickname);
     }

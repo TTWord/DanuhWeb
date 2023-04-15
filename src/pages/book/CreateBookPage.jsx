@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 import { instance } from '@/instance';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 // 생성한 단어장 전송하는 기능
 const createBook = async (bookName, navigate) => {
@@ -12,7 +13,11 @@ const createBook = async (bookName, navigate) => {
     });
     navigate(-1);
   } catch (e) {
-    alert('Error!');
+    const errorMessage = e.response.data.message;
+    Swal.fire({
+      icon: 'error',
+      title: errorMessage,
+    });
   }
 };
 
