@@ -5,6 +5,7 @@ import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 import { api } from '@/api';
 import { globalState } from '@/recoil';
 import { useSetRecoilState } from 'recoil';
+import Swal from 'sweetalert2';
 
 const ShortAnswerPage = () => {
   const navigate = useNavigate();
@@ -34,7 +35,10 @@ const ShortAnswerPage = () => {
 
   const goQuiz = async () => {
     if (page === '') {
-      alert('단어장을 선택해주세요.');
+      Swal.fire({
+        icon: 'warning',
+        title: '단어장을 선택해주세요.',
+      });
     } else {
       getQuiz();
     }

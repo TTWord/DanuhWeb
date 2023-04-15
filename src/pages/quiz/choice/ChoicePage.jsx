@@ -5,6 +5,7 @@ import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 import { api } from '@/api';
 import { globalState } from '@/recoil';
 import { useSetRecoilState } from 'recoil';
+import Swal from 'sweetalert2';
 
 const ChoicePage = () => {
   const navigate = useNavigate();
@@ -39,14 +40,20 @@ const ChoicePage = () => {
       navigate('/quiz/choice/question');
     } catch (e) {
       if (e.response.data.message === 'WORD_LESS_THAN_COUNT') {
-        alert('단어가 4개 미만입니다.');
+        Swal.fire({
+          icon: 'error',
+          title: '단어가 4개 미만입니다.',
+        });
       }
     }
   };
 
   const goQuiz = async () => {
     if (page === '') {
-      alert('단어장을 선택해주세요.');
+      Swal.fire({
+        icon: 'warning',
+        title: '단어장을 선택해주세요.',
+      });
     } else {
       getQuiz();
     }
