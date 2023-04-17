@@ -5,10 +5,10 @@ import { instance } from '@/instance';
 
 import sharingImg from '@/assets/svg/icons/icon-sharing.svg';
 import plusImg from '@/assets/svg/icons/icon-plus.svg';
-import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 
 import NewWord from './BookDetPage/NewWord';
 import useGetWord from './BookDetPage/hooks/useGetWord';
+import StackLayout from '@/components/layout/StackLayout';
 
 const BookDetPage = () => {
   const getWord = useGetWord();
@@ -23,7 +23,7 @@ const BookDetPage = () => {
     setWord(response);
   };
 
-  const getBookName = async bookId => {
+  const getBookName = async (bookId: any) => {
     try {
       const response = await instance.get(`/book/${bookId}`);
       setBookName(response.data.data.name);
@@ -38,25 +38,27 @@ const BookDetPage = () => {
   }, []);
 
   return (
-    <MainWrapper>
-      <BookHeader>
-        <BackButton
-          onClick={() => {
-            navigate(-1);
-          }}
-        >
-          <img src={arrowBackImg} alt="arrowBackImg" />
-        </BackButton>
-        <HeaderText>{bookName}</HeaderText>
-      </BookHeader>
-
+    <StackLayout
+      topBar={{
+        isShow: true,
+        title: bookName,
+        back: {
+          isShow: true,
+          location: '/book',
+        },
+      }}
+    >
       <BookContainer>
         {word.map(items => {
           return (
             <NewWord
+              // @ts-ignore
               key={items.id}
+              // @ts-ignore
               wordId={items.id}
+              // @ts-ignore
               word={items.word}
+              // @ts-ignore
               mean={items.mean}
               getBook={getBook}
             />
@@ -74,6 +76,7 @@ const BookDetPage = () => {
               console.log(test);
               //console.log(word);
               const wordId = 39;
+              // @ts-ignore
               const result = word.filter(item => item.id !== wordId);
               setWord(result);
             }}
@@ -89,7 +92,7 @@ const BookDetPage = () => {
           </PlusButton>
         </IconWrapper>
       </BookFooter>
-    </MainWrapper>
+    </StackLayout>
   );
 };
 
