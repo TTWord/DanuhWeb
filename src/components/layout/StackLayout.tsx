@@ -42,7 +42,12 @@ const StackLayout: React.FC<StackLayoutProps> = ({ children, topBar }) => {
 
 export default StackLayout;
 
-const Container = styled.div``;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+`;
 const Header = styled.div`
   width: 100%;
   height: 60px;
@@ -51,17 +56,26 @@ const Header = styled.div`
   align-items: center;
   padding: 0 14px;
 `;
-const Content = styled.div``;
+const Content = styled.div`
+  width: 100%;
+  height: 100%;
+`;
 
 const Back = styled.button`
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const Title = styled.div`
-  padding-top: 3px;
+  padding-top: 4px;
   font-weight: 500;
   font-size: 24px;
-  margin-left: 10px;
+  margin-left: 20px;
   font-weight: 500;
 `;
