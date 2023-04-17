@@ -1,19 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 import { instance } from '@/instance';
-import { useNavigate } from 'react-router-dom';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { AxiosError } from 'axios';
+import StackLayout from '@/components/layout/StackLayout';
 
 // 생성한 단어장 전송하는 기능
-const createBook = async (bookName, navigate) => {
+const createBook = async (bookName: string, navigate: NavigateFunction) => {
   try {
     const response = await instance.post('/book', {
       name: bookName,
     });
     navigate(-1);
-  } catch (e) {
-    const errorMessage = e.response.data.message;
+  } catch (e: unknown) {
+    const error = e as AxiosError<{
+      message: string;
+    }>;
+    const errorMessage = error.response?.data?.message;
     Swal.fire({
       icon: 'error',
       title: errorMessage,
@@ -27,18 +32,16 @@ const CreateBookPage = () => {
   const [newBook, setNewBook] = useState('');
 
   return (
-    <MainWrapper>
-      <BookHeader>
-        <BackButton
-          onClick={() => {
-            navigate(-1);
-          }}
-        >
-          <img src={arrowBackImg} alt="arrowBackImg" />
-        </BackButton>
-        <HeaderText>단어장 만들기</HeaderText>
-      </BookHeader>
-
+    <StackLayout
+      topBar={{
+        isShow: true,
+        title: '단어장 만들기',
+        back: {
+          isShow: true,
+          location: '/book',
+        },
+      }}
+    >
       <CreateContainer>
         <BookNameDiv>단어장 이름</BookNameDiv>
         <BookInputWrapper>
@@ -57,42 +60,12 @@ const CreateBookPage = () => {
           생성
         </CreateButton>
       </CreateContainer>
-    </MainWrapper>
+    </StackLayout>
   );
 };
 
 export default CreateBookPage;
 
-//== 스타일 정의 ==/
-const MainWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-//-- Header 영역 --//
-const BookHeader = styled.div`
-  width: 100%;
-  height: 75px;
-  background: #ffffff;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-shrink: 0;
-`;
-const BackButton = styled.button`
-  margin-left: 30px;
-  width: 36px;
-  height: 36px;
-`;
-const HeaderText = styled.div`
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 24px;
-  color: #444444;
-`;
 //-- 단어장 만드는 영역 --//
 const CreateContainer = styled.div`
   height: 100%;
