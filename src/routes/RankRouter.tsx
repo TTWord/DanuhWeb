@@ -1,12 +1,20 @@
 import RankingPage from '@/pages/ranking/RankingPage';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import RouteTransition from './RouteTransition';
+import RouteTransitionWrapper from './RouteTransitionWrapper';
 
 const RankRouter = () => {
+  const location = useLocation();
+
   return (
-    <Routes>
-      {/* 랭킹 메인 페이지 */}
-      <Route path={'/'} element={<RankingPage />} />
-    </Routes>
+    <RouteTransition location={location}>
+      <Routes location={location}>
+        <Route element={<RouteTransitionWrapper />}>
+          {/* 랭킹 메인 페이지 */}
+          <Route path={'/'} element={<RankingPage />} />
+        </Route>
+      </Routes>
+    </RouteTransition>
   );
 };
 
