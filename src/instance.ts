@@ -1,5 +1,6 @@
 // axios instance
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export const instance = axios.create({
   baseURL: process.env.SERVER_NAME,
@@ -30,6 +31,7 @@ instance.interceptors.response.use(
   },
   error => {
     const errorMessage = error.response.data.message;
+
     if (errorMessage === 'EXPIRED_ACCESS_TOKEN') {
       const getToken = async () => {
         const response = await instance.post('/auth/refreshtoken');
@@ -46,7 +48,12 @@ instance.interceptors.response.use(
     ) {
       localStorage.removeItem('access_Token');
       localStorage.removeItem('refresh_Token');
-      window.location.href = '/auth';
+      Swal.fire({
+        icon: 'error',
+        title: errorMessage,
+      }).then(() => {
+        window.location.href = '/auth';
+      });
     }
 
     return Promise.reject(error);

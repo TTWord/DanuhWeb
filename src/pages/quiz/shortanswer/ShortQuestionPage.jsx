@@ -12,6 +12,7 @@ const ShortQuestionPage = () => {
   const problems = [...useRecoilValue(globalState.quiz.quizList)];
   const [currentQuiz, setCurrentQuiz] = useState([]);
 
+  // 맞춘 정답수
   const [result, setResult] = useState(0);
   // 문제 길이
   const length = problems.length;
@@ -185,13 +186,15 @@ const Answer = styled.input`
 `;
 
 const NextButton = styled.button`
-  width: 200px;
-  height: 40px;
+  width: 216px;
+  height: 72px;
   font-size: 20px;
   line-height: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: aqua;
+  background-color: #724fab;
   margin-top: 200px;
+  color: #ffffff;
+  border-radius: 7px;
 `;

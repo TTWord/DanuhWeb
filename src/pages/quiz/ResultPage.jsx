@@ -6,8 +6,8 @@ const ResultPage = () => {
   const location = useLocation();
   const percentage = location.state.result;
 
-  const goShortQuiz = () => {
-    navigate('/quiz/shortanswer');
+  const goQuiz = () => {
+    navigate('/quiz');
   };
 
   return (
@@ -17,7 +17,7 @@ const ResultPage = () => {
         <AnswerRate>정답률</AnswerRate>
         <Percentage>{percentage || 0}%</Percentage>
       </ContentWrapper>
-      <CompleteButton onClick={goShortQuiz}>완료</CompleteButton>
+      <CompleteButton onClick={goQuiz}>완료</CompleteButton>
     </MainWrapper>
   );
 };

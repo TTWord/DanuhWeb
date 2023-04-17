@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import { instance } from '@/instance';
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
+import Swal from 'sweetalert2';
 
 const addWord = async (book_id, word, mean, navigate) => {
   try {
@@ -13,7 +14,11 @@ const addWord = async (book_id, word, mean, navigate) => {
     });
     navigate(-1);
   } catch (e) {
-    alert('Error');
+    const errorMessage = e.response.data.message;
+    Swal.fire({
+      icon: 'error',
+      title: errorMessage,
+    });
   }
 };
 
@@ -64,7 +69,10 @@ const CreateWordPage = () => {
         <CreateButton
           onClick={() => {
             if (word === '' && mean === '') {
-              alert('미입력칸이 있습니다.');
+              Swal.fire({
+                icon: 'warning',
+                title: '미입력칸이 있습니다.',
+              });
             } else {
               addWord(book_id, word, mean, navigate);
             }

@@ -1,4 +1,6 @@
 import { api } from '@/api';
+
+import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
 const useLogin = () => {
@@ -14,13 +16,22 @@ const useLogin = () => {
       const errorMessage = e.response.data.message;
 
       if (errorCode === 409) {
-        alert(errorMessage);
+        Swal.fire({
+          icon: 'error',
+          title: errorMessage,
+        });
       } else if (errorCode === 400) {
-        alert('Bad Request');
+        Swal.fire({
+          icon: 'error',
+          title: 'Bad Request',
+        });
       } else if (errorCode === 404) {
         navigate('*');
       } else if (errorCode === 405) {
-        alert('Not Allowed');
+        Swal.fire({
+          icon: 'error',
+          title: 'Not Allowed',
+        });
       }
     }
   };

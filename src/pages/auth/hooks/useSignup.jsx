@@ -1,5 +1,6 @@
 import { api } from '@/api';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const useSignup = () => {
   const navigate = useNavigate();
@@ -13,7 +14,11 @@ const useSignup = () => {
       );
       navigate('/auth/join/welcome');
     } catch (e) {
-      alert('Error!');
+      const errorMessage = e.response.data.message;
+      Swal.fire({
+        icon: 'error',
+        title: errorMessage,
+      });
     }
   };
 
