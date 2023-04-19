@@ -68,19 +68,7 @@ const BookDetPage = () => {
 
       <BookFooter>
         <IconWrapper>
-          <SharingButton
-            onClick={async () => {
-              // promise 때문에 다시 한번 비동기
-              // 검색해보니 promise 전용 함수를 짜거나 비동기로 구현하라고함
-              const test = await getWord(bookId);
-              console.log(test);
-              //console.log(word);
-              const wordId = 39;
-              // @ts-ignore
-              const result = word.filter(item => item.id !== wordId);
-              setWord(result);
-            }}
-          >
+          <SharingButton>
             <img src={sharingImg} alt="sharingButton" />
           </SharingButton>
           <PlusButton
