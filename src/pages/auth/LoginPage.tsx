@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import useLogin from './LoginPage/hooks/useLogin';
@@ -6,12 +6,15 @@ import useLogin from './LoginPage/hooks/useLogin';
 import backButtonImg from '@/assets/svg/icons/icon-back-button.svg';
 import logoImg from '@/assets/svg/icons/logo-img.svg';
 
+import { useForm } from 'react-hook-form';
+
 const LoginPage = () => {
+  const { register, handleSubmit, watch } = useForm<{
+    username: string;
+    password: string;
+  }>();
   const navigate = useNavigate();
   const login = useLogin();
-
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
 
   const goBack = () => {
     navigate('/auth', { state: { direction: 'navigate-pop' } });
@@ -21,18 +24,14 @@ const LoginPage = () => {
     navigate('/auth/join');
   };
 
-  const onChangeUsername = e => {
-    setUsername(e.target.value);
-  };
-
-  const onChangePassword = e => {
-    setPassword(e.target.value);
-  };
-
-  const usernameRef = useRef();
+  const usernameRef = useRef<HTMLInputElement>(null);
   const [usernameFocused, setUsernameFocused] = useState(false);
-  const passwordRef = useRef();
+  const passwordRef = useRef<HTMLInputElement>(null);
   const [passwordFocused, setPasswordFocused] = useState(false);
+
+  const onSubmit = (data: { username: string; password: string }) => {
+    login(data.username, data.password);
+  };
 
   return (
     <WebWrapper>
@@ -41,46 +40,45 @@ const LoginPage = () => {
       </BackButton>
 
       <Logo src={logoImg} alt="logoImg" />
-      <LoginForm
-        onSubmit={e => {
-          e.preventDefault();
-          login(username, password);
-        }}
-      >
+      <LoginForm onSubmit={handleSubmit(onSubmit)}>
         <LoginWrapper>
           <CustomTextBox
             onClick={() => {
-              usernameRef.current.focus();
+              usernameRef?.current?.focus();
             }}
           >
-            <Placeholder isFocused={usernameFocused || username.length > 0}>
+            <Placeholder
+              isFocused={usernameFocused || watch('username')?.length > 0}
+            >
               USERNAME
             </Placeholder>
             <CustomTextEnter
               type="email"
-              ref={usernameRef}
+              {...register('username', {
+                required: true,
+                onBlur: () => setUsernameFocused(false),
+              })}
               onFocus={() => setUsernameFocused(true)}
-              onBlur={() => setUsernameFocused(false)}
-              onChange={onChangeUsername}
-              value={username}
             />
           </CustomTextBox>
           <CustomTextBox
             onClick={() => {
-              passwordRef.current.focus();
+              passwordRef?.current?.focus();
               setPasswordFocused(true);
             }}
           >
-            <Placeholder isFocused={passwordFocused || password.length > 0}>
+            <Placeholder
+              isFocused={passwordFocused || watch('password')?.length > 0}
+            >
               PASSWORD
             </Placeholder>
             <CustomTextEnter
               type="password"
-              ref={passwordRef}
               onFocus={() => setPasswordFocused(true)}
-              onBlur={() => setPasswordFocused(false)}
-              onChange={onChangePassword}
-              value={password}
+              {...register('password', {
+                required: true,
+                onBlur: () => setPasswordFocused(false),
+              })}
             />
           </CustomTextBox>
         </LoginWrapper>
@@ -109,7 +107,9 @@ const CustomTextBox = styled.div`
   }
 `;
 
-const Placeholder = styled.div`
+const Placeholder = styled.div<{
+  isFocused: boolean;
+}>`
   position: absolute;
   top: 50%;
   left: 10px;
