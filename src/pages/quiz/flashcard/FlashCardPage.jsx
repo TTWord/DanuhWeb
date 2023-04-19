@@ -1,20 +1,71 @@
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
-
-const bookList = () => {
-  return 1;
-};
+import { api } from '@/api';
+import useGetMemo from './hooks/useGetMemo';
+import Swal from 'sweetalert2';
 
 const FlashCardPage = () => {
+  const getMemo = useGetMemo();
   const navigate = useNavigate();
 
+  const [books, setBooks] = useState([]);
+  const [page, setPage] = useState('');
+
+  const CreateBookList = props => {
+    const [color, setColor] = useState('#ffffff');
+    return (
+      <Book
+        color={color}
+        onClick={() => {
+          setPage(props.bookId);
+          // 2번 클릭해야 색이 바뀜
+          color === '#ffffff' ? setColor('#724fab') : setColor('#ffffff');
+        }}
+      >
+        <div>{props.bookName}</div>
+      </Book>
+    );
+  };
+
+  const getBookList = async () => {
+    try {
+      const response = await api.book.getBook();
+
+      if (response.data.status === 'OK') {
+        setBooks(response.data.data);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getBookList();
+  }, []);
+
+  // count 부분은 SWeet ALert로 input할까 생각 중
+  const count = 10;
   const goWord = () => {
-    navigate('/quiz/flashcard/word');
+    if (page === '') {
+      Swal.fire({
+        icon: 'warning',
+        title: '단어장을 선택해주세요.',
+      });
+    } else {
+      getMemo(page, count, 'word');
+    }
   };
   const goMean = () => {
-    navigate('/quiz/flashcard/mean');
+    if (page === '') {
+      Swal.fire({
+        icon: 'warning',
+        title: '단어장을 선택해주세요.',
+      });
+    } else {
+      getMemo(page, count, 'mean');
+    }
   };
 
   return (
@@ -32,8 +83,17 @@ const FlashCardPage = () => {
       <Container>
         <QuizName>FLASHCARD</QuizName>
         <BookSelect>단어장 선택</BookSelect>
-        <Book>단어장1</Book>
-        <Book>단어장2</Book>
+        <BookWrapper>
+          {books.map(items => {
+            return (
+              <CreateBookList
+                key={items.id}
+                bookId={items.id}
+                bookName={items.name}
+              />
+            );
+          })}
+        </BookWrapper>
       </Container>
 
       <Footer>
@@ -45,6 +105,8 @@ const FlashCardPage = () => {
 };
 
 export default FlashCardPage;
+
+//props.activate ? '#724fab' : '#ffffff';
 
 const MainWrapper = styled.div`
   position: relative;
@@ -95,10 +157,28 @@ const BookSelect = styled.div`
   color: #444444;
   margin-bottom: 27px;
 `;
-const Book = styled.div`
+
+const BookWrapper = styled.div`
+  width: 300px; /*100%;*/
+  height: 216px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+  /* ::-webkit-scrollbar {
+    display: none;
+  } */
+  button {
+    flex: 0 0 auto;
+  }
+  //padding-top: 107px;
+`;
+
+const Book = styled.button`
   width: 279px;
   height: 40px;
-  background: #ffffff;
+  background-color: ${props => props.color};
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
   display: flex;
