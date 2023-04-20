@@ -1,6 +1,14 @@
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import logoImg from '@/assets/svg/icons/logo-img.svg';
+import styled, { keyframes } from 'styled-components';
+
+import logoImg from '@/assets/svg/logo-TTWord.svg';
+
+import logoImg1 from '@/assets/svg/icons/icon-hat.svg';
+import logoImg2 from '@/assets/svg/icons/icon-pencil.svg';
+import logoImg3 from '@/assets/svg/icons/icon-dog.svg';
+import logoImg4 from '@/assets/svg/icons/icon-book.svg';
+import logoImg5 from '@/assets/svg/icons/icon-medal.svg';
+
 import useSocialLogin from './hooks/useSocialLogin';
 
 const AuthPage = () => {
@@ -10,29 +18,35 @@ const AuthPage = () => {
   const goLogin = () => {
     navigate('/auth/login');
   };
+  const kakaoLogin = () => {
+    socialLogin('kakao');
+  };
+  const googleLogin = () => {
+    socialLogin('google');
+  };
 
   return (
     <WebWrapper>
-      <Logo src={logoImg} alt="logoImg" />
-      <Introduce>이미지, PDF, 글을 단어장으로 만들자!</Introduce>
-      <KakaoLogin
-        onClick={() => {
-          socialLogin('kakao');
-        }}
-      >
-        카카오톡으로 로그인
-      </KakaoLogin>
-      <GoogleLogin
-        onClick={() => {
-          socialLogin('google');
-        }}
-      >
-        구글 계정으로 로그인
-      </GoogleLogin>
-      <AppleLogin>애플 계정으로 로그인</AppleLogin>
-      <EmailLogin onClick={goLogin}>이메일로 로그인</EmailLogin>
+      <IconWrapper>
+        <img src={logoImg1} alt="icon-1" />
+        <img src={logoImg2} alt="icon-2" />
+        <img src={logoImg3} alt="icon-3" />
+        <img src={logoImg4} alt="icon-4" />
+        <img src={logoImg5} alt="icon-5" />
+      </IconWrapper>
 
-      <FindIdPW>아이디 찾기 / 비밀번호 찾기</FindIdPW>
+      <IntroduceWrapper>
+        <MainLogo src={logoImg} alt="logoImg" />
+        <Introduce>
+          빠르고 간편하게<p>회원가입 할 수 있어요!</p>
+        </Introduce>
+      </IntroduceWrapper>
+      <LoginWrapper>
+        <KakaoLogin onClick={kakaoLogin}>카카오톡으로 로그인</KakaoLogin>
+        <GoogleLogin onClick={googleLogin}>구글 계정으로 로그인</GoogleLogin>
+        <AppleLogin>애플 계정으로 로그인</AppleLogin>
+        <EmailLogin onClick={goLogin}>이메일로 로그인</EmailLogin>
+      </LoginWrapper>
     </WebWrapper>
   );
 };
@@ -46,50 +60,64 @@ const WebWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: #f8f8fc;
 `;
-const Logo = styled.img`
+
+const IconWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 132px;
+`;
+
+const IntroduceWrapper = styled.div`
+  width: 310px;
+`;
+const MainLogo = styled.img`
   width: 179px;
   height: 48px;
-  margin-bottom: 12px;
+  margin-bottom: 29px;
 `;
 const Introduce = styled.div`
-  font-weight: 300;
-  font-size: 12px;
-  color: #5c369a;
-  margin-bottom: 24px;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 140%;
+  color: #2c2d31;
+  margin-bottom: 145px;
+`;
+
+const LoginWrapper = styled.div`
+  width: 100%;
+  height: 216px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const Login = styled.button`
-  width: 249px;
-  height: 43px;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  width: 312px;
+  height: 48px;
   border-radius: 8px;
-  font-weight: 300;
-  font-size: 16px;
+
+  font-weight: 400;
+  font-size: 14px;
   text-align: center;
-  margin-bottom: 12px;
-`;
-const KakaoLogin = styled(Login)`
-  background: #f5e04d;
-  color: #333333;
-`;
-const GoogleLogin = styled(Login)`
-  background: #ffffff;
-  color: #333333;
-`;
-const AppleLogin = styled(Login)`
-  background: #000000;
   color: #ffffff;
 `;
-const EmailLogin = styled(Login)`
-  background: linear-gradient(180deg, #734ae7 0%, #4f32a2 100%);
-  color: white;
+const KakaoLogin = styled(Login)`
+  background-color: #f5e04d;
+  border: 1px solid #ffc121;
 `;
-
-const FindIdPW = styled.button`
-  width: 100%;
-  font-weight: 700;
-  font-size: 12px;
-  line-height: 12px;
-  color: #000000;
+const GoogleLogin = styled(Login)`
+  background-color: #44a5ff;
+  border: 1px solid #3797f0;
+`;
+const AppleLogin = styled(Login)`
+  background-color: #2c2d31;
+`;
+const EmailLogin = styled(Login)`
+  background-color: #694ac2;
+  border: 1px solid #4928a9;
 `;
