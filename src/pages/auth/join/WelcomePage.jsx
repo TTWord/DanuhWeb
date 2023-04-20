@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { globalState } from '@/recoil';
 
+import character from '@/assets/svg/logo-character.svg';
+
 const WelcomePage = () => {
   const navigate = useNavigate();
   const userEmail = useRecoilValue(globalState.auth.username);
@@ -24,6 +26,7 @@ const WelcomePage = () => {
       </UserNameBox>
       <WelcomeBox>환영합니다</WelcomeBox>
       <UserEmailBox>{userEmail}</UserEmailBox>
+      <img src={character} alt="character" />
     </MainWrapper>
   );
 };
