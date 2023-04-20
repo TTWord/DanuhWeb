@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import logoImg from '@/assets/svg/icons/logo-img.svg';
+import logoImg from '@/assets/svg/logo-TTWord.svg';
 
 const StartPage = () => {
   const navigate = useNavigate();
@@ -30,16 +30,16 @@ const MainWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 12px;
+  background-color: #f3f0fb;
 `;
 
 const LogoImg = styled.img`
   width: 180px;
-  margin-bottom: 10px;
+  margin-bottom: 13px;
 `;
 
 const IntroText = styled.div`
-  font-weight: 300;
+  font-weight: 400;
   font-size: 12px;
-  color: #5c369a;
+  color: #6b6c76;
 `;
