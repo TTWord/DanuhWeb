@@ -1,7 +1,8 @@
-import ChartSvg from '@/components/svg/menu/ChartSvg';
-import ListSvg from '@/components/svg/menu/ListSvg';
-import PuzzleSvg from '@/components/svg/menu/PuzzleSvg';
-import SettingSvg from '@/components/svg/menu/SettingSvg';
+import HomeSvg from '@/components/svg/menu/HomeSvg';
+import StudySvg from '@/components/svg/menu/StudySvg';
+import RankingSvg from '@/components/svg/menu/RankigSvg';
+import MyPageSvg from '@/components/svg/menu/MyPageSvg';
+
 import { globalState } from '@/recoil';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
@@ -10,26 +11,26 @@ import tw from 'twin.macro';
 const menuList = [
   {
     id: 0,
-    component: <ListSvg stroke="#cccccc" />,
-    activeComponent: <ListSvg stroke="#333333" />,
+    component: <HomeSvg stroke="#cccccc" />,
+    activeComponent: <HomeSvg stroke="#694AC2" />,
     navigate: '/book',
   },
   {
     id: 1,
-    component: <PuzzleSvg stroke="#cccccc" />,
-    activeComponent: <PuzzleSvg stroke="#333333" />,
+    component: <StudySvg stroke="#cccccc" />,
+    activeComponent: <StudySvg stroke="#694AC2" />,
     navigate: '/quiz',
   },
   {
     id: 2,
-    component: <ChartSvg fill="#cccccc" />,
-    activeComponent: <ChartSvg fill="#333333" />,
+    component: <RankingSvg stroke="#cccccc" />,
+    activeComponent: <RankingSvg stroke="#694AC2" />,
     navigate: '/ranking',
   },
   {
     id: 3,
-    component: <SettingSvg stroke="#cccccc" />,
-    activeComponent: <SettingSvg stroke="#333333" />,
+    component: <MyPageSvg stroke="#cccccc" />,
+    activeComponent: <MyPageSvg stroke="#694AC2" />,
     navigate: '/setting',
   },
 ];
