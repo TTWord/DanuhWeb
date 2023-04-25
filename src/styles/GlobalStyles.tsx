@@ -36,6 +36,13 @@ const CustomStyles = createGlobalStyle`
     font-size: 16px;
     height: 100%;
   }
+
+  input:-webkit-autofill {
+   -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+   -webkit-text-size-adjust: inherit;
+  }
+  
+
 `;
 
 const GlobalStyles = () => (
