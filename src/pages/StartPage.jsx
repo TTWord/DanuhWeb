@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import logoImg from '@/assets/svg/logo-TTWord.svg';
+import logoImg from '@/assets/svg/logos/logo-TTWord.svg';
 
 const StartPage = () => {
   const navigate = useNavigate();

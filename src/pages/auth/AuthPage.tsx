@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 
-import logoImg from '@/assets/svg/logo-TTWord.svg';
+import logoImg from '@/assets/svg//logos/logo-TTWord.svg';
 
-import logoImg1 from '@/assets/svg/icons/icon-hat.svg';
-import logoImg2 from '@/assets/svg/icons/icon-pencil.svg';
-import logoImg3 from '@/assets/svg/icons/icon-dog.svg';
-import logoImg4 from '@/assets/svg/icons/icon-book.svg';
-import logoImg5 from '@/assets/svg/icons/icon-medal.svg';
+import hatIcon from '@/assets/svg/icons/icon-hat.svg';
+import pencilIcon from '@/assets/svg/icons/icon-pencil.svg';
+import dogIcon from '@/assets/svg/icons/icon-dog.svg';
+import bookIcon from '@/assets/svg/icons/icon-book.svg';
+import medalIcon from '@/assets/svg/icons/icon-medal.svg';
 
 import useSocialLogin from './hooks/useSocialLogin';
 
@@ -28,11 +28,11 @@ const AuthPage = () => {
   return (
     <WebWrapper>
       <IconWrapper>
-        <img src={logoImg1} alt="icon-1" />
-        <img src={logoImg2} alt="icon-2" />
-        <img src={logoImg3} alt="icon-3" />
-        <img src={logoImg4} alt="icon-4" />
-        <img src={logoImg5} alt="icon-5" />
+        <img src={hatIcon} alt="hatIcon" />
+        <img src={pencilIcon} alt="pencilIcon" />
+        <img src={dogIcon} alt="dogIcon" />
+        <img src={bookIcon} alt="bookIcon" />
+        <img src={medalIcon} alt="medalIcon" />
       </IconWrapper>
 
       <IntroduceWrapper>

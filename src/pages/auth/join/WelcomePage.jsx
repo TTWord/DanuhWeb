@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { globalState } from '@/recoil';
 
-import mascot from '@/assets/svg/logo-character.svg';
+import mascot from '@/assets/svg/logos/logo-character.svg';
 
 const WelcomePage = () => {
   const navigate = useNavigate();
