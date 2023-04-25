@@ -7,6 +7,7 @@ import OAuthPage from '@/pages/auth/OAuthPage';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import RouteTransition from './RouteTransition';
 import RouteTransitionWrapper from './RouteTransitionWrapper';
+import NicknameSubmitPage from '@/pages/auth/join/NicknameSubmitPage';
 
 const AuthRouter = () => {
   const location = useLocation();
@@ -24,8 +25,11 @@ const AuthRouter = () => {
           {/* 이메일 로그인 페이지 */}
           <Route path={'/login'} element={<LoginPage />} />
 
-          {/* 회원가입 페이지 */}
-          <Route path={'/join'} element={<JoinPage />} />
+          {/* 닉네임 입력 페이지 */}
+          <Route path={'/join'} element={<NicknameSubmitPage />} />
+
+          {/* 회원 정보 입력 페이지 */}
+          <Route path={'/join/auth'} element={<JoinPage />} />
 
           {/* 인증 코드 입력 페이지 */}
           <Route path={'/join/code'} element={<AuthCodePage />} />

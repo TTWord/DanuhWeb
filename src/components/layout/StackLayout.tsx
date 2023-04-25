@@ -50,7 +50,7 @@ const Container = styled.div`
 `;
 const Header = styled.div`
   width: 100%;
-  height: 60px;
+  height: 64px;
   border-bottom: 1px solid #dddddd;
   display: flex;
   align-items: center;
@@ -62,8 +62,8 @@ const Content = styled.div`
 `;
 
 const Back = styled.button`
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
 
   img {
     width: 100%;
