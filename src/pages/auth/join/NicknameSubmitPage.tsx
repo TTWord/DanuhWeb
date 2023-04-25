@@ -37,6 +37,8 @@ const Chapter = styled.div`
   border-radius: 20px;
   background-color: #c7b3ff;
   color: #ffffff;
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
+  // font-family: ${({ theme }) => theme.fonts.pretendard};
 `;
 
 const Content = styled.div``;
