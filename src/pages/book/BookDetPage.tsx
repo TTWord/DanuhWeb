@@ -14,6 +14,7 @@ const BookDetPage = () => {
   const getWord = useGetWord();
 
   const navigate = useNavigate();
+
   const bookId = useParams().id;
   const [bookName, setBookName] = useState('');
   const [word, setWord] = useState([]); // 변수명 수정 필요

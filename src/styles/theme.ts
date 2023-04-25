@@ -1,22 +1,6 @@
-interface ITheme {
-  colors: {
-    white: string;
-    gray: {
-      100: string;
-      200: string;
-      300: string;
-      400: string;
-      500: string;
-      600: string;
-      700: string;
-      800: string;
-      900: string;
-    };
-    black: string;
-  };
-}
+import { DefaultTheme } from 'styled-components';
 
-const lightTheme: ITheme = {
+const lightTheme: DefaultTheme = {
   colors: {
     white: '#ffffff',
     gray: {
@@ -32,9 +16,13 @@ const lightTheme: ITheme = {
     },
     black: '#000000',
   },
+  fonts: {
+    pretendard: 'Pretendard',
+    gmarketSans: 'GmarketSans',
+  },
 };
 
-const darkTheme: ITheme = {
+const darkTheme: DefaultTheme = {
   colors: {
     white: '#eeeef4',
     gray: {
@@ -49,6 +37,10 @@ const darkTheme: ITheme = {
       900: '#000000',
     },
     black: '#000000',
+  },
+  fonts: {
+    pretendard: 'Pretendard',
+    gmarketSans: 'GmarketSans',
   },
 };
 

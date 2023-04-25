@@ -3,6 +3,8 @@ import { createGlobalStyle } from 'styled-components';
 import { GlobalStyles as BaseStyles } from 'twin.macro';
 
 const CustomStyles = createGlobalStyle`
+  @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard-dynamic-subset.css");
+
   @font-face {
       font-family: 'GmarketSans';
       src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff') format('woff');
@@ -23,7 +25,7 @@ const CustomStyles = createGlobalStyle`
   }
 
   html, body {
-    font-family: 'GmarketSans', sans-serif;
+    font-family: 'Pretendard', sans-serif;
     font-size: 10px;
     font-weight: 500;
     width: 100%;
