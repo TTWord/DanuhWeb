@@ -25,7 +25,7 @@ const CustomStyles = createGlobalStyle`
   }
 
   html, body {
-    font-family: 'GmarketSans', sans-serif;
+    font-family: 'Pretendard', sans-serif;
     font-size: 10px;
     font-weight: 500;
     width: 100%;
