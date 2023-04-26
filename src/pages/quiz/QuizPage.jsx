@@ -6,6 +6,9 @@ import { useRecoilState } from 'recoil';
 
 import { globalState } from '@/recoil';
 import Footer from '@/components/layout/HomeLayout/Footer';
+import bulbIcon from '@/assets/svg/icons/icon-bulb.svg';
+import leafIcon from '@/assets/svg/icons/icon-leaf.svg';
+import treeIcon from '@/assets/svg/icons/icon-tree.svg';
 
 const QuizPage = () => {
   const [activeMenu, setActiveMenu] = useRecoilState(
@@ -38,14 +41,26 @@ const QuizPage = () => {
         <Container>
           <QuizTitle>암기하기</QuizTitle>
           <SelectWrapper>
-            <SelectButton onClick={goFlashcard}>Flashcard</SelectButton>
+            <SelectButton onClick={goFlashcard}>
+              단어암기
+              <Type>Flashcard</Type>
+              <Icon src={bulbIcon} alt="bulbIcon" />
+            </SelectButton>
           </SelectWrapper>
         </Container>
         <Container>
           <QuizTitle>문제 풀기</QuizTitle>
           <SelectWrapper>
-            <SelectButton onClick={goChoiceQuiz}>객관식</SelectButton>
-            <SelectButton onClick={goShortQuiz}>주관식</SelectButton>
+            <SelectButton onClick={goChoiceQuiz}>
+              객관식
+              <Type>Select</Type>
+              <Icon src={leafIcon} alt="leafIcon" />
+            </SelectButton>
+            <SelectButton onClick={goShortQuiz}>
+              주관식
+              <Type>Drag</Type>
+              <Icon src={treeIcon} alt="treeIcon" />
+            </SelectButton>
           </SelectWrapper>
         </Container>
       </ContainerWrapper>
@@ -101,20 +116,37 @@ const SelectWrapper = styled.div`
   padding: 0 14px 0 22px;
   display: flex;
   flex-wrap: wrap;
+  //justify-content: space-between;
 `;
 const SelectButton = styled.button`
   width: 170px;
-  height: 150px;
-  background-color: #606060;
+  height: 190px;
+  background-color: #694ac2;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.12);
   border-radius: 11px;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
   color: white;
-  font-weight: 400;
+  font-weight: 300;
   font-size: 16px;
   line-height: 16px;
+  padding: 26px 20px 30px 20px;
   margin: 0 8px 8px 0;
+  position: relative;
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
+`;
+
+const Type = styled.div`
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 20px;
+  margin: 10px 0 60px 0;
+`;
+
+const Icon = styled.img`
+  position: absolute;
+  right: 20px;
+  bottom: 30px;
 `;
 
 //-- 푸터 --//
