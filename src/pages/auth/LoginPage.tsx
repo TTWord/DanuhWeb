@@ -1,198 +1,368 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import useLogin from './LoginPage/hooks/useLogin';
 
+import useLogin from '@/pages/auth/LoginPage/hooks/useLogin';
+import useSocialLogin from '@/pages/auth/hooks/useSocialLogin';
 import backButtonImg from '@/assets/svg/icons/icon-back-button.svg';
-import logoImg from '@/assets/svg/icons/logo-img.svg';
-
-import { useForm } from 'react-hook-form';
+import googleIcon from '@/assets/svg/icons/icon-google.svg';
+import kakaoIcon from '@/assets/svg/icons/icon-kakao.svg';
+import appleIcon from '@/assets/svg/icons/icon-apple.svg';
 
 const LoginPage = () => {
-  const { register, handleSubmit, watch } = useForm<{
-    username: string;
-    password: string;
-  }>();
   const navigate = useNavigate();
   const login = useLogin();
+  const socialLogin = useSocialLogin();
 
   const goBack = () => {
     navigate('/auth', { state: { direction: 'navigate-pop' } });
+  };
+
+  const kakaoLogin = () => {
+    socialLogin('kakao');
+  };
+  const googleLogin = () => {
+    socialLogin('google');
+  };
+  const appleLogin = () => {
+    socialLogin('apple');
   };
 
   const goJoin = () => {
     navigate('/auth/join');
   };
 
-  const usernameRef = useRef<HTMLInputElement>(null);
-  const [usernameFocused, setUsernameFocused] = useState(false);
-  const passwordRef = useRef<HTMLInputElement>(null);
-  const [passwordFocused, setPasswordFocused] = useState(false);
+  const domainList = ['naver.com', 'gmail.com', 'hanmail.net', 'daum.net'];
+  const domainRef = useRef<HTMLDivElement>(null);
+  const [isSelectopen, setSelectOpen] = useState(false);
+  const [isDirectInput, setDirectInput] = useState(false);
 
-  const onSubmit = (data: { username: string; password: string }) => {
-    login(data.username, data.password);
-  };
+  // 비밀번호 표시용
+  const [showPassWD, setShowPassWD] = useState<boolean>(false);
+
+  const [emailID, setEmailID] = useState<string>('');
+  const [emailDomain, setEmailDomain] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
   return (
     <WebWrapper>
-      <BackButton onClick={goBack}>
-        <img src={backButtonImg} alt="backButtonImg" />
-      </BackButton>
+      <Header>
+        <BackButton onClick={goBack}>
+          <img src={backButtonImg} alt="backButtonImg" />
+        </BackButton>
 
-      <Logo src={logoImg} alt="logoImg" />
-      <LoginForm onSubmit={handleSubmit(onSubmit)}>
-        <LoginWrapper>
-          <CustomTextBox
-            onClick={() => {
-              usernameRef?.current?.focus();
-            }}
-          >
-            <Placeholder
-              isFocused={usernameFocused || watch('username')?.length > 0}
-            >
-              USERNAME
-            </Placeholder>
-            <CustomTextEnter
-              type="email"
-              {...register('username', {
-                required: true,
-                onBlur: () => setUsernameFocused(false),
-              })}
-              onFocus={() => setUsernameFocused(true)}
+        <Title>이메일로 로그인</Title>
+      </Header>
+
+      <Container>
+        <FormBox>
+          <span>아이디</span>
+          <EmailBox>
+            <EmailID
+              onChange={e => {
+                setEmailID(e.target.value);
+              }}
+              type="text"
+              placeholder="이메일"
             />
-          </CustomTextBox>
-          <CustomTextBox
-            onClick={() => {
-              passwordRef?.current?.focus();
-              setPasswordFocused(true);
-            }}
-          >
-            <Placeholder
-              isFocused={passwordFocused || watch('password')?.length > 0}
+            @
+            <EmailDomain
+              onClick={() => {
+                if (!isDirectInput) {
+                  setSelectOpen(!isSelectopen);
+                }
+              }}
+              ref={domainRef}
             >
-              PASSWORD
-            </Placeholder>
-            <CustomTextEnter
-              type="password"
-              onFocus={() => setPasswordFocused(true)}
-              {...register('password', {
-                required: true,
-                onBlur: () => setPasswordFocused(false),
+              {!isDirectInput ? (
+                '선택'
+              ) : (
+                <DirectInput onChange={e => setEmailDomain(e.target.value)} />
+              )}
+            </EmailDomain>
+            <CustomSelectBox isActive={isSelectopen}>
+              {domainList.map((items, idx) => {
+                return (
+                  <CustomSelect
+                    key={idx}
+                    onClick={(e: any) => {
+                      const selectDomain = e.target.innerText;
+                      // @ts-ignore
+                      domainRef.current.innerText = selectDomain;
+                      setEmailDomain(selectDomain);
+                      setSelectOpen(!isSelectopen);
+                    }}
+                  >
+                    {items}
+                  </CustomSelect>
+                );
               })}
-            />
-          </CustomTextBox>
-        </LoginWrapper>
-        <LoginButton>로그인</LoginButton>
-      </LoginForm>
-      <AskAccount>계정이 없으신가요?</AskAccount>
-      <SignInButton onClick={goJoin}>회원가입</SignInButton>
+              <CustomSelect
+                onClick={() => {
+                  setSelectOpen(!isSelectopen);
+                  setDirectInput(!isDirectInput);
+                }}
+              >
+                직접입력
+              </CustomSelect>
+            </CustomSelectBox>
+          </EmailBox>
+        </FormBox>
+
+        <FormBox>
+          <span>비밀번호</span>
+          <PasswordBox
+            onChange={e => {
+              setPassword(e.target.value);
+            }}
+            type={showPassWD ? 'text' : 'password'}
+            placeholder="비밀번호"
+          />
+        </FormBox>
+
+        <Join>
+          아직 계정이 없으신가요?
+          <SignInButton onClick={goJoin}>회원가입</SignInButton>
+        </Join>
+      </Container>
+
+      <Footer>
+        <SocialWrapper>
+          SNS로 로그인하기
+          <SocialButtonWrapper>
+            <SocialLogin onClick={googleLogin}>
+              <img src={googleIcon} alt="googleIcon" />
+            </SocialLogin>
+            <KakaoLogin onClick={kakaoLogin}>
+              <img src={kakaoIcon} alt="kakaoIcon" />
+            </KakaoLogin>
+            <AppleLogin onClick={appleLogin}>
+              <img src={appleIcon} alt="appleIcon" />
+            </AppleLogin>
+          </SocialButtonWrapper>
+        </SocialWrapper>
+        <LoginButton
+          onClick={() => {
+            login(`${emailID}@${emailDomain}`, password);
+          }}
+        >
+          로그인
+        </LoginButton>
+      </Footer>
+
+      {/* 공간 분리 */}
     </WebWrapper>
   );
 };
 
 export default LoginPage;
 
-const CustomTextBox = styled.div`
-  width: 250px;
-  height: 46px;
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
-  flex-shrink: 0;
-  border-radius: 10px;
-  position: relative;
-  box-sizing: border-box;
-  overflow: hidden;
-
-  & + & {
-    margin-top: 10px;
-  }
-`;
-
-const Placeholder = styled.div<{
-  isFocused: boolean;
-}>`
-  position: absolute;
-  top: 50%;
-  left: 10px;
-  transform: translateY(-50%);
-  transition: all 0.3s ease-in-out;
-  font-size: 11px;
-  color: #cccccc;
-
-  ${({ isFocused }) =>
-    isFocused &&
-    css`
-      left: 10px;
-      top: 40%;
-      color: #8062b2;
-      font-size: 10px;
-      transform: translateY(-10px);
-    `}
-`;
-
-const CustomTextEnter = styled.input`
-  width: 100%;
-  height: 50px;
-  border: 0;
-  outline: 0;
-  box-sizing: border-box;
-  padding: 15px 10px 0px;
-  font-size: 12px;
-`;
-
 const WebWrapper = styled.div`
   width: 100%;
   height: 100%;
+  background-color: #f8f8fc;
+  position: absolute;
+`;
+
+const Header = styled.div`
+  width: 100%;
+  height: auto;
+  padding: 34px 0 116px 28px;
+`;
+
+const BackButton = styled.button`
+  width: 100%;
+  margin-bottom: 46px;
+`;
+
+const Title = styled.div`
+  width: 100%;
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 140%;
+  display: flex;
+`;
+
+const Container = styled.div`
+  width: 100%;
+  height: auto;
+  padding: 0 24px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-bottom: 168px;
 `;
 
-const BackButton = styled.button`
-  position: fixed;
-  top: 23px;
-  left: 23px;
-  width: 24px;
-  height: 24px;
-`;
-
-const Logo = styled.img`
-  width: 179px;
-  height: 48px;
-  margin-bottom: 17px;
-`;
-
-const LoginWrapper = styled.div`
-  width: 250px;
+const FormBox = styled.div`
+  width: 312px;
+  height: auto;
   display: flex;
   flex-direction: column;
+  font-size: 12px;
+  color: #242424;
+  margin-bottom: 24px;
+
+  span {
+    font-weight: bold;
+  }
+`;
+
+const EmailBox = styled.div`
+  height: 42px;
+  display: flex;
+  font-size: 16px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-top: 6px;
+`;
+
+const EmailID = styled.input`
+  width: 110px;
+  height: 100%;
+  padding-left: 16px;
+  padding-right: 8px;
+  display: flex;
+  align-items: center;
+  outline: none;
+
+  ::placeholder {
+    color: #dadada;
+  }
+`;
+
+const EmailDomain = styled.div`
+  width: 100%;
+  height: 100%;
+  padding-left: 8px;
+  display: flex;
+  align-items: center;
+  outline: none;
+
+  :hover {
+    cursor: pointer;
+  }
+`;
+const DirectInput = styled.input`
+  width: 100%;
+  height: 100%;
+  padding-right: 16px;
+  display: flex;
+  align-items: center;
+  outline: none;
+  ::placeholder {
+    color: #dadada;
+  }
+`;
+
+const CustomSelectBox = styled.div<{
+  isActive: boolean;
+}>`
+  display: none;
+  width: auto;
+  position: absolute;
+  z-index: 1;
+  right: 0;
+  top: 100%;
+  border: 1px solid;
+  background-color: white;
+
+  ${({ isActive }) =>
+    isActive &&
+    css`
+      display: block;
+    `}
+`;
+
+const CustomSelect = styled.button`
+  width: 100%;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  :hover {
+    background-color: #f1ecff;
+  }
+`;
+
+const PasswordBox = styled.input`
+  height: 42px;
+  padding-left: 16px;
+  font-size: 16px;
+  outline: none;
+  margin-top: 6px;
+`;
+
+const Join = styled.div`
+  width: auto;
+  height: auto;
+  font-size: 12px;
+  margin-top: 8px;
+`;
+
+const SignInButton = styled.button`
+  line-height: 120%;
+  border-bottom: 1px solid;
+  font-weight: 700;
+  margin-left: 4px;
+`;
+
+const SocialWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  //justify-content: space-between;
+  align-items: center;
+`;
+
+const SocialButtonWrapper = styled.div`
+  width: 176px;
+  display: flex;
   justify-content: space-between;
-  margin-bottom: 17px;
+  align-items: center;
+  margin: 12px 0 40px 0;
+`;
+
+const SocialLogin = styled.button`
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const KakaoLogin = styled(SocialLogin)`
+  background-color: #ffdf37;
+`;
+const AppleLogin = styled(SocialLogin)`
+  background-color: #000000;
+`;
+
+const Footer = styled.div`
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* position: fixed;
+  bottom: 36px; */
 `;
 
 const LoginButton = styled.button`
-  width: 250px;
-  height: 72px;
-  background: linear-gradient(180deg, #734ae7 0%, #4f32a2 100%);
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
-  font-size: 24px;
+  width: 312px;
+  height: 48px;
+  background-color: #694ac2;
+  border: 1px solid #4928a9;
+  border-radius: 8px;
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
+  font-weight: 400;
+  font-size: 14px;
   color: white;
   text-align: center;
   margin-bottom: 17px;
 `;
-
-const AskAccount = styled.div`
-  font-size: 12px;
-  margin-bottom: 8px;
-  color: #262626;
-`;
-
-const SignInButton = styled.button`
-  font-size: 12px;
-  font-weight: 500;
-  font-weight: bold;
-  color: #8062b2;
-`;
-
-const LoginForm = styled.form``;
