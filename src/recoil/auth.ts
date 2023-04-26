@@ -5,6 +5,10 @@ export const auth = {
     key: 'username',
     default: '',
   }),
+  domain: atom({
+    key: 'domain',
+    default: '',
+  }),
   password: atom({
     key: 'password',
     default: '',

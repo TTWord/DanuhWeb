@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, ChangeEvent } from 'react';
 import styled from 'styled-components';
-import BackButtonImg from '@/assets/svg/icons/icon-back-button.svg';
 import { useNavigate } from 'react-router-dom';
 import { globalState } from '@/recoil';
 import { useRecoilValue } from 'recoil';
 import useSignup from '../hooks/useSignup';
+import iconArrowBack from '@/assets/svg/icons/icon-back-button.svg';
+import useNavigatePop from '@/hooks/useNavigatePop';
 
 const AuthCodePage = () => {
   const userEmail = useRecoilValue(globalState.auth.username);
@@ -34,79 +35,110 @@ const AuthCodePage = () => {
     return () => clearInterval(intervalId);
   }, [minutes, seconds]);
 
-  //Title 변경
-  useEffect(() => {
-    document.querySelector('title').innerHTML = '코드인증';
-  }, []);
-
   // 네비게이트
   const navigate = useNavigate();
 
   const [authCode, setAuthCode] = useState('');
 
-  const getAuthCode = e => {
+  const onChangeAuthCode = (e: ChangeEvent<HTMLInputElement>) => {
     const inputUserCode = e.target.value;
     setAuthCode(inputUserCode);
   };
 
+  const navigatePop = useNavigatePop();
+
+  const onBack = () => {
+    navigatePop('/auth/join/info');
+  };
+
   return (
-    <MainWrapper>
-      <BackButton
-        onClick={() => {
-          navigate(-1);
-        }}
-      >
-        <img src={BackButtonImg} alt="BackButton" />
-      </BackButton>
+    <Layout>
+      <Header>
+        <img src={iconArrowBack} alt="back" onClick={onBack} />
+        <Chapter>3/3</Chapter>
+      </Header>
 
-      <AuthGuideBox>
-        <AuthText>인증코드 입력</AuthText>
-        <EmailBox>{userEmail}</EmailBox>
-        <RequsetAuthCodeButton>인증코드 재발송</RequsetAuthCodeButton>
-      </AuthGuideBox>
+      <Content>
+        <TopView>
+          <MainText>아이디와 비밀번호를 설정해주세요</MainText>
+        </TopView>
+        <AuthGuideBox>
+          <AuthText>인증코드 입력</AuthText>
+          <EmailBox>{userEmail}</EmailBox>
+          <RequsetAuthCodeButton>인증코드 재발송</RequsetAuthCodeButton>
+        </AuthGuideBox>
 
-      <AuthInputBox>
-        <CodeCounterBox>
-          <CodeBox>CODE</CodeBox>
-          <CounterBox>
-            0{minutes}:{seconds < 10 ? `0${seconds}` : seconds}
-          </CounterBox>
-        </CodeCounterBox>
-        <AuthInput
-          placeholder="이메일에 적혀있는 인증코드를 입력해주세요."
-          onChange={getAuthCode}
-        ></AuthInput>
-      </AuthInputBox>
+        <AuthInputBox>
+          <CodeCounterBox>
+            <CodeBox>CODE</CodeBox>
+            <CounterBox>
+              {minutes.toString().padStart(2, '0')}:
+              {seconds.toString().padStart(2, '0')}
+            </CounterBox>
+          </CodeCounterBox>
+          <AuthInput
+            placeholder="이메일에 적혀있는 인증코드를 입력해주세요."
+            onChange={onChangeAuthCode}
+          ></AuthInput>
+        </AuthInputBox>
 
-      <NextButton
-        onClick={() => {
-          signup(userEmail, userPW, userNickname, authCode);
-        }}
-      >
-        다음
-      </NextButton>
-    </MainWrapper>
+        <NextButton
+          onClick={() => {
+            signup(userEmail, userPW, userNickname, authCode);
+          }}
+        >
+          다음
+        </NextButton>
+      </Content>
+    </Layout>
   );
 };
 
 export default AuthCodePage;
 
-// 스타일 정의 => 나중에 스타일파일로 옮길 예정
-export const MainWrapper = styled.div`
+const Layout = styled.div`
   width: 100%;
-  height: 852px;
+  height: 100%;
+  background-color: #f8f8fc;
+  padding: 0 20px;
+`;
+
+const Header = styled.div`
+  width: 100%;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const Chapter = styled.div`
+  font-size: 12px;
+  padding: 4px 8px;
+  line-height: 16px;
+  border-radius: 20px;
+  background-color: #c7b3ff;
+  color: #ffffff;
+`;
+
+const Content = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  height: calc(100% - 64px);
+  justify-content: space-between;
 `;
-const BackButton = styled.button`
-  width: 24px;
-  height: 24px;
-  position: absolute;
-  top: 26px;
-  left: 26px;
+
+const TopView = styled.div`
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
+  color: #171717;
+  font-weight: medium;
+  margin-top: 25px;
+  flex-shrink: 0;
 `;
+
+const MainText = styled.div`
+  font-size: 18px;
+`;
+
 const AuthGuideBox = styled.div`
   display: flex;
   flex-direction: column;
