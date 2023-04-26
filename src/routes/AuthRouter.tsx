@@ -29,7 +29,7 @@ const AuthRouter = () => {
           <Route path={'/join'} element={<NicknameSubmitPage />} />
 
           {/* 회원 정보 입력 페이지 */}
-          <Route path={'/join/auth'} element={<JoinPage />} />
+          <Route path={'/join/info'} element={<JoinPage />} />
 
           {/* 인증 코드 입력 페이지 */}
           <Route path={'/join/code'} element={<AuthCodePage />} />

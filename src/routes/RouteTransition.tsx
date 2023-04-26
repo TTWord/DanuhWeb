@@ -47,11 +47,10 @@ const Container = styled.div`
   }
 
   .navigate-pop-enter {
-    transform: translateX(-100%);
+    transform: translateX(-50%);
   }
 
   .navigate-pop-enter-active {
-    z-index: 1;
     transform: translateX(0);
     transition: transform 300ms ease-in-out;
 
@@ -63,8 +62,9 @@ const Container = styled.div`
   }
 
   .navigate-pop-exit-active {
+    z-index: 1;
     transform: translateX(100%);
-    transition: transform 600ms ease-in-out;
+    transition: transform 300ms ease-in-out;
   }
 
   .navigate-push-enter {
