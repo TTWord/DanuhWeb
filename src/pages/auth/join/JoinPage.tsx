@@ -7,6 +7,8 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { TailSpin } from 'react-loader-spinner';
 import iconArrowBack from '@/assets/svg/icons/icon-back-button.svg';
 import useNavigatePop from '@/hooks/useNavigatePop';
+import iconArrowDown from './svg/icon-arrow-down.svg';
+import BottomSlidePop from '@/components/common/popup/BottomSlidePop';
 
 const JoinPage = () => {
   const [isOk, setIsOk] = useState(false);
@@ -20,6 +22,8 @@ const JoinPage = () => {
   const [userEmailEnd, setUserEmailEnd] = useRecoilState(
     globalState.auth.domain,
   );
+  const [userEmailEditMode, setUserEmailEditMode] = useState(false);
+
   const [emailError, setEmailError] = useState('');
   const [userPw, setUserPW] = useRecoilState(globalState.auth.password);
   const [pwError, setPwError] = useState('');
@@ -87,6 +91,15 @@ const JoinPage = () => {
     navigatePop('/auth/join');
   };
 
+  const [isPopOpen, setIsPopOpen] = useState(false);
+  const onSwitchPop = () => {
+    setIsPopOpen(!isPopOpen);
+  };
+
+  const onPopClose = () => {
+    setIsPopOpen(false);
+  };
+
   return (
     <Layout>
       <Header>
@@ -107,15 +120,90 @@ const JoinPage = () => {
                   type="text"
                   onChange={inputUserEmailStart}
                   placeholder="이메일"
-                  tw="w-1/3"
+                  tw="w-1/2"
                 />
                 <EmailCenter>@</EmailCenter>
-                <Input
+                {/* <Input
                   type="text"
                   onChange={inputUserEmailEnd}
                   placeholder="선택"
-                  tw="w-2/3"
-                />
+                  tw="w-1/2"
+                /> */}
+                <SelectMail>
+                  {!userEmailEditMode && (
+                    <MailButton onClick={onSwitchPop}>
+                      <MailText isActive={userEmailEnd.length > 0}>
+                        {userEmailEnd.length > 0 ? userEmailEnd : '선택'}
+                      </MailText>
+                      <img src={iconArrowDown} alt="arrow" />
+                    </MailButton>
+                  )}
+                  {userEmailEditMode && (
+                    <MailButton>
+                      <Input
+                        type="text"
+                        onChange={inputUserEmailEnd}
+                        placeholder="직접입력"
+                        tw="w-full px-0"
+                      />
+                      <img
+                        src={iconArrowDown}
+                        alt="arrow"
+                        onClick={onSwitchPop}
+                      />
+                    </MailButton>
+                  )}
+                  <BottomSlidePop isOpen={isPopOpen} onPopClose={onPopClose}>
+                    <SlideTopLine />
+                    <MailItems>
+                      <MailItem
+                        onClick={() => {
+                          setUserEmailEnd('naver.com');
+                          setUserEmailEditMode(false);
+                          onPopClose();
+                        }}
+                      >
+                        naver.com
+                      </MailItem>
+                      <MailItem
+                        onClick={() => {
+                          setUserEmailEnd('gmail.com');
+                          setUserEmailEditMode(false);
+                          onPopClose();
+                        }}
+                      >
+                        gmail.com
+                      </MailItem>
+                      <MailItem
+                        onClick={() => {
+                          setUserEmailEnd('daum.net');
+                          setUserEmailEditMode(false);
+                          onPopClose();
+                        }}
+                      >
+                        daum.net
+                      </MailItem>
+                      <MailItem
+                        onClick={() => {
+                          setUserEmailEnd('hotmail.com');
+                          setUserEmailEditMode(false);
+                          onPopClose();
+                        }}
+                      >
+                        hotmail.com
+                      </MailItem>
+                      <MailItem
+                        onClick={() => {
+                          setUserEmailEnd('');
+                          setUserEmailEditMode(true);
+                          onPopClose();
+                        }}
+                      >
+                        직접 입력
+                      </MailItem>
+                    </MailItems>
+                  </BottomSlidePop>
+                </SelectMail>
               </InputWrapper>
               <InputError>{emailError}</InputError>
             </InputBox>
@@ -256,12 +344,54 @@ const InputWrapper = styled.div`
 
 const Input = styled.input`
   outline: none;
-  padding: 0 16px;
   width: 100%;
+  color: #111111;
+  padding: 0 16px;
 
   &::placeholder {
     color: #dadada;
   }
+`;
+
+const SelectMail = styled.div`
+  color: #dadada;
+  padding: 0 16px;
+  display: flex;
+  width: 50%;
+`;
+
+const MailButton = styled.div`
+  display: flex;
+  width: 100%;
+  cursor: pointer;
+
+  img {
+    width: 11px;
+  }
+`;
+
+const MailText = styled.div<{
+  isActive: boolean;
+}>`
+  width: 100%;
+
+  ${({ isActive }) =>
+    isActive &&
+    css`
+      color: #111111;
+    `}
+`;
+
+const MailItems = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+const MailItem = styled.button`
+  padding: 12px 24px;
+  width: 100%;
+  text-align: left;
 `;
 
 const EmailCenter = styled.div`
@@ -301,4 +431,12 @@ const Next = styled.div<{
     css`
       background-color: #694ac2;
     `}
+`;
+
+const SlideTopLine = styled.div`
+  width: 40px;
+  height: 4px;
+  background-color: #e7e7e7;
+  margin: 16px auto 34px;
+  border-radius: 2px;
 `;
