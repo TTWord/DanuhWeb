@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 import { instance } from '@/instance';
+import useChangeProfilePic from './SettingPage/useChangeProfilePic';
 import backImg from '@/assets/svg/icons/icon-back-button.svg';
 import uploadImg from '@/assets/svg/icons/icon-image-upload.svg';
 
@@ -10,19 +11,6 @@ const getUserInfoAPI = async () => {
   try {
     const response = await instance.get('/user/userservice');
     return response;
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-const changeProfilePicAPI = async file => {
-  try {
-    const response = await instance.post('/user/userservice', file, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    console.log(response);
   } catch (e) {
     console.log(e);
   }
@@ -40,6 +28,7 @@ const changeNicknameAPI = async newNickname => {
 };
 
 const ProfilePage = () => {
+  const changeProfilePic = useChangeProfilePic();
   const profilePicRef = useRef();
   const [file, setFile] = useState(null);
   const uploadImage = () => {
@@ -120,12 +109,11 @@ const ProfilePage = () => {
           if (file !== null) {
             const formData = new FormData();
             formData.append('file', file);
-            changeProfilePicAPI(formData);
+            changeProfilePic(formData);
           }
           if (newNickname !== nickname && newNickname !== '') {
             changeNicknameAPI(newNickname);
           }
-          navigate('/setting');
         }}
       >
         <ApplyButton>적용하기</ApplyButton>
@@ -193,7 +181,7 @@ const UploadImg = styled.input`
 
 const ProfilePic = styled.img`
   width: 216px;
-  height: auto;
+  height: 216px;
   border-radius: 20px;
 `;
 

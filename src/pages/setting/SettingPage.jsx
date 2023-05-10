@@ -23,9 +23,9 @@ const getUserInfoAPI = async () => {
 
 const ContentBox = props => {
   return (
-    <Content>
+    <Content onClick={props.onClick}>
       <div>{props.title}</div>
-      <NextButton onClick={props.onClick}>
+      <NextButton>
         <img src={nextButton} alt="nextButton" />
       </NextButton>
     </Content>
@@ -197,11 +197,17 @@ const Content = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 24px 26px 24px 30px;
+  transition: 0.4s;
   div {
     font-weight: 300;
     font-size: 16px;
     text-align: center;
     line-height: 16px;
+  }
+  :hover {
+    background-color: #694ac2;
+    color: white;
+    cursor: pointer;
   }
 `;
 const NextButton = styled.button`
