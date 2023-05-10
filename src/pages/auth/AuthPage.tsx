@@ -9,20 +9,11 @@ import dogIcon from '@/assets/svg/icons/icon-dog.svg';
 import bookIcon from '@/assets/svg/icons/icon-book.svg';
 import medalIcon from '@/assets/svg/icons/icon-medal.svg';
 
-import useSocialLogin from './hooks/useSocialLogin';
-
 const AuthPage = () => {
   const navigate = useNavigate();
-  const socialLogin = useSocialLogin();
 
   const goLogin = () => {
     navigate('/auth/login');
-  };
-  const kakaoLogin = () => {
-    socialLogin('kakao');
-  };
-  const googleLogin = () => {
-    socialLogin('google');
   };
 
   return (
@@ -37,15 +28,11 @@ const AuthPage = () => {
 
       <IntroduceWrapper>
         <MainLogo src={logoImg} alt="logoImg" />
-        <Introduce>
-          빠르고 간편하게<p>회원가입 할 수 있어요!</p>
-        </Introduce>
+        <Introduce>이미지, PDF, 글을 단어장으로 만들자!</Introduce>
       </IntroduceWrapper>
+
       <LoginWrapper>
-        <KakaoLogin onClick={kakaoLogin}>카카오톡으로 로그인</KakaoLogin>
-        <GoogleLogin onClick={googleLogin}>구글 계정으로 로그인</GoogleLogin>
-        <AppleLogin>애플 계정으로 로그인</AppleLogin>
-        <EmailLogin onClick={goLogin}>이메일로 로그인</EmailLogin>
+        <Login onClick={goLogin}>시작하기</Login>
       </LoginWrapper>
     </WebWrapper>
   );
@@ -58,66 +45,57 @@ const WebWrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   background: #f8f8fc;
+  padding: 0 24px;
 `;
 
-const IconWrapper = styled.div`
+const IconWrapper = styled.header`
   width: 100%;
+  margin-top: 36px;
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  margin-bottom: 132px;
+  justify-content: space-between;
 `;
 
 const IntroduceWrapper = styled.div`
-  width: 310px;
+  width: 100%;
+  margin: 0 auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 const MainLogo = styled.img`
   width: 179px;
-  height: 48px;
-  margin-bottom: 29px;
+  margin-bottom: 13px;
 `;
-const Introduce = styled.div`
-  font-weight: bold;
-  font-size: 20px;
-  line-height: 140%;
-  color: #2c2d31;
+const Introduce = styled.span`
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 12px;
+  color: #6b6c76;
   margin-bottom: 145px;
 `;
 
-const LoginWrapper = styled.div`
+const LoginWrapper = styled.footer`
   width: 100%;
-  height: 216px;
+  height: 48px;
+  margin-bottom: 80px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: center;
 `;
 
 const Login = styled.button`
-  width: 312px;
-  height: 48px;
-  border-radius: 8px;
-
+  width: 100%;
+  height: 100%;
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
   font-weight: 400;
   font-size: 14px;
   text-align: center;
   color: #ffffff;
-`;
-const KakaoLogin = styled(Login)`
-  background-color: #f5e04d;
-  border: 1px solid #ffc121;
-`;
-const GoogleLogin = styled(Login)`
-  background-color: #44a5ff;
-  border: 1px solid #3797f0;
-`;
-const AppleLogin = styled(Login)`
-  background-color: #2c2d31;
-`;
-const EmailLogin = styled(Login)`
   background-color: #694ac2;
   border: 1px solid #4928a9;
+  border-radius: 8px;
 `;
