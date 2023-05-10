@@ -4,6 +4,7 @@ import GlobalStyles from './styles/GlobalStyles';
 import { lightTheme } from './styles/theme';
 import { atom, useRecoilValue } from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { useEffect } from 'react';
 
 export const darkMode = atom({
   key: 'darkMode',
@@ -14,6 +15,18 @@ const queryClient = new QueryClient();
 
 const App = () => {
   const isDark = useRecoilValue(darkMode);
+
+  function setScreenSize() {
+    let vh = window.innerHeight * 0.01;
+    //주소창을 제외한 영역을 "--vh"라는 속성으로 정의
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  }
+
+  useEffect(() => {
+    setScreenSize();
+  });
+
+  window.addEventListener('resize', () => setScreenSize());
 
   return (
     <QueryClientProvider client={queryClient}>
