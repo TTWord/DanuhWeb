@@ -9,6 +9,7 @@ import useNavigatePop from '@/hooks/useNavigatePop';
 
 const AuthCodePage = () => {
   const userEmail = useRecoilValue(globalState.auth.username);
+  const userDomain = useRecoilValue(globalState.auth.domain);
   const userPW = useRecoilValue(globalState.auth.password);
   const userNickname = useRecoilValue(globalState.auth.nickname);
 
@@ -60,35 +61,49 @@ const AuthCodePage = () => {
 
       <Content>
         <TopView>
-          <MainText>아이디와 비밀번호를 설정해주세요</MainText>
+          <MainText>인증코드가 발송되었어요</MainText>
         </TopView>
-        <AuthGuideBox>
-          <AuthText>인증코드 입력</AuthText>
-          <EmailBox>{userEmail}</EmailBox>
+        <CenterView>
+          <AuthGuideBox>
+            <AuthEmail>{userEmail + '@' + userDomain}</AuthEmail>
+            <GuideComment>
+              이메일로 발송된 인증코드를 입력해주세요.
+            </GuideComment>
+          </AuthGuideBox>
+
+          <AuthInputBox>
+            <AuthInput
+              type="text"
+              placeholder="000000"
+              onChange={onChangeAuthCode}
+              value={authCode}
+            />
+          </AuthInputBox>
+          <CounterBox>
+            {minutes.toString().padStart(2, '0')}:
+            {seconds.toString().padStart(2, '0')}
+          </CounterBox>
+          <RequestAuthCodeComment>
+            메일을 받지 못하셨나요?
+          </RequestAuthCodeComment>
           <RequsetAuthCodeButton>인증코드 재발송</RequsetAuthCodeButton>
-        </AuthGuideBox>
+        </CenterView>
 
-        <AuthInputBox>
-          <CodeCounterBox>
-            <CodeBox>CODE</CodeBox>
-            <CounterBox>
-              {minutes.toString().padStart(2, '0')}:
-              {seconds.toString().padStart(2, '0')}
-            </CounterBox>
-          </CodeCounterBox>
-          <AuthInput
-            placeholder="이메일에 적혀있는 인증코드를 입력해주세요."
-            onChange={onChangeAuthCode}
-          ></AuthInput>
-        </AuthInputBox>
-
-        <NextButton
-          onClick={() => {
-            signup(userEmail, userPW, userNickname, authCode);
-          }}
-        >
-          다음
-        </NextButton>
+        <BottomView>
+          <CodeError>인증코드를 다시 확인해주세요</CodeError>
+          <NextButton
+            onClick={() => {
+              signup(
+                userEmail + '@' + userDomain,
+                userPW,
+                userNickname,
+                authCode,
+              );
+            }}
+          >
+            시작하기
+          </NextButton>
+        </BottomView>
       </Content>
     </Layout>
   );
@@ -99,7 +114,7 @@ export default AuthCodePage;
 const Layout = styled.div`
   width: 100%;
   height: 100%;
-  background-color: #f8f8fc;
+  background-color: white;
   padding: 0 20px;
 `;
 
@@ -139,88 +154,133 @@ const MainText = styled.div`
   font-size: 18px;
 `;
 
+const CenterView = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
 const AuthGuideBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
+
+const AuthEmail = styled.div`
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1;
+  text-align: center;
+  color: #5c369a;
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
+`;
+
+const GuideComment = styled.div`
+  font-weight: 400;
+  font-size: 14px;
+  text-align: center;
+  color: #666666;
+  margin-top: 16px;
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
+`;
+
 const AuthInputBox = styled.div`
-  width: 248px;
-  height: 46px;
-  background: #ffffff;
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
+  width: 206px;
+  height: 76px;
+  background: #f8f7fb;
   border-radius: 10px;
   margin-top: 24px;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
 `;
-const AuthText = styled.div`
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 24px;
-  text-align: center;
-  color: #5c369a;
-`;
-const CodeBox = styled.div`
-  width: 35px;
-  height: 10px;
-  font-weight: 300;
-  font-size: 10px;
-  line-height: 10px;
-  text-align: center;
-  color: #333333;
-`;
-const EmailBox = styled.div`
-  width: 119px;
-  height: 10px;
-  font-weight: 300;
-  font-size: 10px;
-  line-height: 10px;
-  text-align: center;
-  color: #333333;
-  margin-top: 7px;
-  margin-bottom: 10px;
-`;
-const RequsetAuthCodeButton = styled.button`
-  width: 85px;
-  height: 20px;
-  background: linear-gradient(180deg, #734ae7 0%, #4c2f9c 100%);
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
-  font-size: 10px;
-  color: white;
-`;
-const NextButton = styled.button`
-  width: 249px;
-  height: 72px;
-  background: linear-gradient(180deg, #734ae7 0%, #4c2f9c 100%);
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
-  font-size: 24px;
-  color: white;
-`;
-const CodeCounterBox = styled.div`
-  width: 229px;
-  display: flex;
-  justify-content: space-between;
-`;
-const CounterBox = styled.div`
-  width: 27px;
-  height: 10px;
-  font-weight: 300;
-  font-size: 10px;
-  line-height: 10px;
-  color: #666666;
-`;
+
 const AuthInput = styled.input`
-  width: 229px;
+  width: 166px;
+  height: 52px;
   font-weight: 300;
-  font-size: 10px;
-  line-height: 10px;
+  font-size: 32px;
   color: #666666;
   outline: none;
+  padding: 0 6px;
+  letter-spacing: 4px;
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
+  border-bottom: 1px solid #e7e7e7;
+  box-sizing: border-box;
+  text-align: center;
+
+  &::placeholder {
+    color: #eeeef2;
+  }
+`;
+const CounterBox = styled.div`
+  width: 206px;
+  height: 10px;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 10px;
+  color: #666666;
+  display: flex;
+  justify-content: flex-end;
+  color: #4ad0e2;
+  padding: 0 8px;
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
+`;
+
+const RequestAuthCodeComment = styled.div`
+  width: 100%;
+  text-align: center;
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
+  color: #666666;
+  font-size: 12px;
+  font-weight: 300;
+  margin-top: 36px;
+  margin-bottom: 16px;
+`;
+
+const RequsetAuthCodeButton = styled.button`
+  width: 87px;
+  height: 24px;
+  background: #694ac2;
+  border-radius: 20px;
+  font-size: 10px;
+  color: white;
+`;
+
+const BottomView = styled.div`
+  width: 100%;
+  height: 134px;
+  flex-shrink: 0;
+`;
+
+const CodeError = styled.div`
+  width: 195px;
+  height: 34px;
+  background-color: rgba(74, 208, 226, 0.06);
+  border: 1px solid #4ad0e2;
+  border-radius: 8px;
+  color: #4ad0e2;
+  font-size: 12px;
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 16px;
+  font-weight: 400;
+  opacity: 0;
+`;
+
+const NextButton = styled.button`
+  width: 100%;
+  height: 54px;
+  background: #c5c6d0;
+  border-radius: 10px;
+  font-size: 24px;
+  color: white;
+  font-size: 14px;
 `;

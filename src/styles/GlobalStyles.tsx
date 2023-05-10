@@ -32,7 +32,7 @@ const CustomStyles = createGlobalStyle`
     height: 100%;
   }
 
-  body > div {
+  body > #root {
     font-size: 16px;
     height: 100%;
   }

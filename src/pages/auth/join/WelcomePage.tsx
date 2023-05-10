@@ -9,6 +9,7 @@ import mascot from '@/assets/svg/logos/logo-character.svg';
 const WelcomePage = () => {
   const navigate = useNavigate();
   const userEmail = useRecoilValue(globalState.auth.username);
+  const userDomain = useRecoilValue(globalState.auth.domain);
   const userNickname = useRecoilValue(globalState.auth.nickname);
 
   // Title 변경
@@ -19,65 +20,71 @@ const WelcomePage = () => {
   }, []);
 
   return (
-    <MainWrapper>
-      <UserNameBox>
-        {userNickname}
+    <Container>
+      <UserNameText>
+        <UserName>{userNickname}</UserName>
         <div>님</div>,
-      </UserNameBox>
-      <WelcomeBox>환영합니다</WelcomeBox>
-      <UserEmailBox>{userEmail}</UserEmailBox>
+      </UserNameText>
+      <Welcome>환영합니다</Welcome>
+      <UserEmail>{userEmail ? userEmail + '@' + userDomain : null}</UserEmail>
 
       <Mascot src={mascot} alt="mascot" />
-    </MainWrapper>
+    </Container>
   );
 };
 
 export default WelcomePage;
 
 // 스타일 정의
-const MainWrapper = styled.div`
+const Container = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  //justify-content: center;
-  //align-items: flex-end;
-  gap: 9px;
   position: absolute;
-  top: 28%;
-  left: 4%;
+  padding: 0 32px;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
   img {
     height: 249px;
   }
 `;
 
-const UserNameBox = styled.div`
-  font-weight: 400;
+const UserNameText = styled.div`
+  font-weight: 300;
   font-size: 20px;
-  line-height: 16px;
   color: #333333;
   display: flex;
-  margin-bottom: 14px;
-  div {
-    font-weight: 300;
-  }
+  line-height: 1;
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
 `;
-const WelcomeBox = styled.div`
+
+const UserName = styled.div`
+  font-weight: 500;
+`;
+
+const Welcome = styled.div`
   font-weight: 500;
   font-size: 36px;
-  line-height: 24px;
+  line-height: 1;
   color: #5c369a;
-  margin-bottom: 8px;
+  font-weight: 700;
+  margin-top: 14px;
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
 `;
-const UserEmailBox = styled.div`
+
+const UserEmail = styled.div`
   font-weight: 300;
-  font-size: 14px;
-  line-height: 10px;
   color: #333333;
-  //margin-bottom: 178px;
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
+  font-size: 14px;
+  margin-top: 8px;
+  margin-bottom: 200px;
 `;
 
 const Mascot = styled.img`
-  position: fixed;
-  bottom: 6.8%;
-  right: 10.8%;
+  position: absolute;
+  bottom: 55px;
+  right: 32px;
 `;

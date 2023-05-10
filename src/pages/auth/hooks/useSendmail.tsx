@@ -47,7 +47,7 @@ const useSendmail = () => {
     }
   };
 
-  return { isLoading: loading, sendmail, error };
+  return { isLoading: loading, sendmail, error, setError };
 };
 
 export default useSendmail;
