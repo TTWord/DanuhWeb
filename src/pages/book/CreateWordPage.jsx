@@ -7,12 +7,11 @@ import Swal from 'sweetalert2';
 
 const addWord = async (book_id, word, mean, navigate) => {
   try {
-    const response = await instance.post('/word', {
-      book_id: book_id,
+    const response = await instance.post(`/word/${book_id}`, {
       word: word,
       mean: mean,
     });
-    navigate(-1);
+    navigate(`/book/${book_id}`);
   } catch (e) {
     const errorMessage = e.response.data.message;
     Swal.fire({
