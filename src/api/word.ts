@@ -8,8 +8,7 @@ export const wordAPI = {
   },
 
   addWord: async (book_id: string, word: string, mean: string) => {
-    const response = await instance.post('/word', {
-      book_id,
+    const response = await instance.post(`/word/${book_id}`, {
       word,
       mean,
     });
