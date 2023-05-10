@@ -13,15 +13,17 @@ import BottomSlidePop from '@/components/common/popup/BottomSlidePop';
 const JoinPage = () => {
   const [isOk, setIsOk] = useState(false);
 
-  const { isLoading, sendmail, error } = useSendmail();
+  const { isLoading, sendmail, error, setError } = useSendmail();
   const navigate = useNavigate();
 
   const [userEmailStart, setUserEmailStart] = useRecoilState(
     globalState.auth.username,
   );
+
   const [userEmailEnd, setUserEmailEnd] = useRecoilState(
     globalState.auth.domain,
   );
+
   const [userEmailEditMode, setUserEmailEditMode] = useState(false);
 
   const [emailError, setEmailError] = useState('');
@@ -48,6 +50,7 @@ const JoinPage = () => {
   };
 
   useEffect(() => {
+    setError('');
     setEmailError('');
     setPwError('');
     setPwConfirmError('');

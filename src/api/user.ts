@@ -7,7 +7,7 @@ export const userAPI = {
     nickname: string,
     certification_id: string,
   ) => {
-    const response = await instance.post('/user/signup', {
+    const response = await instance.post('/auth/signup', {
       username,
       password,
       nickname,
