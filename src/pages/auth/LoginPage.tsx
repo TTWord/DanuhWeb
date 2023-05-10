@@ -32,7 +32,13 @@ const LoginPage = () => {
     navigate('/auth/join');
   };
 
-  const domainList = ['naver.com', 'gmail.com', 'hanmail.net', 'daum.net'];
+  const domainList = [
+    'naver.com',
+    'gmail.com',
+    'google.com',
+    'hanmail.net',
+    'daum.net',
+  ];
   const domainRef = useRef<HTMLDivElement>(null);
   const [isSelectopen, setSelectOpen] = useState(false);
   const [isDirectInput, setDirectInput] = useState(false);
@@ -43,6 +49,9 @@ const LoginPage = () => {
   const [emailID, setEmailID] = useState<string>('');
   const [emailDomain, setEmailDomain] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+
+  const [isLoginFocus, setLoginFocus] = useState<boolean>(false);
+  const [isPassWDFocus, setPassWDFocus] = useState<boolean>(false);
 
   return (
     <WebWrapper>
@@ -57,19 +66,26 @@ const LoginPage = () => {
       <Container>
         <FormBox>
           <span>아이디</span>
-          <EmailBox>
+          <EmailBox isFocus={isLoginFocus}>
             <EmailID
               onChange={e => {
                 setEmailID(e.target.value);
               }}
               type="text"
               placeholder="이메일"
+              onFocus={() => {
+                setLoginFocus(true);
+              }}
+              onBlur={() => {
+                setLoginFocus(false);
+              }}
             />
-            @
+            <EmailCenter>@</EmailCenter>
             <EmailDomain
               onClick={() => {
                 if (!isDirectInput) {
                   setSelectOpen(!isSelectopen);
+                  setLoginFocus(current => !current);
                 }
               }}
               ref={domainRef}
@@ -77,7 +93,16 @@ const LoginPage = () => {
               {!isDirectInput ? (
                 '선택'
               ) : (
-                <DirectInput onChange={e => setEmailDomain(e.target.value)} />
+                <DirectInput
+                  onChange={e => setEmailDomain(e.target.value)}
+                  placeholder="직접입력"
+                  onFocus={() => {
+                    setLoginFocus(true);
+                  }}
+                  onBlur={() => {
+                    setLoginFocus(false);
+                  }}
+                />
               )}
             </EmailDomain>
             <CustomSelectBox isActive={isSelectopen}>
@@ -91,6 +116,7 @@ const LoginPage = () => {
                       domainRef.current.innerText = selectDomain;
                       setEmailDomain(selectDomain);
                       setSelectOpen(!isSelectopen);
+                      setLoginFocus(current => !current);
                     }}
                   >
                     {items}
@@ -101,6 +127,7 @@ const LoginPage = () => {
                 onClick={() => {
                   setSelectOpen(!isSelectopen);
                   setDirectInput(!isDirectInput);
+                  setLoginFocus(current => !current);
                 }}
               >
                 직접입력
@@ -112,11 +139,18 @@ const LoginPage = () => {
         <FormBox>
           <span>비밀번호</span>
           <PasswordBox
+            isFocus={isPassWDFocus}
             onChange={e => {
               setPassword(e.target.value);
             }}
             type={showPassWD ? 'text' : 'password'}
             placeholder="비밀번호"
+            onFocus={() => {
+              setPassWDFocus(true);
+            }}
+            onBlur={() => {
+              setPassWDFocus(false);
+            }}
           />
         </FormBox>
 
@@ -161,13 +195,13 @@ const WebWrapper = styled.div`
   width: 100%;
   height: 100%;
   background-color: #f8f8fc;
-  position: absolute;
+  display: flex;
+  flex-direction: column;
 `;
 
-const Header = styled.div`
+const Header = styled.header`
   width: 100%;
-  height: auto;
-  padding: 34px 0 116px 28px;
+  padding: 20px 0 0 20px;
 `;
 
 const BackButton = styled.button`
@@ -186,17 +220,16 @@ const Title = styled.div`
 
 const Container = styled.div`
   width: 100%;
-  height: auto;
+  flex: 1;
   padding: 0 24px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 168px;
 `;
 
 const FormBox = styled.div`
-  width: 312px;
+  width: 100%;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -209,7 +242,7 @@ const FormBox = styled.div`
   }
 `;
 
-const EmailBox = styled.div`
+const EmailBox = styled.div<{ isFocus: boolean }>`
   height: 42px;
   display: flex;
   font-size: 16px;
@@ -218,10 +251,14 @@ const EmailBox = styled.div`
   align-items: center;
   position: relative;
   margin-top: 6px;
+
+  ${({ isFocus }) => {
+    return isFocus ? 'border-bottom: 1px solid #694AC2;' : null;
+  }}
 `;
 
 const EmailID = styled.input`
-  width: 110px;
+  width: 50%;
   height: 100%;
   padding-left: 16px;
   padding-right: 8px;
@@ -234,8 +271,14 @@ const EmailID = styled.input`
   }
 `;
 
+const EmailCenter = styled.div`
+  width: 20px;
+  flex-shrink: 0;
+  text-align: center;
+`;
+
 const EmailDomain = styled.div`
-  width: 100%;
+  width: 50%;
   height: 100%;
   padding-left: 8px;
   display: flex;
@@ -284,16 +327,21 @@ const CustomSelect = styled.button`
   align-items: center;
   justify-content: center;
   :hover {
-    background-color: #f1ecff;
+    background-color: #694ac2;
+    color: white;
   }
 `;
 
-const PasswordBox = styled.input`
+const PasswordBox = styled.input<{ isFocus: boolean }>`
   height: 42px;
   padding-left: 16px;
   font-size: 16px;
   outline: none;
   margin-top: 6px;
+
+  ${({ isFocus }) => {
+    return isFocus ? 'border-bottom: 1px solid #694AC2;' : null;
+  }}
 `;
 
 const Join = styled.div`
@@ -335,7 +383,6 @@ const SocialLogin = styled.button`
   justify-content: center;
   align-items: center;
 `;
-
 const KakaoLogin = styled(SocialLogin)`
   background-color: #ffdf37;
 `;
@@ -343,14 +390,12 @@ const AppleLogin = styled(SocialLogin)`
   background-color: #000000;
 `;
 
-const Footer = styled.div`
+const Footer = styled.footer`
   width: 100%;
-  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* position: fixed;
-  bottom: 36px; */
+  padding-bottom: 36px;
 `;
 
 const LoginButton = styled.button`
@@ -364,5 +409,4 @@ const LoginButton = styled.button`
   font-size: 14px;
   color: white;
   text-align: center;
-  margin-bottom: 17px;
 `;
