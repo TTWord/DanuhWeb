@@ -50,18 +50,13 @@ const WordBox = styled.div`
   flex-direction: column;
   gap: 18px;
 `;
-const Word = styled.div`
-  //width: 50px;
-  height: 24px;
+const Word = styled.span`
   font-weight: 500;
   font-size: 24px;
   line-height: 24px;
-  text-align: center;
   color: #333333;
 `;
-const Meaning = styled.div`
-  //width: 31px;
-  height: 16px;
+const Meaning = styled.span`
   font-weight: 400;
   font-size: 16px;
   line-height: 16px;
