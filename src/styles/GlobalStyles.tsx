@@ -24,6 +24,10 @@ const CustomStyles = createGlobalStyle`
       font-style: normal;
   }
 
+  :root {
+    --vh: 100%;
+  }
+
   html, body {
     font-family: 'Pretendard', sans-serif;
     font-size: 10px;
