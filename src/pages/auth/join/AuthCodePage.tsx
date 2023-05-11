@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, ChangeEvent } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { globalState } from '@/recoil';
 import { useRecoilValue } from 'recoil';
@@ -36,13 +36,16 @@ const AuthCodePage = () => {
     return () => clearInterval(intervalId);
   }, [minutes, seconds]);
 
-  // 네비게이트
-  const navigate = useNavigate();
-
+  const [isOk, setOk] = useState<boolean>(false);
   const [authCode, setAuthCode] = useState('');
 
   const onChangeAuthCode = (e: ChangeEvent<HTMLInputElement>) => {
     const inputUserCode = e.target.value;
+    if (inputUserCode.length === 6) {
+      setOk(true);
+    } else {
+      setOk(false);
+    }
     setAuthCode(inputUserCode);
   };
 
@@ -92,13 +95,16 @@ const AuthCodePage = () => {
         <BottomView>
           <CodeError>인증코드를 다시 확인해주세요</CodeError>
           <NextButton
+            isActive={isOk}
             onClick={() => {
-              signup(
-                userEmail + '@' + userDomain,
-                userPW,
-                userNickname,
-                authCode,
-              );
+              if (isOk) {
+                signup(
+                  userEmail + '@' + userDomain,
+                  userPW,
+                  userNickname,
+                  authCode,
+                );
+              }
             }}
           >
             시작하기
@@ -275,7 +281,9 @@ const CodeError = styled.div`
   opacity: 0;
 `;
 
-const NextButton = styled.button`
+const NextButton = styled.button<{
+  isActive: boolean;
+}>`
   width: 100%;
   height: 54px;
   background: #c5c6d0;
@@ -283,4 +291,10 @@ const NextButton = styled.button`
   font-size: 24px;
   color: white;
   font-size: 14px;
+
+  ${({ isActive }) =>
+    isActive &&
+    css`
+      background-color: #694ac2;
+    `}
 `;
