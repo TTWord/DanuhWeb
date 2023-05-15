@@ -93,10 +93,7 @@ const BookContainer = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
-  padding-top: 2px;
-  padding-bottom: 30px;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding: 10px 30px 60px 30px;
   flex-direction: column;
   align-items: center;
   gap: 18px;
@@ -112,19 +109,18 @@ const BookContainer = styled.div`
 // fixed로 하여 수정 예정
 const BookFooter = styled.div`
   width: 100%;
-  //height: 85px;
+  height: 85px; //
   display: flex;
   justify-content: end;
   background-color: transparent;
-  //background-color: rgba( 255, 255, 255, 0.5 );
 `;
 const IconWrapper = styled.div`
   width: 330px;
+  height: 100%; //
   display: flex;
   justify-content: end;
   gap: 15px;
   background-color: transparent;
-  //background-color: rgba( 255, 255, 255, 0.5 );
 `;
 const Circle = styled.button`
   width: 58px;
@@ -137,8 +133,8 @@ const SharingButton = styled(Circle)`
   position: fixed;
   background: linear-gradient(180deg, #3a98b6 0%, #50998c 100%);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  right: 110px;
-  bottom: 30px;
+  right: 99px;
+  bottom: 27px;
   img {
     position: absolute;
     left: 13px;
@@ -148,8 +144,8 @@ const SharingButton = styled(Circle)`
 `;
 const PlusButton = styled(Circle)`
   position: fixed;
-  right: 30px;
-  bottom: 30px;
+  right: 26px;
+  bottom: 27px;
   justify-content: center;
   background: linear-gradient(180deg, #703ab6 0%, #774178 100%);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
