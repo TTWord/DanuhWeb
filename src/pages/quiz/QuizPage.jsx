@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 
 import { globalState } from '@/recoil';
 import Footer from '@/components/layout/HomeLayout/Footer';
@@ -11,9 +11,7 @@ import leafIcon from '@/assets/svg/icons/icon-leaf.svg';
 import treeIcon from '@/assets/svg/icons/icon-tree.svg';
 
 const QuizPage = () => {
-  const [activeMenu, setActiveMenu] = useRecoilState(
-    globalState.layout.activeMenuNumber,
-  );
+  const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
 
   useEffect(() => {
     setActiveMenu(1);
@@ -33,9 +31,7 @@ const QuizPage = () => {
 
   return (
     <MainWrapper>
-      <HeaderWrapper>
-        <PageTitle>Quiz</PageTitle>
-      </HeaderWrapper>
+      <HeaderWrapper>학습하기</HeaderWrapper>
 
       <ContainerWrapper>
         <Container>
@@ -78,75 +74,92 @@ export default QuizPage;
 const MainWrapper = tw.div`w-[100%] h-[100%] overflow-hidden flex flex-col absolute`;
 
 //-- 헤더 --//
-const HeaderWrapper = styled.div`
+const HeaderWrapper = styled.header`
   width: 100%;
-  margin-bottom: 43px;
-`;
-const PageTitle = styled.div`
-  width: 100%;
-  padding: 23px 0 0 23px;
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 24px;
-  color: black;
+  height: 56px;
+  padding: 8px 0 0 16px;
+  margin-bottom: 26px;
+  display: flex;
+  align-items: center;
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  color: #171717;
 `;
 
 //-- 컨테이너 --//
 const ContainerWrapper = styled.div`
   width: 100%;
   padding-bottom: 70px;
+  flex: 1;
+  overflow: auto;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 const Container = styled.div`
   width: 100%;
   margin-bottom: 48px;
+  overflow: auto;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 const QuizTitle = styled.div`
-  width: 100%;
   padding: 0 0 13px 22px;
-  font-weight: 400;
-  font-size: 24px;
-  line-height: 24px;
+  font-family: ${({ theme }) => theme.fonts.pretendard};
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
   color: #333333;
   color: black;
-  border-bottom: 1px solid black;
-  margin-bottom: 19px;
 `;
 const SelectWrapper = styled.div`
   width: 100%;
-  padding: 0 14px 0 22px;
   display: flex;
   flex-wrap: wrap;
-  //justify-content: space-between;
+  padding: 0 22px;
 `;
 const SelectButton = styled.button`
   width: 170px;
-  height: 190px;
-  background-color: #694ac2;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.12);
+  height: 170px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border: 1px solid #f1ecff;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.06);
   border-radius: 11px;
   display: flex;
   flex-direction: column;
-  color: white;
-  font-weight: 300;
-  font-size: 16px;
-  line-height: 16px;
-  padding: 26px 20px 30px 20px;
-  margin: 0 8px 8px 0;
-  position: relative;
   font-family: ${({ theme }) => theme.fonts.gmarketSans};
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 15px;
+  color: black;
+  padding: 25px 0px 0px 18px;
+  margin-bottom: 8px;
+  position: relative; // 아이콘 위치 조절
+
+  :nth-child(2) {
+    margin-left: 8px;
+  }
+  @media (max-width: 392px) {
+    width: 160px;
+  }
 `;
 
-const Type = styled.div`
+const Type = styled.span`
   font-weight: 400;
-  font-size: 20px;
-  line-height: 20px;
-  margin: 10px 0 60px 0;
+  font-size: 14px;
+  line-height: 14px;
+  color: #8f6cf3;
+  margin-top: 14px;
 `;
 
 const Icon = styled.img`
   position: absolute;
-  right: 20px;
-  bottom: 30px;
+  right: 15px;
+  bottom: 11px;
 `;
 
 //-- 푸터 --//
@@ -154,7 +167,7 @@ const FooterWrapper = styled.div`
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 70px;
+  height: 72px;
   display: flex;
   background: #ffffff;
 `;
