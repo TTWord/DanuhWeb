@@ -1,7 +1,7 @@
-import { SVGProps } from '<SVG>';
-import styled from 'styled-components';
+import { FooterMenuProps } from '<FooterMenu>';
+import styled, { css } from 'styled-components';
 
-const RankingSvg: React.FC<SVGProps> = ({ fill, stroke }) => {
+const RankingMenu: React.FC<FooterMenuProps> = ({ fill, stroke, selected }) => {
   return (
     <MenuWrapper>
       <svg
@@ -17,12 +17,12 @@ const RankingSvg: React.FC<SVGProps> = ({ fill, stroke }) => {
           strokeWidth="2"
         />
       </svg>
-      <MenuName color={stroke}>랭킹</MenuName>
+      <MenuName selected={selected}>랭킹</MenuName>
     </MenuWrapper>
   );
 };
 
-export default RankingSvg;
+export default RankingMenu;
 
 const MenuWrapper = styled.div`
   display: flex;
@@ -30,9 +30,17 @@ const MenuWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const MenuName = styled.div`
+const MenuName = styled.div<{ selected?: boolean }>`
   margin-top: 10px;
   font-size: 12px;
   line-height: 132%;
-  color: ${props => props.color || '#E6E4E2'};
+  color: #cbbdf3;
+  font-weight: normal;
+
+  ${({ selected }) =>
+    selected &&
+    css`
+      color: #694ac2;
+      font-weight: bold;
+    `}
 `;
