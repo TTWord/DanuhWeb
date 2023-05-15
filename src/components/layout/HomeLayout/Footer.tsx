@@ -1,7 +1,7 @@
-import HomeSvg from '@/components/svg/menu/HomeSvg';
-import StudySvg from '@/components/svg/menu/StudySvg';
-import RankingSvg from '@/components/svg/menu/RankigSvg';
-import MyPageSvg from '@/components/svg/menu/MyPageSvg';
+import HomeMenu from '@/components/layout/HomeLayout/Footer/HomeMenu';
+import StudyMenu from '@/components/layout/HomeLayout/Footer/StudyMenu';
+import RankingMenu from '@/components/layout/HomeLayout/Footer/RankigMenu';
+import MyPagemenu from '@/components/layout/HomeLayout/Footer/MyPageMenu';
 
 import { globalState } from '@/recoil';
 import { useNavigate } from 'react-router-dom';
@@ -11,26 +11,32 @@ import tw from 'twin.macro';
 const menuList = [
   {
     id: 0,
-    component: <HomeSvg stroke="#cccccc" />,
-    activeComponent: <HomeSvg stroke="#694AC2" />,
+    component: <HomeMenu fill="#ffffff" stroke="#CBBDF3" selected={false} />,
+    activeComponent: (
+      <HomeMenu fill="#694AC2" stroke="#ffffff" selected={true} />
+    ),
     navigate: '/book',
   },
   {
     id: 1,
-    component: <StudySvg stroke="#cccccc" />,
-    activeComponent: <StudySvg stroke="#694AC2" />,
+    component: <StudyMenu fill="#ffffff" stroke="#CBBDF3" selected={false} />,
+    activeComponent: (
+      <StudyMenu fill="#694AC2" stroke="#694AC2" selected={true} />
+    ),
     navigate: '/quiz',
   },
   {
     id: 2,
-    component: <RankingSvg stroke="#cccccc" />,
-    activeComponent: <RankingSvg stroke="#694AC2" />,
+    component: <RankingMenu stroke="#CBBDF3" selected={false} />,
+    activeComponent: (
+      <RankingMenu fill="#694AC2" stroke="#694AC2" selected={true} />
+    ),
     navigate: '/ranking',
   },
   {
     id: 3,
-    component: <MyPageSvg stroke="#cccccc" />,
-    activeComponent: <MyPageSvg stroke="#694AC2" />,
+    component: <MyPagemenu selected={false} />,
+    activeComponent: <MyPagemenu selected={true} />,
     navigate: '/setting',
   },
 ];
@@ -63,5 +69,5 @@ const Footer = () => {
 
 export default Footer;
 
-const Container = tw.div`flex w-full h-full justify-around items-center shadow-[0px 0px 4px 0px rgba(0,0,0,0.2)]`;
+const Container = tw.div`flex w-full h-full justify-around items-center`;
 const Menu = tw.div`w-[25%] h-full flex justify-center items-center cursor-pointer`;

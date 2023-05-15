@@ -24,4 +24,4 @@ export default HomeLayout;
 const HWrap = tw.div`w-full h-[85px] shrink-0`;
 const Container = tw.div`w-[100%] h-[100%] overflow-hidden flex flex-col`;
 const Content = tw.div`h-full overflow-y-auto`;
-const FWrap = tw.div`w-full h-[70px] shrink-0`;
+const FWrap = tw.div`w-full h-[72px] shrink-0`;
