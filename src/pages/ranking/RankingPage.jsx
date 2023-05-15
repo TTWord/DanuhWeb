@@ -1,37 +1,46 @@
 import styled from 'styled-components';
 import { globalState } from '@/recoil';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { useEffect } from 'react';
 import Footer from '@/components/layout/HomeLayout/Footer';
 
 const RankingPage = () => {
-  const [activeMenu, setActiveMenu] = useRecoilState(
-    globalState.layout.activeMenuNumber,
-  );
+  const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
 
   useEffect(() => {
     setActiveMenu(2);
   }, []);
 
   return (
-    <div>
-      <div>랭킹 페이지</div>
+    <WebWrapper>
+      <Container>랭킹 페이지</Container>
 
       <FooterWrapper>
         <Footer />
       </FooterWrapper>
-    </div>
+    </WebWrapper>
   );
 };
 
 export default RankingPage;
 
-const FooterWrapper = styled.div`
+const WebWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+`;
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+  border-bottom: 1px solid black;
+  flex: 1;
+`;
+
+const FooterWrapper = styled.footer`
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 70px;
+  height: 72px;
   display: flex;
-
   background: #ffffff;
 `;

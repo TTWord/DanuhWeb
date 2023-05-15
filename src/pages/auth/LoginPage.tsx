@@ -53,6 +53,22 @@ const LoginPage = () => {
   const [isLoginFocus, setLoginFocus] = useState<boolean>(false);
   const [isPassWDFocus, setPassWDFocus] = useState<boolean>(false);
 
+  const [isOk, setIsOk] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (emailID.length > 0 && emailDomain.length > 0 && password.length > 0) {
+      setIsOk(true);
+    } else {
+      setIsOk(false);
+    }
+  }, [emailID, emailDomain, password]);
+
+  useEffect(() => {
+    if (isDirectInput === true) {
+      setEmailDomain('');
+    }
+  }, [isDirectInput]);
+
   return (
     <WebWrapper>
       <Header>
@@ -164,9 +180,9 @@ const LoginPage = () => {
         <SocialWrapper>
           SNS로 로그인하기
           <SocialButtonWrapper>
-            <SocialLogin onClick={googleLogin}>
+            <GoogleLogin onClick={googleLogin}>
               <img src={googleIcon} alt="googleIcon" />
-            </SocialLogin>
+            </GoogleLogin>
             <KakaoLogin onClick={kakaoLogin}>
               <img src={kakaoIcon} alt="kakaoIcon" />
             </KakaoLogin>
@@ -176,6 +192,7 @@ const LoginPage = () => {
           </SocialButtonWrapper>
         </SocialWrapper>
         <LoginButton
+          isActive={isOk}
           onClick={() => {
             login(`${emailID}@${emailDomain}`, password);
           }}
@@ -194,7 +211,7 @@ export default LoginPage;
 const WebWrapper = styled.div`
   width: 100%;
   height: 100%;
-  background-color: #f8f8fc;
+  background-color: white;
   display: flex;
   flex-direction: column;
 `;
@@ -253,7 +270,9 @@ const EmailBox = styled.div<{ isFocus: boolean }>`
   margin-top: 6px;
 
   ${({ isFocus }) => {
-    return isFocus ? 'border-bottom: 1px solid #694AC2;' : null;
+    return isFocus
+      ? 'border-bottom: 1px solid #694AC2;'
+      : 'border-bottom: 1px solid #E7E7E7;';
   }}
 `;
 
@@ -340,7 +359,9 @@ const PasswordBox = styled.input<{ isFocus: boolean }>`
   margin-top: 6px;
 
   ${({ isFocus }) => {
-    return isFocus ? 'border-bottom: 1px solid #694AC2;' : null;
+    return isFocus
+      ? 'border-bottom: 1px solid #694AC2;'
+      : 'border-bottom: 1px solid #E7E7E7;';
   }}
 `;
 
@@ -362,7 +383,6 @@ const SocialWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  //justify-content: space-between;
   align-items: center;
 `;
 
@@ -383,6 +403,10 @@ const SocialLogin = styled.button`
   justify-content: center;
   align-items: center;
 `;
+
+const GoogleLogin = styled(SocialLogin)`
+  border: 1px solid #e3e6ea;
+`;
 const KakaoLogin = styled(SocialLogin)`
   background-color: #ffdf37;
 `;
@@ -395,18 +419,23 @@ const Footer = styled.footer`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 16px;
   padding-bottom: 36px;
 `;
 
-const LoginButton = styled.button`
-  width: 312px;
+const LoginButton = styled.button<{ isActive: boolean }>`
+  width: 100%;
   height: 48px;
-  background-color: #694ac2;
-  border: 1px solid #4928a9;
   border-radius: 8px;
   font-family: ${({ theme }) => theme.fonts.gmarketSans};
   font-weight: 400;
   font-size: 14px;
   color: white;
   text-align: center;
+
+  ${({ isActive }) => {
+    return isActive
+      ? 'background-color: #734ae8;'
+      : 'background-color: #C5C6D0;';
+  }}
 `;

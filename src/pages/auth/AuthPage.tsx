@@ -45,7 +45,7 @@ const WebWrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #f8f8fc;
+  background-color: white;
   padding: 0 24px;
 `;
 

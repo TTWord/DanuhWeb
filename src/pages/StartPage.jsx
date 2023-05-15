@@ -30,7 +30,7 @@ const MainWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #f3f0fb;
+  background-color: white;
 `;
 
 const LogoImg = styled.img`

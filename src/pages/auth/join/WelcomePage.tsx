@@ -20,7 +20,7 @@ const WelcomePage = () => {
   }, []);
 
   return (
-    <Container>
+    <WebWrapper>
       <UserNameText>
         <UserName>{userNickname}</UserName>
         <div>님</div>,
@@ -29,14 +29,14 @@ const WelcomePage = () => {
       <UserEmail>{userEmail ? userEmail + '@' + userDomain : null}</UserEmail>
 
       <Mascot src={mascot} alt="mascot" />
-    </Container>
+    </WebWrapper>
   );
 };
 
 export default WelcomePage;
 
 // 스타일 정의
-const Container = styled.div`
+const WebWrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
