@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import tw from 'twin.macro';
 import { useNavigate } from 'react-router-dom';
 import { globalState } from '@/recoil';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useEffect } from 'react';
 
 import { instance } from '@/instance';
@@ -36,9 +36,8 @@ const SettingPage = () => {
   const [nickname, setNickname] = useRecoilState(globalState.auth.nickname);
   const [username, setUsername] = useRecoilState(globalState.auth.username);
   const [profile, setProfile] = useRecoilState(globalState.auth.profilePic);
-  const [activeMenu, setActiveMenu] = useRecoilState(
-    globalState.layout.activeMenuNumber,
-  );
+  const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
+
   useEffect(() => {
     const getUserInfo = async () => {
       const response = await getUserInfoAPI();
@@ -220,7 +219,7 @@ const FooterWrapper = styled.div`
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 70px;
+  height: 72px;
   display: flex;
 
   background: #ffffff;
