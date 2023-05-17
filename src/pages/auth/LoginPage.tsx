@@ -194,7 +194,9 @@ const LoginPage = () => {
         <LoginButton
           isActive={isOk}
           onClick={() => {
-            login(`${emailID}@${emailDomain}`, password);
+            if (isOk) {
+              login(`${emailID}@${emailDomain}`, password);
+            }
           }}
         >
           로그인
@@ -308,6 +310,7 @@ const EmailDomain = styled.div`
     cursor: pointer;
   }
 `;
+
 const DirectInput = styled.input`
   width: 100%;
   height: 100%;
@@ -407,9 +410,11 @@ const SocialLogin = styled.button`
 const GoogleLogin = styled(SocialLogin)`
   border: 1px solid #e3e6ea;
 `;
+
 const KakaoLogin = styled(SocialLogin)`
   background-color: #ffdf37;
 `;
+
 const AppleLogin = styled(SocialLogin)`
   background-color: #000000;
 `;
