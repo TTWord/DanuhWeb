@@ -6,10 +6,15 @@ const OAuthPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
-  const access = searchParams.get('accesstoken');
-  const refresh = searchParams.get('refreshtoken');
-  localStorage.setItem('access_Token', access);
-  localStorage.setItem('refresh_Token', refresh);
+  const accessToken: string | null = searchParams.get('accesstoken');
+  const refreshToken: string | null = searchParams.get('refreshtoken');
+  if (!accessToken || !refreshToken) {
+    alert('에러!');
+  } else {
+    localStorage.setItem('access_Token', accessToken);
+    localStorage.setItem('refresh_Token', refreshToken);
+  }
+
   useEffect(() => {
     setTimeout(() => {
       navigate('/book');
@@ -31,6 +36,7 @@ const MainWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
   div {
     font-weight: 500;
     font-size: 48px;
