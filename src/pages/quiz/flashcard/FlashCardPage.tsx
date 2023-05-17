@@ -196,6 +196,10 @@ const Books = styled.div`
   border-radius: 20px;
   background-color: ${({ theme }) => theme.colors.gray[100]};
   padding: 16px 24px 0 14px;
+
+  > button + button {
+    margin-top: 8px;
+  }
 `;
 
 const Footer = styled.div`

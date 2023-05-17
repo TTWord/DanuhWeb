@@ -8,7 +8,7 @@ import { TailSpin } from 'react-loader-spinner';
 import iconArrowBack from '@/assets/svg/icons/icon-back-button.svg';
 import useNavigatePop from '@/hooks/useNavigatePop';
 import iconArrowDown from './svg/icon-arrow-down.svg';
-import BottomSlidePop from '@/components/common/popup/BottomSlidePop';
+import BottomSlideSelectPop from '@/components/common/popup/BottomSlideSelectPop';
 
 const JoinPage = () => {
   const [isOk, setIsOk] = useState(false);
@@ -126,12 +126,6 @@ const JoinPage = () => {
                   tw="w-1/2"
                 />
                 <EmailCenter>@</EmailCenter>
-                {/* <Input
-                  type="text"
-                  onChange={inputUserEmailEnd}
-                  placeholder="선택"
-                  tw="w-1/2"
-                /> */}
                 <SelectMail>
                   {!userEmailEditMode && (
                     <MailButton onClick={onSwitchPop}>
@@ -156,56 +150,40 @@ const JoinPage = () => {
                       />
                     </MailButton>
                   )}
-                  <BottomSlidePop isOpen={isPopOpen} onPopClose={onPopClose}>
-                    <SlideTopLine />
-                    <MailItems>
-                      <MailItem
-                        onClick={() => {
+                  <BottomSlideSelectPop
+                    isOpen={isPopOpen}
+                    onPopClose={onPopClose}
+                    data={[
+                      {
+                        text: 'naver.com',
+                        onClick: () => {
                           setUserEmailEnd('naver.com');
                           setUserEmailEditMode(false);
-                          onPopClose();
-                        }}
-                      >
-                        naver.com
-                      </MailItem>
-                      <MailItem
-                        onClick={() => {
+                        },
+                      },
+                      {
+                        text: 'gmail.com',
+                        onClick: () => {
                           setUserEmailEnd('gmail.com');
                           setUserEmailEditMode(false);
-                          onPopClose();
-                        }}
-                      >
-                        gmail.com
-                      </MailItem>
-                      <MailItem
-                        onClick={() => {
-                          setUserEmailEnd('daum.net');
+                        },
+                      },
+                      {
+                        text: 'daum.net',
+                        onClick: () => {
+                          setUserEmailEnd('daum.com');
                           setUserEmailEditMode(false);
-                          onPopClose();
-                        }}
-                      >
-                        daum.net
-                      </MailItem>
-                      <MailItem
-                        onClick={() => {
-                          setUserEmailEnd('hotmail.com');
-                          setUserEmailEditMode(false);
-                          onPopClose();
-                        }}
-                      >
-                        hotmail.com
-                      </MailItem>
-                      <MailItem
-                        onClick={() => {
+                        },
+                      },
+                      {
+                        text: '직접입력',
+                        onClick: () => {
                           setUserEmailEnd('');
                           setUserEmailEditMode(true);
-                          onPopClose();
-                        }}
-                      >
-                        직접 입력
-                      </MailItem>
-                    </MailItems>
-                  </BottomSlidePop>
+                        },
+                      },
+                    ]}
+                  />
                 </SelectMail>
               </InputWrapper>
               <InputError>{emailError}</InputError>
@@ -385,18 +363,6 @@ const MailText = styled.div<{
     `}
 `;
 
-const MailItems = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-`;
-
-const MailItem = styled.button`
-  padding: 12px 24px;
-  width: 100%;
-  text-align: left;
-`;
-
 const EmailCenter = styled.div`
   width: 20px;
   flex-shrink: 0;
@@ -427,19 +393,11 @@ const Next = styled.div<{
   border-radius: 8px;
   justify-content: center;
   align-items: center;
-  transition: background-color 0.3s ease-in-out;
+  transition: background-color 0.3s cubic-bezier(0.86, 0, 0.07, 1);
 
   ${({ isActive }) =>
     isActive &&
     css`
       background-color: #694ac2;
     `}
-`;
-
-const SlideTopLine = styled.div`
-  width: 40px;
-  height: 4px;
-  background-color: #e7e7e7;
-  margin: 16px auto 34px;
-  border-radius: 2px;
 `;
