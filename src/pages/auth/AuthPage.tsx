@@ -9,7 +9,7 @@ import dogIcon from '@/assets/svg/icons/icon-dog.svg';
 import bookIcon from '@/assets/svg/icons/icon-book.svg';
 import medalIcon from '@/assets/svg/icons/icon-medal.svg';
 
-const AuthPage = () => {
+const TestPage = () => {
   const navigate = useNavigate();
 
   const goLogin = () => {
@@ -19,11 +19,20 @@ const AuthPage = () => {
   return (
     <WebWrapper>
       <IconWrapper>
-        <img src={hatIcon} alt="hatIcon" />
-        <img src={pencilIcon} alt="pencilIcon" />
-        <img src={dogIcon} alt="dogIcon" />
-        <img src={bookIcon} alt="bookIcon" />
-        <img src={medalIcon} alt="medalIcon" />
+        <IconBanner>
+          <img src={hatIcon} alt="hatIcon" />
+          <img src={pencilIcon} alt="pencilIcon" />
+          <img src={dogIcon} alt="dogIcon" />
+          <img src={bookIcon} alt="bookIcon" />
+          <img src={medalIcon} alt="medalIcon" />
+        </IconBanner>
+        <IconBanner>
+          <img src={hatIcon} alt="hatIcon" />
+          <img src={pencilIcon} alt="pencilIcon" />
+          <img src={dogIcon} alt="dogIcon" />
+          <img src={bookIcon} alt="bookIcon" />
+          <img src={medalIcon} alt="medalIcon" />
+        </IconBanner>
       </IconWrapper>
 
       <IntroduceWrapper>
@@ -38,7 +47,7 @@ const AuthPage = () => {
   );
 };
 
-export default AuthPage;
+export default TestPage;
 
 const WebWrapper = styled.div`
   width: 100%;
@@ -46,15 +55,32 @@ const WebWrapper = styled.div`
   display: flex;
   flex-direction: column;
   background-color: white;
-  padding: 0 24px;
+  overflow: hidden;
+`;
+
+// 무한 롤링 배너
+const rolling = keyframes`
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 `;
 
 const IconWrapper = styled.header`
-  width: 100%;
-  margin-top: 36px;
+  width: 200vw;
+  margin-top: 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  animation: ${rolling} 10s linear infinite;
+`;
+
+const IconBanner = styled.div`
+  width: 100vw;
+  display: flex;
+  justify-content: space-around;
 `;
 
 const IntroduceWrapper = styled.div`
@@ -65,26 +91,29 @@ const IntroduceWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 0 16px;
 `;
+
 const MainLogo = styled.img`
   width: 179px;
   margin-bottom: 13px;
 `;
+
 const Introduce = styled.span`
   font-family: ${({ theme }) => theme.fonts.gmarketSans};
   font-weight: normal;
   font-size: 12px;
   line-height: 12px;
   color: #6b6c76;
-  margin-bottom: 145px;
 `;
 
 const LoginWrapper = styled.footer`
   width: 100%;
   height: 48px;
-  margin-bottom: 80px;
+  margin-bottom: 32px;
   display: flex;
   justify-content: center;
+  padding: 0 16px;
 `;
 
 const Login = styled.button`
