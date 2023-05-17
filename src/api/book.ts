@@ -1,8 +1,18 @@
 import { instance } from '@/instance';
 
+interface getBookResponse extends BackendResponse {
+  data: {
+    id: number;
+    name: string;
+    user_id: number;
+    created_at: string;
+    updated_at: string;
+  }[];
+}
+
 export const bookAPI = {
   getBook: async () => {
-    const response = await instance.get('/book');
+    const { data: response } = await instance.get<getBookResponse>('/book');
 
     return response;
   },

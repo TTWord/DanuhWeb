@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import icoArrowBack from '@/assets/svg/icons/icon-arrow-back-button.svg';
+import iconBackGray from '@/assets/svg/icons/icon-back-gray.svg';
 import { useNavigate } from 'react-router-dom';
 
 interface StackLayoutProps {
@@ -31,7 +31,7 @@ const StackLayout: React.FC<StackLayoutProps> = ({ children, topBar }) => {
     <Container>
       <Header>
         <Back onClick={onBack}>
-          <img src={icoArrowBack} alt="back" />
+          <img src={iconBackGray} alt="back" />
         </Back>
         <Title>{topBar?.title}</Title>
       </Header>
@@ -48,22 +48,23 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
 `;
+
 const Header = styled.div`
   width: 100%;
-  height: 64px;
-  border-bottom: 1px solid #dddddd;
+  height: 56px;
   display: flex;
   align-items: center;
   padding: 0 14px;
 `;
+
 const Content = styled.div`
   width: 100%;
   height: 100%;
 `;
 
 const Back = styled.button`
-  width: 24px;
-  height: 24px;
+  width: 11px;
+  height: 19px;
 
   img {
     width: 100%;

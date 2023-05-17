@@ -17,6 +17,19 @@ declare module 'styled-components' {
         900: string;
       };
       black: string;
+
+      primary: {
+        default: string;
+        600: string;
+        400: string;
+        200: string;
+        100: string;
+      };
+      secondary: {
+        default: string;
+        800: string;
+        100: string;
+      };
     };
     fonts: {
       pretendard: string;
