@@ -9,8 +9,8 @@ import { instance } from '@/instance';
 import Footer from '@/components/layout/HomeLayout/Footer';
 import nextButton from '@/assets/svg/icons/icon-next-button.svg';
 
-import useLogout from './SettingPage/useLogout';
-import useDeleteAccount from './SettingPage/useDeleteAccount';
+import useLogout from '@/components/pages/setting/SettingPage/useLogout';
+import useDeleteAccount from '@/components/pages/setting/SettingPage/useDeleteAccount';
 
 const getUserInfoAPI = async () => {
   try {

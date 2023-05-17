@@ -21,7 +21,7 @@ const RouteTransition = ({ location, children }: RouteTransitionProps) => {
         className={'transition-wrapper'}
         childFactory={child => {
           return React.cloneElement(child, {
-            classNames: state?.direction || 'navigate-push',
+            classNames: state?.direction || 'navigate',
           });
         }}
       >
@@ -86,6 +86,27 @@ const Container = styled.div`
   .navigate-push-exit-active {
     transform: translateX(-100%);
     transition: transform 600ms ease-in-out;
+  }
+
+  .navigate-enter {
+    transform: translateX(100%);
+  }
+
+  .navigate-enter-active {
+    z-index: 1;
+    transform: translateX(0);
+    transition: transform 0ms ease-in-out;
+
+    box-shadow: -5px 0px 25px rgba(0, 0, 0, 0.05);
+  }
+
+  .navigate-exit {
+    transform: translateX(0);
+  }
+
+  .navigate-exit-active {
+    transform: translateX(-100%);
+    transition: transform 0ms ease-in-out;
   }
 
   .transition-wrapper {
