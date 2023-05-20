@@ -7,7 +7,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { TailSpin } from 'react-loader-spinner';
 import iconArrowBack from '@/assets/svg/icons/icon-back-button.svg';
 import useNavigatePop from '@/hooks/useNavigatePop';
-import iconArrowDown from './svg/icon-arrow-down.svg';
+import iconArrowDown from '@/pages/auth/join/svg/icon-arrow-down.svg';
 import BottomSlideSelectPop from '@/components/common/popup/BottomSlideSelectPop';
 
 const JoinPage = () => {
