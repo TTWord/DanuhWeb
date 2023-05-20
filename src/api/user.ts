@@ -17,8 +17,15 @@ export const userAPI = {
     return response;
   },
 
+  getAccount: async () => {
+    const response = await instance.get('/user/userservice');
+
+    return response;
+  },
+
   deleteAccount: async () => {
     const response = await instance.delete('/user/userservice');
+
     return response;
   },
 
