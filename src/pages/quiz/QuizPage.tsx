@@ -91,7 +91,6 @@ const HeaderWrapper = styled.header`
 //-- 컨테이너 --//
 const ContainerWrapper = styled.div`
   width: 100%;
-  padding-bottom: 70px;
   flex: 1;
   overflow: auto;
   ::-webkit-scrollbar {
@@ -122,7 +121,7 @@ const SelectWrapper = styled.div`
   padding: 0 22px;
 `;
 const SelectButton = styled.button`
-  width: 170px;
+  width: 153px;
   height: 170px;
   box-sizing: border-box;
   background-color: #ffffff;
@@ -140,11 +139,25 @@ const SelectButton = styled.button`
   margin-bottom: 8px;
   position: relative; // 아이콘 위치 조절
 
-  :nth-child(2) {
+  :nth-child(n + 2) {
     margin-left: 8px;
   }
+  @media (max-width: 510px) {
+    :nth-child(n + 2) {
+      margin-left: 0px;
+    }
+    :nth-child(even) {
+      margin-left: 8px;
+    }
+  }
   @media (max-width: 392px) {
-    width: 160px;
+    width: 42%;
+    :nth-child(n + 2) {
+      margin-left: 0px;
+    }
+    :nth-child(even) {
+      margin-left: 8px;
+    }
   }
 `;
 
@@ -163,9 +176,7 @@ const Icon = styled.img`
 `;
 
 //-- 푸터 --//
-const FooterWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
+const FooterWrapper = styled.footer`
   width: 100%;
   height: 72px;
   display: flex;
