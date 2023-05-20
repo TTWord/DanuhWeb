@@ -13,7 +13,12 @@ const RankingPage = () => {
 
   return (
     <WebWrapper>
-      <Container>랭킹 페이지</Container>
+      <Header>랭킹 페이지</Header>
+
+      <Container>
+        <div>지원은</div>
+        <div>나중에...</div>
+      </Container>
 
       <FooterWrapper>
         <Footer />
@@ -27,18 +32,23 @@ export default RankingPage;
 const WebWrapper = styled.div`
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Header = styled.header`
+  width: 100%;
 `;
 
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  border-bottom: 1px solid black;
   flex: 1;
+  display: flex;
+  align-items: center;
 `;
 
 const FooterWrapper = styled.footer`
-  position: absolute;
-  bottom: 0;
   width: 100%;
   height: 72px;
   display: flex;
