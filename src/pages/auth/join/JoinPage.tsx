@@ -239,7 +239,7 @@ export default JoinPage;
 const Layout = styled.div`
   width: 100%;
   height: 100%;
-  background-color: #f8f8fc;
+  background-color: white;
   padding: 0 20px;
 `;
 
