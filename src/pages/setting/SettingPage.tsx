@@ -1,27 +1,36 @@
 import styled from 'styled-components';
-import tw from 'twin.macro';
 import { useNavigate } from 'react-router-dom';
 import { globalState } from '@/recoil';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useEffect } from 'react';
-
 import { instance } from '@/instance';
-import Footer from '@/components/layout/HomeLayout/Footer';
-import nextButton from '@/assets/svg/icons/icon-next-button.svg';
+import { AxiosError } from 'axios';
+import Swal from 'sweetalert2';
 
+import Footer from '@/components/layout/HomeLayout/Footer';
 import useLogout from '@/components/pages/setting/SettingPage/useLogout';
 import useDeleteAccount from '@/components/pages/setting/SettingPage/useDeleteAccount';
 
+import nextButton from '@/assets/svg/icons/icon-next-button.svg';
+
 const getUserInfoAPI = async () => {
   try {
-    const response = await instance.get('/user/userservice');
+    const { data: response } = await instance.get('/user/userservice');
+
     return response;
-  } catch (e) {
-    console.log(e);
+  } catch (e: unknown) {
+    const err = e as AxiosError<{
+      message: string;
+    }>;
+    const errorMessage = err?.response?.data.message;
+    Swal.fire({
+      icon: 'error',
+      title: errorMessage,
+    });
   }
 };
 
-const ContentBox = props => {
+const ContentBox = (props: any) => {
   return (
     <Content onClick={props.onClick}>
       <div>{props.title}</div>
@@ -33,17 +42,23 @@ const ContentBox = props => {
 };
 
 const SettingPage = () => {
-  const [nickname, setNickname] = useRecoilState(globalState.auth.nickname);
-  const [username, setUsername] = useRecoilState(globalState.auth.username);
-  const [profile, setProfile] = useRecoilState(globalState.auth.profilePic);
+  const [nickname, setNickname] = useRecoilState<string>(
+    globalState.auth.nickname,
+  );
+  const [username, setUsername] = useRecoilState<string>(
+    globalState.auth.username,
+  );
+  const [profile, setProfile] = useRecoilState<string>(
+    globalState.auth.profilePic,
+  );
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
 
   useEffect(() => {
     const getUserInfo = async () => {
       const response = await getUserInfoAPI();
-      setUsername(response.data.data.username);
-      setNickname(response.data.data.nickname);
-      setProfile(response.data.data.url);
+      setUsername(response.data.username);
+      setNickname(response.data.nickname);
+      setProfile(response.data.url);
     };
     getUserInfo();
     setActiveMenu(3);
@@ -68,14 +83,14 @@ const SettingPage = () => {
 
   const ProfilePic = () => {
     if (profile === undefined) {
-      return '';
+      return <div></div>;
     } else {
       return <img src={profile} alt="profile" />;
     }
   };
 
   return (
-    <Container>
+    <WebWrapper>
       <HeaderWrapper>
         <SettingText>Setting</SettingText>
         <ProfileWrapper>
@@ -89,6 +104,7 @@ const SettingPage = () => {
           </ProfileContent>
         </ProfileWrapper>
       </HeaderWrapper>
+
       <ContentWrapper>
         <ContentBox title="알림설정" onClick={moveNotificationPage} />
         <ContentBox title="공지사항" onClick={moveNoticePage} />
@@ -98,14 +114,23 @@ const SettingPage = () => {
         <ContentBox title="탈퇴하기" onClick={deleteAccount} />
         <ContentBox title="가져오기 / 내보내기" onClick={dummyFunction} />
       </ContentWrapper>
+
       <FooterWrapper>
         <Footer />
       </FooterWrapper>
-    </Container>
+    </WebWrapper>
   );
 };
 
 export default SettingPage;
+
+const WebWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+`;
 
 // 상단 부분
 const HeaderWrapper = styled.div`
@@ -116,6 +141,7 @@ const HeaderWrapper = styled.div`
   border-bottom: 1px solid black;
   padding: 31px 0 31px 30px;
 `;
+
 const SettingText = styled.div`
   font-size: 36px;
   font-weight: 300;
@@ -123,11 +149,13 @@ const SettingText = styled.div`
   color: #000000;
   margin-bottom: 45px;
 `;
+
 const ProfileWrapper = styled.div`
   width: 100%;
   height: 96px;
   display: flex;
 `;
+
 const ProfileImg = styled.div`
   width: 96px;
   height: 96px;
@@ -138,15 +166,18 @@ const ProfileImg = styled.div`
   margin-right: 17px;
   display: flex;
   align-items: center;
+
   img {
     width: 96px;
     border-radius: 17px;
   }
 `;
+
 const ProfileContent = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
 const ProfileNickname = styled.div`
   width: 100%;
   font-weight: 300;
@@ -154,6 +185,7 @@ const ProfileNickname = styled.div`
   line-height: 20px;
   margin-bottom: 7px;
 `;
+
 const ProfileUsername = styled.div`
   width: 100%;
   font-weight: 300;
@@ -162,6 +194,7 @@ const ProfileUsername = styled.div`
   color: #333333;
   margin-bottom: 25px;
 `;
+
 const ProfileChange = styled.button`
   width: 95px;
   height: 31px;
@@ -182,11 +215,13 @@ const ContentWrapper = styled.div`
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  flex: 1;
+
   ::-webkit-scrollbar {
     display: none;
   }
-  padding-bottom: 70px;
 `;
+
 const Content = styled.div`
   height: 64px;
   box-sizing: border-box;
@@ -197,18 +232,21 @@ const Content = styled.div`
   justify-content: space-between;
   padding: 24px 26px 24px 30px;
   transition: 0.4s;
+
   div {
     font-weight: 300;
     font-size: 16px;
     text-align: center;
     line-height: 16px;
   }
+
   :hover {
     background-color: #694ac2;
     color: white;
     cursor: pointer;
   }
 `;
+
 const NextButton = styled.button`
   img {
     height: 12px;
@@ -216,12 +254,8 @@ const NextButton = styled.button`
 `;
 
 const FooterWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
   width: 100%;
   height: 72px;
   display: flex;
-
   background: #ffffff;
 `;
-const Container = tw.div`w-[100%] h-[100%] overflow-hidden flex flex-col absolute`;
