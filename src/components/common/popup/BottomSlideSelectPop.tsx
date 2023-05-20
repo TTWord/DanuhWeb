@@ -63,8 +63,9 @@ const BottomSlideSelectPop: React.FC<BottomSlideSelectPopProps> = ({
       <Slider isClose={isClose}>
         <SlideTopLine />
         <Items>
-          {data.map(item => (
+          {data.map((item, idx) => (
             <Item
+              key={idx}
               onClick={() => {
                 item.onClick();
                 onClose();

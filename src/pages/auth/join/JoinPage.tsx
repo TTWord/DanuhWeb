@@ -7,7 +7,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { TailSpin } from 'react-loader-spinner';
 import iconArrowBack from '@/assets/svg/icons/icon-back-button.svg';
 import useNavigatePop from '@/hooks/useNavigatePop';
-import iconArrowDown from './svg/icon-arrow-down.svg';
+import iconArrowDown from '@/pages/auth/join/svg/icon-arrow-down.svg';
 import BottomSlideSelectPop from '@/components/common/popup/BottomSlideSelectPop';
 
 const JoinPage = () => {
@@ -239,7 +239,7 @@ export default JoinPage;
 const Layout = styled.div`
   width: 100%;
   height: 100%;
-  background-color: #f8f8fc;
+  background-color: white;
   padding: 0 20px;
 `;
 
