@@ -1,13 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 import useLogin from '@/pages/auth/LoginPage/hooks/useLogin';
 import useSocialLogin from '@/pages/auth/hooks/useSocialLogin';
+import BottomSlideSelectPop from '@/components/common/popup/BottomSlideSelectPop';
+
 import backButtonImg from '@/assets/svg/icons/icon-back-button.svg';
 import googleIcon from '@/assets/svg/icons/icon-google.svg';
 import kakaoIcon from '@/assets/svg/icons/icon-kakao.svg';
 import appleIcon from '@/assets/svg/icons/icon-apple.svg';
+import iconArrowDown from '@/pages/auth/join/svg/icon-arrow-down.svg';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -33,27 +36,61 @@ const LoginPage = () => {
   };
 
   const domainList = [
-    'naver.com',
-    'gmail.com',
-    'google.com',
-    'hanmail.net',
-    'daum.net',
+    {
+      text: 'naver.com',
+      onClick: () => {
+        setEmailDomain('naver.com');
+        setDirectInput(false);
+      },
+    },
+    {
+      text: 'gmail.com',
+      onClick: () => {
+        setEmailDomain('gmail.com');
+        setDirectInput(false);
+      },
+    },
+    {
+      text: 'daum.net',
+      onClick: () => {
+        setEmailDomain('daum.com');
+        setDirectInput(false);
+      },
+    },
+    {
+      text: '직접입력',
+      onClick: () => {
+        setEmailDomain('');
+        setDirectInput(true);
+      },
+    },
   ];
-  const domainRef = useRef<HTMLDivElement>(null);
-  const [isSelectopen, setSelectOpen] = useState(false);
-  const [isDirectInput, setDirectInput] = useState(false);
 
   // 비밀번호 표시용
   const [showPassWD, setShowPassWD] = useState<boolean>(false);
 
   const [emailID, setEmailID] = useState<string>('');
   const [emailDomain, setEmailDomain] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-
+  const [isDirectInput, setDirectInput] = useState(false);
   const [isLoginFocus, setLoginFocus] = useState<boolean>(false);
+
+  const [password, setPassword] = useState<string>('');
   const [isPassWDFocus, setPassWDFocus] = useState<boolean>(false);
 
   const [isOk, setIsOk] = useState<boolean>(false);
+
+  const [isPopOpen, setIsPopOpen] = useState(false);
+  const onSwitchPop = () => {
+    setIsPopOpen(!isPopOpen);
+  };
+
+  const onPopClose = () => {
+    setIsPopOpen(false);
+  };
+
+  const inputUserEmailEnd = (e: ChangeEvent<HTMLInputElement>) => {
+    setEmailDomain(e.target.value);
+  };
 
   useEffect(() => {
     if (emailID.length > 0 && emailDomain.length > 0 && password.length > 0) {
@@ -97,58 +134,43 @@ const LoginPage = () => {
               }}
             />
             <EmailCenter>@</EmailCenter>
+
             <EmailDomain
               onClick={() => {
                 if (!isDirectInput) {
-                  setSelectOpen(!isSelectopen);
                   setLoginFocus(current => !current);
+                  onSwitchPop();
                 }
               }}
-              ref={domainRef}
             >
               {!isDirectInput ? (
-                '선택'
+                <MailButton onClick={onSwitchPop}>
+                  <MailText isActive={emailDomain.length > 0}>
+                    {emailDomain.length > 0 ? emailDomain : '선택'}
+                  </MailText>
+                  <img src={iconArrowDown} alt="arrow" />
+                </MailButton>
               ) : (
-                <DirectInput
-                  onChange={e => setEmailDomain(e.target.value)}
-                  placeholder="직접입력"
-                  onFocus={() => {
-                    setLoginFocus(true);
-                  }}
-                  onBlur={() => {
-                    setLoginFocus(false);
-                  }}
-                />
-              )}
-            </EmailDomain>
-            <CustomSelectBox isActive={isSelectopen}>
-              {domainList.map((items, idx) => {
-                return (
-                  <CustomSelect
-                    key={idx}
-                    onClick={(e: any) => {
-                      const selectDomain = e.target.innerText;
-                      // @ts-ignore
-                      domainRef.current.innerText = selectDomain;
-                      setEmailDomain(selectDomain);
-                      setSelectOpen(!isSelectopen);
-                      setLoginFocus(current => !current);
+                <MailButton>
+                  <DirectInput
+                    onChange={inputUserEmailEnd}
+                    placeholder="직접입력"
+                    onFocus={() => {
+                      setLoginFocus(true);
                     }}
-                  >
-                    {items}
-                  </CustomSelect>
-                );
-              })}
-              <CustomSelect
-                onClick={() => {
-                  setSelectOpen(!isSelectopen);
-                  setDirectInput(!isDirectInput);
-                  setLoginFocus(current => !current);
-                }}
-              >
-                직접입력
-              </CustomSelect>
-            </CustomSelectBox>
+                    onBlur={() => {
+                      setLoginFocus(false);
+                    }}
+                  />
+                  <img src={iconArrowDown} alt="arrow" onClick={onSwitchPop} />
+                </MailButton>
+              )}
+              <BottomSlideSelectPop
+                isOpen={isPopOpen}
+                onPopClose={onPopClose}
+                data={domainList}
+              />
+            </EmailDomain>
           </EmailBox>
         </FormBox>
 
@@ -220,21 +242,25 @@ const WebWrapper = styled.div`
 
 const Header = styled.header`
   width: 100%;
-  padding: 20px 0 0 20px;
+  padding-left: 16px;
 `;
 
 const BackButton = styled.button`
   width: 100%;
-  margin-bottom: 46px;
+  height: 56px;
+  display: flex;
+  align-items: center;
 `;
 
 const Title = styled.div`
   width: 100%;
+  height: 50px;
   font-family: ${({ theme }) => theme.fonts.gmarketSans};
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 400;
   line-height: 140%;
   display: flex;
+  align-items: center;
 `;
 
 const Container = styled.div`
@@ -270,11 +296,15 @@ const EmailBox = styled.div<{ isFocus: boolean }>`
   align-items: center;
   position: relative;
   margin-top: 6px;
+  border-bottom: 1px solid #e7e7e7;
 
   ${({ isFocus }) => {
-    return isFocus
-      ? 'border-bottom: 1px solid #694AC2;'
-      : 'border-bottom: 1px solid #E7E7E7;';
+    return (
+      isFocus &&
+      css`
+        border-bottom: 1px solid ${({ theme }) => theme.colors.primary.default};
+      `
+    );
   }}
 `;
 
@@ -302,12 +332,36 @@ const EmailDomain = styled.div`
   width: 50%;
   height: 100%;
   padding-left: 8px;
+  padding-right: 16px;
   display: flex;
   align-items: center;
   outline: none;
+  color: #dadada;
 
   :hover {
     cursor: pointer;
+  }
+`;
+
+const MailText = styled.div<{
+  isActive: boolean;
+}>`
+  width: 100%;
+
+  ${({ isActive }) =>
+    isActive &&
+    css`
+      color: #111111;
+    `}
+`;
+
+const MailButton = styled.div`
+  display: flex;
+  width: 100%;
+  cursor: pointer;
+
+  img {
+    width: 11px;
   }
 `;
 
@@ -323,48 +377,21 @@ const DirectInput = styled.input`
   }
 `;
 
-const CustomSelectBox = styled.div<{
-  isActive: boolean;
-}>`
-  display: none;
-  width: auto;
-  position: absolute;
-  z-index: 1;
-  right: 0;
-  top: 100%;
-  border: 1px solid;
-  background-color: white;
-
-  ${({ isActive }) =>
-    isActive &&
-    css`
-      display: block;
-    `}
-`;
-
-const CustomSelect = styled.button`
-  width: 100%;
-  padding: 0 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  :hover {
-    background-color: #694ac2;
-    color: white;
-  }
-`;
-
 const PasswordBox = styled.input<{ isFocus: boolean }>`
   height: 42px;
   padding-left: 16px;
   font-size: 16px;
   outline: none;
   margin-top: 6px;
+  border-bottom: 1px solid #e7e7e7;
 
   ${({ isFocus }) => {
-    return isFocus
-      ? 'border-bottom: 1px solid #694AC2;'
-      : 'border-bottom: 1px solid #E7E7E7;';
+    return (
+      isFocus &&
+      css`
+        border-bottom: 1px solid ${({ theme }) => theme.colors.primary.default};
+      `
+    );
   }}
 `;
 
@@ -428,7 +455,9 @@ const Footer = styled.footer`
   padding-bottom: 36px;
 `;
 
-const LoginButton = styled.button<{ isActive: boolean }>`
+const LoginButton = styled.button<{
+  isActive: boolean;
+}>`
   width: 100%;
   height: 48px;
   border-radius: 8px;
@@ -437,10 +466,14 @@ const LoginButton = styled.button<{ isActive: boolean }>`
   font-size: 14px;
   color: white;
   text-align: center;
+  background-color: #c5c6d0;
 
   ${({ isActive }) => {
-    return isActive
-      ? 'background-color: #734ae8;'
-      : 'background-color: #C5C6D0;';
+    return (
+      isActive &&
+      css`
+        background-color: ${({ theme }) => theme.colors.primary.default};
+      `
+    );
   }}
 `;
