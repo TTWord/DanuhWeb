@@ -9,6 +9,7 @@ import ResultPage from '@/pages/quiz/ResultPage';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import RouteTransition from './RouteTransition';
 import RouteTransitionWrapper from './RouteTransitionWrapper';
+import RootLayout from '@/components/layout/RootLayout';
 
 const QuizRouter = () => {
   const location = useLocation();
@@ -18,7 +19,9 @@ const QuizRouter = () => {
       <Routes location={location}>
         <Route element={<RouteTransitionWrapper />}>
           {/* 퀴즈 메인 페이지 */}
-          <Route path={'/'} element={<QuizPage />} />
+          <Route element={<RootLayout />}>
+            <Route path={'/'} element={<QuizPage />} />
+          </Route>
 
           {/* 플래쉬카드 메인 페이지 */}
           <Route path={'/flashcard'} element={<FlashCardPage />} />

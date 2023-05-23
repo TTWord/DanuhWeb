@@ -6,6 +6,7 @@ import SettingPage from '@/pages/setting/SettingPage';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import RouteTransition from './RouteTransition';
 import RouteTransitionWrapper from './RouteTransitionWrapper';
+import RootLayout from '@/components/layout/RootLayout';
 
 const SettingRouter = () => {
   const location = useLocation();
@@ -14,7 +15,9 @@ const SettingRouter = () => {
       <Routes location={location}>
         <Route element={<RouteTransitionWrapper />}>
           {/* 설정 페이지 */}
-          <Route path={'/'} element={<SettingPage />} />
+          <Route element={<RootLayout />}>
+            <Route path={'/'} element={<SettingPage />} />
+          </Route>
 
           {/* 프로필 변경 페이지 */}
           <Route path={'/profile'} element={<ProfilePage />} />

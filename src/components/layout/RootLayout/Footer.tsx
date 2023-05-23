@@ -1,7 +1,7 @@
-import HomeMenu from '@/components/layout/HomeLayout/Footer/HomeMenu';
-import StudyMenu from '@/components/layout/HomeLayout/Footer/StudyMenu';
-import RankingMenu from '@/components/layout/HomeLayout/Footer/RankigMenu';
-import MyPagemenu from '@/components/layout/HomeLayout/Footer/MyPageMenu';
+import HomeMenu from '@/components/layout/RootLayout/Footer/HomeMenu';
+import StudyMenu from '@/components/layout/RootLayout/Footer/StudyMenu';
+import RankingMenu from '@/components/layout/RootLayout/Footer/RankigMenu';
+import MyPagemenu from '@/components/layout/RootLayout/Footer/MyPageMenu';
 
 import { globalState } from '@/recoil';
 import { useNavigate } from 'react-router-dom';
