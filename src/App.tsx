@@ -2,9 +2,10 @@ import Router from '@/routes/Router';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyles from './styles/GlobalStyles';
 import { lightTheme } from './styles/theme';
-import { atom, useRecoilValue } from 'recoil';
+import { atom, useRecoilValue, useSetRecoilState } from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { useEffect } from 'react';
+import Toast, { toastStatus } from './components/common/toast/Toast';
 
 export const darkMode = atom({
   key: 'darkMode',
@@ -32,6 +33,7 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={isDark ? lightTheme : lightTheme}>
         <GlobalStyles />
+        <Toast />
         <Router />
       </ThemeProvider>
     </QueryClientProvider>

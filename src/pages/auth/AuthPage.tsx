@@ -8,12 +8,21 @@ import pencilIcon from '@/assets/svg/icons/icon-pencil.svg';
 import dogIcon from '@/assets/svg/icons/icon-dog.svg';
 import bookIcon from '@/assets/svg/icons/icon-book.svg';
 import medalIcon from '@/assets/svg/icons/icon-medal.svg';
+import { useSetRecoilState } from 'recoil';
+import { toastStatus } from '@/components/common/toast/Toast';
 
 const TestPage = () => {
   const navigate = useNavigate();
 
+  // const setToast = useSetRecoilState(toastStatus);
+
   const goLogin = () => {
     navigate('/auth/login');
+    // setToast({
+    //   isOpen: true,
+    //   timer: 2500,
+    //   message: '토스트 테스트',
+    // });
   };
 
   return (
