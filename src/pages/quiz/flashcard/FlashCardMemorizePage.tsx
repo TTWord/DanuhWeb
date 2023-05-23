@@ -1,21 +1,35 @@
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import iconClose from '@/assets/svg/icons/icon-close.svg';
 
 import { globalState } from '@/recoil';
 import { useRecoilValue } from 'recoil';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import ConfirmPop from '@/components/common/popup/ConfirmPop';
+import useGetMemorizeWord from './hooks/useGetMemo';
 
-const FlashCardMeanPage = () => {
+const FlashCardMemorizePage = () => {
   const navigate = useNavigate();
+  const getMemo = useGetMemorizeWord();
+  const { id } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const memoList = [...useRecoilValue(globalState.memo.memoList)];
 
+  const [isConfirmPopOpen, setIsConfirmPopOpen] = useState(false);
   const [pageNum, setPageNum] = useState(0);
   const [showWord, setShowWord] = useState(false);
 
+  useEffect(() => {
+    if (id && searchParams) {
+      getMemo({ bookId: Number(id), count: 10 });
+    }
+  }, [id, searchParams]);
+
   // 나가기 기능
   const onExitQuiz = () => {
-    navigate('/quiz/flashcard');
+    setIsConfirmPopOpen(true);
+    // navigate('/quiz/flashcard');
   };
 
   const onNext = () => {
@@ -35,8 +49,21 @@ const FlashCardMeanPage = () => {
     }
   };
 
+  if (memoList.length === 0) return null;
+
   return (
     <Container>
+      <ConfirmPop
+        isOpen={isConfirmPopOpen}
+        message="암기를 중단할까요?"
+        cancelText="뒤로가기"
+        confirmText="그만하기"
+        onCancel={() => setIsConfirmPopOpen(false)}
+        onConfirm={() => {
+          setIsConfirmPopOpen(false);
+          navigate('/quiz/flashcard');
+        }}
+      />
       <Header>
         <ExitButton onClick={onExitQuiz}>
           <img src={iconClose} alt="close-button" />
@@ -61,7 +88,7 @@ const FlashCardMeanPage = () => {
   );
 };
 
-export default FlashCardMeanPage;
+export default FlashCardMemorizePage;
 
 const Container = styled.div`
   position: relative;
