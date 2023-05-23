@@ -1,7 +1,6 @@
 import QuizPage from '@/pages/quiz/QuizPage';
 import FlashCardPage from '@/pages/quiz/flashcard/FlashCardPage';
-import FlashCardWordPage from '@/pages/quiz/flashcard/FlashCardWordPage';
-import FlashCardMeanPage from '@/pages/quiz/flashcard/FlashCardMeanPage';
+import FlashCardMemorizePage from '@/pages/quiz/flashcard/FlashCardMemorizePage';
 import ChoicePage from '@/pages/quiz/choice/ChoicePage';
 import ChoiceQuestionPage from '@/pages/quiz/choice/ChoiceQuestionPage';
 import ShortAnswerPage from '@/pages/quiz/shortanswer/ShortAnswerPage';
@@ -24,9 +23,7 @@ const QuizRouter = () => {
           {/* 플래쉬카드 메인 페이지 */}
           <Route path={'/flashcard'} element={<FlashCardPage />} />
           {/* 플래쉬카드 영어암기 페이지 */}
-          <Route path={'/flashcard/word'} element={<FlashCardWordPage />} />
-          {/* 플래쉬카드 한글암기 페이지 */}
-          <Route path={'/flashcard/mean'} element={<FlashCardMeanPage />} />
+          <Route path={'/flashcard/:id'} element={<FlashCardMemorizePage />} />
 
           {/* 객관식 메인 페이지 */}
           <Route path={'/choice'} element={<ChoicePage />} />
