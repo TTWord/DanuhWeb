@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
 import { globalState } from '@/recoil';
-import Footer from '@/components/layout/HomeLayout/Footer';
 import bulbIcon from '@/assets/svg/icons/icon-bulb.svg';
 import leafIcon from '@/assets/svg/icons/icon-leaf.svg';
 import treeIcon from '@/assets/svg/icons/icon-tree.svg';
@@ -60,10 +59,6 @@ const QuizPage = () => {
           </SelectWrapper>
         </Container>
       </ContainerWrapper>
-
-      <FooterWrapper>
-        <Footer />
-      </FooterWrapper>
     </MainWrapper>
   );
 };
@@ -71,7 +66,7 @@ const QuizPage = () => {
 export default QuizPage;
 
 //-- 웹 --//
-const MainWrapper = tw.div`w-[100%] h-[100%] overflow-hidden flex flex-col absolute`;
+const MainWrapper = tw.div`w-[100%] h-[100%] overflow-hidden flex flex-col`;
 
 //-- 헤더 --//
 const HeaderWrapper = styled.header`

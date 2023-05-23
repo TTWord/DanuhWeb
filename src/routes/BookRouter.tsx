@@ -1,4 +1,4 @@
-import HomeLayout from '@/components/layout/HomeLayout';
+import HomeLayout from '@/components/layout/RootLayout';
 import BookDetPage from '@/pages/book/BookDetPage';
 import BookPage from '@/pages/book/BookPage';
 import ChangeBookPage from '@/pages/book/ChangeBookPage';
@@ -8,6 +8,7 @@ import GenerateBookPage from '@/pages/book/GenerateBookPage';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import RouteTransition from './RouteTransition';
 import RouteTransitionWrapper from './RouteTransitionWrapper';
+import RootLayout from '@/components/layout/RootLayout';
 
 const BookRouter = () => {
   const location = useLocation();
@@ -17,7 +18,7 @@ const BookRouter = () => {
       <Routes location={location}>
         <Route element={<RouteTransitionWrapper />}>
           {/* Book Page */}
-          <Route element={<HomeLayout />}>
+          <Route element={<RootLayout />}>
             <Route path={'/'} element={<BookPage />} />
           </Route>
 
