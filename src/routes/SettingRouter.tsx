@@ -1,7 +1,7 @@
-import NoticeDetpage from '@/pages/setting/NoticeDetPage';
-import NoticePage from '@/pages/setting/NoticePage';
-import NotificationPage from '@/pages/setting/NotificationPage';
-import ProfilePage from '@/pages/setting/ProfilePage';
+import NoticeDetpage from '@/pages/setting/notice/NoticeDetPage';
+import NoticePage from '@/pages/setting/notice/NoticePage';
+import NotificationPage from '@/pages/setting/notification/NotificationPage';
+import ProfilePage from '@/pages/setting/profile/ProfilePage';
 import SettingPage from '@/pages/setting/SettingPage';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import RouteTransition from './RouteTransition';

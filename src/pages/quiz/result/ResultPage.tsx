@@ -1,17 +1,24 @@
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { globalState } from '@/recoil';
 
 const ResultPage = () => {
+  const testResult = useRecoilValue(globalState.quiz.result);
+
   const navigate = useNavigate();
   const location = useLocation();
   const percentage: number = location?.state?.result;
+  const answer: number = testResult; // location?.state?.answer;
+  const length: number = location?.state?.length;
 
   const targetBook: string = '전체';
-  const totalWord: number = 100;
-  const quizWords: number = 10;
-  const answerWords: number = 3;
-  const answerRates: number = (answerWords * 100) / quizWords;
-  const memoryRates: number = 70;
+  const totalWord: number = 0;
+  const quizWords: number = 0;
+  const answerWords: number = 0;
+  const answerRates: number =
+    quizWords === 0 ? 0 : (answerWords * 100) / quizWords;
+  const memoryRates: number = 0;
 
   const goQuiz = () => {
     navigate('/quiz');
@@ -34,12 +41,12 @@ const ResultPage = () => {
 
         <QuizWords>
           암기 단어
-          <span>{quizWords}개</span>
+          <span>{length}개</span>
         </QuizWords>
 
         <AnswerWords>
           정답 단어
-          <span>{answerWords}개</span>
+          <span>{answer}개</span>
         </AnswerWords>
 
         <AnswerRates>

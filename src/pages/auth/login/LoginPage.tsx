@@ -2,15 +2,15 @@ import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-import useLogin from '@/pages/auth/LoginPage/hooks/useLogin';
-import useSocialLogin from '@/pages/auth/hooks/useSocialLogin';
+import useLogin from '@/components/pages/auth/hooks/useLogin';
+import useSocialLogin from '@/components/pages/auth/hooks/useSocialLogin';
 import BottomSlideSelectPop from '@/components/common/popup/BottomSlideSelectPop';
 
 import backButtonImg from '@/assets/svg/icons/icon-back-button.svg';
 import googleIcon from '@/assets/svg/icons/icon-google.svg';
 import kakaoIcon from '@/assets/svg/icons/icon-kakao.svg';
 import appleIcon from '@/assets/svg/icons/icon-apple.svg';
-import iconArrowDown from '@/pages/auth/join/svg/icon-arrow-down.svg';
+import iconArrowDown from '@/assets/svg/icons/icon-arrow-down.svg';
 
 const LoginPage = () => {
   const navigate = useNavigate();

@@ -5,7 +5,7 @@ import ChoicePage from '@/pages/quiz/choice/ChoicePage';
 import ChoiceQuestionPage from '@/pages/quiz/choice/ChoiceQuestionPage';
 import ShortAnswerPage from '@/pages/quiz/shortanswer/ShortAnswerPage';
 import ShortQuestionPage from '@/pages/quiz/shortanswer/ShortQuestionPage';
-import ResultPage from '@/pages/quiz/ResultPage';
+import ResultPage from '@/pages/quiz/result/ResultPage';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import RouteTransition from './RouteTransition';
 import RouteTransitionWrapper from './RouteTransitionWrapper';
