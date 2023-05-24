@@ -10,7 +10,7 @@ export const quizAPI = {
     return response;
   },
 
-  getChoiceQuiz: async (bookID: string, number: string) => {
+  getChoiceQuiz: async (bookID: number, number: number) => {
     const response = await instance.post('/quiz/multiple', {
       book_id: bookID,
       number: number,

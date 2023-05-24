@@ -6,20 +6,23 @@ import { api } from '@/api';
 import { globalState } from '@/recoil';
 import { useSetRecoilState } from 'recoil';
 import Swal from 'sweetalert2';
+import { AxiosError } from 'axios';
 
 const ChoicePage = () => {
   const navigate = useNavigate();
 
+  const quizNumber: number = 10;
+
   const [books, setBooks] = useState([]);
-  const [page, setPage] = useState('');
+  const [page, setPage] = useState<number>(0);
   const setQuizList = useSetRecoilState(globalState.quiz.quizList);
 
   const getBookList = async () => {
     try {
-      const response = await api.book.getBook();
+      const response: any = await api.book.getBook();
 
-      if (response.data.status === 'OK') {
-        setBooks(response.data.data);
+      if (response.status === 'OK') {
+        setBooks(response.data);
       }
     } catch (e) {
       console.log(e);
@@ -33,13 +36,16 @@ const ChoicePage = () => {
   // 객관식 퀴즈 가져오는 함수
   const getQuiz = async () => {
     try {
-      const response = await api.quiz.getChoiceQuiz(page, 10);
-      const quiz = response.data.data.problem;
+      const { data: response } = await api.quiz.getChoiceQuiz(page, quizNumber);
+      const quiz = response.data.problem;
 
       setQuizList(quiz);
       navigate('/quiz/choice/question');
-    } catch (e) {
-      if (e.response.data.message === 'WORD_LESS_THAN_COUNT') {
+    } catch (e: unknown) {
+      const err = e as AxiosError<{
+        message: string;
+      }>;
+      if (err?.response?.data.message === 'WORD_LESS_THAN_COUNT') {
         Swal.fire({
           icon: 'error',
           title: '단어가 4개 미만입니다.',
@@ -49,7 +55,7 @@ const ChoicePage = () => {
   };
 
   const goQuiz = async () => {
-    if (page === '') {
+    if (page === 0) {
       Swal.fire({
         icon: 'warning',
         title: '단어장을 선택해주세요.',
@@ -59,7 +65,13 @@ const ChoicePage = () => {
     }
   };
 
-  const CreateBookList = props => {
+  const test = () => {
+    console.log(books);
+  };
+  {
+    /* any 타입 변경할것 */
+  }
+  const CreateBookList = (props: any) => {
     const [color, setColor] = useState('#ffffff');
     return (
       <Book
@@ -91,7 +103,8 @@ const ChoicePage = () => {
         <QuizName>객관식</QuizName>
         <BookSelect>단어장 선택</BookSelect>
         <BookWrapper>
-          {books.map(items => {
+          {/* any 타입 변경할것 */}
+          {books.map((items: any) => {
             return (
               <CreateBookList
                 key={items.id}
@@ -105,7 +118,7 @@ const ChoicePage = () => {
 
       <FooterWrapper>
         <WordQuizButton onClick={goQuiz}>단어암기</WordQuizButton>
-        <MeanQuizButton onClick={goQuiz}>뜻암기</MeanQuizButton>
+        <MeanQuizButton onClick={test}>뜻암기</MeanQuizButton>
       </FooterWrapper>
     </MainWrapper>
   );
