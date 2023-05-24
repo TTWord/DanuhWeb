@@ -11,7 +11,7 @@ import medalIcon from '@/assets/svg/icons/icon-medal.svg';
 import { useSetRecoilState } from 'recoil';
 import { toastStatus } from '@/components/common/toast/Toast';
 
-const TestPage = () => {
+const AuthPage = () => {
   const navigate = useNavigate();
 
   // const setToast = useSetRecoilState(toastStatus);
@@ -56,7 +56,7 @@ const TestPage = () => {
   );
 };
 
-export default TestPage;
+export default AuthPage;
 
 const WebWrapper = styled.div`
   width: 100%;

@@ -1,9 +1,9 @@
-import Additional from '@/pages/book/BookPage/Additional';
+import Additional from '@/components/pages/book/book/components/Additional';
 import { instance } from '@/instance';
 import { useCallback, useEffect, useState } from 'react';
 import { styled } from 'twin.macro';
 import { useNavigate } from 'react-router-dom';
-import BookItem from './BookPage/BookItem';
+import BookItem from '@/components/pages/book/book/components/BookItem';
 import Footer from '@/components/layout/RootLayout/Footer';
 
 const BookPage = () => {

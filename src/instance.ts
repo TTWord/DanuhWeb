@@ -50,7 +50,7 @@ instance.interceptors.response.use(
       localStorage.removeItem('refresh_Token');
       Swal.fire({
         icon: 'error',
-        title: errorMessage,
+        title: '로그인 시간이 만료되었습니다.',
       }).then(() => {
         window.location.href = '/auth';
       });
