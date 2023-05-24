@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
 import { globalState } from '@/recoil';
-import Footer from '@/components/layout/HomeLayout/Footer';
 import bulbIcon from '@/assets/svg/icons/icon-bulb.svg';
 import leafIcon from '@/assets/svg/icons/icon-leaf.svg';
 import treeIcon from '@/assets/svg/icons/icon-tree.svg';
@@ -60,10 +59,6 @@ const QuizPage = () => {
           </SelectWrapper>
         </Container>
       </ContainerWrapper>
-
-      <FooterWrapper>
-        <Footer />
-      </FooterWrapper>
     </MainWrapper>
   );
 };
@@ -71,7 +66,7 @@ const QuizPage = () => {
 export default QuizPage;
 
 //-- 웹 --//
-const MainWrapper = tw.div`w-[100%] h-[100%] overflow-hidden flex flex-col absolute`;
+const MainWrapper = tw.div`w-[100%] h-[100%] overflow-hidden flex flex-col`;
 
 //-- 헤더 --//
 const HeaderWrapper = styled.header`
@@ -91,6 +86,7 @@ const HeaderWrapper = styled.header`
 //-- 컨테이너 --//
 const ContainerWrapper = styled.div`
   width: 100%;
+  padding-bottom: 70px;
   flex: 1;
   overflow: auto;
   ::-webkit-scrollbar {
@@ -121,7 +117,7 @@ const SelectWrapper = styled.div`
   padding: 0 22px;
 `;
 const SelectButton = styled.button`
-  width: 153px;
+  width: 170px;
   height: 170px;
   box-sizing: border-box;
   background-color: #ffffff;
@@ -139,25 +135,11 @@ const SelectButton = styled.button`
   margin-bottom: 8px;
   position: relative; // 아이콘 위치 조절
 
-  :nth-child(n + 2) {
+  :nth-child(2) {
     margin-left: 8px;
   }
-  @media (max-width: 510px) {
-    :nth-child(n + 2) {
-      margin-left: 0px;
-    }
-    :nth-child(even) {
-      margin-left: 8px;
-    }
-  }
   @media (max-width: 392px) {
-    width: 42%;
-    :nth-child(n + 2) {
-      margin-left: 0px;
-    }
-    :nth-child(even) {
-      margin-left: 8px;
-    }
+    width: 160px;
   }
 `;
 
@@ -176,7 +158,9 @@ const Icon = styled.img`
 `;
 
 //-- 푸터 --//
-const FooterWrapper = styled.footer`
+const FooterWrapper = styled.div`
+  position: absolute;
+  bottom: 0;
   width: 100%;
   height: 72px;
   display: flex;

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { styled } from 'twin.macro';
 import { useNavigate } from 'react-router-dom';
 import BookItem from './BookPage/BookItem';
+import Footer from '@/components/layout/RootLayout/Footer';
 
 const BookPage = () => {
   const [books, setBooks] = useState<any>([]);

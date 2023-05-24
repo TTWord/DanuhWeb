@@ -7,7 +7,7 @@ import { instance } from '@/instance';
 import { AxiosError } from 'axios';
 import Swal from 'sweetalert2';
 
-import Footer from '@/components/layout/HomeLayout/Footer';
+import Footer from '@/components/layout/RootLayout/Footer';
 import useLogout from '@/components/pages/setting/SettingPage/useLogout';
 import useDeleteAccount from '@/components/pages/setting/SettingPage/useDeleteAccount';
 
@@ -114,10 +114,6 @@ const SettingPage = () => {
         <ContentBox title="탈퇴하기" onClick={deleteAccount} />
         <ContentBox title="가져오기 / 내보내기" onClick={dummyFunction} />
       </ContentWrapper>
-
-      <FooterWrapper>
-        <Footer />
-      </FooterWrapper>
     </WebWrapper>
   );
 };

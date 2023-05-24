@@ -17,7 +17,6 @@ interface IBookResponse {
 }
 
 const FlashCardPage = () => {
-  const getMemo = useGetMemo();
   const navigate = useNavigate();
 
   const { data: books } = useQuery('FlashCard/GetBooks', async () => {
@@ -45,9 +44,9 @@ const FlashCardPage = () => {
       });
     } else {
       if (mode === 'word') {
-        getMemo(selectedBook.id, 10, 'word');
+        navigate(`/quiz/flashcard/${selectedBook.id}`);
       } else {
-        getMemo(selectedBook.id, 10, 'mean');
+        navigate(`/quiz/flashcard/${selectedBook.id}`);
       }
     }
   };

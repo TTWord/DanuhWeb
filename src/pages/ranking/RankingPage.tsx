@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { globalState } from '@/recoil';
 import { useSetRecoilState } from 'recoil';
 import { useEffect } from 'react';
-import Footer from '@/components/layout/HomeLayout/Footer';
+import Footer from '@/components/layout/RootLayout/Footer';
 
 const RankingPage = () => {
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
@@ -19,10 +19,6 @@ const RankingPage = () => {
         <div>지원은</div>
         <div>나중에...</div>
       </Container>
-
-      <FooterWrapper>
-        <Footer />
-      </FooterWrapper>
     </WebWrapper>
   );
 };
