@@ -1,5 +1,5 @@
-import BookDetPage from '@/pages/book/_id/BookDetPage';
-import BookPage from '@/pages/book/BookPage';
+import BookDetPage from '@/pages/book/_id/BookDet/BookDetPage';
+import BookPage from '@/pages/book/Book/BookPage';
 import ChangeBookPage from '@/pages/book/_id/ChangeBookPage';
 import CreateBookPage from '@/pages/book/create/CreateBookPage';
 import CreateWordPage from '@/pages/book/_id/CreateWordPage';
