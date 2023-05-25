@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import useSendmail from '@/components/pages/auth/hooks/useSendmail';
+import useSendmail from '@/pages/auth/join/Join/hooks/useSendmail';
 import { globalState } from '@/recoil';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { TailSpin } from 'react-loader-spinner';

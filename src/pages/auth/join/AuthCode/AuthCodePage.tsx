@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback, ChangeEvent } from 'react';
 import styled, { css } from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 import { globalState } from '@/recoil';
 import { useRecoilValue } from 'recoil';
-import useSignup from '../hooks/useSignup';
+import useSignup from '@/pages/auth/join/AuthCode/hooks/useSignup';
 import iconArrowBack from '@/assets/svg/icons/icon-back-button.svg';
 import useNavigatePop from '@/hooks/useNavigatePop';
+
+import Counter from './components/Counter';
 
 const AuthCodePage = () => {
   const userEmail = useRecoilValue(globalState.auth.username);
@@ -14,27 +15,6 @@ const AuthCodePage = () => {
   const userNickname = useRecoilValue(globalState.auth.nickname);
 
   const signup = useSignup();
-
-  // 카운트 다운
-  const [minutes, setMinutes] = useState(3); // 1분으로 초기화
-  const [seconds, setSeconds] = useState(0); // 0초로 초기화
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (seconds === 0) {
-        if (minutes === 0) {
-          clearInterval(intervalId);
-        } else {
-          setMinutes(prevMinutes => prevMinutes - 1);
-          setSeconds(59);
-        }
-      } else {
-        setSeconds(prevSeconds => prevSeconds - 1);
-      }
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, [minutes, seconds]);
 
   const [isOk, setOk] = useState<boolean>(false);
   const [authCode, setAuthCode] = useState('');
@@ -82,10 +62,7 @@ const AuthCodePage = () => {
               value={authCode}
             />
           </AuthInputBox>
-          <CounterBox>
-            {minutes.toString().padStart(2, '0')}:
-            {seconds.toString().padStart(2, '0')}
-          </CounterBox>
+          <Counter />
           <RequestAuthCodeComment>
             메일을 받지 못하셨나요?
           </RequestAuthCodeComment>
