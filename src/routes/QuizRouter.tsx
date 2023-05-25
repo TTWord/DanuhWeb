@@ -1,11 +1,11 @@
-import QuizPage from '@/pages/quiz/QuizPage';
+import QuizPage from '@/pages/quiz/Quiz/QuizPage';
 import FlashCardPage from '@/pages/quiz/flashcard/FlashCard/FlashCardPage';
 import FlashCardMemorizePage from '@/pages/quiz/flashcard/FlashCardMemorize/FlashCardMemorizePage';
-import ChoicePage from '@/pages/quiz/choice/ChoicePage';
-import ChoiceQuestionPage from '@/pages/quiz/choice/ChoiceQuestionPage';
-import ShortAnswerPage from '@/pages/quiz/shortanswer/ShortAnswerPage';
+import ChoicePage from '@/pages/quiz/choice/Choice/ChoicePage';
+import ChoiceQuestionPage from '@/pages/quiz/choice/ChoiceQuestion/ChoiceQuestionPage';
+import ShortAnswerPage from '@/pages/quiz/shortanswer/ShortAnswer/ShortAnswerPage';
 import ShortQuestionPage from '@/pages/quiz/shortanswer/ShortQuestion/ShortQuestionPage';
-import ResultPage from '@/pages/quiz/result/ResultPage';
+import ResultPage from '@/pages/quiz/result/Result/ResultPage';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import RouteTransition from './RouteTransition';
 import RouteTransitionWrapper from './RouteTransitionWrapper';

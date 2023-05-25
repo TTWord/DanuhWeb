@@ -1,8 +1,8 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import RouteTransition from './RouteTransition';
 import RouteTransitionWrapper from './RouteTransitionWrapper';
-import AuthPage from '@/pages/auth/AuthPage';
-import OAuthPage from '@/pages/auth/oauth/OAuthPage';
+import AuthPage from '@/pages/auth/Auth/AuthPage';
+import OAuthPage from '@/pages/auth/oauth/OAuth/OAuthPage';
 import LoginPage from '@/pages/auth/login/Login/LoginPage';
 import NicknameSubmitPage from '@/pages/auth/join/NicknameSubmit/NicknameSubmitPage';
 import JoinPage from '@/pages/auth/join/Join/JoinPage';

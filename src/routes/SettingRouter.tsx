@@ -2,7 +2,7 @@ import NoticeDetpage from '@/pages/setting/notice/NoticeDet/NoticeDetPage';
 import NoticePage from '@/pages/setting/notice/Notice/NoticePage';
 import NotificationPage from '@/pages/setting/notification/Notification/NotificationPage';
 import ProfilePage from '@/pages/setting/profile/Profile/ProfilePage';
-import SettingPage from '@/pages/setting/SettingPage';
+import SettingPage from '@/pages/setting/Setting/SettingPage';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import RouteTransition from './RouteTransition';
 import RouteTransitionWrapper from './RouteTransitionWrapper';

@@ -1,4 +1,4 @@
-import RankingPage from '@/pages/ranking/RankingPage';
+import RankingPage from '@/pages/ranking/Ranking/RankingPage';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import RouteTransition from './RouteTransition';
 import RouteTransitionWrapper from './RouteTransitionWrapper';

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 import { instance } from '@/instance';
-import useChangeProfilePic from '../hooks/useChangeProfilePic';
+import useChangeProfilePic from './hooks/useChangeProfilePic';
 import backImg from '@/assets/svg/icons/icon-back-button.svg';
 import uploadImg from '@/assets/svg/icons/icon-image-upload.svg';
 
