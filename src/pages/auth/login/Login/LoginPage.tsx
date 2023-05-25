@@ -2,8 +2,8 @@ import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-import useLogin from '@/components/pages/auth/hooks/useLogin';
-import useSocialLogin from '@/components/pages/auth/hooks/useSocialLogin';
+import useLogin from '@/pages/auth/login/Login/hooks/useLogin';
+import useSocialLogin from './hooks/useSocialLogin';
 import BottomSlideSelectPop from '@/components/common/popup/BottomSlideSelectPop';
 
 import backButtonImg from '@/assets/svg/icons/icon-back-button.svg';

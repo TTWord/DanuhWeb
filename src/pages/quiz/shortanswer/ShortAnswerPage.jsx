@@ -17,8 +17,8 @@ const ShortAnswerPage = () => {
   const getBookList = async () => {
     const response = await api.book.getBook();
 
-    if (response.data.status === 'OK') {
-      setBooks(response.data.data);
+    if (response.status === 'OK') {
+      setBooks(response.data);
     }
   };
 
@@ -27,8 +27,8 @@ const ShortAnswerPage = () => {
   }, []);
 
   const getQuiz = async () => {
-    const response = await api.quiz.getShortQuiz(page, 10);
-    const quiz = response.data.data.problem;
+    const { data: response } = await api.quiz.getShortQuiz(page, 10);
+    const quiz = response.data.problem;
     setQuizList(quiz);
     navigate(`/quiz/shortanswer/question`);
   };
@@ -99,7 +99,6 @@ const ShortAnswerPage = () => {
 export default ShortAnswerPage;
 
 const MainWrapper = styled.div`
-  position: absolute;
   width: 100%;
   height: 100%;
   display: flex;
@@ -110,11 +109,11 @@ const MainWrapper = styled.div`
 //-- Header 영역 --//
 const Header = styled.div`
   width: 100%;
-  height: 61px;
+  height: 56px;
   background: #ffffff;
   padding: 25px 0 0 21px;
-  margin-bottom: 227px;
 `;
+
 const BackButton = styled.button`
   width: 36px;
   height: 36px;
@@ -126,8 +125,9 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-bottom: 95px;
+  flex: 1;
 `;
+
 const QuizName = styled.div`
   width: 100%;
   font-weight: 400;
@@ -137,6 +137,7 @@ const QuizName = styled.div`
   color: #444444;
   margin-bottom: 23px;
 `;
+
 const BookSelect = styled.div`
   width: 100%;
   font-weight: 700;
@@ -146,6 +147,7 @@ const BookSelect = styled.div`
   color: #444444;
   margin-bottom: 27px;
 `;
+
 const BookWrapper = styled.div`
   width: 100%;
   height: 252px;
@@ -154,13 +156,12 @@ const BookWrapper = styled.div`
   justify-content: center;
   align-items: center;
   overflow-y: auto;
-  /* ::-webkit-scrollbar {
-    display: none;
-  } */
+
   button {
     flex: 0 0 auto;
   }
 `;
+
 const Book = styled.button`
   width: 279px;
   height: 40px;
@@ -173,14 +174,14 @@ const Book = styled.button`
   margin-bottom: 13px;
 `;
 
-const FooterWrapper = styled.div`
-  position: fixed;
-  bottom: 23px;
+const FooterWrapper = styled.footer`
+  margin-bottom: 23px;
   width: 100%;
   height: 72px;
   display: flex;
   justify-content: center;
 `;
+
 const WordQuizButton = styled.button`
   width: 158px;
   height: 72px;

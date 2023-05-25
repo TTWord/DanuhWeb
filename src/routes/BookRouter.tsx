@@ -1,8 +1,8 @@
-import BookDetPage from '@/pages/book/bookDet/BookDetPage';
+import BookDetPage from '@/pages/book/_id/BookDetPage';
 import BookPage from '@/pages/book/BookPage';
-import ChangeBookPage from '@/pages/book/bookDet/ChangeBookPage';
+import ChangeBookPage from '@/pages/book/_id/ChangeBookPage';
 import CreateBookPage from '@/pages/book/create/CreateBookPage';
-import CreateWordPage from '@/pages/book/bookDet/CreateWordPage';
+import CreateWordPage from '@/pages/book/_id/CreateWordPage';
 import GenerateBookPage from '@/pages/book/generate/GenerateBookPage';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import RouteTransition from './RouteTransition';

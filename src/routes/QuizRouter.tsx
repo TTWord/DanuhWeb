@@ -1,10 +1,10 @@
 import QuizPage from '@/pages/quiz/QuizPage';
 import FlashCardPage from '@/pages/quiz/flashcard/FlashCardPage';
-import FlashCardMemorizePage from '@/pages/quiz/flashcard/FlashCardMemorizePage';
+import FlashCardMemorizePage from '@/pages/quiz/flashcard/Memorize/FlashCardMemorizePage';
 import ChoicePage from '@/pages/quiz/choice/ChoicePage';
 import ChoiceQuestionPage from '@/pages/quiz/choice/ChoiceQuestionPage';
 import ShortAnswerPage from '@/pages/quiz/shortanswer/ShortAnswerPage';
-import ShortQuestionPage from '@/pages/quiz/shortanswer/ShortQuestionPage';
+import ShortQuestionPage from '@/pages/quiz/shortanswer/ShortQuestion/ShortQuestionPage';
 import ResultPage from '@/pages/quiz/result/ResultPage';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import RouteTransition from './RouteTransition';
