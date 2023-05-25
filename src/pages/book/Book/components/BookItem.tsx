@@ -2,7 +2,7 @@ import { instance } from '@/instance';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import iconOther from './svg/icon-other.svg';
+import iconOther from '@/assets/svg/icons/icon-other.svg';
 
 const generateDateText = (dateText: string) => {
   const date = new Date(dateText);

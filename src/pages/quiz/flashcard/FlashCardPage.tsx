@@ -2,9 +2,8 @@ import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { api } from '@/api';
-import useGetMemo from './hooks/useGetMemo';
 import Swal from 'sweetalert2';
-import BookItem from '@/components/pages/quiz/flashcard/FlashCardPage/BookItem';
+import BookItem from '@/pages/quiz/flashcard/FlashCard/components/BookItem';
 import StackLayout from '@/components/layout/StackLayout';
 import { useQuery } from 'react-query';
 

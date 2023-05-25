@@ -1,10 +1,9 @@
-import Additional from '@/pages/book/BookPage/Additional';
+import Additional from '@/pages/book/Book/components/Additional';
 import { instance } from '@/instance';
 import { useCallback, useEffect, useState } from 'react';
 import { styled } from 'twin.macro';
 import { useNavigate } from 'react-router-dom';
-import BookItem from './BookPage/BookItem';
-import Footer from '@/components/layout/RootLayout/Footer';
+import BookItem from '@/pages/book/Book/components/BookItem';
 
 const BookPage = () => {
   const [books, setBooks] = useState<any>([]);

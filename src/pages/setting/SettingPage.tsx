@@ -7,10 +7,8 @@ import { instance } from '@/instance';
 import { AxiosError } from 'axios';
 import Swal from 'sweetalert2';
 
-import Footer from '@/components/layout/RootLayout/Footer';
-import useLogout from '@/components/pages/setting/SettingPage/useLogout';
-import useDeleteAccount from '@/components/pages/setting/SettingPage/useDeleteAccount';
-
+import useLogout from '@/pages/setting/Setting/hooks/useLogout';
+import useDeleteAccount from '@/pages/setting/Setting/hooks/useDeleteAccount';
 import nextButton from '@/assets/svg/icons/icon-next-button.svg';
 
 const getUserInfoAPI = async () => {

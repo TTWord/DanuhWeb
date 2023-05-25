@@ -6,8 +6,8 @@ import { instance } from '@/instance';
 import sharingImg from '@/assets/svg/icons/icon-sharing.svg';
 import plusImg from '@/assets/svg/icons/icon-plus.svg';
 
-import NewWord from './BookDetPage/NewWord';
-import useGetWord from './BookDetPage/hooks/useGetWord';
+import NewWord from './BookDet/components/NewWord';
+import useGetWord from './BookDet/hooks/useGetWord';
 import StackLayout from '@/components/layout/StackLayout';
 
 const BookDetPage = () => {

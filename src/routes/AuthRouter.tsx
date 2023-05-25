@@ -1,13 +1,13 @@
-import AuthPage from '@/pages/auth/AuthPage';
-import AuthCodePage from '@/pages/auth/join/AuthCodePage';
-import JoinPage from '@/pages/auth/join/JoinPage';
-import WelcomePage from '@/pages/auth/join/WelcomePage';
-import LoginPage from '@/pages/auth/LoginPage';
-import OAuthPage from '@/pages/auth/OAuthPage';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import RouteTransition from './RouteTransition';
 import RouteTransitionWrapper from './RouteTransitionWrapper';
-import NicknameSubmitPage from '@/pages/auth/join/NicknameSubmitPage';
+import AuthPage from '@/pages/auth/AuthPage';
+import OAuthPage from '@/pages/auth/oauth/OAuthPage';
+import LoginPage from '@/pages/auth/login/Login/LoginPage';
+import NicknameSubmitPage from '@/pages/auth/join/NicknameSubmit/NicknameSubmitPage';
+import JoinPage from '@/pages/auth/join/Join/JoinPage';
+import AuthCodePage from '@/pages/auth/join/AuthCode/AuthCodePage';
+import WelcomePage from '@/pages/auth/join/Welcome/WelcomePage';
 
 const AuthRouter = () => {
   const location = useLocation();

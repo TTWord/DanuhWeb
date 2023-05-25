@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import plusIcon from '@/assets/svg/icons/icon-add.svg';
-import useDeleteWord from './hooks/useDeleteWord';
+import useDeleteWord from '../hooks/useDeleteWord';
 
 const NewWord = ({ wordId, word, mean, getBook }) => {
   const deleteWord = useDeleteWord();

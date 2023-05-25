@@ -6,7 +6,7 @@ import { globalState } from '@/recoil';
 import { useRecoilValue } from 'recoil';
 import { useEffect, useState } from 'react';
 import ConfirmPop from '@/components/common/popup/ConfirmPop';
-import useGetMemorizeWord from './hooks/useGetMemo';
+import useGetMemorizeWord from '@/pages/quiz/flashcard/Memorize/hooks/useGetMemo';
 
 const FlashCardMemorizePage = () => {
   const navigate = useNavigate();

@@ -1,13 +1,13 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import useSendmail from '@/pages/auth/hooks/useSendmail';
+import useSendmail from '@/pages/auth/join/Join/hooks/useSendmail';
 import { globalState } from '@/recoil';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { TailSpin } from 'react-loader-spinner';
 import iconArrowBack from '@/assets/svg/icons/icon-back-button.svg';
 import useNavigatePop from '@/hooks/useNavigatePop';
-import iconArrowDown from '@/pages/auth/join/svg/icon-arrow-down.svg';
+import iconArrowDown from '@/assets/svg/icons/icon-arrow-down.svg';
 import BottomSlideSelectPop from '@/components/common/popup/BottomSlideSelectPop';
 
 const JoinPage = () => {

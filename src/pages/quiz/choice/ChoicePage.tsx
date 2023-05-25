@@ -6,20 +6,25 @@ import { api } from '@/api';
 import { globalState } from '@/recoil';
 import { useSetRecoilState } from 'recoil';
 import Swal from 'sweetalert2';
+import { AxiosError } from 'axios';
 
 const ChoicePage = () => {
   const navigate = useNavigate();
 
+  const quizNumber: number = 10;
+
   const [books, setBooks] = useState([]);
-  const [page, setPage] = useState('');
+  const [page, setPage] = useState<string>('0');
   const setQuizList = useSetRecoilState(globalState.quiz.quizList);
+
+  const [isActive, setIsActive] = useState<boolean>(false);
 
   const getBookList = async () => {
     try {
-      const response = await api.book.getBook();
+      const response: any = await api.book.getBook();
 
-      if (response.data.status === 'OK') {
-        setBooks(response.data.data);
+      if (response.status === 'OK') {
+        setBooks(response.data);
       }
     } catch (e) {
       console.log(e);
@@ -33,13 +38,20 @@ const ChoicePage = () => {
   // 객관식 퀴즈 가져오는 함수
   const getQuiz = async () => {
     try {
-      const response = await api.quiz.getChoiceQuiz(page, 10);
-      const quiz = response.data.data.problem;
+      const { data: response } = await api.quiz.getChoiceQuiz(
+        page,
+        quizNumber,
+        false,
+      );
+      const quiz = response.data.problem;
 
       setQuizList(quiz);
       navigate('/quiz/choice/question');
-    } catch (e) {
-      if (e.response.data.message === 'WORD_LESS_THAN_COUNT') {
+    } catch (e: unknown) {
+      const err = e as AxiosError<{
+        message: string;
+      }>;
+      if (err?.response?.data.message === 'WORD_LESS_THAN_COUNT') {
         Swal.fire({
           icon: 'error',
           title: '단어가 4개 미만입니다.',
@@ -49,17 +61,24 @@ const ChoicePage = () => {
   };
 
   const goQuiz = async () => {
-    if (page === '') {
+    if (page === '0') {
       Swal.fire({
         icon: 'warning',
         title: '단어장을 선택해주세요.',
       });
     } else {
-      getQuiz();
+      //getQuiz();
+      navigate('/quiz/choice/question');
     }
   };
 
-  const CreateBookList = props => {
+  const test = () => {
+    console.log(books);
+  };
+  {
+    /* any 타입 변경할것 */
+  }
+  const CreateBookList = (props: any) => {
     const [color, setColor] = useState('#ffffff');
     return (
       <Book
@@ -91,7 +110,8 @@ const ChoicePage = () => {
         <QuizName>객관식</QuizName>
         <BookSelect>단어장 선택</BookSelect>
         <BookWrapper>
-          {books.map(items => {
+          {/* any 타입 변경할것 */}
+          {books.map((items: any) => {
             return (
               <CreateBookList
                 key={items.id}
@@ -103,10 +123,10 @@ const ChoicePage = () => {
         </BookWrapper>
       </Container>
 
-      <FooterWrapper>
-        <WordQuizButton onClick={goQuiz}>단어암기</WordQuizButton>
-        <MeanQuizButton onClick={goQuiz}>뜻암기</MeanQuizButton>
-      </FooterWrapper>
+      <Footer>
+        <QuizButton onClick={goQuiz}>단어암기</QuizButton>
+        <QuizButton onClick={test}>뜻암기</QuizButton>
+      </Footer>
     </MainWrapper>
   );
 };
@@ -125,10 +145,9 @@ const MainWrapper = styled.div`
 //-- Header 영역 --//
 const Header = styled.div`
   width: 100%;
-  height: 61px;
+  height: 56px;
   background: #ffffff;
   padding: 25px 0 0 21px;
-  margin-bottom: 227px;
 `;
 const BackButton = styled.button`
   width: 36px;
@@ -138,10 +157,10 @@ const BackButton = styled.button`
 const Container = styled.div`
   width: 100%;
   display: flex;
+  flex: 1;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-bottom: 95px;
 `;
 const QuizName = styled.div`
   width: 100%;
@@ -188,15 +207,16 @@ const Book = styled.button`
   margin-bottom: 13px;
 `;
 
-const FooterWrapper = styled.div`
-  position: fixed;
-  bottom: 23px;
+const Footer = styled.footer`
   width: 100%;
   height: 72px;
   display: flex;
   justify-content: center;
+  padding: 0 29px;
+  margin-bottom: 23px;
 `;
-const WordQuizButton = styled.button`
+
+const QuizButton = styled.button`
   width: 158px;
   height: 72px;
   background-color: #724fab;
@@ -208,8 +228,8 @@ const WordQuizButton = styled.button`
   align-items: center;
   justify-content: center;
   color: #ffffff;
-`;
 
-const MeanQuizButton = styled(WordQuizButton)`
-  margin-left: 19px;
+  :nth-child(2) {
+    margin-left: 20px;
+  }
 `;
