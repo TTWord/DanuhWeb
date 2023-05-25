@@ -43,9 +43,9 @@ const FlashCardPage = () => {
       });
     } else {
       if (mode === 'word') {
-        navigate(`/quiz/flashcard/${selectedBook.id}`);
+        navigate(`/quiz/flashcard/${selectedBook.id}?mode=word`);
       } else {
-        navigate(`/quiz/flashcard/${selectedBook.id}`);
+        navigate(`/quiz/flashcard/${selectedBook.id}?mode=mean`);
       }
     }
   };

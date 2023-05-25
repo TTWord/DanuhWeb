@@ -49,7 +49,9 @@ const FlashCardMemorizePage = () => {
     }
   };
 
-  if (memoList.length === 0) return null;
+  if (memoList.length === 0 || !searchParams.get('mode')) return null;
+
+  const mode = searchParams.get('mode');
 
   return (
     <Container>
@@ -71,10 +73,18 @@ const FlashCardMemorizePage = () => {
       </Header>
 
       <Content>
-        <Card>
-          <Mean>{memoList[pageNum].mean}</Mean>
-          <Word isShow={showWord}>{memoList[pageNum].word}</Word>
-        </Card>
+        {mode === 'word' && (
+          <Card>
+            <BigText>{memoList[pageNum].word}</BigText>
+            <SmallText isShow={showWord}>{memoList[pageNum].mean}</SmallText>
+          </Card>
+        )}
+        {mode === 'mean' && (
+          <Card>
+            <BigText>{memoList[pageNum].mean}</BigText>
+            <SmallText isShow={showWord}>{memoList[pageNum].word}</SmallText>
+          </Card>
+        )}
       </Content>
 
       <Footer>
@@ -137,12 +147,12 @@ const Card = styled.div`
   justify-content: center;
 `;
 
-const Mean = styled.div`
+const BigText = styled.div`
   font-weight: 600;
   font-size: 36px;
 `;
 
-const Word = styled.div<{
+const SmallText = styled.div<{
   isShow: boolean;
 }>`
   font-weight: 600;
