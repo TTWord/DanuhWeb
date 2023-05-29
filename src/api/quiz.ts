@@ -10,10 +10,15 @@ export const quizAPI = {
     return response;
   },
 
-  getChoiceQuiz: async (bookID: number, number: number) => {
+  getChoiceQuiz: async (
+    bookID: string,
+    count: number,
+    memorizedFilter: boolean,
+  ) => {
     const response = await instance.post('/quiz/multiple', {
-      book_id: bookID,
-      number: number,
+      book_ids: bookID,
+      count,
+      memorized_filter: memorizedFilter,
     });
 
     return response;
