@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
-import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
 import { globalState } from '@/recoil';
 import bulbIcon from '@/assets/svg/icons/icon-bulb.svg';
 import leafIcon from '@/assets/svg/icons/icon-leaf.svg';
 import treeIcon from '@/assets/svg/icons/icon-tree.svg';
+import useNavigatePush from '@/hooks/useNavigatePush';
 
 const QuizPage = () => {
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
@@ -16,16 +16,16 @@ const QuizPage = () => {
     setActiveMenu(1);
   }, []);
 
-  const navigate = useNavigate();
+  const navigatePush = useNavigatePush();
 
   const goFlashcard = () => {
-    navigate('/quiz/flashcard');
+    navigatePush('/quiz/flashcard');
   };
   const goChoiceQuiz = () => {
-    navigate('/quiz/choice');
+    navigatePush('/quiz/choice');
   };
   const goShortQuiz = () => {
-    navigate('/quiz/shortanswer');
+    navigatePush('/quiz/shortanswer');
   };
 
   return (

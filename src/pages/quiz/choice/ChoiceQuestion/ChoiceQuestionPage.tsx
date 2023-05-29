@@ -6,7 +6,7 @@ import { globalState } from '@/recoil';
 import { api } from '@/api';
 
 import xButton from '@/assets/svg/icons/icon-x-button.svg';
-import CheckSVG from '@/pages/quiz/choice/CheckSVG';
+import CheckSVG from '@/pages/quiz/choice/ChoiceQuestion/svg/CheckSVG';
 
 const ChoiceQuestionPage = () => {
   const testQuizList = [

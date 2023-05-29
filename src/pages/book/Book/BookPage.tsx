@@ -2,12 +2,12 @@ import Additional from '@/pages/book/Book/components/Additional';
 import { instance } from '@/instance';
 import { useCallback, useEffect, useState } from 'react';
 import { styled } from 'twin.macro';
-import { useNavigate } from 'react-router-dom';
 import BookItem from '@/pages/book/Book/components/BookItem';
+import useNavigatePush from '@/hooks/useNavigatePush';
 
 const BookPage = () => {
   const [books, setBooks] = useState<any>([]);
-  const navigate = useNavigate();
+  const navigatePush = useNavigatePush();
 
   useEffect(() => {
     const getData = async () => {
@@ -22,7 +22,7 @@ const BookPage = () => {
   }, []);
 
   const onClickUpdate = useCallback(async (bookId: number) => {
-    navigate(`/book/${bookId}/change`);
+    navigatePush(`/book/${bookId}/change`);
   }, []);
 
   const onClickRemove = useCallback(async (bookId: number) => {
@@ -42,7 +42,7 @@ const BookPage = () => {
   }, []);
 
   const onItemClick = useCallback((bookId: number) => {
-    navigate(`/book/${bookId}`);
+    navigatePush(`/book/${bookId}`);
   }, []);
 
   return (
