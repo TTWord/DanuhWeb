@@ -1,5 +1,4 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 import useLogin from '@/pages/auth/login/Login/hooks/useLogin';
@@ -11,14 +10,17 @@ import googleIcon from '@/assets/svg/icons/icon-google.svg';
 import kakaoIcon from '@/assets/svg/icons/icon-kakao.svg';
 import appleIcon from '@/assets/svg/icons/icon-apple.svg';
 import iconArrowDown from '@/assets/svg/icons/icon-arrow-down.svg';
+import useNavigatePop from '@/hooks/useNavigatePop';
+import useNavigatePush from '@/hooks/useNavigatePush';
 
 const LoginPage = () => {
-  const navigate = useNavigate();
+  const navigatePop = useNavigatePop();
+  const navigatePush = useNavigatePush();
   const login = useLogin();
   const socialLogin = useSocialLogin();
 
   const goBack = () => {
-    navigate('/auth', { state: { direction: 'navigate-pop' } });
+    navigatePop('/auth');
   };
 
   const kakaoLogin = () => {
@@ -32,7 +34,7 @@ const LoginPage = () => {
   };
 
   const goJoin = () => {
-    navigate('/auth/join');
+    navigatePush('/auth/join');
   };
 
   const domainList = [

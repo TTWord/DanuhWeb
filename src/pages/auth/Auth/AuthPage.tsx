@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 
 import logoImg from '@/assets/svg//logos/logo-TTWord.svg';
@@ -10,14 +9,15 @@ import bookIcon from '@/assets/svg/icons/icon-book.svg';
 import medalIcon from '@/assets/svg/icons/icon-medal.svg';
 import { useSetRecoilState } from 'recoil';
 import { toastStatus } from '@/components/common/toast/Toast';
+import useNavigatePush from '@/hooks/useNavigatePush';
 
 const AuthPage = () => {
-  const navigate = useNavigate();
+  const navigatePush = useNavigatePush();
 
   // const setToast = useSetRecoilState(toastStatus);
 
   const goLogin = () => {
-    navigate('/auth/login');
+    navigatePush('/auth/login');
     // setToast({
     //   isOpen: true,
     //   timer: 2500,
