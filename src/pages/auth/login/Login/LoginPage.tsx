@@ -10,32 +10,12 @@ import googleIcon from '@/assets/svg/icons/icon-google.svg';
 import kakaoIcon from '@/assets/svg/icons/icon-kakao.svg';
 import appleIcon from '@/assets/svg/icons/icon-apple.svg';
 import iconArrowDown from '@/assets/svg/icons/icon-arrow-down.svg';
-import useNavigatePop from '@/hooks/useNavigatePop';
-import useNavigatePush from '@/hooks/useNavigatePush';
+import useLoginPageNavigate from './hooks/useLoginPageNavigate';
 
 const LoginPage = () => {
-  const navigatePop = useNavigatePop();
-  const navigatePush = useNavigatePush();
   const login = useLogin();
-  const socialLogin = useSocialLogin();
-
-  const goBack = () => {
-    navigatePop('/auth');
-  };
-
-  const kakaoLogin = () => {
-    socialLogin('kakao');
-  };
-  const googleLogin = () => {
-    socialLogin('google');
-  };
-  const appleLogin = () => {
-    socialLogin('apple');
-  };
-
-  const goJoin = () => {
-    navigatePush('/auth/join');
-  };
+  const { kakaoLogin, googleLogin, appleLogin } = useSocialLogin();
+  const { runAuthPage, runJoinPage } = useLoginPageNavigate();
 
   const domainList = [
     {
@@ -69,7 +49,7 @@ const LoginPage = () => {
   ];
 
   // 비밀번호 표시용
-  const [showPassWD, setShowPassWD] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const [emailID, setEmailID] = useState<string>('');
   const [emailDomain, setEmailDomain] = useState<string>('');
@@ -111,7 +91,7 @@ const LoginPage = () => {
   return (
     <WebWrapper>
       <Header>
-        <BackButton onClick={goBack}>
+        <BackButton onClick={runAuthPage}>
           <img src={backButtonImg} alt="backButtonImg" />
         </BackButton>
 
@@ -183,7 +163,7 @@ const LoginPage = () => {
             onChange={e => {
               setPassword(e.target.value);
             }}
-            type={showPassWD ? 'text' : 'password'}
+            type={showPassword ? 'text' : 'password'}
             placeholder="비밀번호"
             onFocus={() => {
               setPassWDFocus(true);
@@ -196,7 +176,7 @@ const LoginPage = () => {
 
         <Join>
           아직 계정이 없으신가요?
-          <SignInButton onClick={goJoin}>회원가입</SignInButton>
+          <SignInButton onClick={runJoinPage}>회원가입</SignInButton>
         </Join>
       </Container>
 
@@ -386,6 +366,7 @@ const PasswordBox = styled.input<{ isFocus: boolean }>`
   outline: none;
   margin-top: 6px;
   border-bottom: 1px solid #e7e7e7;
+  border-radius: 0;
 
   ${({ isFocus }) => {
     return (

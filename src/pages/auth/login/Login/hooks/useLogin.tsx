@@ -20,8 +20,6 @@ const useLogin = () => {
       const errorMessage = err?.response?.data.message;
 
       switch (errorCode) {
-        case 404:
-          navigate('*');
         case 409:
           Swal.fire({
             icon: 'error',
