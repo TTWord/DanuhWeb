@@ -10,7 +10,7 @@ const NoticeDetpage = () => {
   const Title = useRecoilValue(globalState.setting.noticeTitle);
 
   const goBack = () => {
-    navigate(-1);
+    navigate('/setting/notice');
   };
 
   return (
@@ -54,6 +54,7 @@ const HeaderWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
 const BackButton = styled.button`
   position: absolute;
   left: 20px;
