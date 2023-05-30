@@ -2,44 +2,20 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { globalState } from '@/recoil';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { useEffect } from 'react';
-import { instance } from '@/instance';
-import { AxiosError } from 'axios';
-import Swal from 'sweetalert2';
+import { useEffect, useState } from 'react';
 
+import useGetUserInfo from '@/pages/setting//profile/Profile/hooks/useGetUserInfo';
 import useLogout from '@/pages/setting/Setting/hooks/useLogout';
 import useDeleteAccount from '@/pages/setting/Setting/hooks/useDeleteAccount';
-import nextButton from '@/assets/svg/icons/icon-next-button.svg';
-
-const getUserInfoAPI = async () => {
-  try {
-    const { data: response } = await instance.get('/user/userservice');
-
-    return response;
-  } catch (e: unknown) {
-    const err = e as AxiosError<{
-      message: string;
-    }>;
-    const errorMessage = err?.response?.data.message;
-    Swal.fire({
-      icon: 'error',
-      title: errorMessage,
-    });
-  }
-};
-
-const ContentBox = (props: any) => {
-  return (
-    <Content onClick={props.onClick}>
-      <div>{props.title}</div>
-      <NextButton>
-        <img src={nextButton} alt="nextButton" />
-      </NextButton>
-    </Content>
-  );
-};
+import ContentBox from './components/ContentBox';
+import ConfirmPop from '@/components/common/popup/ConfirmPop';
 
 const SettingPage = () => {
+  const getUserInfo = useGetUserInfo();
+  const logout = useLogout();
+  const deleteAccount = useDeleteAccount();
+  const navigate = useNavigate();
+
   const [nickname, setNickname] = useRecoilState<string>(
     globalState.auth.nickname,
   );
@@ -51,31 +27,36 @@ const SettingPage = () => {
   );
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
 
+  const [isConfirmPopOpen, setIsConfirmPopOpen] = useState(false);
+
   useEffect(() => {
-    const getUserInfo = async () => {
-      const response = await getUserInfoAPI();
-      setUsername(response.data.username);
-      setNickname(response.data.nickname);
-      setProfile(response.data.url);
+    const setUserInfo = async () => {
+      const { data: response } = await getUserInfo();
+      setUsername(response.username);
+      setNickname(response.nickname);
+      setProfile(response.url);
     };
-    getUserInfo();
+    setUserInfo();
     setActiveMenu(3);
   }, []);
-
-  const logout = useLogout();
-  const deleteAccount = useDeleteAccount();
-  const navigate = useNavigate();
 
   // 해당 페이지로 이동하는 함수들
   const moveProfilePage = () => {
     navigate('/setting/profile');
   };
+
   const moveNotificationPage = () => {
     navigate('/setting/notification');
   };
+
   const moveNoticePage = () => {
     navigate('/setting/notice');
   };
+
+  const deleteAccoutFunc = () => {
+    setIsConfirmPopOpen(true);
+  };
+
   // 코드 정상 동작을 위한 임의의 함수
   const dummyFunction = () => {};
 
@@ -104,12 +85,23 @@ const SettingPage = () => {
       </HeaderWrapper>
 
       <ContentWrapper>
+        <ConfirmPop
+          isOpen={isConfirmPopOpen}
+          message="정밀 회원을 탈퇴하시나요?"
+          cancelText="뒤로가기"
+          confirmText="그만하기"
+          onCancel={() => setIsConfirmPopOpen(false)}
+          onConfirm={() => {
+            setIsConfirmPopOpen(false);
+            deleteAccount();
+          }}
+        />
         <ContentBox title="알림설정" onClick={moveNotificationPage} />
         <ContentBox title="공지사항" onClick={moveNoticePage} />
         <ContentBox title="서비스 이용약관" onClick={dummyFunction} />
         <ContentBox title="개인정보 처리방침" onClick={dummyFunction} />
         <ContentBox title="로그아웃" onClick={logout} />
-        <ContentBox title="탈퇴하기" onClick={deleteAccount} />
+        <ContentBox title="탈퇴하기" onClick={deleteAccoutFunc} />
         <ContentBox title="가져오기 / 내보내기" onClick={dummyFunction} />
       </ContentWrapper>
     </WebWrapper>
@@ -214,42 +206,4 @@ const ContentWrapper = styled.div`
   ::-webkit-scrollbar {
     display: none;
   }
-`;
-
-const Content = styled.div`
-  height: 64px;
-  box-sizing: border-box;
-  background: #ffffff;
-  border-bottom: 1px solid #dddddd;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 24px 26px 24px 30px;
-  transition: 0.4s;
-
-  div {
-    font-weight: 300;
-    font-size: 16px;
-    text-align: center;
-    line-height: 16px;
-  }
-
-  :hover {
-    background-color: #694ac2;
-    color: white;
-    cursor: pointer;
-  }
-`;
-
-const NextButton = styled.button`
-  img {
-    height: 12px;
-  }
-`;
-
-const FooterWrapper = styled.div`
-  width: 100%;
-  height: 72px;
-  display: flex;
-  background: #ffffff;
 `;

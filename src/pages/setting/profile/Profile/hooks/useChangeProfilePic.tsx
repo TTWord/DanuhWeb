@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const useChangeProfilePic = () => {
   const navigate = useNavigate();
-  const changeProfilePic = async file => {
+  const changeProfilePic = async (file: object) => {
     try {
       const { data: response } = await instance.post(
         '/user/userservice',

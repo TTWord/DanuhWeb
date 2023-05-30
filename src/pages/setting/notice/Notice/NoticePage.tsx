@@ -2,34 +2,13 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 import backImg from '@/assets/svg/icons/icon-back-button.svg';
-import nextButton from '@/assets/svg/icons/icon-next-button.svg';
-import { globalState } from '@/recoil';
-import { useRecoilState } from 'recoil';
-
-const NoticeBox = props => {
-  const navigate = useNavigate();
-  const [title, setTitle] = useRecoilState(globalState.setting.noticeTitle);
-  return (
-    <Content>
-      <Title>{props.title}</Title>
-      <Explain>{props.explain}</Explain>
-      <NextButton
-        onClick={() => {
-          setTitle(props.title);
-          navigate(`/setting/notice/${props.id}`);
-        }}
-      >
-        <img src={nextButton} alt="nextButton" />
-      </NextButton>
-    </Content>
-  );
-};
+import NoticeBox from '@/pages/setting/notice/Notice/components/NoticeBox';
 
 const NoticePage = () => {
   const navigate = useNavigate();
 
   const goBack = () => {
-    navigate(-1);
+    navigate('/setting');
   };
 
   const noticeList = [{ title: '공지사항 입니다', explain: '공지사항입니다' }];

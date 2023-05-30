@@ -17,7 +17,7 @@ export const userAPI = {
     return response;
   },
 
-  getAccount: async () => {
+  getUserInfo: async () => {
     const response = await instance.get('/user/userservice');
 
     return response;
@@ -41,6 +41,14 @@ export const userAPI = {
       password,
       nickname,
       certification_id,
+    });
+
+    return response;
+  },
+
+  changeNickname: async (newNickname: string) => {
+    const response = await instance.put('/user/userservice', {
+      to_nickname: newNickname,
     });
 
     return response;
