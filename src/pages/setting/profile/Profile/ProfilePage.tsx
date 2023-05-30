@@ -2,44 +2,37 @@ import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-import { instance } from '@/instance';
+import useGetUserInfo from '@/pages/setting//profile/Profile/hooks/useGetUserInfo';
+import useChangeNickname from '@/pages/setting//profile/Profile/hooks/useChangeNickname';
 import useChangeProfilePic from './hooks/useChangeProfilePic';
 import backImg from '@/assets/svg/icons/icon-back-button.svg';
 import uploadImg from '@/assets/svg/icons/icon-image-upload.svg';
 
-const getUserInfoAPI = async () => {
-  try {
-    const response = await instance.get('/user/userservice');
-    return response;
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-const changeNicknameAPI = async newNickname => {
-  try {
-    const response = await instance.put('/user/userservice', {
-      to_nickname: newNickname,
-    });
-    console.log(response);
-  } catch (e) {
-    console.log(e);
-  }
-};
-
 const ProfilePage = () => {
+  const navigate = useNavigate();
+  const getUserInfo = useGetUserInfo();
+  const changeNewNickname = useChangeNickname();
+
+  const [nickname, setNickname] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
+  const [profilePic, setProfilePic] = useState<string>('');
+  const [newNickname, setNewNickname] = useState<string>('');
+
   const changeProfilePic = useChangeProfilePic();
-  const profilePicRef = useRef();
-  const [file, setFile] = useState(null);
+  const profilePicRef = useRef<any>(null);
+  const [file, setFile] = useState<string | Blob>();
+
   const uploadImage = () => {
     // 파일 업로드
-    const file = profilePicRef.current.files[0];
+    const file: Blob = profilePicRef.current.files[0];
     setFile(file);
     // 업로드한 파일 미리보기
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      setProfilePic(reader.result);
+      if (reader.result) {
+        setProfilePic(String(reader.result));
+      }
     };
   };
 
@@ -49,26 +42,21 @@ const ProfilePage = () => {
   };
 
   // 뒤로 가기 기능
-  const navigate = useNavigate();
   const goBack = () => {
     navigate(-1);
   };
 
-  const [nickname, setNickname] = useState('');
-  const [username, setUsername] = useState('');
-  const [profilePic, setProfilePic] = useState('');
-  const [newNickname, setNewNickname] = useState('');
   useEffect(() => {
-    const getUserInfo = async () => {
-      const response = await getUserInfoAPI();
-      setUsername(response.data.data.username);
-      setNickname(response.data.data.nickname);
-      setProfilePic(response.data.data.url);
+    const setUserInfo = async () => {
+      const { data: response } = await getUserInfo();
+      setUsername(response.username);
+      setNickname(response.nickname);
+      setProfilePic(response.url);
     };
-    getUserInfo();
+    setUserInfo();
   }, []);
 
-  const changeNickname = e => {
+  const changeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewNickname(e.target.value);
   };
 
@@ -106,13 +94,13 @@ const ProfilePage = () => {
       <ProfileForm
         onSubmit={e => {
           e.preventDefault();
-          if (file !== null) {
+          if (file) {
             const formData = new FormData();
             formData.append('file', file);
             changeProfilePic(formData);
           }
           if (newNickname !== nickname && newNickname !== '') {
-            changeNicknameAPI(newNickname);
+            changeNewNickname(newNickname);
           }
         }}
       >
