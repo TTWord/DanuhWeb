@@ -7,14 +7,12 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { TailSpin } from 'react-loader-spinner';
 import iconArrowBack from '@/assets/svg/icons/icon-back-button.svg';
 import useNavigatePop from '@/hooks/useNavigatePop';
-import iconArrowDown from '@/assets/svg/icons/icon-arrow-down.svg';
-import BottomSlideSelectPop from '@/components/common/popup/BottomSlideSelectPop';
+import DomainSelectBox from './components/DomainSelectBox';
 
 const JoinPage = () => {
   const [isOk, setIsOk] = useState(false);
 
   const { isLoading, sendmail, error, setError } = useSendmail();
-  const navigate = useNavigate();
 
   const [userEmailStart, setUserEmailStart] = useRecoilState(
     globalState.auth.username,
@@ -23,8 +21,6 @@ const JoinPage = () => {
   const [userEmailEnd, setUserEmailEnd] = useRecoilState(
     globalState.auth.domain,
   );
-
-  const [userEmailEditMode, setUserEmailEditMode] = useState(false);
 
   const [emailError, setEmailError] = useState('');
   const [userPw, setUserPW] = useRecoilState(globalState.auth.password);
@@ -35,10 +31,6 @@ const JoinPage = () => {
 
   const inputUserEmailStart = (e: ChangeEvent<HTMLInputElement>) => {
     setUserEmailStart(e.target.value);
-  };
-
-  const inputUserEmailEnd = (e: ChangeEvent<HTMLInputElement>) => {
-    setUserEmailEnd(e.target.value);
   };
 
   const inputUserPw = (e: ChangeEvent<HTMLInputElement>) => {
@@ -94,15 +86,6 @@ const JoinPage = () => {
     navigatePop('/auth/join');
   };
 
-  const [isPopOpen, setIsPopOpen] = useState(false);
-  const onSwitchPop = () => {
-    setIsPopOpen(!isPopOpen);
-  };
-
-  const onPopClose = () => {
-    setIsPopOpen(false);
-  };
-
   return (
     <Layout>
       <Header>
@@ -127,63 +110,7 @@ const JoinPage = () => {
                 />
                 <EmailCenter>@</EmailCenter>
                 <SelectMail>
-                  {!userEmailEditMode && (
-                    <MailButton onClick={onSwitchPop}>
-                      <MailText isActive={userEmailEnd.length > 0}>
-                        {userEmailEnd.length > 0 ? userEmailEnd : '선택'}
-                      </MailText>
-                      <img src={iconArrowDown} alt="arrow" />
-                    </MailButton>
-                  )}
-                  {userEmailEditMode && (
-                    <MailButton>
-                      <Input
-                        type="text"
-                        onChange={inputUserEmailEnd}
-                        placeholder="직접입력"
-                        tw="w-full px-0"
-                      />
-                      <img
-                        src={iconArrowDown}
-                        alt="arrow"
-                        onClick={onSwitchPop}
-                      />
-                    </MailButton>
-                  )}
-                  <BottomSlideSelectPop
-                    isOpen={isPopOpen}
-                    onPopClose={onPopClose}
-                    data={[
-                      {
-                        text: 'naver.com',
-                        onClick: () => {
-                          setUserEmailEnd('naver.com');
-                          setUserEmailEditMode(false);
-                        },
-                      },
-                      {
-                        text: 'gmail.com',
-                        onClick: () => {
-                          setUserEmailEnd('gmail.com');
-                          setUserEmailEditMode(false);
-                        },
-                      },
-                      {
-                        text: 'daum.net',
-                        onClick: () => {
-                          setUserEmailEnd('daum.com');
-                          setUserEmailEditMode(false);
-                        },
-                      },
-                      {
-                        text: '직접입력',
-                        onClick: () => {
-                          setUserEmailEnd('');
-                          setUserEmailEditMode(true);
-                        },
-                      },
-                    ]}
-                  />
+                  <DomainSelectBox />
                 </SelectMail>
               </InputWrapper>
               <InputError>{emailError}</InputError>
@@ -339,28 +266,6 @@ const SelectMail = styled.div`
   padding: 0 16px;
   display: flex;
   width: 50%;
-`;
-
-const MailButton = styled.div`
-  display: flex;
-  width: 100%;
-  cursor: pointer;
-
-  img {
-    width: 11px;
-  }
-`;
-
-const MailText = styled.div<{
-  isActive: boolean;
-}>`
-  width: 100%;
-
-  ${({ isActive }) =>
-    isActive &&
-    css`
-      color: #111111;
-    `}
 `;
 
 const EmailCenter = styled.div`

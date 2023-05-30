@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import StartPage from '@/pages/setting/Start/StartPage';
+import StartPage from '@/pages/Start/StartPage';
 import BookRouter from './BookRouter';
 import QuizRouter from './QuizRouter';
 import RankRouter from './RankRouter';

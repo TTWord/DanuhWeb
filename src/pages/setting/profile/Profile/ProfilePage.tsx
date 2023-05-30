@@ -7,9 +7,10 @@ import useChangeNickname from '@/pages/setting//profile/Profile/hooks/useChangeN
 import useChangeProfilePic from './hooks/useChangeProfilePic';
 import backImg from '@/assets/svg/icons/icon-back-button.svg';
 import uploadImg from '@/assets/svg/icons/icon-image-upload.svg';
+import useNavigatePop from '@/hooks/useNavigatePop';
 
 const ProfilePage = () => {
-  const navigate = useNavigate();
+  const navigatePop = useNavigatePop();
   const getUserInfo = useGetUserInfo();
   const changeNewNickname = useChangeNickname();
 
@@ -43,7 +44,7 @@ const ProfilePage = () => {
 
   // 뒤로 가기 기능
   const goBack = () => {
-    navigate(-1);
+    navigatePop('/setting');
   };
 
   useEffect(() => {

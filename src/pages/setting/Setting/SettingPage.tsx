@@ -9,22 +9,27 @@ import useLogout from '@/pages/setting/Setting/hooks/useLogout';
 import useDeleteAccount from '@/pages/setting/Setting/hooks/useDeleteAccount';
 import ContentBox from './components/ContentBox';
 import ConfirmPop from '@/components/common/popup/ConfirmPop';
+import useNavigatePush from '@/hooks/useNavigatePush';
 
 const SettingPage = () => {
   const getUserInfo = useGetUserInfo();
   const logout = useLogout();
   const deleteAccount = useDeleteAccount();
   const navigate = useNavigate();
+  const navigatePush = useNavigatePush();
 
   const [nickname, setNickname] = useRecoilState<string>(
     globalState.auth.nickname,
   );
+
   const [username, setUsername] = useRecoilState<string>(
     globalState.auth.username,
   );
+
   const [profile, setProfile] = useRecoilState<string>(
     globalState.auth.profilePic,
   );
+
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
 
   const [isConfirmPopOpen, setIsConfirmPopOpen] = useState(false);
@@ -42,15 +47,15 @@ const SettingPage = () => {
 
   // 해당 페이지로 이동하는 함수들
   const moveProfilePage = () => {
-    navigate('/setting/profile');
+    navigatePush('/setting/profile');
   };
 
   const moveNotificationPage = () => {
-    navigate('/setting/notification');
+    navigatePush('/setting/notification');
   };
 
   const moveNoticePage = () => {
-    navigate('/setting/notice');
+    navigatePush('/setting/notice');
   };
 
   const deleteAccoutFunc = () => {

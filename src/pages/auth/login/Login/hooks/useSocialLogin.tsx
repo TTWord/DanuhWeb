@@ -10,7 +10,17 @@ const useSocialLogin = () => {
     }
   };
 
-  return socialLogin;
+  const kakaoLogin = () => {
+    socialLogin('kakao');
+  };
+  const googleLogin = () => {
+    socialLogin('google');
+  };
+  const appleLogin = () => {
+    socialLogin('apple');
+  };
+
+  return { kakaoLogin, googleLogin, appleLogin };
 };
 
 export default useSocialLogin;
