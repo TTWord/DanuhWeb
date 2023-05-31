@@ -1,10 +1,17 @@
 import styled from 'styled-components';
-
 import plusIcon from '@/assets/svg/icons/icon-add.svg';
-import useDeleteWord from '../hooks/useDeleteWord';
 
-const NewWord = ({ wordId, word, mean, getBook }) => {
-  const deleteWord = useDeleteWord();
+interface INewWord {
+  wordId: number;
+  word: string;
+  mean: string;
+  onClick: any;
+}
+
+const NewWord = ({ wordId, word, mean, onClick }: INewWord) => {
+  const onClickFunc = () => {
+    onClick(wordId);
+  };
 
   return (
     <WordWrapper>
@@ -14,14 +21,7 @@ const NewWord = ({ wordId, word, mean, getBook }) => {
       </WordBox>
 
       <DeleteButton>
-        <img
-          src={plusIcon}
-          alt="deleteIcon"
-          onClick={() => {
-            deleteWord(wordId);
-            getBook();
-          }}
-        />
+        <img src={plusIcon} alt="deleteIcon" onClick={onClickFunc} />
       </DeleteButton>
       {/* 체크에 관련된 조건 추가할 것 */}
     </WordWrapper>

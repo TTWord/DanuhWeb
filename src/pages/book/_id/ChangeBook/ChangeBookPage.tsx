@@ -1,43 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
-import { instance } from '@/instance';
 import { useNavigate, useParams } from 'react-router-dom';
-import Swal from 'sweetalert2';
-
-// 생성한 단어장 전송하는 기능
-const changeBookName = async (bookId, bookName, navigate) => {
-  try {
-    const response = await instance.put(`/book/${bookId}`, {
-      name: bookName,
-    });
-    navigate(-1);
-  } catch (e) {
-    const errorMessage = e.response.data.message;
-    Swal.fire({
-      icon: 'error',
-      title: errorMessage,
-    });
-  }
-};
-
-const getBookName = async (bookId, setBookName) => {
-  try {
-    const response = await instance.get(`/book/${bookId}`);
-    setBookName(response.data.data.name);
-  } catch (e) {
-    //console.log(e);
-  }
-};
+import useRenameBook from '@/pages/book/_id/ChangeBook/hooks/useRenameBook';
+import useGetBookById from '@/pages/book/_id/hooks/useGetBookById';
 
 const ChangeBookPage = () => {
+  const renameBook = useRenameBook();
+  const getBookById = useGetBookById();
   const navigate = useNavigate();
-  const bookId = useParams().id;
+
+  const bookId = Number(useParams().id);
   const [bookName, setBookName] = useState('');
-  const [newBook, setNewBook] = useState('');
+  const [newName, setNewName] = useState('');
+
+  const getBookNameFunc = async () => {
+    const name = await getBookById(bookId);
+    setBookName(name);
+  };
+
+  const renameBookFunc = () => {
+    if (newName !== '') {
+      renameBook({ bookId, newName });
+    }
+  };
 
   useEffect(() => {
-    getBookName(bookId, setBookName);
+    getBookNameFunc();
+    getBookById(bookId);
   }, []);
 
   return (
@@ -45,7 +35,7 @@ const ChangeBookPage = () => {
       <BookHeader>
         <BackButton
           onClick={() => {
-            navigate(-1);
+            navigate('/book');
           }}
         >
           <img src={arrowBackImg} alt="arrowBackImg" />
@@ -59,17 +49,11 @@ const ChangeBookPage = () => {
           <BookInput
             placeholder={bookName}
             onChange={e => {
-              setNewBook(e.target.value);
+              setNewName(e.target.value);
             }}
           ></BookInput>
         </BookInputWrapper>
-        <CreateButton
-          onClick={() => {
-            changeBookName(bookId, newBook, navigate);
-          }}
-        >
-          수정
-        </CreateButton>
+        <CreateButton onClick={renameBookFunc}>수정</CreateButton>
       </CreateContainer>
     </MainWrapper>
   );
@@ -85,6 +69,7 @@ const MainWrapper = styled.div`
   flex-direction: column;
   align-items: center;
 `;
+
 //-- Header 영역 --//
 const BookHeader = styled.div`
   width: 100%;
@@ -96,17 +81,20 @@ const BookHeader = styled.div`
   gap: 12px;
   flex-shrink: 0;
 `;
+
 const BackButton = styled.button`
   margin-left: 30px;
   width: 36px;
   height: 36px;
 `;
+
 const HeaderText = styled.div`
   font-weight: 500;
   font-size: 24px;
   line-height: 24px;
   color: #444444;
 `;
+
 //-- 단어장 만드는 영역 --//
 const CreateContainer = styled.div`
   height: 100%;
@@ -124,6 +112,7 @@ const BookNameDiv = styled.div`
   line-height: 24px;
   color: #444444;
 `;
+
 const BookInputWrapper = styled.div`
   width: 337px;
   height: 54px;
@@ -133,15 +122,17 @@ const BookInputWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
+
 const BookInput = styled.input`
   color: black;
   font-size: 16px;
   line-height: 16px;
   ::placeholder {
-    color: #9a9a9a;
+    color: ${({ theme }) => theme.colors.gray[400]};
   }
   margin-left: 22px;
 `;
+
 const CreateButton = styled.button`
   width: 337px;
   height: 72px;

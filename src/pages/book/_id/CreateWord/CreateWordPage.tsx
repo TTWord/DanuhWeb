@@ -1,31 +1,15 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
-import { instance } from '@/instance';
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 import Swal from 'sweetalert2';
-
-const addWord = async (book_id, word, mean, navigate) => {
-  try {
-    const response = await instance.post(`/word/${book_id}`, {
-      word: word,
-      mean: mean,
-    });
-    navigate(`/book/${book_id}`);
-  } catch (e) {
-    const errorMessage = e.response.data.message;
-    Swal.fire({
-      icon: 'error',
-      title: errorMessage,
-    });
-  }
-};
+import useAddWord from '@/pages/book/_id/CreateWord/hooks/useAddWord';
 
 const CreateWordPage = () => {
   const navigate = useNavigate();
+  const addWord = useAddWord();
 
-  const book_id = useParams().id;
-
+  const bookId = Number(useParams().id);
   const [word, setWord] = useState('');
   const [mean, setMean] = useState('');
 
@@ -73,7 +57,7 @@ const CreateWordPage = () => {
                 title: '미입력칸이 있습니다.',
               });
             } else {
-              addWord(book_id, word, mean, navigate);
+              addWord({ bookId, word, mean });
             }
           }}
         >
@@ -107,11 +91,13 @@ const BookHeader = styled.div`
   align-items: center;
   gap: 12px;
 `;
+
 const BackButton = styled.button`
   margin-left: 30px;
   width: 36px;
   height: 36px;
 `;
+
 const HeaderText = styled.div`
   width: 146px;
   height: 24px;
@@ -137,6 +123,7 @@ const WordBox = styled.div`
   flex-direction: column;
   gap: 11px;
 `;
+
 const TextDiv = styled.div`
   height: 24px;
   font-weight: 500;
@@ -144,6 +131,7 @@ const TextDiv = styled.div`
   line-height: 24px;
   color: #444444;
 `;
+
 const Input = styled.input`
   width: 100%;
   height: 54px;
@@ -153,6 +141,7 @@ const Input = styled.input`
   padding: 0 22px 0 22px;
   outline: none;
 `;
+
 const CreateButton = styled.button`
   width: 100%;
   height: 72px;

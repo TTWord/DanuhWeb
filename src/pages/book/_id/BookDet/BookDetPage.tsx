@@ -1,42 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
-import { instance } from '@/instance';
-
 import sharingImg from '@/assets/svg/icons/icon-sharing.svg';
 import plusImg from '@/assets/svg/icons/icon-plus.svg';
-
 import NewWord from './components/NewWord';
 import useGetWord from './hooks/useGetWord';
+import useGetBookById from '@/pages/book/_id/hooks/useGetBookById';
+import useDeleteWord from '@/pages/book/_id/BookDet/hooks/useDeleteWord';
 import StackLayout from '@/components/layout/StackLayout';
 
 const BookDetPage = () => {
   const getWord = useGetWord();
-
+  const getBookById = useGetBookById();
+  const deleteWord = useDeleteWord();
   const navigate = useNavigate();
 
-  const bookId = useParams().id;
-  const [bookName, setBookName] = useState('');
-  const [word, setWord] = useState([]); // 변수명 수정 필요
+  const bookId: any = useParams().id;
+  const [bookName, setBookName] = useState<string>('');
+  const [words, setWords] = useState([]);
 
   const getBook = async () => {
     const response = await getWord(bookId);
-    setWord(response);
+    setWords(response);
   };
 
-  const getBookName = async (bookId: any) => {
-    try {
-      const response = await instance.get(`/book/${bookId}`);
-      setBookName(response.data.data.name);
-    } catch (e) {
-      //console.log(e);
-    }
+  const getBookNameFunc = async () => {
+    const name = await getBookById(bookId);
+    setBookName(name);
   };
 
   useEffect(() => {
+    getBookNameFunc();
     getBook();
-    getBookName(bookId);
   }, []);
+
+  const deleteWordFunc = async (wordId: number) => {
+    const response = await deleteWord(wordId);
+    if (response.status === 'OK') {
+      getBook();
+    }
+  };
 
   return (
     <StackLayout
@@ -50,7 +53,7 @@ const BookDetPage = () => {
       }}
     >
       <BookContainer>
-        {word.map(items => {
+        {words.map(items => {
           return (
             <NewWord
               // @ts-ignore
@@ -61,7 +64,8 @@ const BookDetPage = () => {
               word={items.word}
               // @ts-ignore
               mean={items.mean}
-              getBook={getBook}
+              // @ts-ignore
+              onClick={deleteWordFunc}
             />
           );
         })}
@@ -96,6 +100,7 @@ const BookContainer = styled.div`
   padding: 10px 30px 60px 30px;
   flex-direction: column;
   align-items: center;
+  flex: 1;
   gap: 18px;
   overflow-y: scroll;
   ::-webkit-scrollbar {
@@ -105,6 +110,7 @@ const BookContainer = styled.div`
     flex: 0 0 auto;
   }
 `;
+
 //-- 하단 아이콘 --//
 // fixed로 하여 수정 예정
 const BookFooter = styled.div`
@@ -114,6 +120,7 @@ const BookFooter = styled.div`
   justify-content: end;
   background-color: transparent;
 `;
+
 const IconWrapper = styled.div`
   width: 330px;
   height: 100%; //
@@ -122,6 +129,7 @@ const IconWrapper = styled.div`
   gap: 15px;
   background-color: transparent;
 `;
+
 const Circle = styled.button`
   width: 58px;
   height: 58px;
@@ -129,12 +137,14 @@ const Circle = styled.button`
   display: flex;
   align-items: center;
 `;
+
 const SharingButton = styled(Circle)`
   position: fixed;
   background: linear-gradient(180deg, #3a98b6 0%, #50998c 100%);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   right: 99px;
   bottom: 27px;
+
   img {
     position: absolute;
     left: 13px;
@@ -142,6 +152,7 @@ const SharingButton = styled(Circle)`
     height: 36px;
   }
 `;
+
 const PlusButton = styled(Circle)`
   position: fixed;
   right: 26px;
@@ -149,6 +160,7 @@ const PlusButton = styled(Circle)`
   justify-content: center;
   background: linear-gradient(180deg, #703ab6 0%, #774178 100%);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
   img {
     width: 36px;
     height: 36px;
