@@ -1,12 +1,17 @@
 import { api } from '@/api';
+import Swal from 'sweetalert2';
+import { AxiosError } from 'axios';
 
 const useGetWord = () => {
-  const getWord = async bookId => {
+  const getWord = async (bookId: number) => {
     try {
       const { data: response } = await api.word.getWord(bookId);
       return response.data;
-    } catch (e) {
-      const errorCode = e.response.status;
+    } catch (e: unknown) {
+      const err = e as AxiosError<{
+        message: string;
+      }>;
+      const errorCode = err?.response?.status;
       if (errorCode === 409) {
         Swal.fire({
           icon: 'error',
