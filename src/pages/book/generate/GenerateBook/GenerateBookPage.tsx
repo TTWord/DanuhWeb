@@ -1,34 +1,18 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
-import { instance } from '@/instance';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
-
-const generateBook = async (bookName, sentense, navigate) => {
-  try {
-    const response = await instance.post('/book/generate', {
-      name: bookName,
-      text: sentense,
-    });
-    navigate(-1);
-  } catch (e) {
-    const errorMessage = e.response.data.message;
-    Swal.fire({
-      icon: 'error',
-      title: errorMessage,
-    });
-  }
-};
+import useGenerateBook from '@/pages/book/generate/GenerateBook/hooks/useGenerateBook';
 
 const GenerateBookPage = () => {
   const [textLength, setTextLength] = useState(0);
   const [bookName, setBookName] = useState('');
   const [sentense, setSentense] = useState('');
   const navigate = useNavigate();
+  const generateBook = useGenerateBook();
 
   const goBack = () => {
-    navigate(-1);
+    navigate('/book');
   };
 
   return (
@@ -76,7 +60,7 @@ const GenerateBookPage = () => {
 
       <GenerateButton
         onClick={() => {
-          generateBook(bookName, sentense, navigate);
+          generateBook({ bookName, sentense });
         }}
       >
         생성하기
@@ -99,27 +83,31 @@ const MainWrapper = styled.div`
   align-items: center;
   gap: 18px;
 `;
+
 //-- Header 영역 --//
 const BookHeader = styled.div`
   width: 100%;
-  height: 75px;
+  height: 56px;
   background: #ffffff;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   display: flex;
   align-items: center;
   gap: 12px;
 `;
+
 const BackButton = styled.button`
   margin-left: 30px;
   width: 36px;
   height: 36px;
 `;
+
 const HeaderText = styled.div`
   font-weight: 500;
   font-size: 24px;
   line-height: 24px;
   color: #444444;
 `;
+
 //-- 단어장 이름 영역 --//
 const BookNameWrapper = styled.div`
   width: 330px;
@@ -127,11 +115,13 @@ const BookNameWrapper = styled.div`
   flex-direction: column;
   gap: 12px;
 `;
+
 const BookNameTitle = styled.div`
   font-weight: 500;
   font-size: 24px;
   color: #444444;
 `;
+
 const BookNamingWrapper = styled.div`
   height: 48px;
   background: #ffffff;
@@ -141,11 +131,13 @@ const BookNamingWrapper = styled.div`
   align-items: center;
   padding: 0 14px 0 14px;
 `;
+
 const BookNaming = styled.input`
   width: 100%;
   font-size: 16px;
   outline: none;
 `;
+
 //-- 단어장 생성기 영역 --//
 const GenerateWrapper = styled.div`
   width: 330px;
@@ -154,6 +146,7 @@ const GenerateWrapper = styled.div`
   flex-direction: column;
   gap: 15px;
 `;
+
 const GuideText = styled.div`
   height: 12px;
   font-weight: 400;
@@ -161,6 +154,7 @@ const GuideText = styled.div`
   line-height: 12px;
   color: #444444;
 `;
+
 const GuideLangWrapper = styled.div`
   width: 100%;
   height: 38px;
@@ -168,6 +162,7 @@ const GuideLangWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+
 const LangDiv = styled.div`
   width: 140px;
   height: 38px;
@@ -183,11 +178,13 @@ const LangDiv = styled.div`
   text-align: center;
   color: #444444;
 `;
+
 const GuideArrow = styled.img`
   width: 32px;
   height: 32px;
   transform: rotate(180deg);
 `;
+
 const SentenceInputWrapper = styled.div`
   width: 330px;
   height: 236px;
@@ -199,6 +196,7 @@ const SentenceInputWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
 const SentenceInput = styled.textarea`
   width: 302px;
   height: 196px;
@@ -211,12 +209,14 @@ const SentenceInput = styled.textarea`
     color: #c0c0c0;
   }
 `;
+
 const CountInput = styled.div`
   width: 302px;
   height: 12px;
   font-size: 12px;
   text-align: right;
 `;
+
 //-- 생성하기 버튼 영역 --//
 const GenerateButton = styled.button`
   width: 330px;
