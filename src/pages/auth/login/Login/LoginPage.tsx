@@ -51,7 +51,7 @@ const LoginPage = () => {
   // 비밀번호 표시용
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  const [emailID, setEmailID] = useState<string>('');
+  const [emailId, setEmailId] = useState<string>('');
   const [emailDomain, setEmailDomain] = useState<string>('');
   const [isDirectInput, setDirectInput] = useState(false);
   const [isLoginFocus, setLoginFocus] = useState<boolean>(false);
@@ -75,12 +75,12 @@ const LoginPage = () => {
   };
 
   useEffect(() => {
-    if (emailID.length > 0 && emailDomain.length > 0 && password.length > 0) {
+    if (emailId.length > 0 && emailDomain.length > 0 && password.length > 0) {
       setIsOk(true);
     } else {
       setIsOk(false);
     }
-  }, [emailID, emailDomain, password]);
+  }, [emailId, emailDomain, password]);
 
   useEffect(() => {
     if (isDirectInput === true) {
@@ -104,7 +104,7 @@ const LoginPage = () => {
           <EmailBox isFocus={isLoginFocus}>
             <EmailID
               onChange={e => {
-                setEmailID(e.target.value);
+                setEmailId(e.target.value);
               }}
               type="text"
               placeholder="이메일"
@@ -199,7 +199,7 @@ const LoginPage = () => {
           isActive={isOk}
           onClick={() => {
             if (isOk) {
-              login(`${emailID}@${emailDomain}`, password);
+              login(`${emailId}@${emailDomain}`, password);
             }
           }}
         >
