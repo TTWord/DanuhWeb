@@ -1,14 +1,14 @@
 import { instance } from '@/instance';
 
 export const wordAPI = {
-  getWord: async (book_id: string) => {
-    const response = await instance.get(`/word/${book_id}`);
+  getWord: async (bookId: number) => {
+    const response = await instance.get(`/word/${bookId}`);
 
     return response;
   },
 
-  addWord: async (book_id: string, word: string, mean: string) => {
-    const response = await instance.post(`/word/${book_id}`, {
+  addWord: async (bookId: number, word: string, mean: string) => {
+    const response = await instance.post(`/word/${bookId}`, {
       word,
       mean,
     });
@@ -16,8 +16,8 @@ export const wordAPI = {
     return response;
   },
 
-  renameWord: async (wordID: string, word: string, mean: string) => {
-    const response = await instance.put(`/word/${wordID}`, {
+  renameWord: async (wordId: number, word: string, mean: string) => {
+    const response = await instance.put(`/word/${wordId}`, {
       word,
       mean,
     });
@@ -25,8 +25,8 @@ export const wordAPI = {
     return response;
   },
 
-  deleteWord: async (word_id: string) => {
-    const response = await instance.delete(`/word/${word_id}`);
+  deleteWord: async (wordId: number) => {
+    const response = await instance.delete(`/word/${wordId}`);
 
     return response;
   },
