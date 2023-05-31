@@ -17,6 +17,12 @@ export const bookAPI = {
     return response;
   },
 
+  getBookById: async (bookId: number) => {
+    const { data: response } = await instance.get(`/book/${bookId}`);
+
+    return response;
+  },
+
   addBook: async (bookName: string) => {
     const response = await instance.post('/book', {
       name: bookName,
@@ -34,8 +40,8 @@ export const bookAPI = {
     return response;
   },
 
-  renameBook: async (bookID: string, bookName: string) => {
-    const response = await instance.put(`/book/${bookID}`, {
+  renameBook: async (bookId: number, bookName: string) => {
+    const response = await instance.put(`/book/${bookId}`, {
       name: bookName,
     });
 
