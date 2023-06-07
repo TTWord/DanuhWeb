@@ -62,4 +62,5 @@ const Text = styled.div`
   width: 100%;
   margin: 0 8px;
   color: white;
+  text-align: center;
 `;
