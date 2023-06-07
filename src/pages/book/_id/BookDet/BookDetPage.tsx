@@ -34,7 +34,7 @@ const BookDetPage = () => {
     getBook();
   }, []);
 
-  const deleteWordFunc = async (wordId: number) => {
+  const onClickDeleteWord = async (wordId: number) => {
     const response = await deleteWord(wordId);
     if (response.status === 'OK') {
       getBook();
@@ -65,7 +65,7 @@ const BookDetPage = () => {
               // @ts-ignore
               mean={items.mean}
               // @ts-ignore
-              onClick={deleteWordFunc}
+              onClick={onClickDeleteWord}
             />
           );
         })}
