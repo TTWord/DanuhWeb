@@ -1,37 +1,32 @@
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 import { globalState } from '@/recoil';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useEffect, useState } from 'react';
 
 import useGetUserInfo from '@/pages/setting//profile/Profile/hooks/useGetUserInfo';
 import useLogout from '@/pages/setting/Setting/hooks/useLogout';
-import useDeleteAccount from '@/pages/setting/Setting/hooks/useDeleteAccount';
 import ContentBox from './components/ContentBox';
 import ConfirmPop from '@/components/common/popup/ConfirmPop';
+import { toastStatus } from '@/components/common/toast/Toast';
 import useNavigatePush from '@/hooks/useNavigatePush';
 
 const SettingPage = () => {
   const getUserInfo = useGetUserInfo();
   const logout = useLogout();
-  const deleteAccount = useDeleteAccount();
-  const navigate = useNavigate();
   const navigatePush = useNavigatePush();
 
   const [nickname, setNickname] = useRecoilState<string>(
     globalState.auth.nickname,
   );
-
   const [username, setUsername] = useRecoilState<string>(
     globalState.auth.username,
   );
-
   const [profile, setProfile] = useRecoilState<string>(
     globalState.auth.profilePic,
   );
 
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
-
+  const setToast = useSetRecoilState(toastStatus);
   const [isConfirmPopOpen, setIsConfirmPopOpen] = useState(false);
 
   useEffect(() => {
@@ -45,21 +40,26 @@ const SettingPage = () => {
     setActiveMenu(3);
   }, []);
 
-  // 해당 페이지로 이동하는 함수들
+  // 해당 페이지로 이동하는 함수
   const moveProfilePage = () => {
     navigatePush('/setting/profile');
   };
-
-  const moveNotificationPage = () => {
-    navigatePush('/setting/notification');
-  };
-
   const moveNoticePage = () => {
     navigatePush('/setting/notice');
   };
-
-  const deleteAccoutFunc = () => {
+  // onClick에 사용하는 함수
+  const onClickVersion = () => {
+    setToast({
+      isOpen: true,
+      timer: 2500,
+      message: '버전 0.3',
+    });
+  };
+  const onClickLogout = () => {
     setIsConfirmPopOpen(true);
+  };
+  const onClickDeleteAccout = () => {
+    navigatePush('/setting/delete');
   };
 
   // 코드 정상 동작을 위한 임의의 함수
@@ -78,13 +78,19 @@ const SettingPage = () => {
       <HeaderWrapper>
         <SettingText>Setting</SettingText>
         <ProfileWrapper>
-          <ProfileImg>
-            <ProfilePic />
-          </ProfileImg>
+          <ImgWrapper>
+            <ProfileImg>
+              <ProfilePic />
+            </ProfileImg>
+            <ProfileChange onClick={moveProfilePage}>프로필변경</ProfileChange>
+          </ImgWrapper>
+
           <ProfileContent>
             <ProfileNickname>{nickname}</ProfileNickname>
             <ProfileUsername>{username}</ProfileUsername>
-            <ProfileChange onClick={moveProfilePage}>프로필변경</ProfileChange>
+
+            <ProfileNickname>{'단어개수'}</ProfileNickname>
+            <ProfileUsername>{'0/200'}</ProfileUsername>
           </ProfileContent>
         </ProfileWrapper>
       </HeaderWrapper>
@@ -92,22 +98,19 @@ const SettingPage = () => {
       <ContentWrapper>
         <ConfirmPop
           isOpen={isConfirmPopOpen}
-          message="정밀 회원을 탈퇴하시나요?"
+          message="정말 로그아웃 하시겠습니까?"
           cancelText="뒤로가기"
-          confirmText="그만하기"
+          confirmText="로그아웃"
           onCancel={() => setIsConfirmPopOpen(false)}
           onConfirm={() => {
             setIsConfirmPopOpen(false);
-            deleteAccount();
+            logout();
           }}
         />
-        <ContentBox title="알림설정" onClick={moveNotificationPage} />
         <ContentBox title="공지사항" onClick={moveNoticePage} />
-        <ContentBox title="서비스 이용약관" onClick={dummyFunction} />
-        <ContentBox title="개인정보 처리방침" onClick={dummyFunction} />
-        <ContentBox title="로그아웃" onClick={logout} />
-        <ContentBox title="탈퇴하기" onClick={deleteAccoutFunc} />
-        <ContentBox title="가져오기 / 내보내기" onClick={dummyFunction} />
+        <ContentBox title="버전정보" onClick={onClickVersion} />
+        <ContentBox title="로그아웃" onClick={onClickLogout} />
+        <ContentBox title="탈퇴하기" onClick={onClickDeleteAccout} />
       </ContentWrapper>
     </WebWrapper>
   );
@@ -124,13 +127,12 @@ const WebWrapper = styled.div`
 `;
 
 // 상단 부분
-const HeaderWrapper = styled.div`
+const HeaderWrapper = styled.header`
   width: 100%;
-  height: 239px;
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid black;
-  padding: 31px 0 31px 30px;
+  padding: 30px 30px;
 `;
 
 const SettingText = styled.div`
@@ -143,8 +145,14 @@ const SettingText = styled.div`
 
 const ProfileWrapper = styled.div`
   width: 100%;
-  height: 96px;
   display: flex;
+`;
+
+const ImgWrapper = styled.div`
+  width: 96px;
+  display: flex;
+  flex-direction: column;
+  margin-right: 16px;
 `;
 
 const ProfileImg = styled.div`
@@ -157,6 +165,7 @@ const ProfileImg = styled.div`
   margin-right: 17px;
   display: flex;
   align-items: center;
+  margin-bottom: 12px;
 
   img {
     width: 96px;
