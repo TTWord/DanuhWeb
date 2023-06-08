@@ -37,7 +37,7 @@ const Box = styled.div<{
   isOpen: boolean;
 }>`
   position: fixed;
-  width: 320px;
+  width: 40%;
   height: 54px;
   z-index: 99;
   background-color: black;
