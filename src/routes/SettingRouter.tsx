@@ -3,6 +3,7 @@ import NoticePage from '@/pages/setting/notice/Notice/NoticePage';
 import NotificationPage from '@/pages/setting/notification/Notification/NotificationPage';
 import ProfilePage from '@/pages/setting/profile/Profile/ProfilePage';
 import SettingPage from '@/pages/setting/Setting/SettingPage';
+import DeleteAccountPage from '@/pages/setting/delete/DeleteAccount/DeleteAccountPage';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import RouteTransition from './RouteTransition';
 import RouteTransitionWrapper from './RouteTransitionWrapper';
@@ -30,6 +31,9 @@ const SettingRouter = () => {
 
           {/* 공지사항 세부 페이지 */}
           <Route path={'/notice/:id'} element={<NoticeDetpage />} />
+
+          {/* 탈퇴하기 페이지 */}
+          <Route path={'/delete'} element={<DeleteAccountPage />} />
         </Route>
       </Routes>
     </RouteTransition>
