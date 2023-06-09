@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { TailSpin } from 'react-loader-spinner';
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 import { useNavigate } from 'react-router-dom';
 import useGenerateBook from '@/pages/book/generate/GenerateBook/hooks/useGenerateBook';
 
 const GenerateBookPage = () => {
+  const navigate = useNavigate();
+  const { isLoading, generateBook } = useGenerateBook();
   const [textLength, setTextLength] = useState(0);
   const [bookName, setBookName] = useState('');
   const [sentense, setSentense] = useState('');
-  const navigate = useNavigate();
-  const generateBook = useGenerateBook();
 
   const goBack = () => {
     navigate('/book');
@@ -17,54 +18,73 @@ const GenerateBookPage = () => {
 
   return (
     <MainWrapper>
-      <BookHeader>
+      <Header>
         <BackButton onClick={goBack}>
           <img src={arrowBackImg} alt="arrowBackImg" />
         </BackButton>
         <HeaderText>단어장 생성기</HeaderText>
-      </BookHeader>
+      </Header>
 
-      <BookNameWrapper>
-        <BookNameTitle>단어장 이름</BookNameTitle>
-        <BookNamingWrapper>
-          <BookNaming
-            type="text"
-            placeholder="단어장 이름"
-            onChange={e => {
-              setBookName(e.target.value);
-            }}
-          />
-        </BookNamingWrapper>
-      </BookNameWrapper>
+      <Content>
+        <BookNameWrapper>
+          <BookNameTitle>단어장 이름</BookNameTitle>
+          <BookNamingWrapper>
+            <BookNaming
+              type="text"
+              placeholder="단어장 이름"
+              onChange={e => {
+                setBookName(e.target.value);
+              }}
+            />
+          </BookNamingWrapper>
+        </BookNameWrapper>
 
-      <GenerateWrapper>
-        <GuideText>현재 단어장 생성기는 영어 to 한국어만 지원합니다.</GuideText>
-        <GuideLangWrapper>
-          <LangDiv>영어</LangDiv>
-          <GuideArrow src={arrowBackImg} alt="arrowBackImg180" />
-          <LangDiv>한국어</LangDiv>
-        </GuideLangWrapper>
+        <GenerateWrapper>
+          <GuideText>
+            현재 단어장 생성기는 영어 to 한국어만 지원합니다.
+          </GuideText>
+          <GuideLangWrapper>
+            <LangDiv>영어</LangDiv>
+            <GuideArrow src={arrowBackImg} alt="arrowBackImg180" />
+            <LangDiv>한국어</LangDiv>
+          </GuideLangWrapper>
 
-        <SentenceInputWrapper>
-          <SentenceInput
-            onChange={e => {
-              setSentense(e.target.value);
-              setTextLength(e.target.value.length);
-            }}
-            placeholder="영어 문장을 입력해주세요"
-            cols={100}
-          />
-          <CountInput>{textLength}/2000</CountInput>
-        </SentenceInputWrapper>
-      </GenerateWrapper>
+          <SentenceInputWrapper>
+            <SentenceInput
+              onChange={e => {
+                setSentense(e.target.value);
+                setTextLength(e.target.value.length);
+              }}
+              placeholder="영어 문장을 입력해주세요"
+              cols={100}
+            />
+            <CountInput>{textLength}/2000</CountInput>
+          </SentenceInputWrapper>
+        </GenerateWrapper>
+        <LoadingWrapper>
+          {isLoading && (
+            <TailSpin
+              height="30"
+              width="30"
+              radius="1"
+              color="#000000"
+              ariaLabel="three-dots-loading"
+              wrapperStyle={{}}
+              visible={true}
+            />
+          )}
+        </LoadingWrapper>
+      </Content>
 
-      <GenerateButton
-        onClick={() => {
-          generateBook({ bookName, sentense });
-        }}
-      >
-        생성하기
-      </GenerateButton>
+      <Footer>
+        <GenerateButton
+          onClick={() => {
+            generateBook({ bookName, sentense });
+          }}
+        >
+          생성하기
+        </GenerateButton>
+      </Footer>
     </MainWrapper>
   );
 };
@@ -77,22 +97,20 @@ export default GenerateBookPage;
 //== 스타일 정의 ==//
 //-- 전체 wrapper --//
 const MainWrapper = styled.div`
-  height: 844px;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 18px;
 `;
 
 //-- Header 영역 --//
-const BookHeader = styled.div`
+const Header = styled.header`
   width: 100%;
   height: 56px;
   background: #ffffff;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   display: flex;
   align-items: center;
-  gap: 12px;
 `;
 
 const BackButton = styled.button`
@@ -109,6 +127,17 @@ const HeaderText = styled.div`
 `;
 
 //-- 단어장 이름 영역 --//
+
+const Content = styled.div`
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 0px;
+`;
+
 const BookNameWrapper = styled.div`
   width: 330px;
   display: flex;
@@ -204,9 +233,13 @@ const SentenceInput = styled.textarea`
   font-size: 12px;
   line-height: 12px;
   color: black;
+  resize: none;
   outline: none;
   ::placeholder {
     color: #c0c0c0;
+  }
+  ::-webkit-scrollbar {
+    display: none;
   }
 `;
 
@@ -217,7 +250,22 @@ const CountInput = styled.div`
   text-align: right;
 `;
 
+const LoadingWrapper = styled.div`
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 //-- 생성하기 버튼 영역 --//
+const Footer = styled.footer`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 24px;
+  padding-bottom: 24px;
+`;
+
 const GenerateButton = styled.button`
   width: 330px;
   height: 54px;
@@ -225,7 +273,6 @@ const GenerateButton = styled.button`
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
   text-align: center;
-  margin-top: 3px;
   font-weight: 400;
   font-size: 16px;
   line-height: 16px;
