@@ -21,4 +21,12 @@ export const auth = {
     key: 'profilePic',
     default: '',
   }),
+  timer: atom({
+    key: 'timer',
+    default: 180,
+  }),
+  codeTimeOut: atom({
+    key: 'codeTimeOut',
+    default: false,
+  }),
 };
