@@ -1,35 +1,43 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
+import ConfirmPop from '@/components/common/popup/ConfirmPop';
+import { useRecoilState } from 'recoil';
+import { globalState } from '@/recoil';
 
 const Counter = () => {
   // 카운트 다운
-  const [minutes, setMinutes] = useState(3); // 1분으로 초기화
-  const [seconds, setSeconds] = useState(0); // 0초로 초기화
+  const [timer, setTimer] = useRecoilState(globalState.auth.timer);
+
+  const [codeTimeOut, setCodeTimeOut] = useRecoilState(
+    globalState.auth.codeTimeOut,
+  );
 
   useEffect(() => {
-    const time = new Date().getTime();
-    console.log(time);
-    const intervalId = setInterval(() => {
-      if (seconds === 0) {
-        if (minutes === 0) {
-          clearInterval(intervalId);
-        } else {
-          setMinutes(prevMinutes => prevMinutes - 1);
-          setSeconds(59);
-        }
+    const timeOutId = setTimeout(() => {
+      if (timer === 0) {
+        clearTimeout(timeOutId);
+        setCodeTimeOut(true);
       } else {
-        setSeconds(prevSeconds => prevSeconds - 1);
+        setTimer(current => current - 1);
       }
     }, 1000);
+    return () => clearTimeout(timeOutId);
+  }, [timer]);
 
-    return () => clearInterval(intervalId);
-  }, [minutes, seconds]);
+  //console.log(Math.floor(123 / 10), 123 % 10);
 
   return (
-    <CounterBox>
-      {minutes.toString().padStart(2, '0')}:
-      {seconds.toString().padStart(2, '0')}
-    </CounterBox>
+    <>
+      <CounterBox>
+        {Math.floor(timer / 60)
+          .toString()
+          .padStart(2, '0')}
+        :{(timer % 60).toString().padStart(2, '0')}
+      </CounterBox>
+      {codeTimeOut && (
+        <TimeOutMessage>인증시간이 만료되었습니다</TimeOutMessage>
+      )}
+    </>
   );
 };
 
@@ -46,5 +54,14 @@ const CounterBox = styled.div`
   justify-content: flex-end;
   color: #4ad0e2;
   padding: 0 8px;
+`;
+
+const TimeOutMessage = styled.div`
+  margin-top: 8px;
   font-family: ${({ theme }) => theme.fonts.gmarketSans};
+  font-size: 10px;
+  line-height: 10px;
+  text-align: center;
+  vertical-align: middle;
+  color: red;
 `;
