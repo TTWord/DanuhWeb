@@ -1,49 +1,13 @@
 import Additional from '@/pages/book/Book/components/Additional';
-import { instance } from '@/instance';
-import { useCallback, useEffect, useState } from 'react';
 import { styled } from 'twin.macro';
 import BookItem from '@/pages/book/Book/components/BookItem';
-import useNavigatePush from '@/hooks/useNavigatePush';
+import useBookPageLogic from './hooks/useBookPageLogic';
 
 const BookPage = () => {
-  const [books, setBooks] = useState<any>([]);
-  const navigatePush = useNavigatePush();
+  const { books, onItemClick, onClickUpdate, onClickRemove } =
+    useBookPageLogic();
 
-  useEffect(() => {
-    const getData = async () => {
-      const { data: response } = await instance.get('/book');
-
-      if (response.status === 'OK') {
-        setBooks(response.data);
-      }
-    };
-
-    getData();
-  }, []);
-
-  const onClickUpdate = useCallback(async (bookId: number) => {
-    navigatePush(`/book/${bookId}/change`);
-  }, []);
-
-  const onClickRemove = useCallback(async (bookId: number) => {
-    const { data: response } = await instance.delete(`/book/${bookId}`);
-
-    if (response.status === 'OK') {
-      const getData = async () => {
-        const { data: response } = await instance.get('/book');
-
-        if (response.status === 'OK') {
-          setBooks(response.data);
-        }
-      };
-
-      getData();
-    }
-  }, []);
-
-  const onItemClick = useCallback((bookId: number) => {
-    navigatePush(`/book/${bookId}`);
-  }, []);
+  if (!books) return null;
 
   return (
     <Container>
