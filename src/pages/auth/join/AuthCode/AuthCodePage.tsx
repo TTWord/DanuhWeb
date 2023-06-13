@@ -1,22 +1,29 @@
 import React, { useState, useEffect, useCallback, ChangeEvent } from 'react';
 import styled, { css } from 'styled-components';
 import { globalState } from '@/recoil';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import useSignup from '@/pages/auth/join/AuthCode/hooks/useSignup';
 import iconArrowBack from '@/assets/svg/icons/icon-back-button.svg';
 import useNavigatePop from '@/hooks/useNavigatePop';
+import { TailSpin } from 'react-loader-spinner';
 
+import useSendmail from '@/pages/auth/join/Join/hooks/useSendmail';
 import Counter from './components/Counter';
 
 const AuthCodePage = () => {
   const userEmail = useRecoilValue(globalState.auth.username);
   const userDomain = useRecoilValue(globalState.auth.domain);
-  const userPW = useRecoilValue(globalState.auth.password);
+  const userPw = useRecoilValue(globalState.auth.password);
   const userNickname = useRecoilValue(globalState.auth.nickname);
 
   const signup = useSignup();
+  const { isLoading, sendmail, error, setError } = useSendmail();
 
-  const [isOk, setOk] = useState<boolean>(false);
+  //const [timer, setTimer] = useState(1);
+  const setTimer = useSetRecoilState(globalState.auth.timer);
+  const setCodeTimeOut = useSetRecoilState(globalState.auth.codeTimeOut);
+
+  const [isOk, setOk] = useState(false);
   const [authCode, setAuthCode] = useState('');
 
   const onChangeAuthCode = (e: ChangeEvent<HTMLInputElement>) => {
@@ -33,6 +40,14 @@ const AuthCodePage = () => {
 
   const onBack = () => {
     navigatePop('/auth/join/info');
+  };
+
+  const onClickRequestCode = async () => {
+    try {
+      await sendmail(userEmail + '@' + userDomain, userPw, userNickname);
+      setCodeTimeOut(false);
+      setTimer(180);
+    } catch {}
   };
 
   return (
@@ -66,7 +81,20 @@ const AuthCodePage = () => {
           <RequestAuthCodeComment>
             메일을 받지 못하셨나요?
           </RequestAuthCodeComment>
-          <RequsetAuthCodeButton>인증코드 재발송</RequsetAuthCodeButton>
+          <RequsetAuthCodeButton onClick={onClickRequestCode}>
+            인증코드 재발송
+          </RequsetAuthCodeButton>
+          {isLoading && (
+            <TailSpin
+              height="30"
+              width="30"
+              radius="1"
+              color="#5c369a"
+              ariaLabel="three-dots-loading"
+              wrapperStyle={{}}
+              visible={true}
+            />
+          )}
         </CenterView>
 
         <BottomView>
@@ -77,7 +105,7 @@ const AuthCodePage = () => {
               if (isOk) {
                 signup(
                   userEmail + '@' + userDomain,
-                  userPW,
+                  userPw,
                   userNickname,
                   authCode,
                 );
@@ -201,19 +229,6 @@ const AuthInput = styled.input`
     color: #eeeef2;
   }
 `;
-const CounterBox = styled.div`
-  width: 206px;
-  height: 10px;
-  font-weight: 400;
-  font-size: 10px;
-  line-height: 10px;
-  color: #666666;
-  display: flex;
-  justify-content: flex-end;
-  color: #4ad0e2;
-  padding: 0 8px;
-  font-family: ${({ theme }) => theme.fonts.gmarketSans};
-`;
 
 const RequestAuthCodeComment = styled.div`
   width: 100%;
@@ -233,6 +248,7 @@ const RequsetAuthCodeButton = styled.button`
   border-radius: 20px;
   font-size: 10px;
   color: white;
+  margin-bottom: 16px;
 `;
 
 const BottomView = styled.div`
