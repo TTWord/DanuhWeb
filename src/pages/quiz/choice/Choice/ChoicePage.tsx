@@ -98,7 +98,10 @@ const Header = styled.div`
   width: 100%;
   height: 56px;
   background: #ffffff;
-  padding: 25px 0 0 21px;
+  padding: 10px 0;
+  padding-left: 24px;
+  display: flex;
+  align-items: center;
 `;
 
 const BackButton = styled.button`
@@ -108,11 +111,13 @@ const BackButton = styled.button`
 
 const Container = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   flex: 1;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow-y: hidden;
 `;
 
 const QuizName = styled.div`
@@ -137,9 +142,9 @@ const BookSelect = styled.div`
 
 const BookWrapper = styled.div`
   width: 100%;
+  height: 40%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   padding: 8px 24px;
   overflow-y: auto;
@@ -153,13 +158,13 @@ const Footer = styled.footer`
   width: 100%;
   height: 72px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   padding: 0 29px;
   margin-bottom: 23px;
 `;
 
 const QuizButton = styled.button`
-  width: 45%;
+  width: 40%;
   height: 72px;
   background-color: #724fab;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
