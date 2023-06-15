@@ -1,9 +1,9 @@
 import { instance } from '@/instance';
 
 export const quizAPI = {
-  getShortQuiz: async (bookID: number, number: number) => {
+  getShortQuiz: async (bookId: string, number: number) => {
     const response = await instance.post('/quiz/shortform', {
-      book_id: bookID,
+      book_id: bookId,
       number,
     });
 
@@ -11,12 +11,12 @@ export const quizAPI = {
   },
 
   getChoiceQuiz: async (
-    bookID: string,
+    bookId: string,
     count: number,
     memorizedFilter: boolean,
   ) => {
     const response = await instance.post('/quiz/multiple', {
-      book_ids: bookID,
+      book_ids: bookId,
       count,
       memorized_filter: memorizedFilter,
     });
