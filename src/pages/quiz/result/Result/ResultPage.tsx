@@ -4,24 +4,28 @@ import { useRecoilValue } from 'recoil';
 import { globalState } from '@/recoil';
 
 const ResultPage = () => {
-  const testResult = useRecoilValue(globalState.quiz.result);
-
   const navigate = useNavigate();
   const location = useLocation();
-  const percentage: number = location?.state?.result;
-  const answer: number = testResult; // location?.state?.answer;
+
+  const answer: number = location?.state?.answer;
   const length: number = location?.state?.length;
+  const memorize: number = location?.state?.memorize;
+  // 진행하던 퀴즈 페이지로 이동하는 용도
+  const quizType: string = location?.state?.quizType;
 
   const targetBook: string = '전체';
   const totalWord: number = 0;
-  const quizWords: number = 0;
-  const answerWords: number = 0;
-  const answerRates: number =
-    quizWords === 0 ? 0 : (answerWords * 100) / quizWords;
-  const memoryRates: number = 0;
+  const percentage: number =
+    length === (0 || undefined) ? 0 : (answer * 100) / length;
+  const memoryRates: number =
+    length === (0 || undefined) ? 0 : (memorize * 100) / length;
 
   const goQuiz = () => {
-    navigate('/quiz');
+    if (quizType === undefined) {
+      navigate(`/quiz`);
+    } else {
+      navigate(`/quiz/${quizType}`);
+    }
   };
 
   return (
@@ -51,7 +55,7 @@ const ResultPage = () => {
 
         <AnswerRates>
           정답률
-          <span>{answerRates}%</span>
+          <span>{percentage}%</span>
         </AnswerRates>
 
         <MemoryRates>
