@@ -1,124 +1,112 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState, FC } from 'react';
-import { useRecoilValue, useRecoilState } from 'recoil';
+import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
+import { AxiosError } from 'axios';
 import { globalState } from '@/recoil';
 import { api } from '@/api';
+import Swal from 'sweetalert2';
 
 import xButton from '@/assets/svg/icons/icon-x-button.svg';
 import CheckSVG from '@/pages/quiz/choice/ChoiceQuestion/svg/CheckSVG';
+import { toastStatus } from '@/components/common/toast/Toast';
+
+interface IGetQuiz {
+  bookId: string;
+  count: number;
+  memorizedFilter: boolean;
+}
+
+interface IAnswerData {
+  mean: string;
+  word: string;
+}
 
 const ChoiceQuestionPage = () => {
-  const testQuizList = [
-    {
-      answer_index: 3,
-      answers: [
-        ['c', '씨'],
-        ['mean', '뜻'],
-        ['matter', '문제'],
-        ['word', '단어'],
-      ],
-    },
-    {
-      answer_index: 2,
-      answers: [
-        ['a', '에이'],
-        ['word', '단어'],
-        ['cow', '소'],
-        ['b', '비'],
-      ],
-    },
-    {
-      answer_index: 0,
-      answers: [
-        ['matter', '문제'],
-        ['d', '디'],
-        ['pig', '돼지'],
-        ['c', '씨'],
-      ],
-    },
-    {
-      answer_index: 3,
-      answers: [
-        ['word', '단어'],
-        ['d', '디'],
-        ['cow', '소'],
-        ['a', '에이'],
-      ],
-    },
-    {
-      answer_index: 2,
-      answers: [
-        ['matter', '문제'],
-        ['d', '디'],
-        ['pig', '돼지'],
-        ['b', '비'],
-      ],
-    },
-    {
-      answer_index: 1,
-      answers: [
-        ['a', '에이'],
-        ['b', '비'],
-        ['c', '씨'],
-        ['d', '디'],
-      ],
-    },
-    {
-      answer_index: 3,
-      answers: [
-        ['word', '단어'],
-        ['pig', '돼지'],
-        ['b', '비'],
-        ['d', '디'],
-      ],
-    },
-    {
-      answer_index: 0,
-      answers: [
-        ['mean', '뜻'],
-        ['c', '씨'],
-        ['cow', '소'],
-        ['word', '단어'],
-      ],
-    },
-    {
-      answer_index: 3,
-      answers: [
-        ['cow', '소'],
-        ['pig', '돼지'],
-        ['mean', '뜻'],
-        ['c', '씨'],
-      ],
-    },
-  ];
-
+  //// hooks ////
   const navigate = useNavigate();
+  const setToast = useSetRecoilState(toastStatus);
 
-  //const problems = [...useRecoilValue(globalState.quiz.quizList)];
-  const [problems, setProblems] = useState([]);
+  //// Varaiables ////
+  // Timer Vars
+  const timeMax = 10000;
+  const [timer, setTimer] = useState(0);
+
+  // Quiz Api Vars
+  const QuizNumber = useRecoilValue(globalState.quiz.bookIds);
+  const bookId: string = String(QuizNumber);
+  const memorizedFilter: boolean = false;
+  const count: number = 10; // 퀴즈페이지의 단어장 선택 시 넘겨줄 것
+  const [isLoading, setIsLoading] = useState(true);
+  const [problems, setProblems] = useState([]); // 전체 문제
+  const [length, setLength] = useState(0); // 문제 길이 //useRecoilState(globalState.quiz.quizCount);
+
+  // Extract Quiz Vars
   // 현재 문제 목록
   const [currentQuiz, setCurrentQuiz] = useState([]);
   // 정답 번호
-  const [answerIndex, setAnswerIndex] = useState('');
+  const [currentAnswerIndex, setCurrentAnswerIndex] = useState('');
   // 맞출 문제
-  const [answer, SetAnswer] = useState([]);
+  const [currentAnswer, setCurrentAnswer] = useState<IAnswerData>();
+  // 현재 문제의 ID
+  const [currentWordId, setCurrentWordId] = useState(0);
+  // 현재 문제의 암기상태
+  const [currentMemorize, setCurrentMemorize] = useState(false);
 
-  const [testResult, setTestResult] = useRecoilState(globalState.quiz.result);
+  // Result Vars
+  const [result, setResult] = useState(0); // 맞춘 정답수 //useRecoilState(globalState.quiz.result);
+  const [isMemorize, setMemorized] = useState(0); // 암기 체크수 // useRecoilState(globalState.quiz.memorize); // recoil 변수 추가
 
-  const memorizedFilter: boolean = false;
+  // Components Vars
+  const [number, setNumber] = useState(0); // 문제 진행도
+  const [isCheck, setIsCheck] = useState(false); // 암기 체크 여부
+  const [isAnswered, setIsAnswered] = useState(false); // 정답 화면 표기용
+  const [isCorrect, setIsCorrect] = useState(false); // 위 변수 통합용(체크 or 타임 아웃)
 
+  //// Functions ////
   const goChoice = () => {
     navigate('/quiz/choice');
   };
 
-  // 맞춘 정답수
-  const [result, setResult] = useState(0);
-  // 문제 길이
-  //const length = testQuizList.length;
-  const length = problems.length;
-  // 문제 진행도
-  const [number, setNumber] = useState(0);
+  // 퀴즈 API
+  const getQuizAPI = async ({ bookId, count, memorizedFilter }: IGetQuiz) => {
+    try {
+      const { data: response } = await api.quiz.getChoiceQuiz(
+        bookId,
+        count,
+        memorizedFilter,
+      );
+
+      if (response.status === 'OK') {
+        setIsLoading(false);
+        const getData = response.data.problem;
+
+        setProblems(getData);
+        setLength(getData.length);
+        extractQuiz(getData, number);
+      }
+    } catch (e: unknown) {
+      const err = e as AxiosError<{
+        message: string;
+      }>;
+      const errorMessage = err?.response?.data.message;
+      let swalMessage: string = '';
+      switch (errorMessage) {
+        case 'BOOK_NOT_FOUND':
+          swalMessage = '단어장이 선택되지 않았습니다';
+          break;
+        case 'WORD_LESS_THAN_COUNT':
+          swalMessage = '단어의 개수가 4개 미만입니다';
+          break;
+      }
+      Swal.fire({
+        icon: 'error',
+        title: swalMessage,
+      }).then(() => {
+        goChoice();
+      });
+    }
+  };
 
   // 문제 가져오기
   const extractQuiz = (value: any, number: number) => {
@@ -126,94 +114,102 @@ const ChoiceQuestionPage = () => {
 
     if (result) {
       setCurrentQuiz(result.answers);
-      setAnswerIndex(result.answer_index);
-      SetAnswer(result.answers[result.answer_index]);
+      setCurrentAnswerIndex(result.answer_index);
+      setCurrentAnswer(result.answers[result.answer_index]);
+      setCurrentWordId(result.word_id);
+      setCurrentMemorize(result.is_memorized);
     }
   };
 
-  const getQuizList = async (
-    bookID: string,
-    count: number,
-    memorizedFilter: boolean,
-  ) => {
-    try {
-      const { data: response } = await api.quiz.getChoiceQuiz(
-        bookID,
-        count,
-        memorizedFilter,
-      );
+  // 문항 선택 버튼에서 사용할 함수
+  const selectAnswer = (select: string) => {
+    if (select === currentAnswer?.mean) {
+      setResult(current => current + 1);
+      setIsCorrect(true);
+    }
+  };
 
+  // 체크버튼 함수
+  const onClickCheckButton = async () => {
+    setCurrentMemorize(current => !current);
+
+    try {
+      const { data: response } = await api.memo.patchMemorizedStatus({
+        wordId: currentWordId,
+        isMemorized: !currentMemorize,
+      });
       if (response.status === 'OK') {
-        const getData = response.data.problem;
-        setProblems(getData);
-        extractQuiz(getData, number);
+        const memorizedStatus = response.data.is_memorized;
+        const toastMessage =
+          memorizedStatus === true ? '암기 완료' : '암기 미완료';
+        setToast({
+          isOpen: true,
+          timer: 2000,
+          message: toastMessage,
+        });
       }
-    } catch (e) {
+    } catch (e: unknown) {
       console.log(e);
     }
   };
 
-  console.log(
-    '전역: ',
-    '테스트결과',
-    testResult,
-    '현재숫자',
-    number,
-    '총 문제수',
-    length,
-    '문제들',
-    problems,
-  );
-
-  useEffect(() => {
-    getQuizList('83', 10, false);
-  }, []);
-
-  useEffect(() => {
-    //extractQuiz(problems, number);
-    //console.log('2번째 useEffect 호출');
-    //console.log(number, problems);
-    extractQuiz(testQuizList, number);
-  }, [number]);
-
-  // 버튼에서 사용할 함수
-  const selectAnswer = (select: string) => {
-    console.log('현재 문제 번호와 전체 길이', number, length);
-
-    if (number + 1 !== length) {
-      if (select === answer[1]) {
-        console.log(`${number + 1}의 고른 답과 정답: ${select}, ${answer[1]}`);
-        //setResult(current => current + 1);
-        setTestResult(current => current + 1);
-      }
-    } else {
-      if (select === answer[1]) {
-        console.log(`${number + 1}의 고른 답과 정답: ${select}, ${answer[1]}`);
-        setTestResult(current => current + 1);
-        console.log('테스트 종료: ', testResult, length);
-      } else {
-        console.log('테스트 종료: ', testResult, length);
-      }
-
+  // 다음 버튼 함수
+  const onClickNextButton = () => {
+    setNumber(number + 1);
+    setIsAnswered(current => !current);
+    setIsCorrect(false);
+    setTimer(0);
+    if (number + 1 === length) {
       navigate('/quiz/result', {
         state: {
           length: length,
-          answer: testResult,
-          result: (testResult / length) * 100,
+          answer: result,
+          memorize: 0, // 값 넣어야함
+          quizType: 'choice',
         },
       });
     }
   };
 
-  const [isCheck, setIsCheck] = useState<boolean>(false);
-  const [isAnswered, setIsAnswered] = useState<boolean>(false);
+  //// useEffects ////
+  // 객관식 퀴즈 가져옴
+  useEffect(() => {
+    getQuizAPI({
+      bookId,
+      count,
+      memorizedFilter,
+    });
+  }, []);
+
+  // 가져온 퀴즈를 화면에 뿌려줌
+  useEffect(() => {
+    extractQuiz(problems, number);
+  }, [number]);
+
+  // 타이머
+  useEffect(() => {
+    if (!isAnswered) {
+      const timeOutId = setTimeout(() => {
+        if (timer !== 10000) {
+          setTimer(current => current + 500);
+        }
+        if (timer === 10000) {
+          setIsAnswered(true);
+          clearTimeout(timeOutId);
+        }
+
+        return () => clearTimeout(timeOutId);
+      }, 500);
+    }
+  }, [timer, isAnswered]);
+
+  //// Components ////
 
   const CreateChoiceButtons = (props: any) => {
     return (
       <ChoiceButton
         onClick={() => {
           selectAnswer(props.example);
-          //setNumber(number + 1);
           console.log('버튼 내부');
           setIsAnswered(current => !current);
         }}
@@ -225,56 +221,64 @@ const ChoiceQuestionPage = () => {
 
   return (
     <MainWrapper>
-      <Header>
-        <TitleWrapper>
-          <button onClick={goChoice}>
-            <img src={xButton} alt="" />
-          </button>
-          <Title>문제풀기</Title>
-        </TitleWrapper>
+      {isLoading && <Loading>Loading...</Loading>}
 
-        <ProgressWrapper>
-          <ProgressBar value={(number + 1) * (100 / length)} max={100} />
+      {!isLoading && (
+        <>
+          <Header>
+            <TitleWrapper>
+              <button onClick={goChoice}>
+                <img src={xButton} alt="" />
+              </button>
+              <Title>문제풀기</Title>
+            </TitleWrapper>
 
-          <ProgressIndex>
-            {number + 1}/{length}
-          </ProgressIndex>
+            <ProgressWrapper>
+              <ProgressBar value={(number + 1) * (100 / length)} max={100} />
 
-          <ProgressTime value={20} max={100} />
-        </ProgressWrapper>
-      </Header>
+              <ProgressIndex>
+                {number + 1}/{length}
+              </ProgressIndex>
 
-      <Content>
-        {/* 문제 컴포넌트 */}
-        {!isAnswered && <Word>{answer[0]}</Word>}
+              <ProgressTime value={(timer / timeMax) * 100} max={100} />
+            </ProgressWrapper>
+          </Header>
 
-        {/* 정답 컴포넌트 */}
-        {isAnswered && (
-          <div>
-            <Word>{answer[0]}</Word>
-            <Word>{answer[1]}</Word>
-          </div>
-        )}
-      </Content>
+          <Content>
+            {/* 문제 컴포넌트 */}
+            {!isAnswered && <Word>{currentAnswer?.word}</Word>}
 
-      <Footer>
-        {/* 문제 컴포넌트 */}
-        {!isAnswered &&
-          currentQuiz.map((items, index) => {
-            return <CreateChoiceButtons key={index} example={items[1]} />;
-          })}
+            {/* 정답 컴포넌트 */}
+            {isAnswered && (
+              <Answer>
+                <Correct>{isCorrect ? '정답!' : '오답!'}</Correct>
+                <Word>{currentAnswer?.word}</Word>
+                <Mean>{currentAnswer?.mean}</Mean>
+                <CheckButton onClick={onClickCheckButton}>
+                  <CheckSVG fill={currentMemorize ? '#4ABC56' : '#FFFFFF'} />
+                </CheckButton>
+              </Answer>
+            )}
+          </Content>
 
-        {/* 정답 컴포넌트 */}
-        {isAnswered && (
-          <button
-            onClick={() => {
-              setIsCheck(current => !current);
-            }}
-          >
-            <CheckSVG fill={isCheck ? '#4ABC56' : '#FFFFFF'} />
-          </button>
-        )}
-      </Footer>
+          <Footer>
+            {/* 문제 컴포넌트 */}
+            {!isAnswered &&
+              currentQuiz.map((items: any, index) => {
+                return (
+                  <CreateChoiceButtons key={index} example={items?.mean} />
+                );
+              })}
+
+            {/* 정답 컴포넌트 */}
+            {isAnswered && (
+              <NextButton onClick={onClickNextButton}>
+                {number + 1 === length ? '결과보기' : '다음'}
+              </NextButton>
+            )}
+          </Footer>
+        </>
+      )}
     </MainWrapper>
   );
 };
@@ -286,6 +290,14 @@ const MainWrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+`;
+
+const Loading = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
   align-items: center;
 `;
 
@@ -366,6 +378,7 @@ const ProgressTime = styled.progress`
     background: #d9d9d9;
   }
   ::-webkit-progress-value {
+    transition: 0.5s linear;
     background: #e67979;
   }
 `;
@@ -378,6 +391,23 @@ const Word = styled.div`
   font-size: 64px;
   color: #0d0d0d;
 `;
+
+const Answer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Mean = styled.div`
+  font-size: 36px;
+`;
+
+const Correct = styled.div`
+  font-size: 36px;
+`;
+
+const CheckButton = styled.button``;
 
 const Footer = styled.footer`
   width: 100%;
@@ -398,5 +428,15 @@ const ChoiceButton = styled.button`
   font-size: 30px;
   text-align: center;
   color: #0d0d0d;
-  margin-bottom: 16px;
+
+  :nth-child(n + 2) {
+    margin-top: 16px;
+  }
+`;
+
+const NextButton = styled.button`
+  width: 100%;
+  height: 48px;
+  background-color: ${({ theme }) => theme.colors.primary.default};
+  color: white;
 `;
