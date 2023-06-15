@@ -49,7 +49,9 @@ const Book = styled.button<{ isSelected?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 13px;
+  :nth-child(n + 2) {
+    margin-top: 12px;
+  }
 
   ${({ isSelected }) =>
     isSelected &&
@@ -58,10 +60,3 @@ const Book = styled.button<{ isSelected?: boolean }>`
       background-color: ${({ theme }) => theme.colors.primary.default};
     `}
 `;
-
-{
-  /* <Book isSelected={isSelected} onClick={onClick}>
-  {bookName && <div>{bookName}</div>}
-  {!bookName && <div>1</div>}
-</Book>; */
-}
