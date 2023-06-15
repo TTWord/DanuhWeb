@@ -210,7 +210,6 @@ const ChoiceQuestionPage = () => {
       <ChoiceButton
         onClick={() => {
           selectAnswer(props.example);
-          console.log('버튼 내부');
           setIsAnswered(current => !current);
         }}
       >
