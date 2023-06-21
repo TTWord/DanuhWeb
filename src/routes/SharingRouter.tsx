@@ -1,10 +1,10 @@
-import RankingPage from '@/pages/ranking/Ranking/RankingPage';
+import SharingPage from '@/pages/sharing/Sharing/SharingPage';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import RouteTransition from './RouteTransition';
 import RouteTransitionWrapper from './RouteTransitionWrapper';
 import RootLayout from '@/components/layout/RootLayout';
 
-const RankRouter = () => {
+const SharingRouter = () => {
   const location = useLocation();
 
   return (
@@ -14,7 +14,7 @@ const RankRouter = () => {
           {/* 랭킹 메인 페이지 */}
 
           <Route element={<RootLayout />}>
-            <Route path={'/'} element={<RankingPage />} />
+            <Route path={'/'} element={<SharingPage />} />
           </Route>
         </Route>
       </Routes>
@@ -22,4 +22,4 @@ const RankRouter = () => {
   );
 };
 
-export default RankRouter;
+export default SharingRouter;
