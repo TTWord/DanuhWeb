@@ -1,6 +1,6 @@
 import HomeMenu from '@/components/layout/RootLayout/Footer/HomeMenu';
 import StudyMenu from '@/components/layout/RootLayout/Footer/StudyMenu';
-import RankingMenu from '@/components/layout/RootLayout/Footer/RankigMenu';
+import SharingMenu from '@/components/layout/RootLayout/Footer/SharingMenu';
 import MyPagemenu from '@/components/layout/RootLayout/Footer/MyPageMenu';
 
 import { globalState } from '@/recoil';
@@ -27,11 +27,11 @@ const menuList = [
   },
   {
     id: 2,
-    component: <RankingMenu stroke="#CBBDF3" selected={false} />,
+    component: <SharingMenu selected={false} />,
     activeComponent: (
-      <RankingMenu fill="#694AC2" stroke="#694AC2" selected={true} />
+      <SharingMenu fill="#694AC2" stroke="#694AC2" selected={true} />
     ),
-    navigate: '/ranking',
+    navigate: '/sharing',
   },
   {
     id: 3,
