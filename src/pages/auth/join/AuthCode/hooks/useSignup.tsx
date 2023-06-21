@@ -21,7 +21,7 @@ const useSignup = () => {
       );
       localStorage.setItem('access_Token', response.data.access_token);
       localStorage.setItem('refresh_Token', response.data.refresh_token);
-      navigate('/auth/join/welcome');
+      navigate('/auth/welcome');
     } catch (e: unknown) {
       const err = e as AxiosError<{
         message: string;
