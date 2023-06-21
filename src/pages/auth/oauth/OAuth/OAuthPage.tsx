@@ -5,9 +5,12 @@ import styled from 'styled-components';
 const OAuthPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
   const searchParams = new URLSearchParams(location.search);
   const accessToken: string | null = searchParams.get('accesstoken');
   const refreshToken: string | null = searchParams.get('refreshtoken');
+  const isMember: string | null = searchParams.get('ismember');
+
   if (!accessToken || !refreshToken) {
     alert('에러!');
   } else {
@@ -15,17 +18,21 @@ const OAuthPage = () => {
     localStorage.setItem('refresh_Token', refreshToken);
   }
 
+  const print = console.log;
+
   useEffect(() => {
-    setTimeout(() => {
-      navigate('/book');
-    }, 3000);
+    if (isMember === '1') {
+      navigate('/auth/welcome');
+    }
+    if (isMember === '0') {
+      navigate('/auth/oauth/join');
+    }
+    if (isMember === null) {
+      navigate('/auth');
+    }
   }, []);
 
-  return (
-    <MainWrapper>
-      <div>잠시만 기다리세요...</div>
-    </MainWrapper>
-  );
+  return <MainWrapper></MainWrapper>;
 };
 
 export default OAuthPage;
@@ -36,10 +43,4 @@ const MainWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  div {
-    font-weight: 500;
-    font-size: 48px;
-    line-height: 48px;
-  }
 `;
