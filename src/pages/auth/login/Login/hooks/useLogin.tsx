@@ -11,7 +11,8 @@ const useLogin = () => {
       const { data: response } = await api.auth.login(username, password);
       localStorage.setItem('access_Token', response.data.access_token);
       localStorage.setItem('refresh_Token', response.data.refresh_token);
-      navigate('/book');
+
+      navigate('/auth/welcome');
     } catch (e: unknown) {
       const err = e as AxiosError<{
         message: string;
