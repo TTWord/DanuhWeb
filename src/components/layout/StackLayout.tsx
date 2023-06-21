@@ -43,6 +43,8 @@ const StackLayout: React.FC<StackLayoutProps> = ({ children, topBar }) => {
 export default StackLayout;
 
 const Container = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -54,7 +56,7 @@ const Header = styled.div`
   height: 56px;
   display: flex;
   align-items: center;
-  padding: 0 14px;
+  padding: 8px 14px;
 `;
 
 const Content = styled.div`

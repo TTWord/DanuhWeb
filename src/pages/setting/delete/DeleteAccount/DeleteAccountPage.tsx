@@ -30,13 +30,13 @@ const DeleteAccountPage = () => {
       <Content>
         <ConfirmPop
           isOpen={isConfirmPopOpen}
-          message="정밀 회원을 탈퇴하시나요?"
+          message="정말 회원을 탈퇴하시나요?"
           cancelText="뒤로가기"
-          confirmText="그만하기"
+          confirmText="탈퇴하기"
           onCancel={() => setIsConfirmPopOpen(false)}
           onConfirm={() => {
             setIsConfirmPopOpen(false);
-            deleteAccount;
+            deleteAccount();
           }}
         />
         <Text>탈퇴하면 계정은 다시 복구할 수 없습니다.</Text>
