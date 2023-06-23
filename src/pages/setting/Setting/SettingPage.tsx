@@ -44,9 +44,19 @@ const SettingPage = () => {
   const moveProfilePage = () => {
     navigatePush('/setting/profile');
   };
+
   const moveNoticePage = () => {
     navigatePush('/setting/notice');
   };
+
+  const moveReportPage = () => {
+    navigatePush('/setting/report');
+  };
+
+  const movePasswordPage = () => {
+    navigatePush('/setting/password');
+  };
+
   // onClick에 사용하는 함수
   const onClickVersion = () => {
     setToast({
@@ -58,6 +68,7 @@ const SettingPage = () => {
   const onClickLogout = () => {
     setIsConfirmPopOpen(true);
   };
+
   const onClickDeleteAccout = () => {
     navigatePush('/setting/delete');
   };
@@ -108,7 +119,9 @@ const SettingPage = () => {
           }}
         />
         <ContentBox title="공지사항" onClick={moveNoticePage} />
-        <ContentBox title="버전정보" onClick={onClickVersion} />
+        <ContentBox title="패치노트" onClick={onClickVersion} />
+        <ContentBox title="건의하기 / 버그신고" onClick={moveReportPage} />
+        <ContentBox title="비밀번호 변경" onClick={movePasswordPage} />
         <ContentBox title="로그아웃" onClick={onClickLogout} />
         <ContentBox title="탈퇴하기" onClick={onClickDeleteAccout} />
       </ContentWrapper>
