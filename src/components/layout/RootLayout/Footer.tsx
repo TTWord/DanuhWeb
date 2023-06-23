@@ -7,6 +7,7 @@ import { globalState } from '@/recoil';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import tw from 'twin.macro';
+import styled from 'styled-components';
 
 const menuList = [
   {
@@ -49,7 +50,7 @@ const Footer = () => {
   const navigate = useNavigate();
 
   return (
-    <Container>
+    <NewContainer>
       {menuList.map(menu => {
         return (
           <Menu
@@ -63,11 +64,14 @@ const Footer = () => {
           </Menu>
         );
       })}
-    </Container>
+    </NewContainer>
   );
 };
 
 export default Footer;
 
 const Container = tw.div`flex w-full h-full justify-around items-center`;
+const NewContainer = styled(Container)`
+  border-top: 0.5px solid ${({ theme }) => theme.colors.gray[200]};
+`;
 const Menu = tw.div`w-[25%] h-full flex justify-center items-center cursor-pointer`;
