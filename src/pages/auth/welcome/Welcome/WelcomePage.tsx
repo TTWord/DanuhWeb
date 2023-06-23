@@ -29,7 +29,7 @@ const WelcomePage = () => {
         setIsLoading(true);
         setTimeout(() => {
           navigate('/book');
-        }, 3000);
+        }, 2000);
       }
     } catch (e: unknown) {
       const err = e as AxiosError<{
