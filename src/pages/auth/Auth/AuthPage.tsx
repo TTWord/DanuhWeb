@@ -1,7 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
-import logoImg from '@/assets/svg//logos/logo-TTWord.svg';
-
+import logoImg from '@/assets/svg/logos/logo-danuh.svg';
 import hatIcon from '@/assets/svg/icons/icon-hat.svg';
 import pencilIcon from '@/assets/svg/icons/icon-pencil.svg';
 import dogIcon from '@/assets/svg/icons/icon-dog.svg';
@@ -79,7 +78,7 @@ const rolling = keyframes`
 
 const IconWrapper = styled.header`
   width: 200vw;
-  margin-top: 40px;
+  margin-top: 27px;
   display: flex;
   align-items: center;
   justify-content: space-between;

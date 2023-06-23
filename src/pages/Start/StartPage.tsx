@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import logoImg from '@/assets/svg/logos/logo-TTWord.svg';
+import logoImg from '@/assets/svg/logos/logo-danuh.svg';
 
 const StartPage = () => {
   const navigate = useNavigate();
@@ -9,13 +9,12 @@ const StartPage = () => {
   useEffect(() => {
     setTimeout(() => {
       navigate('/auth');
-    }, 3000);
+    }, 2000);
   }, []);
 
   return (
     <MainWrapper>
       <LogoImg src={logoImg} alt="logoImage"></LogoImg>
-      <IntroText>이미지, PDF, 글을 단어장을 만들자!</IntroText>
     </MainWrapper>
   );
 };
@@ -26,20 +25,19 @@ export default StartPage;
 const MainWrapper = styled.div`
   width: 100%;
   height: 100%;
+  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  background-color: white;
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(137, 109, 217, 0.1) 100%
+    ),
+    #fff;
 `;
 
 const LogoImg = styled.img`
-  width: 180px;
-  margin-bottom: 13px;
-`;
-
-const IntroText = styled.div`
-  font-weight: 400;
-  font-size: 12px;
-  color: #6b6c76;
+  position: absolute;
+  top: 25%;
 `;
