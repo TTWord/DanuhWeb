@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 import Swal from 'sweetalert2';
 import useAddWord from '@/pages/book/_id/CreateWord/hooks/useAddWord';
+import iconBack from '@/assets/svg/icons//icon-back-gray.svg';
 
 const CreateWordPage = () => {
   const navigate = useNavigate();
@@ -13,22 +14,24 @@ const CreateWordPage = () => {
   const [word, setWord] = useState('');
   const [mean, setMean] = useState('');
 
+  const goBack = () => {
+    navigate(`/book/${bookId}`);
+  };
+
   return (
     <MainWrapper>
-      <BookHeader>
-        <BackButton
-          onClick={() => {
-            navigate(-1);
-          }}
-        >
-          <img src={arrowBackImg} alt="arrowBackImg" />
+      <Header>
+        <BackButton onClick={goBack}>
+          <img src={iconBack} alt="back" />
         </BackButton>
         <HeaderText>단어 추가</HeaderText>
-      </BookHeader>
+      </Header>
 
       <Container>
         <WordBox>
-          <TextDiv>단어</TextDiv>
+          <TextDiv>
+            단어<span>word</span>
+          </TextDiv>
           <Input
             type="text"
             placeholder="단어를 입력해주세요"
@@ -39,7 +42,9 @@ const CreateWordPage = () => {
         </WordBox>
 
         <WordBox>
-          <TextDiv>뜻</TextDiv>
+          <TextDiv>
+            뜻 <span>meaning</span>
+          </TextDiv>
           <Input
             type="text"
             placeholder="뜻 입력해주세요"
@@ -48,7 +53,9 @@ const CreateWordPage = () => {
             }}
           />
         </WordBox>
+      </Container>
 
+      <Footer>
         <CreateButton
           onClick={() => {
             if (word === '' && mean === '') {
@@ -61,9 +68,9 @@ const CreateWordPage = () => {
             }
           }}
         >
-          생성
+          추가하기
         </CreateButton>
-      </Container>
+      </Footer>
     </MainWrapper>
   );
 };
@@ -74,82 +81,104 @@ export default CreateWordPage;
 //-- 전체 wrapper --//
 const MainWrapper = styled.div`
   width: 100%;
-  height: 844px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 39px;
+  font-family: ${({ theme }) => theme.fonts.pretendard};
+  line-height: 140%;
+  background-color: ${({ theme }) => theme.colors.primary[100]};
 `;
 
 //-- Header 영역 --//
-const BookHeader = styled.div`
+const Header = styled.header`
   width: 100%;
-  height: 76px;
-  background: #ffffff;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  height: 56px;
   display: flex;
   align-items: center;
-  gap: 12px;
 `;
 
 const BackButton = styled.button`
-  margin-left: 30px;
-  width: 36px;
-  height: 36px;
+  width: 24px;
+  height: 24px;
+  margin: 0 16px;
 `;
 
 const HeaderText = styled.div`
-  width: 146px;
-  height: 24px;
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 24px;
-  color: #444444;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 140%;
+  color: ${({ theme }) => theme.colors.gray[800]};
 `;
 
 //--Container 영역--//
 const Container = styled.div`
-  width: 337px;
-  height: 316px;
+  width: 100%;
+  height: 100%;
+  padding: 0 24px;
+  padding-top: 10%;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  align-items: center;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const WordBox = styled.div`
   width: 100%;
-  height: 89px;
   display: flex;
   flex-direction: column;
-  gap: 11px;
+
+  & + & {
+    margin-top: 32px;
+  }
 `;
 
 const TextDiv = styled.div`
-  height: 24px;
-  font-weight: 500;
-  font-size: 24px;
+  font-weight: 600;
+  font-size: 20px;
   line-height: 24px;
-  color: #444444;
+  color: ${({ theme }) => theme.colors.gray[900]};
+  margin-bottom: 16px;
+  span {
+    margin-left: 8px;
+    color: ${({ theme }) => theme.colors.gray[500]};
+    font-weight: 500;
+    font-size: 14px;
+  }
 `;
 
 const Input = styled.input`
   width: 100%;
-  height: 54px;
-  background: #ffffff;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 8px;
-  padding: 0 22px 0 22px;
+  height: 42px;
+  padding: 10px 0;
+  font-size: 14px;
+  font-weight: 500;
   outline: none;
+  border-bottom: 1px solid #e7e7e7;
+  background: #fff;
+
+  ::placeholder {
+    color: #dadada;
+  }
+`;
+
+const Footer = styled.footer`
+  width: 100%;
+  padding: 0 24px;
+  padding-bottom: 48px;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const CreateButton = styled.button`
   width: 100%;
-  height: 72px;
-  background: linear-gradient(180deg, #734ae7 0%, #4c2f9c 100%);
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 15px;
-  font-weight: 400;
-  font-size: 24px;
-  line-height: 24px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${({ theme }) => theme.colors.primary.default};
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 16px;
   color: #ffffff;
 `;
