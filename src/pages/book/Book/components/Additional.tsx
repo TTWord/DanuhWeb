@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css, keyframes } from 'styled-components';
+import iconCreateBook from '@/assets/svg/icons/icon-create-book.svg';
 
 interface AdditionalProps {}
 
@@ -21,6 +22,7 @@ const Additional: React.FC<AdditionalProps> = () => {
           targetPos={'200px'}
           onClick={() => navigate('/book/create')}
         >
+          <Icon src={iconCreateBook} alt="icon" />
           <Text>단어장 만들기</Text>
         </AdditionalItem>
         <AdditionalItem
@@ -28,9 +30,11 @@ const Additional: React.FC<AdditionalProps> = () => {
           targetPos={'140px'}
           onClick={() => navigate('/book/generate')}
         >
+          <Icon src={iconCreateBook} alt="icon" />
           <Text>단어장 생성기</Text>
         </AdditionalItem>
         <AdditionalItem isActive={isActive} targetPos={'80px'}>
+          <Icon src={iconCreateBook} alt="icon" />
           <Text>단어장 다운로드</Text>
         </AdditionalItem>
       </AdditionalItems>
@@ -63,8 +67,8 @@ const PlusBoxNotActive = styled.div<{
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: linear-gradient(180deg, #6928bf 0%, #a112a3 100%);
-  box-shadow: 0 0 6px 0 rgba(89, 0, 255, 0.361);
+  background-color: ${({ theme }) => theme.colors.primary.default};
+  //box-shadow: 0 0 6px 0 rgba(89, 0, 255, 0.361);
   transition: opacity 0.3s;
   opacity: ${({ isActive }) => (isActive ? 0 : 1)};
 `;
@@ -78,8 +82,8 @@ const PlusBoxActive = styled.div<{
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: linear-gradient(180deg, #bf2828 0%, #781515 100%);
-  box-shadow: 0 0 6px 0 rgba(89, 0, 255, 0.361);
+  background-color: ${({ theme }) => theme.colors.primary[400]};
+  //box-shadow: 0 0 6px 0 rgba(89, 0, 255, 0.361);
   transition: opacity 0.3s;
   opacity: ${({ isActive }) => (isActive ? 1 : 0)};
 `;
@@ -145,6 +149,12 @@ const AdditionalItems = styled.div<{
 `;
 
 const Text = styled.div``;
+
+const Icon = styled.img`
+  //width: 24px;
+  height: 24px;
+`;
+
 const AdditionalItem = styled.div<{
   isActive: boolean;
   targetPos: string;
@@ -164,9 +174,14 @@ const AdditionalItem = styled.div<{
   transition: all 0.3s;
   right: 30px;
   bottom: 30px;
+  padding: 0 8px;
+
+  ${Icon} {
+    padding-right: 4px;
+  }
 
   ${Text} {
-    font-size: 12px;
+    font-size: 14px;
     transform: scale(0);
     transition: all 0.3s;
   }
@@ -174,10 +189,11 @@ const AdditionalItem = styled.div<{
   ${({ isActive, targetPos }) =>
     isActive &&
     css`
-      width: 150px;
-      height: 50px;
+      width: 148px;
+      height: 48px;
       bottom: ${targetPos};
       right: 0px;
+      background-color: ${({ theme }) => theme.colors.primary.default};
 
       ${Text} {
         transform: scale(1);

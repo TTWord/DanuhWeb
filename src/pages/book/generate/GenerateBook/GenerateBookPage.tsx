@@ -4,6 +4,7 @@ import { TailSpin } from 'react-loader-spinner';
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 import { useNavigate } from 'react-router-dom';
 import useGenerateBook from '@/pages/book/generate/GenerateBook/hooks/useGenerateBook';
+import iconBack from '@/assets/svg/icons//icon-back-gray.svg';
 
 const GenerateBookPage = () => {
   const navigate = useNavigate();
@@ -20,34 +21,33 @@ const GenerateBookPage = () => {
     <MainWrapper>
       <Header>
         <BackButton onClick={goBack}>
-          <img src={arrowBackImg} alt="arrowBackImg" />
+          <img src={iconBack} alt="arrowBackImg" />
         </BackButton>
         <HeaderText>단어장 생성기</HeaderText>
       </Header>
 
       <Content>
         <BookNameWrapper>
-          <BookNameTitle>단어장 이름</BookNameTitle>
-          <BookNamingWrapper>
-            <BookNaming
-              type="text"
-              placeholder="단어장 이름"
-              onChange={e => {
-                setBookName(e.target.value);
-              }}
-            />
-          </BookNamingWrapper>
+          <BookNameTitle>단어장 이름은</BookNameTitle>
+
+          <BookNaming
+            type="text"
+            placeholder="단어장 이름을 입력해주세요"
+            onChange={e => {
+              setBookName(e.target.value);
+            }}
+          />
         </BookNameWrapper>
 
         <GenerateWrapper>
-          <GuideText>
-            현재 단어장 생성기는 영어 to 한국어만 지원합니다.
-          </GuideText>
           <GuideLangWrapper>
             <LangDiv>영어</LangDiv>
             <GuideArrow src={arrowBackImg} alt="arrowBackImg180" />
             <LangDiv>한국어</LangDiv>
           </GuideLangWrapper>
+          <GuideText>
+            현재 단어장 생성기는 영어 to 한국어만 지원합니다.
+          </GuideText>
 
           <SentenceInputWrapper>
             <SentenceInput
@@ -61,28 +61,28 @@ const GenerateBookPage = () => {
             <CountInput>{textLength}/2000</CountInput>
           </SentenceInputWrapper>
         </GenerateWrapper>
-        <LoadingWrapper>
-          {isLoading && (
-            <TailSpin
-              height="30"
-              width="30"
-              radius="1"
-              color="#000000"
-              ariaLabel="three-dots-loading"
-              wrapperStyle={{}}
-              visible={true}
-            />
-          )}
-        </LoadingWrapper>
       </Content>
 
       <Footer>
         <GenerateButton
           onClick={() => {
-            generateBook({ bookName, sentense });
+            if (!isLoading) {
+              generateBook({ bookName, sentense });
+            }
           }}
         >
-          생성하기
+          {!isLoading && '생성하기'}
+          {isLoading && (
+            <TailSpin
+              height="30"
+              width="30"
+              radius="1"
+              color="#ffffff"
+              ariaLabel="three-dots-loading"
+              wrapperStyle={{}}
+              visible={true}
+            />
+          )}
         </GenerateButton>
       </Footer>
     </MainWrapper>
@@ -101,29 +101,31 @@ const MainWrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  font-family: ${({ theme }) => theme.fonts.pretendard};
+  line-height: 140%;
+  background-color: ${({ theme }) => theme.colors.primary[100]};
 `;
 
 //-- Header 영역 --//
 const Header = styled.header`
   width: 100%;
   height: 56px;
-  background: #ffffff;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   display: flex;
   align-items: center;
 `;
 
 const BackButton = styled.button`
-  margin-left: 30px;
-  width: 36px;
-  height: 36px;
+  width: 24px;
+  height: 24px;
+  margin: 0 16px;
 `;
 
 const HeaderText = styled.div`
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 24px;
-  color: #444444;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 140%;
+  color: ${({ theme }) => theme.colors.gray[800]};
 `;
 
 //-- 단어장 이름 영역 --//
@@ -135,88 +137,86 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24px 0px;
+  padding: 0px 24px;
+  padding-top: 40px;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const BookNameWrapper = styled.div`
-  width: 330px;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  margin-bottom: 32px;
 `;
 
 const BookNameTitle = styled.div`
-  font-weight: 500;
-  font-size: 24px;
-  color: #444444;
-`;
-
-const BookNamingWrapper = styled.div`
-  height: 48px;
-  background: #ffffff;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 11px;
-  display: flex;
-  align-items: center;
-  padding: 0 14px 0 14px;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 140%;
+  color: ${({ theme }) => theme.colors.gray[900]};
+  margin-bottom: 24px;
 `;
 
 const BookNaming = styled.input`
   width: 100%;
+  height: 42px;
+  padding: 10px 0;
   font-size: 16px;
+  font-weight: 500;
   outline: none;
+  border-bottom: 1px solid #e7e7e7;
+  background: #fff;
+
+  ::placeholder {
+    color: #dadada;
+  }
 `;
 
 //-- 단어장 생성기 영역 --//
 const GenerateWrapper = styled.div`
-  width: 330px;
+  width: 100%;
   margin-top: 8px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-`;
-
-const GuideText = styled.div`
-  height: 12px;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 12px;
-  color: #444444;
 `;
 
 const GuideLangWrapper = styled.div`
-  width: 100%;
-  height: 38px;
+  height: 44px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
 `;
 
 const LangDiv = styled.div`
-  width: 140px;
-  height: 38px;
+  height: 100%;
   background: #ffffff;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
+  padding: 8px 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 16px;
-  text-align: center;
-  color: #444444;
+  background-color: ${({ theme }) => theme.colors.gray[100]};
+  border-radius: 8px;
+  border: 1px solid ${({ theme }) => theme.colors.gray[300]};
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 140%;
+  color: ${({ theme }) => theme.colors.gray[900]};
 `;
 
 const GuideArrow = styled.img`
-  width: 32px;
-  height: 32px;
   transform: rotate(180deg);
+  margin: 0 8px;
+`;
+
+const GuideText = styled.div`
+  font-size: 13px;
+  color: ${({ theme }) => theme.colors.gray[600]};
+  margin: 16px 0;
 `;
 
 const SentenceInputWrapper = styled.div`
-  width: 330px;
-  height: 236px;
+  width: 100%;
+  height: 230px;
+  padding: 16px 16px;
   background: #ffffff;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   border-radius: 14px;
@@ -227,16 +227,14 @@ const SentenceInputWrapper = styled.div`
 `;
 
 const SentenceInput = styled.textarea`
-  width: 302px;
-  height: 196px;
+  width: 100%;
+  height: 100%;
   font-weight: 500;
-  font-size: 12px;
-  line-height: 12px;
-  color: black;
+  font-size: 14px;
   resize: none;
   outline: none;
   ::placeholder {
-    color: #c0c0c0;
+    color: #dadada;
   }
   ::-webkit-scrollbar {
     display: none;
@@ -244,36 +242,30 @@ const SentenceInput = styled.textarea`
 `;
 
 const CountInput = styled.div`
-  width: 302px;
-  height: 12px;
-  font-size: 12px;
+  width: 100%;
+  height: 18px;
+  font-size: 13px;
+  font-weight: 500;
   text-align: right;
-`;
-
-const LoadingWrapper = styled.div`
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 //-- 생성하기 버튼 영역 --//
 const Footer = styled.footer`
   width: 100%;
-  display: flex;
-  justify-content: center;
   padding: 0 24px;
   padding-bottom: 24px;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const GenerateButton = styled.button`
-  width: 330px;
-  height: 54px;
-  background: linear-gradient(180deg, #734ae9 0%, #472c94 100%);
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 10px;
-  text-align: center;
-  font-weight: 400;
+  width: 100%;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${({ theme }) => theme.colors.primary.default};
+  border-radius: 8px;
+  font-weight: 500;
   font-size: 16px;
   line-height: 16px;
   color: #ffffff;

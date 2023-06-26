@@ -1,5 +1,8 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import plusIcon from '@/assets/svg/icons/icon-add.svg';
+import iconOther from '@/assets/svg/icons/icon-other.svg';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface INewWord {
   wordId: number;
@@ -9,21 +12,38 @@ interface INewWord {
 }
 
 const NewWord = ({ wordId, word, mean, onClick }: INewWord) => {
+  const [isOptionOpen, setOptionOpen] = useState(false);
+
   const onClickFunc = () => {
+    setOptionOpen(current => !current);
+  };
+
+  const updateWord = () => {
+    console.log(wordId);
+  };
+
+  const deleteWord = () => {
     onClick(wordId);
   };
 
   return (
-    <WordWrapper>
+    <WordWrapper onClick={onClickFunc}>
       <WordBox>
         <Word>{word}</Word>
-        <Meaning>{mean}</Meaning>
+        <Option>
+          <img src={iconOther} alt="deleteIcon" />
+          <OptionItems
+            isActive={isOptionOpen}
+            onClick={e => {
+              e.stopPropagation();
+            }}
+          >
+            <OptionItem onClick={updateWord}>수정하기</OptionItem>
+            <OptionItem onClick={deleteWord}>삭제하기</OptionItem>
+          </OptionItems>
+        </Option>
       </WordBox>
-
-      <DeleteButton>
-        <img src={plusIcon} alt="deleteIcon" onClick={onClickFunc} />
-      </DeleteButton>
-      {/* 체크에 관련된 조건 추가할 것 */}
+      <Mean>{mean}</Mean>
     </WordWrapper>
   );
 };
@@ -32,48 +52,67 @@ export default NewWord;
 
 const WordWrapper = styled.div`
   width: 100%;
-  height: 100px;
-  background: #ffffff;
-  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.25);
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  position: relative;
-`;
-const WordBox = styled.div`
-  position: absolute;
-  left: 29px;
-  top: 20px;
-  width: auto;
-  height: 58px;
+  height: 80px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[100]};
   display: flex;
   flex-direction: column;
-  gap: 18px;
-`;
-const Word = styled.span`
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 24px;
-  color: #333333;
-`;
-const Meaning = styled.span`
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 16px;
-  color: #333333;
-`;
-const DeleteButton = styled.button`
-  position: absolute;
-  right: 24px;
-  top: 32px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  background: #e45454;
-  img {
-    width: 30px;
-    height: 30px;
+  padding: 8px 16px;
+  flex-shrink: 0;
+  ::-webkit-scrollbar {
+    display: none;
   }
+  :last-child {
+    border-bottom: 0;
+  }
+`;
+
+const WordBox = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Word = styled.span`
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 24px;
+  color: ${({ theme }) => theme.colors.gray[800]};
+`;
+
+const Mean = styled.span`
+  font-size: 13px;
+  line-height: 20px;
+  color: ${({ theme }) => theme.colors.gray[400]};
+`;
+
+const Option = styled.button`
+  position: relative;
+`;
+
+const OptionItems = styled.div<{
+  isActive: boolean;
+}>`
+  position: absolute;
+  right: 0px;
+  top: 20px;
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+  background-color: white;
+  z-index: 1;
+  display: none;
+  flex-direction: column;
+
+  ${({ isActive }) =>
+    isActive &&
+    css`
+      display: flex;
+    `}
+`;
+
+const OptionItem = styled.div`
+  width: 100px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
 `;

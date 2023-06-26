@@ -46,16 +46,8 @@ const BookItem: React.FC<BookItemProps> = ({
         <OptionItem onClick={() => onClickUpdate(book.id)}>수정하기</OptionItem>
         <OptionItem onClick={() => onClickRemove(book.id)}>삭제하기</OptionItem>
       </OptionItems>
-      <Strong>
-        {book.name}
-        <Span>제작자명</Span>
-      </Strong>
+      <Strong>{book.name}</Strong>
       <P>{generateDateText(book.created_at)}</P>
-      <Status>
-        <Gage percentage={'100%'}>
-          <ColorGage percentage={'100%'} />
-        </Gage>
-      </Status>
     </Item>
   );
 };
@@ -65,15 +57,19 @@ export default BookItem;
 const Item = styled.div`
   width: 100%;
   box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
-  border-radius: 5px;
+  border-radius: 4px;
   padding: 20px;
   padding-bottom: 25px;
   line-height: 1;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 15px;
   position: relative;
   cursor: pointer;
+
+  & + & {
+    margin-top: 8px;
+  }
 `;
 
 const Option = styled.div`
@@ -112,9 +108,13 @@ const OptionItem = styled.div`
 `;
 
 const Strong = styled.strong`
-  font-size: 20px;
+  font-family: ${({ theme }) => theme.fonts.pretendard};
+  font-size: 16px;
+  font-weight: 700;
   display: flex;
   align-items: center;
+
+  color: ${({ theme }) => theme.colors.primary.default};
 `;
 
 const P = styled.p`

@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
-import sharingImg from '@/assets/svg/icons/icon-sharing.svg';
-import plusImg from '@/assets/svg/icons/icon-plus.svg';
+import sharingIcon from '@/assets/svg/icons/icon-share.svg';
+import plusIcon from '@/assets/svg/icons/icon-plus.svg';
 import NewWord from './components/NewWord';
 import useGetWord from './hooks/useGetWord';
 import useGetBookById from '@/pages/book/_id/hooks/useGetBookById';
 import useDeleteWord from '@/pages/book/_id/BookDet/hooks/useDeleteWord';
 import StackLayout from '@/components/layout/StackLayout';
+import DetPlus from './components/DetPlus';
+import DetShare from './components/DetShare';
 
 const BookDetPage = () => {
   const getWord = useGetWord();
@@ -15,7 +17,7 @@ const BookDetPage = () => {
   const deleteWord = useDeleteWord();
   const navigate = useNavigate();
 
-  const bookId: any = useParams().id;
+  const bookId: number = Number(useParams().id);
   const [bookName, setBookName] = useState<string>('');
   const [words, setWords] = useState([]);
 
@@ -70,21 +72,8 @@ const BookDetPage = () => {
           );
         })}
       </BookContainer>
-
-      <BookFooter>
-        <IconWrapper>
-          <SharingButton>
-            <img src={sharingImg} alt="sharingButton" />
-          </SharingButton>
-          <PlusButton
-            onClick={() => {
-              navigate(`/book/${bookId}/create`);
-            }}
-          >
-            <img src={plusImg} alt="plusImg" />
-          </PlusButton>
-        </IconWrapper>
-      </BookFooter>
+      <DetShare />
+      <DetPlus bookId={bookId} />
     </StackLayout>
   );
 };
@@ -96,18 +85,15 @@ export default BookDetPage;
 const BookContainer = styled.div`
   width: 100%;
   height: 100%;
+  font-family: ${({ theme }) => theme.fonts.pretendard};
   display: flex;
-  padding: 10px 30px 60px 30px;
+  padding: 8px 0px;
+  padding-bottom: 40px;
   flex-direction: column;
   align-items: center;
-  flex: 1;
-  gap: 18px;
-  overflow-y: scroll;
+  overflow: auto;
   ::-webkit-scrollbar {
     display: none;
-  }
-  div {
-    flex: 0 0 auto;
   }
 `;
 
@@ -122,11 +108,9 @@ const BookFooter = styled.div`
 `;
 
 const IconWrapper = styled.div`
-  width: 330px;
-  height: 100%; //
+  position: fixed;
   display: flex;
   justify-content: end;
-  gap: 15px;
   background-color: transparent;
 `;
 
@@ -136,21 +120,18 @@ const Circle = styled.button`
   border-radius: 50%;
   display: flex;
   align-items: center;
+  justify-content: center;
+
+  & + & {
+    //margin-left: 15px;
+  }
 `;
 
 const SharingButton = styled(Circle)`
   position: fixed;
-  background: linear-gradient(180deg, #3a98b6 0%, #50998c 100%);
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  background-color: #8ee9f6;
   right: 99px;
   bottom: 27px;
-
-  img {
-    position: absolute;
-    left: 13px;
-    width: 36px;
-    height: 36px;
-  }
 `;
 
 const PlusButton = styled(Circle)`

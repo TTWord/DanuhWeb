@@ -49,6 +49,7 @@ const Container = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
+  font-family: ${({ theme }) => theme.fonts.pretendard};
 `;
 
 const Header = styled.div`
@@ -56,12 +57,17 @@ const Header = styled.div`
   height: 56px;
   display: flex;
   align-items: center;
-  padding: 8px 14px;
+  padding: 12px 16px;
 `;
 
 const Content = styled.div`
   width: 100%;
   height: 100%;
+  overflow: hidden;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const Back = styled.button`
@@ -76,9 +82,7 @@ const Back = styled.button`
 `;
 
 const Title = styled.div`
-  padding-top: 4px;
-  font-weight: 500;
-  font-size: 24px;
-  margin-left: 20px;
-  font-weight: 500;
+  font-size: 16px;
+  margin-left: 16px;
+  font-weight: 600;
 `;
