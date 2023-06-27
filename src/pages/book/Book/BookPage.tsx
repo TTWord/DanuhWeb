@@ -47,11 +47,7 @@ const Header = styled.header`
   background-color: ${({ theme }) => theme.colors.primary[200]};
   padding-top: 14px;
   padding-left: 8px;
-  z-index: -2;
-
-  img {
-    z-index: -1;
-  }
+  overflow: hidden;
 `;
 
 const Container = styled.div`
