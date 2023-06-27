@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import plusIcon from '@/assets/svg/icons/icon-add.svg';
 import iconOther from '@/assets/svg/icons/icon-other.svg';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -13,13 +12,15 @@ interface INewWord {
 
 const NewWord = ({ wordId, word, mean, onClick }: INewWord) => {
   const [isOptionOpen, setOptionOpen] = useState(false);
+  const navigate = useNavigate();
 
   const onClickFunc = () => {
     setOptionOpen(current => !current);
   };
 
-  const updateWord = () => {
-    console.log(wordId);
+  const updateWord = (e: any) => {
+    e.stopPropagation();
+    navigate(`/book/${wordId}/modify`);
   };
 
   const deleteWord = () => {
@@ -32,12 +33,7 @@ const NewWord = ({ wordId, word, mean, onClick }: INewWord) => {
         <Word>{word}</Word>
         <Option>
           <img src={iconOther} alt="deleteIcon" />
-          <OptionItems
-            isActive={isOptionOpen}
-            onClick={e => {
-              e.stopPropagation();
-            }}
-          >
+          <OptionItems isActive={isOptionOpen}>
             <OptionItem onClick={updateWord}>수정하기</OptionItem>
             <OptionItem onClick={deleteWord}>삭제하기</OptionItem>
           </OptionItems>
