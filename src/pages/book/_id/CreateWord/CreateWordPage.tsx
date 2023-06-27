@@ -47,7 +47,7 @@ const CreateWordPage = () => {
           </TextDiv>
           <Input
             type="text"
-            placeholder="뜻 입력해주세요"
+            placeholder="뜻을 입력해주세요"
             onChange={e => {
               setMean(e.target.value);
             }}
@@ -94,6 +94,7 @@ const MainWrapper = styled.div`
 const Header = styled.header`
   width: 100%;
   height: 56px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
 `;
