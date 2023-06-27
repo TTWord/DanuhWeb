@@ -7,6 +7,12 @@ export const wordAPI = {
     return response;
   },
 
+  getWordById: async (wordId: number) => {
+    const response = await instance.get(`/word/id/${wordId}`);
+
+    return response;
+  },
+
   addWord: async (bookId: number, word: string, mean: string) => {
     const response = await instance.post(`/word/${bookId}`, {
       word,
@@ -26,7 +32,16 @@ export const wordAPI = {
   },
 
   deleteWord: async (wordId: number) => {
-    const response = await instance.delete(`/word/${wordId}`);
+    const response = await instance.delete(`/word/id/${wordId}`);
+
+    return response;
+  },
+
+  modifyWord: async (wordId: number, word: string, mean: string) => {
+    const response = await instance.put(`/word/id/${wordId}`, {
+      word,
+      mean,
+    });
 
     return response;
   },

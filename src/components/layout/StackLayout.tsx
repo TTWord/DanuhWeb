@@ -55,6 +55,7 @@ const Container = styled.div`
 const Header = styled.div`
   width: 100%;
   height: 56px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   padding: 12px 16px;

@@ -1,22 +1,47 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate, useParams } from 'react-router-dom';
-import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import useAddWord from '@/pages/book/_id/CreateWord/hooks/useAddWord';
 import iconBack from '@/assets/svg/icons//icon-back-gray.svg';
+import { api } from '@/api';
 
-const CreateWordPage = () => {
+const ModifyWordPage = () => {
   const navigate = useNavigate();
-  const addWord = useAddWord();
 
-  const bookId = Number(useParams().id);
-  const [word, setWord] = useState('');
-  const [mean, setMean] = useState('');
+  const wordId = Number(useParams().id);
+  const [word, setWord] = useState('단어를 입력해주세요');
+  const [mean, setMean] = useState('뜻을 입력해주세요');
+  const [bookId, setBookId] = useState(0);
 
   const goBack = () => {
     navigate(`/book/${bookId}`);
   };
+
+  const getWordData = async () => {
+    try {
+      const { data: response } = await api.word.getWordById(wordId);
+
+      setBookId(response.data.book_id);
+      setWord(response.data.word);
+      setMean(response.data.mean);
+    } catch (e: unknown) {
+      console.log(e);
+    }
+  };
+
+  const modifyWord = async (word: string, mean: string) => {
+    try {
+      const { data: response } = await api.word.modifyWord(wordId, word, mean);
+
+      navigate(`/book/${bookId}`);
+    } catch (e: unknown) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getWordData();
+  }, []);
 
   return (
     <MainWrapper>
@@ -24,7 +49,7 @@ const CreateWordPage = () => {
         <BackButton onClick={goBack}>
           <img src={iconBack} alt="back" />
         </BackButton>
-        <HeaderText>단어 추가</HeaderText>
+        <HeaderText>단어 수정</HeaderText>
       </Header>
 
       <Container>
@@ -34,7 +59,7 @@ const CreateWordPage = () => {
           </TextDiv>
           <Input
             type="text"
-            placeholder="단어를 입력해주세요"
+            placeholder={word}
             onChange={e => {
               setWord(e.target.value);
             }}
@@ -47,7 +72,7 @@ const CreateWordPage = () => {
           </TextDiv>
           <Input
             type="text"
-            placeholder="뜻을 입력해주세요"
+            placeholder={mean}
             onChange={e => {
               setMean(e.target.value);
             }}
@@ -56,6 +81,15 @@ const CreateWordPage = () => {
       </Container>
 
       <Footer>
+        <button
+          onClick={() => {
+            getWordData();
+            console.log(bookId, wordId);
+            console.log(word, mean);
+          }}
+        >
+          test
+        </button>
         <CreateButton
           onClick={() => {
             if (word === '' && mean === '') {
@@ -64,7 +98,7 @@ const CreateWordPage = () => {
                 title: '미입력칸이 있습니다.',
               });
             } else {
-              addWord({ bookId, word, mean });
+              modifyWord(word, mean);
             }
           }}
         >
@@ -75,7 +109,7 @@ const CreateWordPage = () => {
   );
 };
 
-export default CreateWordPage;
+export default ModifyWordPage;
 
 //== 스타일 정의 ==//
 //-- 전체 wrapper --//
