@@ -18,7 +18,7 @@ const BookDetPage = () => {
   const navigate = useNavigate();
 
   const bookId: number = Number(useParams().id);
-  const [bookName, setBookName] = useState<string>('');
+  const [bookName, setBookName] = useState('');
   const [words, setWords] = useState([]);
 
   const getBook = async () => {
@@ -27,8 +27,8 @@ const BookDetPage = () => {
   };
 
   const getBookNameFunc = async () => {
-    const name = await getBookById(bookId);
-    setBookName(name);
+    const response = await getBookById(bookId);
+    setBookName(response.name);
   };
 
   useEffect(() => {
@@ -73,7 +73,7 @@ const BookDetPage = () => {
         })}
       </BookContainer>
       <DetShare />
-      <DetPlus bookId={bookId} />
+      <DetPlus />
     </StackLayout>
   );
 };
