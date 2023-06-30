@@ -5,11 +5,9 @@ import Swal from 'sweetalert2';
 const useGetBookById = () => {
   const getBookById = async (bookId: number) => {
     try {
-      const response = await api.book.getBookById(bookId);
+      const { data: response } = await api.book.getBookById(bookId);
 
-      if (response.status === 'OK') {
-        return response.data.name;
-      }
+      return response;
     } catch (e: unknown) {
       const err = e as AxiosError<{
         message: string;

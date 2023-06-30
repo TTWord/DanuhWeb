@@ -2,14 +2,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import iconPlus from '@/assets/svg/icons/icon-plus.svg';
+import { useParams } from 'react-router-dom';
+interface DetPlusProps {}
 
-interface DetPlusProps {
-  bookId: number;
-}
-
-const DetPlus: React.FC<DetPlusProps> = ({ bookId }) => {
+const DetPlus: React.FC<DetPlusProps> = () => {
   const navigate = useNavigate();
   const [isActive, setActive] = useState(false);
+  const bookId = Number(useParams().id);
 
   const onClick = () => {
     navigate(`/book/${bookId}/create`);

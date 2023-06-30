@@ -13,7 +13,15 @@ const generateDateText = (dateText: string) => {
 };
 
 interface BookItemProps {
-  book: any;
+  book: {
+    created_at: string;
+    id: number;
+    is_downloaded: number;
+    is_shared: number;
+    name: string;
+    updated_at: string;
+    user_id: number;
+  };
   onItemClick: (bookId: number) => void;
   onClickUpdate: (bookId: number) => void;
   onClickRemove: (bookId: number) => void;
@@ -47,7 +55,10 @@ const BookItem: React.FC<BookItemProps> = ({
         <OptionItem onClick={() => onClickRemove(book.id)}>삭제하기</OptionItem>
       </OptionItems>
       <Strong>{book.name}</Strong>
-      <P>{generateDateText(book.created_at)}</P>
+      <DataCreated>{generateDateText(book.created_at)}</DataCreated>
+
+      {Boolean(book.is_shared) && <IsSharing>공유중</IsSharing>}
+      {Boolean(book.is_downloaded) && <IsDownloaded>다운로드</IsDownloaded>}
     </Item>
   );
 };
@@ -56,6 +67,7 @@ export default BookItem;
 
 const Item = styled.div`
   width: 100%;
+  box-sizing: border-box;
   box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
   border-radius: 4px;
   padding: 20px;
@@ -117,9 +129,26 @@ const Strong = styled.strong`
   color: ${({ theme }) => theme.colors.primary.default};
 `;
 
+const DataCreated = styled.p`
+  font-size: 12px;
+  color: #999;
+`;
+
 const P = styled.p`
   font-size: 12px;
   color: #999;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 20px;
+`;
+
+const IsSharing = styled(P)`
+  color: red;
+`;
+
+const IsDownloaded = styled(P)`
+  color: green;
 `;
 
 const Span = styled.span`

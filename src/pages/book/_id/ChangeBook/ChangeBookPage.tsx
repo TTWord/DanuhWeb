@@ -15,8 +15,8 @@ const ChangeBookPage = () => {
   const [newName, setNewName] = useState('');
 
   const getBookNameFunc = async () => {
-    const name = await getBookById(bookId);
-    setBookName(name);
+    const response = await getBookById(bookId);
+    setBookName(response.name);
   };
 
   const renameBookFunc = () => {
