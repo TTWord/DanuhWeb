@@ -13,7 +13,9 @@ const BookPage = () => {
   return (
     <WebWrapper>
       <Header>
-        <img src={danuhLogo} alt="logo" />
+        <div>
+          <img src={danuhLogo} alt="logo" />
+        </div>
       </Header>
 
       <Container>
@@ -39,6 +41,9 @@ export default BookPage;
 const WebWrapper = styled.div`
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 `;
 
 const Header = styled.header`
@@ -47,16 +52,27 @@ const Header = styled.header`
   background-color: ${({ theme }) => theme.colors.primary[200]};
   padding-top: 14px;
   padding-left: 8px;
-  overflow: hidden;
+  div {
+    height: 100%;
+    overflow: hidden;
+  }
 `;
 
 const Container = styled.div`
   width: 100%;
+  height: 100%;
 `;
 
 const Items = styled.div`
   width: 100%;
-  padding: 20px 16px;
+  height: 100%;
+  padding: 120px 16px;
+  padding: 20px 16px 150px 16px;
   display: flex;
   flex-direction: column;
+  overflow-y: scroll;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
