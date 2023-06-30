@@ -4,6 +4,8 @@ import ChangeBookPage from '@/pages/book/_id/ChangeBook/ChangeBookPage';
 import CreateBookPage from '@/pages/book/create/CreateBook/CreateBookPage';
 import CreateWordPage from '@/pages/book/_id/CreateWord/CreateWordPage';
 import GenerateBookPage from '@/pages/book/generate/GenerateBook/GenerateBookPage';
+import ModifyWordPage from '@/pages/book/_id/ModifyWord/ModifyWordPage';
+import BookSharingPage from '@/pages/book/_id/BookSharing/BookSharingPage';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import RouteTransition from './RouteTransition';
 import RouteTransitionWrapper from './RouteTransitionWrapper';
@@ -35,6 +37,12 @@ const BookRouter = () => {
 
           {/* 단어 추가 페이지 */}
           <Route path={'/:id/create'} element={<CreateWordPage />} />
+
+          {/* 단어 수정 페이지 */}
+          <Route path={'/:id/modify'} element={<ModifyWordPage />} />
+
+          {/* 단어장 공유 설정 페이지 */}
+          <Route path={'/:id/share'} element={<BookSharingPage />} />
         </Route>
       </Routes>
     </RouteTransition>
