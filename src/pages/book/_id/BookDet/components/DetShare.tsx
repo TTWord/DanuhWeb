@@ -2,15 +2,17 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import shareIcon from '@/assets/svg/icons/icon-share.svg';
+import { useParams } from 'react-router-dom';
 
 interface DetShareProps {}
 
 const DetShare: React.FC<DetShareProps> = () => {
   const navigate = useNavigate();
   const [isActive, setActive] = useState(false);
+  const bookId = Number(useParams().id);
 
   const onClick = () => {
-    console.log(1);
+    navigate(`/book/${bookId}/share`);
   };
 
   return (
