@@ -47,4 +47,23 @@ export const bookAPI = {
 
     return response;
   },
+
+  setBookPublic: async (bookId: number, comment: string) => {
+    const response = await instance.post(`/book/share`, {
+      id: bookId,
+      comment,
+    });
+
+    return response;
+  },
+
+  setBookPrivate: async (bookId: number) => {
+    const response = await instance.delete(`/book/share`, {
+      data: {
+        id: bookId,
+      },
+    });
+
+    return response;
+  },
 };
