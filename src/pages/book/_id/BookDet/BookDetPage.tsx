@@ -20,6 +20,7 @@ const BookDetPage = () => {
   const bookId: number = Number(useParams().id);
   const [bookName, setBookName] = useState('');
   const [words, setWords] = useState([]);
+  const [canSharing, setCanSharing] = useState(true);
 
   const getBook = async () => {
     const response = await getWord(bookId);
@@ -28,6 +29,10 @@ const BookDetPage = () => {
 
   const getBookNameFunc = async () => {
     const response = await getBookById(bookId);
+    if (response.share_id !== 0) {
+      setCanSharing(false);
+    }
+
     setBookName(response.name);
   };
 
@@ -72,7 +77,7 @@ const BookDetPage = () => {
           );
         })}
       </BookContainer>
-      <DetShare />
+      <DetShare canSharing={canSharing} />
       <DetPlus />
     </StackLayout>
   );

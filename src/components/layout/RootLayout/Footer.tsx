@@ -32,7 +32,7 @@ const menuList = [
     activeComponent: (
       <SharingMenu fill="#694AC2" stroke="#694AC2" selected={true} />
     ),
-    navigate: '/sharing',
+    navigate: '/share',
   },
   {
     id: 3,

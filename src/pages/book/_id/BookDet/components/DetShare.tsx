@@ -4,15 +4,20 @@ import styled, { css } from 'styled-components';
 import shareIcon from '@/assets/svg/icons/icon-share.svg';
 import { useParams } from 'react-router-dom';
 
-interface DetShareProps {}
+interface DetShareProps {
+  canSharing: boolean;
+}
 
-const DetShare: React.FC<DetShareProps> = () => {
+const DetShare: React.FC<DetShareProps> = status => {
   const navigate = useNavigate();
-  const [isActive, setActive] = useState(false);
   const bookId = Number(useParams().id);
 
   const onClick = () => {
-    navigate(`/book/${bookId}/share`);
+    if (status.canSharing) {
+      navigate(`/book/${bookId}/share`);
+    } else {
+      alert('다운로드 받은 단어장은 공유할 수 없습니다.');
+    }
   };
 
   return (
