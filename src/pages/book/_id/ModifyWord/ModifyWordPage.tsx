@@ -102,7 +102,7 @@ const ModifyWordPage = () => {
             }
           }}
         >
-          추가하기
+          수정하기
         </CreateButton>
       </Footer>
     </MainWrapper>
