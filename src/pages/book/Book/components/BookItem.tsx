@@ -21,6 +21,7 @@ interface BookItemProps {
     name: string;
     updated_at: string;
     user_id: number;
+    share_id: number;
   };
   onItemClick: (bookId: number) => void;
   onClickUpdate: (bookId: number) => void;
@@ -58,7 +59,7 @@ const BookItem: React.FC<BookItemProps> = ({
       <DataCreated>{generateDateText(book.created_at)}</DataCreated>
 
       {Boolean(book.is_shared) && <IsSharing>공유중</IsSharing>}
-      {Boolean(book.is_downloaded) && <IsDownloaded>다운로드</IsDownloaded>}
+      {Boolean(book.share_id) && <IsDownloaded>다운로드</IsDownloaded>}
     </Item>
   );
 };
