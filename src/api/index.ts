@@ -4,6 +4,7 @@ import { wordAPI } from './word';
 import { quizAPI } from './quiz';
 import { bookAPI } from './book';
 import { memoAPI } from './memo';
+import { shareAPI } from './share';
 
 export const api = {
   auth: authAPI,
@@ -12,4 +13,5 @@ export const api = {
   quiz: quizAPI,
   book: bookAPI,
   memo: memoAPI,
+  share: shareAPI,
 };
