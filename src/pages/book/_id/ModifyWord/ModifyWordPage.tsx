@@ -81,15 +81,6 @@ const ModifyWordPage = () => {
       </Container>
 
       <Footer>
-        <button
-          onClick={() => {
-            getWordData();
-            console.log(bookId, wordId);
-            console.log(word, mean);
-          }}
-        >
-          test
-        </button>
         <CreateButton
           onClick={() => {
             if (word === '' && mean === '') {
