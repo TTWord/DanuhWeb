@@ -11,6 +11,7 @@ interface getMemoParams {
 }
 
 const useGetMemorizeWord = () => {
+  const navigate = useNavigate();
   const setMemoList = useSetRecoilState(globalState.memo.memoList);
 
   const getMemo = async ({ bookId, count }: getMemoParams) => {
@@ -30,6 +31,8 @@ const useGetMemorizeWord = () => {
       Swal.fire({
         icon: 'error',
         title: errorMessage,
+      }).then(() => {
+        navigate('/quiz/flashcard');
       });
     }
   };
