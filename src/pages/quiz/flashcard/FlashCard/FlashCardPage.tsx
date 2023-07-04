@@ -182,7 +182,7 @@ const BooksWrapper = styled.div`
   align-items: center;
   padding: 0 16px;
   margin-top: 15px;
-
+  overflow-y: hidden;
   button {
     flex: 0 0 auto;
   }
@@ -193,8 +193,8 @@ const Books = styled.div`
   height: 100%;
   border-radius: 20px;
   background-color: ${({ theme }) => theme.colors.gray[100]};
-  padding: 16px 24px 0 14px;
-
+  padding: 16px 24px 16px 14px;
+  overflow-y: scroll;
   > button + button {
     margin-top: 8px;
   }
