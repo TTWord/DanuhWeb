@@ -16,7 +16,7 @@ const AuthPage = () => {
 
   const goLogin = () => {
     navigatePush('/auth/login');
-    // toast.comment('토스트 테스트');
+    // toast.success('토스트 테스트');
   };
 
   return (
