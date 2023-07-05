@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import tw from 'twin.macro';
 import { useSetRecoilState } from 'recoil';
 
 import { globalState } from '@/recoil';
@@ -29,7 +28,7 @@ const QuizPage = () => {
   };
 
   return (
-    <MainWrapper>
+    <Wrapper>
       <HeaderWrapper>학습하기</HeaderWrapper>
 
       <ContainerWrapper>
@@ -59,14 +58,20 @@ const QuizPage = () => {
           </SelectWrapper>
         </Container>
       </ContainerWrapper>
-    </MainWrapper>
+    </Wrapper>
   );
 };
 
 export default QuizPage;
 
 //-- 웹 --//
-const MainWrapper = tw.div`w-[100%] h-[100%] overflow-hidden flex flex-col`;
+const Wrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+`;
 
 //-- 헤더 --//
 const HeaderWrapper = styled.header`
@@ -93,6 +98,7 @@ const ContainerWrapper = styled.div`
     display: none;
   }
 `;
+
 const Container = styled.div`
   width: 100%;
   margin-bottom: 48px;
@@ -101,6 +107,7 @@ const Container = styled.div`
     display: none;
   }
 `;
+
 const QuizTitle = styled.div`
   padding: 0 0 13px 22px;
   font-family: ${({ theme }) => theme.fonts.pretendard};
@@ -110,14 +117,16 @@ const QuizTitle = styled.div`
   color: #333333;
   color: black;
 `;
+
 const SelectWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
   padding: 0 22px;
 `;
+
 const SelectButton = styled.button`
-  width: 170px;
+  width: calc(50% - 4px);
   height: 170px;
   box-sizing: border-box;
   background-color: #ffffff;
@@ -135,11 +144,8 @@ const SelectButton = styled.button`
   margin-bottom: 8px;
   position: relative; // 아이콘 위치 조절
 
-  :nth-child(2) {
+  :nth-child(2n) {
     margin-left: 8px;
-  }
-  @media (max-width: 392px) {
-    width: 160px;
   }
 `;
 
@@ -155,14 +161,4 @@ const Icon = styled.img`
   position: absolute;
   right: 15px;
   bottom: 11px;
-`;
-
-//-- 푸터 --//
-const FooterWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 72px;
-  display: flex;
-  background: #ffffff;
 `;
