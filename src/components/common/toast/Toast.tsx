@@ -35,7 +35,7 @@ const Toast = () => {
   return (
     <Box isOpen={isOpen} toastType={toastType}>
       {toastType === 'SUCCESS' && <img src={iconSuccess} alt="success" />}
-      {toastType === 'ERROR' && <img src={iconSuccess} alt="error" />}
+      {toastType === 'ERROR' && <img src={iconError} alt="error" />}
       <Text>{message}</Text>
     </Box>
   );
