@@ -1,9 +1,6 @@
 import { api } from '@/api';
 import { AxiosError } from 'axios';
 import Swal from 'sweetalert2';
-import { useSetRecoilState } from 'recoil';
-import { toastStatus } from '@/components/common/toast/Toast';
-import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 interface ISharedBooks {
@@ -13,8 +10,6 @@ interface ISharedBooks {
 }
 
 const useGetSharedBooks = () => {
-  const navigate = useNavigate();
-  const setToast = useSetRecoilState(toastStatus);
   const [isLoading, setIsLoading] = useState(false);
 
   const getSharedBooks = async (nameFilter: string) => {
