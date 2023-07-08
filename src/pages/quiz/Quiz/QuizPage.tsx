@@ -7,6 +7,7 @@ import bulbIcon from '@/assets/svg/icons/icon-bulb.svg';
 import leafIcon from '@/assets/svg/icons/icon-leaf.svg';
 import treeIcon from '@/assets/svg/icons/icon-tree.svg';
 import useNavigatePush from '@/hooks/useNavigatePush';
+import SelectButtonComponent from './components/SelectButtonComponent';
 
 const QuizPage = () => {
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
@@ -20,11 +21,20 @@ const QuizPage = () => {
   const goFlashcard = () => {
     navigatePush('/quiz/flashcard');
   };
-  const goChoiceQuiz = () => {
-    navigatePush('/quiz/choice');
+  const goBlind = () => {
+    navigatePush('/quiz/blind');
   };
-  const goShortQuiz = () => {
-    navigatePush('/quiz/shortanswer');
+  const goChoiceSelect = () => {
+    navigatePush('/quiz/choice/select');
+  };
+  const goChoiceBlind = () => {
+    navigatePush('/quiz/choice/blind');
+  };
+  const goShortTyping = () => {
+    navigatePush('/quiz/shortanswer/typing');
+  };
+  const goShortBlind = () => {
+    navigatePush('/quiz/shortanswer/blind');
   };
 
   return (
@@ -35,26 +45,53 @@ const QuizPage = () => {
         <Container>
           <QuizTitle>암기하기</QuizTitle>
           <SelectWrapper>
-            <SelectButton onClick={goFlashcard}>
-              단어암기
-              <Type>Flashcard</Type>
-              <Icon src={bulbIcon} alt="bulbIcon" />
-            </SelectButton>
+            <SelectButtonComponent
+              onClick={goFlashcard}
+              title={'단어암기'}
+              type={'Flashcard'}
+              icon={bulbIcon}
+              alt={'Flashcard'}
+            />
+            <SelectButtonComponent
+              onClick={goBlind}
+              title={'단어암기'}
+              type={'Blind'}
+              icon={bulbIcon}
+              alt={'blind'}
+            />
           </SelectWrapper>
         </Container>
         <Container>
           <QuizTitle>문제 풀기</QuizTitle>
           <SelectWrapper>
-            <SelectButton onClick={goChoiceQuiz}>
-              객관식
-              <Type>Select</Type>
-              <Icon src={leafIcon} alt="leafIcon" />
-            </SelectButton>
-            <SelectButton onClick={goShortQuiz}>
-              주관식
-              <Type>Drag</Type>
-              <Icon src={treeIcon} alt="treeIcon" />
-            </SelectButton>
+            <SelectButtonComponent
+              onClick={goChoiceSelect}
+              title={'객관식'}
+              type={'Select'}
+              icon={leafIcon}
+              alt={'Select'}
+            />
+            <SelectButtonComponent
+              onClick={goChoiceBlind}
+              title={'객관식'}
+              type={'Blind'}
+              icon={leafIcon}
+              alt={'Blind'}
+            />
+            <SelectButtonComponent
+              onClick={goShortTyping}
+              title={'주관식'}
+              type={'Typing'}
+              icon={treeIcon}
+              alt={'Typing'}
+            />
+            <SelectButtonComponent
+              onClick={goShortBlind}
+              title={'주관식'}
+              type={'Blind'}
+              icon={treeIcon}
+              alt={'Blind'}
+            />
           </SelectWrapper>
         </Container>
       </ContainerWrapper>
@@ -77,7 +114,7 @@ const Wrapper = styled.div`
 const HeaderWrapper = styled.header`
   width: 100%;
   height: 56px;
-  padding: 8px 0 0 16px;
+  padding: 0 16px;
   margin-bottom: 26px;
   display: flex;
   align-items: center;
@@ -123,42 +160,4 @@ const SelectWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   padding: 0 22px;
-`;
-
-const SelectButton = styled.button`
-  width: calc(50% - 4px);
-  height: 170px;
-  box-sizing: border-box;
-  background-color: #ffffff;
-  border: 1px solid #f1ecff;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.06);
-  border-radius: 11px;
-  display: flex;
-  flex-direction: column;
-  font-family: ${({ theme }) => theme.fonts.gmarketSans};
-  font-weight: 300;
-  font-size: 15px;
-  line-height: 15px;
-  color: black;
-  padding: 25px 0px 0px 18px;
-  margin-bottom: 8px;
-  position: relative; // 아이콘 위치 조절
-
-  :nth-child(2n) {
-    margin-left: 8px;
-  }
-`;
-
-const Type = styled.span`
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 14px;
-  color: #8f6cf3;
-  margin-top: 14px;
-`;
-
-const Icon = styled.img`
-  position: absolute;
-  right: 15px;
-  bottom: 11px;
 `;

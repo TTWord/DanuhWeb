@@ -1,24 +1,27 @@
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 import { api } from '@/api';
-import { globalState } from '@/recoil';
-import { useSetRecoilState } from 'recoil';
 import Swal from 'sweetalert2';
+import ShortAnswerBookList from './components/ShortAnswerBookList';
 
 const ShortAnswerPage = () => {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const quizType = location.pathname.split('/').pop();
   const [books, setBooks] = useState([]);
-  const [page, setPage] = useState('');
-  const setQuizList = useSetRecoilState(globalState.quiz.quizList);
+  const [quizId, setQuizId] = useState<number>();
 
   const getBookList = async () => {
-    const response = await api.book.getBook();
+    try {
+      const response: any = await api.book.getBook();
 
-    if (response.status === 'OK') {
-      setBooks(response.data);
+      if (response.status === 'OK') {
+        setBooks(response.data);
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -26,38 +29,19 @@ const ShortAnswerPage = () => {
     getBookList();
   }, []);
 
-  const getQuiz = async () => {
-    const { data: response } = await api.quiz.getShortQuiz(page, 10);
-    const quiz = response.data.problem;
-    setQuizList(quiz);
-    navigate(`/quiz/shortanswer/question`);
-  };
-
-  const goQuiz = async () => {
-    if (page === '') {
+  const goQuiz = async (mode: string) => {
+    if (quizId === undefined) {
       Swal.fire({
         icon: 'warning',
         title: '단어장을 선택해주세요.',
       });
     } else {
-      getQuiz();
+      navigate(`/quiz/shortanswer/${quizType}/${quizId}?mode=${mode}`);
     }
   };
 
-  const CreateBookList = props => {
-    const [color, setColor] = useState('#ffffff');
-    return (
-      <Book
-        color={color}
-        onClick={() => {
-          setPage(props.bookId);
-          // 2번 클릭해야 색이 바뀜
-          color === '#ffffff' ? setColor('#724fab') : setColor('#ffffff');
-        }}
-      >
-        <div>{props.bookName}</div>
-      </Book>
-    );
+  const setQuizBookId = (quizId: number) => {
+    setQuizId(quizId);
   };
 
   return (
@@ -73,25 +57,27 @@ const ShortAnswerPage = () => {
       </Header>
 
       <Container>
-        <QuizName>주관식</QuizName>
+        <QuizName>객관식</QuizName>
         <BookSelect>단어장 선택</BookSelect>
         <BookWrapper>
-          {books.map(items => {
+          {/* any 타입 변경할것 */}
+          {books.map((items: { id: number; name: string }) => {
             return (
-              <CreateBookList
+              <ShortAnswerBookList
                 key={items.id}
-                bookId={items.id}
+                bookId={Number(items.id)}
                 bookName={items.name}
+                setQuizBookId={setQuizBookId}
               />
             );
           })}
         </BookWrapper>
       </Container>
 
-      <FooterWrapper>
-        <WordQuizButton onClick={goQuiz}>단어암기</WordQuizButton>
-        <MeanQuizButton onClick={goQuiz}>뜻암기</MeanQuizButton>
-      </FooterWrapper>
+      <Footer>
+        <QuizButton onClick={goQuiz.bind(this, 'word')}>단어암기</QuizButton>
+        <QuizButton onClick={goQuiz.bind(this, 'mean')}>뜻암기</QuizButton>
+      </Footer>
     </MainWrapper>
   );
 };
@@ -99,6 +85,7 @@ const ShortAnswerPage = () => {
 export default ShortAnswerPage;
 
 const MainWrapper = styled.div`
+  position: absolute;
   width: 100%;
   height: 100%;
   display: flex;
@@ -111,7 +98,10 @@ const Header = styled.div`
   width: 100%;
   height: 56px;
   background: #ffffff;
-  padding: 25px 0 0 21px;
+  padding: 10px 0;
+  padding-left: 24px;
+  display: flex;
+  align-items: center;
 `;
 
 const BackButton = styled.button`
@@ -121,11 +111,13 @@ const BackButton = styled.button`
 
 const Container = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
+  flex: 1;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex: 1;
+  overflow-y: hidden;
 `;
 
 const QuizName = styled.div`
@@ -150,11 +142,11 @@ const BookSelect = styled.div`
 
 const BookWrapper = styled.div`
   width: 100%;
-  height: 252px;
+  height: 50%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  padding: 8px 24px;
   overflow-y: auto;
 
   button {
@@ -162,28 +154,17 @@ const BookWrapper = styled.div`
   }
 `;
 
-const Book = styled.button`
-  width: 279px;
-  height: 40px;
-  background-color: ${props => props.color || '#ffffff'};
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 13px;
-`;
-
-const FooterWrapper = styled.footer`
-  margin-bottom: 23px;
+const Footer = styled.footer`
   width: 100%;
   height: 72px;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
+  padding: 0 29px;
+  margin-bottom: 23px;
 `;
 
-const WordQuizButton = styled.button`
-  width: 158px;
+const QuizButton = styled.button`
+  width: 40%;
   height: 72px;
   background-color: #724fab;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
@@ -194,8 +175,4 @@ const WordQuizButton = styled.button`
   align-items: center;
   justify-content: center;
   color: #ffffff;
-`;
-
-const MeanQuizButton = styled(WordQuizButton)`
-  margin-left: 19px;
 `;
