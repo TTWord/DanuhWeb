@@ -6,14 +6,15 @@ import { globalState } from '@/recoil';
 interface IBookList {
   bookId: number;
   bookName: string;
-  init?: boolean;
+  setQuizBookId: (quizId: number) => void;
 }
 
-const ChoiceBookList = ({ bookId, bookName }: IBookList) => {
+const ChoiceBookList = ({ bookId, bookName, setQuizBookId }: IBookList) => {
   const [isSelected, setIsSelected] = useState(false);
   const [quizNumber, setQuizNumber] = useRecoilState(globalState.quiz.bookIds);
 
   const onClick = () => {
+    setQuizBookId(bookId);
     setIsSelected(current => !current);
     !isSelected ? setQuizNumber(bookId) : setQuizNumber(0);
   };

@@ -1,15 +1,12 @@
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import { useEffect, useRef, useState, FC } from 'react';
-import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
-import { globalState } from '@/recoil';
 import { api } from '@/api';
 import Swal from 'sweetalert2';
-
+import useToast from '@/hooks/useToast';
 import xButton from '@/assets/svg/icons/icon-x-button.svg';
 import CheckSVG from '@/pages/quiz/choice/ChoiceQuestion/svg/CheckSVG';
-import { toastStatus } from '@/components/common/toast/Toast';
 
 interface IGetQuiz {
   bookId: string;
@@ -24,22 +21,22 @@ interface IAnswerData {
 
 const ChoiceQuestionPage = () => {
   //// hooks ////
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const setToast = useSetRecoilState(toastStatus);
-
+  const toast = useToast();
   //// Varaiables ////
   // Timer Vars
   const timeMax = 10000;
   const [timer, setTimer] = useState(0);
 
   // Quiz Api Vars
-  const QuizNumber = useRecoilValue(globalState.quiz.bookIds);
-  const bookId: string = String(QuizNumber);
+  const bookId = String(useParams().id);
   const memorizedFilter: boolean = false;
   const count: number = 10; // 퀴즈페이지의 단어장 선택 시 넘겨줄 것
   const [isLoading, setIsLoading] = useState(true);
   const [problems, setProblems] = useState([]); // 전체 문제
   const [length, setLength] = useState(0); // 문제 길이 //useRecoilState(globalState.quiz.quizCount);
+  const mode = searchParams.get('mode');
 
   // Extract Quiz Vars
   // 현재 문제 목록
@@ -142,11 +139,7 @@ const ChoiceQuestionPage = () => {
         const memorizedStatus = response.data.is_memorized;
         const toastMessage =
           memorizedStatus === true ? '암기 완료' : '암기 미완료';
-        setToast({
-          isOpen: true,
-          timer: 2000,
-          message: toastMessage,
-        });
+        toast.comment(toastMessage);
       }
     } catch (e: unknown) {
       console.log(e);
@@ -245,14 +238,31 @@ const ChoiceQuestionPage = () => {
 
           <Content>
             {/* 문제 컴포넌트 */}
-            {!isAnswered && <Word>{currentAnswer?.word}</Word>}
+            {!isAnswered && mode === 'word' && (
+              <Word>{currentAnswer?.word}</Word>
+            )}
+            {!isAnswered && mode === 'mean' && (
+              <Word>{currentAnswer?.mean}</Word>
+            )}
 
             {/* 정답 컴포넌트 */}
             {isAnswered && (
               <Answer>
                 <Correct>{isCorrect ? '정답!' : '오답!'}</Correct>
-                <Word>{currentAnswer?.word}</Word>
-                <Mean>{currentAnswer?.mean}</Mean>
+                {/* 아래 부분 컴포넌트 이름 수정 필요 */}
+                {mode === 'word' && (
+                  <>
+                    <Word>{currentAnswer?.word}</Word>
+                    <Mean>{currentAnswer?.mean}</Mean>
+                  </>
+                )}
+                {mode === 'mean' && (
+                  <>
+                    <Word>{currentAnswer?.mean}</Word>
+                    <Mean>{currentAnswer?.word}</Mean>
+                  </>
+                )}
+
                 <CheckButton onClick={onClickCheckButton}>
                   <CheckSVG fill={currentMemorize ? '#4ABC56' : '#FFFFFF'} />
                 </CheckButton>
@@ -265,7 +275,14 @@ const ChoiceQuestionPage = () => {
             {!isAnswered &&
               currentQuiz.map((items: any, index) => {
                 return (
-                  <CreateChoiceButtons key={index} example={items?.mean} />
+                  <div key={index}>
+                    {mode === 'word' && (
+                      <CreateChoiceButtons example={items?.mean} />
+                    )}
+                    {mode === 'mean' && (
+                      <CreateChoiceButtons example={items?.word} />
+                    )}
+                  </div>
                 );
               })}
 
@@ -415,6 +432,12 @@ const Footer = styled.footer`
   align-items: center;
   padding: 0 52px;
   margin-bottom: 32px;
+
+  div {
+    :nth-child(n + 2) {
+      margin-top: 16px;
+    }
+  }
 `;
 
 const ChoiceButton = styled.button`
@@ -427,10 +450,6 @@ const ChoiceButton = styled.button`
   font-size: 30px;
   text-align: center;
   color: #0d0d0d;
-
-  :nth-child(n + 2) {
-    margin-top: 16px;
-  }
 `;
 
 const NextButton = styled.button`

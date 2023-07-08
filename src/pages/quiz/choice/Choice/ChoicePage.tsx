@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 import { api } from '@/api';
-import { globalState } from '@/recoil';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
 import Swal from 'sweetalert2';
 
 import ChoiceBookList from './components/ChoiceBookList';
@@ -12,7 +10,7 @@ import ChoiceBookList from './components/ChoiceBookList';
 const ChoicePage = () => {
   const navigate = useNavigate();
   const [books, setBooks] = useState([]);
-  const QuizNumber = useRecoilValue(globalState.quiz.bookIds);
+  const [quizId, setQuizId] = useState<number>();
 
   const getBookList = async () => {
     try {
@@ -30,19 +28,19 @@ const ChoicePage = () => {
     getBookList();
   }, []);
 
-  const goQuiz = async () => {
-    if (QuizNumber === 0) {
+  const goQuiz = async (mode: string) => {
+    if (quizId === undefined) {
       Swal.fire({
         icon: 'warning',
         title: '단어장을 선택해주세요.',
       });
     } else {
-      navigate('/quiz/choice/question');
+      navigate(`/quiz/choice/${quizId}?mode=${mode}`);
     }
   };
 
-  const test = () => {
-    console.log(QuizNumber);
+  const setQuizBookId = (quizId: number) => {
+    setQuizId(quizId);
   };
 
   return (
@@ -62,12 +60,13 @@ const ChoicePage = () => {
         <BookSelect>단어장 선택</BookSelect>
         <BookWrapper>
           {/* any 타입 변경할것 */}
-          {books.map((items: any) => {
+          {books.map((items: { id: number; name: string }) => {
             return (
               <ChoiceBookList
                 key={items.id}
                 bookId={Number(items.id)}
                 bookName={items.name}
+                setQuizBookId={setQuizBookId}
               />
             );
           })}
@@ -75,8 +74,8 @@ const ChoicePage = () => {
       </Container>
 
       <Footer>
-        <QuizButton onClick={goQuiz}>단어암기</QuizButton>
-        <QuizButton onClick={test}>뜻암기</QuizButton>
+        <QuizButton onClick={goQuiz.bind(this, 'word')}>단어암기</QuizButton>
+        <QuizButton onClick={goQuiz.bind(this, 'mean')}>뜻암기</QuizButton>
       </Footer>
     </MainWrapper>
   );
@@ -142,7 +141,7 @@ const BookSelect = styled.div`
 
 const BookWrapper = styled.div`
   width: 100%;
-  height: 40%;
+  height: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
