@@ -4,21 +4,18 @@ import Swal from 'sweetalert2';
 import { useSetRecoilState } from 'recoil';
 import { toastStatus } from '@/components/common/toast/Toast';
 import { useNavigate } from 'react-router-dom';
+import useToast from '@/hooks/useToast';
 
 const useDownloadSharedBook = () => {
   const navigate = useNavigate();
-  const setToast = useSetRecoilState(toastStatus);
+  const toast = useToast();
 
   const downloadSharedBook = async (id: number) => {
     try {
       const { data: response } = await api.share.downloadSharedBook(id);
 
       if (response.message === 'SUCCESS') {
-        setToast({
-          isOpen: true,
-          timer: 2500,
-          message: '단어장을 다운로드 하였습니다.',
-        });
+        toast.comment('단어장을 다운로드 하였습니다.');
         navigate('/share');
       }
     } catch (e: unknown) {

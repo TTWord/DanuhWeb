@@ -7,12 +7,13 @@ import useGetUserInfo from '@/pages/setting//profile/Profile/hooks/useGetUserInf
 import useLogout from '@/pages/setting/Setting/hooks/useLogout';
 import ContentBox from './components/ContentBox';
 import ConfirmPop from '@/components/common/popup/ConfirmPop';
-import { toastStatus } from '@/components/common/toast/Toast';
 import useNavigatePush from '@/hooks/useNavigatePush';
+import useToast from '@/hooks/useToast';
 
 const SettingPage = () => {
   const getUserInfo = useGetUserInfo();
   const logout = useLogout();
+  const toast = useToast();
   const navigatePush = useNavigatePush();
 
   const [nickname, setNickname] = useRecoilState<string>(
@@ -26,7 +27,6 @@ const SettingPage = () => {
   );
 
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
-  const setToast = useSetRecoilState(toastStatus);
   const [isConfirmPopOpen, setIsConfirmPopOpen] = useState(false);
 
   useEffect(() => {
@@ -59,11 +59,7 @@ const SettingPage = () => {
 
   // onClick에 사용하는 함수
   const onClickVersion = () => {
-    setToast({
-      isOpen: true,
-      timer: 2500,
-      message: '버전 0.3',
-    });
+    toast.comment('버전 0.3');
   };
   const onClickLogout = () => {
     setIsConfirmPopOpen(true);
@@ -120,7 +116,7 @@ const SettingPage = () => {
         />
         <ContentBox title="공지사항" onClick={moveNoticePage} />
         <ContentBox title="패치노트" onClick={onClickVersion} />
-        <ContentBox title="건의하기 / 버그신고" onClick={moveReportPage} />
+        {/* <ContentBox title="건의하기 / 버그신고" onClick={moveReportPage} /> */}
         <ContentBox title="비밀번호 변경" onClick={movePasswordPage} />
         <ContentBox title="로그아웃" onClick={onClickLogout} />
         <ContentBox title="탈퇴하기" onClick={onClickDeleteAccout} />
