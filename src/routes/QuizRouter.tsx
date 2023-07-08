@@ -19,20 +19,31 @@ const QuizRouter = () => {
         <Route path={'/'} element={<QuizPage />} />
       </Route>
 
+      {/* 암기 하기 */}
       {/* 플래쉬카드 메인 페이지 */}
       <Route path={'/flashcard'} element={<FlashCardPage />} />
-      {/* 플래쉬카드 영어암기 페이지 */}
+      {/* 플래쉬카드 암기 페이지 */}
       <Route path={'/flashcard/:id'} element={<FlashCardMemorizePage />} />
 
+      {/* 블라인드 메인 페이지 */}
+      <Route path={'/blind'} element={<FlashCardPage />} />
+      {/* 블라인드 암기 페이지 */}
+      <Route path={'/blind/:id'} element={<FlashCardMemorizePage />} />
+
+      {/* 문제 풀기 */}
       {/* 객관식 메인 페이지 */}
-      <Route path={'/choice'} element={<ChoicePage />} />
-      {/* 객관식 문제 페이지 */}
-      <Route path={'/choice/question'} element={<ChoiceQuestionPage />} />
+      <Route path={'/choice/*'} element={<ChoicePage />} />
+      {/* 객관식 Select 문제 페이지 */}
+      <Route path={'/choice/select/:id'} element={<ChoiceQuestionPage />} />
+      {/* 객관식 Blind 문제 페이지 */}
+      <Route path={'/choice/blind/:id'} element={<ChoiceQuestionPage />} />
 
       {/* 주관식 메인 페이지 */}
-      <Route path={'/shortanswer'} element={<ShortAnswerPage />} />
-      {/* 주관식 문제 페이지 */}
-      <Route path={'/shortanswer/question'} element={<ShortQuestionPage />} />
+      <Route path={'/shortanswer/*'} element={<ShortAnswerPage />} />
+      {/* 주관식 Typing 문제 페이지 */}
+      <Route path={'/shortanswer/typing/:id'} element={<ShortQuestionPage />} />
+      {/* 주관식 Blind 문제 페이지 */}
+      <Route path={'/shortanswer/blind/:id'} element={<ShortQuestionPage />} />
 
       {/* 결과 페이지 */}
       <Route path={'/result'} element={<ResultPage />} />
