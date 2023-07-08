@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 import { api } from '@/api';
@@ -9,6 +9,8 @@ import ChoiceBookList from './components/ChoiceBookList';
 
 const ChoicePage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const quizType = location.pathname.split('/').pop();
   const [books, setBooks] = useState([]);
   const [quizId, setQuizId] = useState<number>();
 
@@ -35,7 +37,7 @@ const ChoicePage = () => {
         title: '단어장을 선택해주세요.',
       });
     } else {
-      navigate(`/quiz/choice/${quizId}?mode=${mode}`);
+      navigate(`/quiz/choice/${quizType}/${quizId}?mode=${mode}`);
     }
   };
 
