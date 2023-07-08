@@ -1,6 +1,8 @@
 import QuizPage from '@/pages/quiz/Quiz/QuizPage';
 import FlashCardPage from '@/pages/quiz/flashcard/FlashCard/FlashCardPage';
 import FlashCardMemorizePage from '@/pages/quiz/flashcard/FlashCardMemorize/FlashCardMemorizePage';
+import BlindPage from '@/pages/quiz/blind/Blind/BlindPage';
+import BlindMemorizePage from '@/pages/quiz/blind/BlindMemorize/BlindMemorizePage';
 import ChoicePage from '@/pages/quiz/choice/Choice/ChoicePage';
 import ChoiceSelectPage from '@/pages/quiz/choice/Select/ChoiceSelectPage';
 import ChoiceBlindPage from '@/pages/quiz/choice/Blind/ChoiceBlindPage';
@@ -28,9 +30,9 @@ const QuizRouter = () => {
       <Route path={'/flashcard/:id'} element={<FlashCardMemorizePage />} />
 
       {/* 블라인드 메인 페이지 */}
-      <Route path={'/blind'} element={<FlashCardPage />} />
+      <Route path={'/blind'} element={<BlindPage />} />
       {/* 블라인드 암기 페이지 */}
-      <Route path={'/blind/:id'} element={<FlashCardMemorizePage />} />
+      <Route path={'/blind/:id'} element={<BlindMemorizePage />} />
 
       {/* 문제 풀기 */}
       {/* 객관식 메인 페이지 */}
