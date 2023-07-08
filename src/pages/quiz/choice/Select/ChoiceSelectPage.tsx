@@ -6,7 +6,7 @@ import { api } from '@/api';
 import Swal from 'sweetalert2';
 import useToast from '@/hooks/useToast';
 import xButton from '@/assets/svg/icons/icon-x-button.svg';
-import CheckSVG from '@/pages/quiz/choice/ChoiceQuestion/svg/CheckSVG';
+import CheckSVG from '@/pages/quiz/choice/Select/svg/CheckSVG';
 
 interface IGetQuiz {
   bookId: string;
@@ -19,7 +19,7 @@ interface IAnswerData {
   word: string;
 }
 
-const ChoiceQuestionPage = () => {
+const ChoiceSelectPage = () => {
   //// hooks ////
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -299,7 +299,7 @@ const ChoiceQuestionPage = () => {
   );
 };
 
-export default ChoiceQuestionPage;
+export default ChoiceSelectPage;
 
 const MainWrapper = styled.div`
   width: 100%;

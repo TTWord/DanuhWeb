@@ -5,7 +5,7 @@ import { useRecoilValue } from 'recoil';
 import { globalState } from '@/recoil';
 import xButton from '@/assets/svg/icons/icon-x-button.svg';
 
-const ShortQuestionPage = () => {
+const ShortTypingPage = () => {
   const navigate = useNavigate();
   const answerRef = useRef();
 
@@ -90,7 +90,7 @@ const ShortQuestionPage = () => {
   );
 };
 
-export default ShortQuestionPage;
+export default ShortTypingPage;
 
 const MainWrapper = styled.div`
   width: 100%;
