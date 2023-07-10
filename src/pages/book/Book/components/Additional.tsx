@@ -19,7 +19,7 @@ const Additional: React.FC<AdditionalProps> = () => {
       <AdditionalItems isActive={isActive}>
         <AdditionalItem
           isActive={isActive}
-          targetPos={'200px'}
+          targetPos={'140px'}
           onClick={() => navigate('/book/create')}
         >
           <Icon src={iconCreateBook} alt="icon" />
@@ -27,15 +27,11 @@ const Additional: React.FC<AdditionalProps> = () => {
         </AdditionalItem>
         <AdditionalItem
           isActive={isActive}
-          targetPos={'140px'}
+          targetPos={'80px'}
           onClick={() => navigate('/book/generate')}
         >
           <Icon src={iconCreateBook} alt="icon" />
           <Text>단어장 생성기</Text>
-        </AdditionalItem>
-        <AdditionalItem isActive={isActive} targetPos={'80px'}>
-          <Icon src={iconCreateBook} alt="icon" />
-          <Text>단어장 다운로드</Text>
         </AdditionalItem>
       </AdditionalItems>
     </Container>
