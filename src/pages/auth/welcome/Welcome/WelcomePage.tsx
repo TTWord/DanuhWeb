@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { globalState } from '@/recoil';
@@ -7,6 +7,9 @@ import { api } from '@/api';
 import { AxiosError } from 'axios';
 import Swal from 'sweetalert2';
 import mascot from '@/assets/svg/logos/logo-character.svg';
+import iconMemo from '@/assets/svg/icons/icon-memo.svg';
+import iconBook from '@/assets/svg/icons/icon-book-new.svg';
+import iconDrawer from '@/assets/svg/icons/icon-drawer.svg';
 
 const WelcomePage = () => {
   const navigate = useNavigate();
@@ -29,7 +32,7 @@ const WelcomePage = () => {
         setIsLoading(true);
         setTimeout(() => {
           navigate('/book');
-        }, 2000);
+        }, 3000);
       }
     } catch (e: unknown) {
       const err = e as AxiosError<{
@@ -56,14 +59,15 @@ const WelcomePage = () => {
         <>
           <UserNameText>
             <UserName>{userNickname}</UserName>
-            <div>님</div>,
+            <div>님,</div>
           </UserNameText>
           <Welcome>환영합니다</Welcome>
-          <UserEmail>
-            {userEmail ? userEmail + '@' + userDomain : null}
-          </UserEmail>
 
-          <Mascot src={mascot} alt="mascot" />
+          <IconWrapper>
+            <Icon src={iconMemo} alt="iconMemo" />
+            <Icon src={iconBook} alt="iconBook" />
+            <Icon src={iconDrawer} alt="iconDrawer" />
+          </IconWrapper>
         </>
       )}
     </WebWrapper>
@@ -73,6 +77,15 @@ const WelcomePage = () => {
 export default WelcomePage;
 
 // 스타일 정의
+const fadeIn = keyframes`
+  0% {
+    opacity: 0;
+  }
+100% {
+    opacity: 1;
+  }
+`;
+
 const WebWrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -83,22 +96,27 @@ const WebWrapper = styled.div`
   justify-content: center;
   align-items: flex-start;
   position: relative;
-  img {
-    height: 249px;
-  }
 `;
 
 const UserNameText = styled.div`
-  font-weight: 300;
-  font-size: 20px;
   color: #333333;
   display: flex;
-  line-height: 1;
   font-family: ${({ theme }) => theme.fonts.gmarketSans};
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  color: ${({ theme }) => theme.colors.gray[700]};
+  opacity: 0;
+  animation: ${fadeIn} 1.5s linear forwards;
+  animation-delay: 0s;
 `;
 
 const UserName = styled.div`
-  font-weight: 500;
+  background-color: ${({ theme }) => theme.colors.primary[200]};
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Welcome = styled.div`
@@ -109,6 +127,9 @@ const Welcome = styled.div`
   font-weight: 700;
   margin-top: 14px;
   font-family: ${({ theme }) => theme.fonts.gmarketSans};
+  opacity: 0;
+  animation: ${fadeIn} 2s linear forwards;
+  animation-delay: 1s;
 `;
 
 const UserEmail = styled.div`
@@ -120,8 +141,15 @@ const UserEmail = styled.div`
   margin-bottom: 200px;
 `;
 
-const Mascot = styled.img`
+const IconWrapper = styled.div`
   position: absolute;
-  bottom: 55px;
+  bottom: 120px;
   right: 32px;
+  display: flex;
+`;
+
+const Icon = styled.img`
+  & + & {
+    margin-left: 27px;
+  }
 `;
