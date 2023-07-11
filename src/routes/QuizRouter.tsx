@@ -27,7 +27,7 @@ const QuizRouter = () => {
       {/* 플래쉬카드 메인 페이지 */}
       <Route path={'/flashcard'} element={<FlashCardPage />} />
       {/* 플래쉬카드 암기 페이지 */}
-      <Route path={'/flashcard/:id'} element={<FlashCardMemorizePage />} />
+      <Route path={'/flashcard/memorize'} element={<FlashCardMemorizePage />} />
 
       {/* 블라인드 메인 페이지 */}
       <Route path={'/blind'} element={<BlindPage />} />

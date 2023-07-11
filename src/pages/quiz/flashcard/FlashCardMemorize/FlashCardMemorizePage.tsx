@@ -1,5 +1,10 @@
 import styled from 'styled-components';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import iconClose from '@/assets/svg/icons/icon-close.svg';
 
 import { globalState } from '@/recoil';
@@ -11,8 +16,14 @@ import useGetMemorizeWord from '@/pages/quiz/flashcard/FlashCardMemorize/hooks/u
 const FlashCardMemorizePage = () => {
   const navigate = useNavigate();
   const getMemo = useGetMemorizeWord();
-  const { id } = useParams();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+
+  const { bookIds, mode } = location.state as {
+    bookIds: number[];
+    mode: 'word' | 'mean';
+  };
+
+  console.log(bookIds);
 
   const memoList = [...useRecoilValue(globalState.memo.memoList)];
 
@@ -21,10 +32,10 @@ const FlashCardMemorizePage = () => {
   const [showWord, setShowWord] = useState(false);
 
   useEffect(() => {
-    if (id && searchParams) {
-      getMemo({ bookId: Number(id), count: 10 });
+    if (bookIds) {
+      getMemo({ bookIds, count: 10 });
     }
-  }, [id, searchParams]);
+  }, [bookIds]);
 
   // 나가기 기능
   const onExitQuiz = () => {
@@ -49,9 +60,7 @@ const FlashCardMemorizePage = () => {
     }
   };
 
-  if (memoList.length === 0 || !searchParams.get('mode')) return null;
-
-  const mode = searchParams.get('mode');
+  if (memoList.length === 0) return null;
 
   return (
     <Container>
