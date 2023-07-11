@@ -4,20 +4,23 @@ import { globalState } from '@/recoil';
 import { useSetRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
+import useToast from '@/hooks/useToast';
 
 interface getMemoParams {
-  bookId: number;
+  bookIds: number[];
   count: number;
 }
 
 const useGetMemorizeWord = () => {
   const navigate = useNavigate();
+  const toast = useToast();
+
   const setMemoList = useSetRecoilState(globalState.memo.memoList);
 
-  const getMemo = async ({ bookId, count }: getMemoParams) => {
+  const getMemo = async ({ bookIds, count }: getMemoParams) => {
     try {
       const { data: response } = await api.memo.getMemorizeWord({
-        bookId,
+        bookIds,
         count,
       });
 
@@ -28,12 +31,14 @@ const useGetMemorizeWord = () => {
       }>;
       const errorCode = err.response?.status;
       const errorMessage = err.response?.data?.message;
-      Swal.fire({
-        icon: 'error',
-        title: errorMessage,
-      }).then(() => {
-        navigate('/quiz/flashcard');
-      });
+
+      if (errorMessage === 'WORD_LESS_THAN_COUNT') {
+        toast.error('단어 개수가 4개 이상 필요합니다.');
+      } else {
+        toast.error(errorMessage || '알 수 없는 오류가 발생했습니다.');
+      }
+
+      navigate('/quiz/flashcard');
     }
   };
 

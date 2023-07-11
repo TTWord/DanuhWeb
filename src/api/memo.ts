@@ -1,7 +1,7 @@
 import { instance } from '@/instance';
 
 interface getMemorizeWordParams {
-  bookId: number;
+  bookIds: number[];
   count: number;
 }
 
@@ -11,10 +11,10 @@ interface patchMemorizedStatus {
 }
 
 export const memoAPI = {
-  getMemorizeWord: async ({ bookId, count }: getMemorizeWordParams) => {
+  getMemorizeWord: async ({ bookIds, count }: getMemorizeWordParams) => {
     const response = await instance.get(`/memo`, {
       params: {
-        book_ids: bookId,
+        book_ids: bookIds.join('&'),
         count: count,
       },
     });

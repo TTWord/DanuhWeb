@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { api } from '@/api';
@@ -15,19 +15,40 @@ interface IBookResponse {
   updated_at: string;
 }
 
+interface IBook extends IBookResponse {
+  isSelected: boolean;
+}
+
 const FlashCardPage = () => {
   const navigate = useNavigate();
 
-  const { data: books } = useQuery('FlashCard/GetBooks', async () => {
+  const { data: response } = useQuery('FlashCard/GetBooks', async () => {
     const response = await api.book.getBook();
 
     return response.data;
   });
 
-  const [selectedBook, setSelectedBook] = useState<IBookResponse | null>(null);
+  const [books, setBooks] = useState<IBook[]>([]);
 
-  const setSelected = (book: IBookResponse) => {
-    setSelectedBook(book);
+  useEffect(() => {
+    if (response) {
+      setBooks(
+        response.map((book: IBookResponse) => {
+          return {
+            ...book,
+            isSelected: false,
+          };
+        }),
+      );
+    }
+  }, [response]);
+
+  const setSelected = (idx: number) => {
+    setBooks(current => {
+      const arr = [...current];
+      arr[idx].isSelected = !arr[idx].isSelected;
+      return arr;
+    });
   };
 
   const [mode, setMode] = useState<'word' | 'mean'>('word');
@@ -36,17 +57,35 @@ const FlashCardPage = () => {
   };
 
   const runQuiz = () => {
-    if (selectedBook === null) {
+    let flag = false;
+
+    books.forEach(item => {
+      if (item.isSelected) {
+        flag = true;
+      }
+    });
+
+    if (!flag) {
       Swal.fire({
         icon: 'warning',
         title: '단어장을 선택해주세요.',
       });
+    }
+
+    if (mode === 'word') {
+      navigate(`/quiz/flashcard/memorize`, {
+        state: {
+          bookIds: books.filter(item => item.isSelected).map(item => item.id),
+          mode: 'word',
+        },
+      });
     } else {
-      if (mode === 'word') {
-        navigate(`/quiz/flashcard/${selectedBook.id}?mode=word`);
-      } else {
-        navigate(`/quiz/flashcard/${selectedBook.id}?mode=mean`);
-      }
+      navigate(`/quiz/flashcard/memorize`, {
+        state: {
+          bookIds: books.filter(item => item.isSelected).map(item => item.id),
+          mode: 'mean',
+        },
+      });
     }
   };
 
@@ -64,21 +103,15 @@ const FlashCardPage = () => {
           <Title>단어장 선택</Title>
           <Comments>복수 선택 가능*</Comments>
         </Header>
-        <BookSelectedArea>
-          <BookSelectedBox>
-            {!selectedBook && '선택된 단어장이 없습니다'}
-            {selectedBook && <BookSelected>{selectedBook.name}</BookSelected>}
-          </BookSelectedBox>
-        </BookSelectedArea>
         <BooksWrapper>
           <Books>
-            {books?.map(item => {
+            {books?.map((item, idx) => {
               return (
                 <BookItem
                   key={item.id}
                   book={item}
-                  setSelected={setSelected}
-                  selected={selectedBook?.id === item.id}
+                  setSelected={() => setSelected(idx)}
+                  selected={item.isSelected}
                 />
               );
             })}
