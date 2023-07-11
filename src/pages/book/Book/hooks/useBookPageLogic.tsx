@@ -6,21 +6,11 @@ import { useQuery, useQueryClient } from 'react-query';
 
 const useBookPageLogic = () => {
   const queryClient = useQueryClient();
-  const { data: books } = useQuery(
-    'BookPage/GetBooks',
-    async () => {
-      const response = await api.book.getBook();
+  const { data: books } = useQuery('BookPage/GetBooks', async () => {
+    const response = await api.book.getBook();
 
-      if (response.status === 'OK') {
-        return response.data;
-      } else {
-        return [];
-      }
-    },
-    {
-      initialData: [],
-    },
-  );
+    return response.data;
+  });
   const navigatePush = useNavigatePush();
 
   const onClickUpdate = useCallback(async (bookId: number) => {

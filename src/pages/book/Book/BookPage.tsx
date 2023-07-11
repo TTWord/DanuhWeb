@@ -12,13 +12,13 @@ const BookPage = () => {
   const { books, onItemClick, onClickUpdate, onClickRemove } =
     useBookPageLogic();
 
-  if (!books) return null;
-
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
 
   useEffect(() => {
     setActiveMenu(0);
   }, []);
+
+  if (!books) return null;
 
   return (
     <WebWrapper>
@@ -29,7 +29,7 @@ const BookPage = () => {
       </Header>
 
       <Container>
-        {books[0] === undefined && (
+        {books.length === 0 && (
           <EmptyBook>
             <img src={emptyIcon} alt="empty" />
             <span>아직 등록된 단어장이 없어요</span>
@@ -38,7 +38,7 @@ const BookPage = () => {
         )}
 
         <Items>
-          {books.map((book: any) => (
+          {books.map(book => (
             <BookItem
               key={book.id}
               book={book}

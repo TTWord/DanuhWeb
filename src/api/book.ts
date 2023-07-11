@@ -2,11 +2,14 @@ import { instance } from '@/instance';
 
 interface getBookResponse extends BackendResponse {
   data: {
-    id: number;
-    name: string;
-    user_id: number;
     created_at: string;
+    id: number;
+    is_downloaded: number;
+    is_shared: number;
+    name: string;
     updated_at: string;
+    user_id: number;
+    share_id: number;
   }[];
 }
 
