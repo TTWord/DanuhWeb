@@ -11,12 +11,26 @@ export const quizAPI = {
   },
 
   getChoiceQuiz: async (
-    bookId: string,
+    bookIds: string,
     count: number,
     memorizedFilter: boolean,
   ) => {
     const response = await instance.post('/quiz/multiple', {
-      book_ids: bookId,
+      book_ids: bookIds,
+      count,
+      memorized_filter: memorizedFilter,
+    });
+
+    return response;
+  },
+
+  getBlindQuiz: async (
+    bookIds: string,
+    count: number,
+    memorizedFilter: boolean,
+  ) => {
+    const response = await instance.post('/quiz/multiple', {
+      book_ids: bookIds,
       count,
       memorized_filter: memorizedFilter,
     });

@@ -3,6 +3,7 @@ import { styled } from 'twin.macro';
 import BookItem from '@/pages/book/Book/components/BookItem';
 import useBookPageLogic from './hooks/useBookPageLogic';
 import danuhLogo from '@/assets/svg/logos/logo-danuh-small.svg';
+import emptyIcon from '@/assets/svg/icons/icon-book-empty.svg';
 
 const BookPage = () => {
   const { books, onItemClick, onClickUpdate, onClickRemove } =
@@ -19,6 +20,14 @@ const BookPage = () => {
       </Header>
 
       <Container>
+        {books[0] === undefined && (
+          <EmptyBook>
+            <img src={emptyIcon} alt="empty" />
+            <span>아직 등록된 단어장이 없어요</span>
+            <span>단어장을 추가해주세요</span>
+          </EmptyBook>
+        )}
+
         <Items>
           {books.map((book: any) => (
             <BookItem
@@ -61,6 +70,26 @@ const Header = styled.header`
 const Container = styled.div`
   width: 100%;
   height: 100%;
+`;
+
+const EmptyBook = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    margin-bottom: 24px;
+  }
+
+  span {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 160%;
+    color: ${({ theme }) => theme.colors.gray[500]};
+  }
 `;
 
 const Items = styled.div`

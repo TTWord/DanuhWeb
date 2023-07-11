@@ -13,7 +13,7 @@ const useSignup = () => {
     authCode: string,
   ) => {
     try {
-      const { data: response } = await api.user.signup(
+      const { data: response } = await api.auth.signup(
         username,
         password,
         nickname,
