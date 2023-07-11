@@ -4,12 +4,21 @@ import BookItem from '@/pages/book/Book/components/BookItem';
 import useBookPageLogic from './hooks/useBookPageLogic';
 import danuhLogo from '@/assets/svg/logos/logo-danuh-small.svg';
 import emptyIcon from '@/assets/svg/icons/icon-book-empty.svg';
+import { useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { globalState } from '@/recoil';
 
 const BookPage = () => {
   const { books, onItemClick, onClickUpdate, onClickRemove } =
     useBookPageLogic();
 
   if (!books) return null;
+
+  const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
+
+  useEffect(() => {
+    setActiveMenu(0);
+  }, []);
 
   return (
     <WebWrapper>
