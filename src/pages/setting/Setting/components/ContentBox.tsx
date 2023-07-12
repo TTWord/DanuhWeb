@@ -1,18 +1,9 @@
 import styled from 'styled-components';
-import NextButtonSVG from '@/components/svg/setting/NextButtonSVG';
-import { useState } from 'react';
 
 const ContentBox = (props: any) => {
-  const [fill, setFill] = useState<boolean>(false);
-
   return (
-    <Content
-      onClick={props.onClick}
-      onMouseOver={() => setFill(true)}
-      onMouseOut={() => setFill(false)}
-    >
+    <Content onClick={props.onClick}>
       <div>{props.title}</div>
-      {fill ? <NextButtonSVG fill="white" /> : <NextButtonSVG />}
     </Content>
   );
 };
@@ -20,15 +11,18 @@ const ContentBox = (props: any) => {
 export default ContentBox;
 
 const Content = styled.div`
-  height: 64px;
+  width: 100%;
+  height: 60px;
   box-sizing: border-box;
   background: #ffffff;
-  border-bottom: 1px solid #dddddd;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 24px 26px;
   transition: 0.4s;
+  flex-shrink: 0;
+
+  & + & {
+    border-top: 1px solid #f5f2ff;
+  }
 
   div {
     font-weight: 300;
@@ -38,8 +32,6 @@ const Content = styled.div`
   }
 
   :hover {
-    background-color: #694ac2;
-    color: white;
     cursor: pointer;
   }
 `;
