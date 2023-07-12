@@ -1,17 +1,37 @@
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-
-import backImg from '@/assets/svg/icons/icon-back-button.svg';
+import useNavigatePop from '@/hooks/useNavigatePop';
+import backImg from '@/assets/svg/icons/icon-back-gray.svg';
 import NoticeBox from '@/pages/setting/notice/Notice/components/NoticeBox';
 
 const NoticePage = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigatePop();
 
   const goBack = () => {
     navigate('/setting');
   };
 
-  const noticeList = [{ title: '공지사항 입니다', explain: '공지사항입니다' }];
+  const noticeList = [
+    {
+      id: 1,
+      title: '공지사항 1입니다',
+      content: '상세내용 1입니다. 으어어어어어어어어어',
+    },
+    {
+      id: 2,
+      title: '공지사항 2입니다',
+      content: '상세내용 2입니다. 으어어어어어어어어어',
+    },
+    {
+      id: 3,
+      title: '공지사항 3입니다',
+      content: '상세내용 3입니다. 으어어어어어어어어어',
+    },
+    {
+      id: 4,
+      title: '공지사항 4입니다',
+      content: '상세내용 4입니다. 으어어어어어어어어어',
+    },
+  ];
 
   return (
     <MainWrapper>
@@ -23,26 +43,16 @@ const NoticePage = () => {
       </HeaderWrapper>
 
       <ContentWrapper>
-        <NoticeBox
-          id={0}
-          title={'공지사항 1 입니다'}
-          explain={'공지사항입니다'}
-        />
-        <NoticeBox
-          id={1}
-          title={'공지사항 2 입니다'}
-          explain={'공지사항입니다'}
-        />
-        <NoticeBox
-          id={2}
-          title={'공지사항 3 입니다'}
-          explain={'공지사항입니다'}
-        />
-        <NoticeBox
-          id={3}
-          title={'공지사항 4 입니다'}
-          explain={'공지사항입니다'}
-        />
+        {noticeList.map(item => {
+          return (
+            <NoticeBox
+              key={item.id}
+              id={item.id}
+              title={item.title}
+              content={item.content}
+            />
+          );
+        })}
       </ContentWrapper>
     </MainWrapper>
   );
@@ -53,56 +63,35 @@ export default NoticePage;
 const MainWrapper = styled.div`
   width: 100%;
   height: 100%;
+  font-style: normal;
 `;
 
 const HeaderWrapper = styled.div`
-  position: relative;
   width: 100%;
-  height: 50px;
-  border-bottom: 1px solid #666666;
-  font-weight: 500;
+  height: 56px;
+  flex-shrink: 0;
+  padding: 0 16px;
   font-size: 16px;
+  font-weight: 600;
+  line-height: 140%;
   display: flex;
-  justify-content: center;
   align-items: center;
+  color: ${({ theme }) => theme.colors.gray[900]};
 `;
+
 const BackButton = styled.button`
-  position: absolute;
-  left: 20px;
-  img {
-    height: 12px;
-  }
+  margin-right: 16px;
 `;
 
 const ContentWrapper = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-`;
-const Content = styled.div`
-  position: relative;
-  height: 99px;
-  background: #ffffff;
-  border-bottom: 1px solid #cccccc;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 20px;
-`;
-const Title = styled.div`
-  font-weight: 500;
-  font-size: 20px;
-  color: black;
-`;
-const Explain = styled.div`
-  font-weight: 300;
-  font-size: 16px;
-  color: black;
-`;
-const NextButton = styled.button`
-  position: absolute;
-  right: 20px;
-  img {
-    height: 12px;
+  overflow-y: scroll;
+  padding-bottom: 56px;
+
+  ::-webkit-scrollbar {
+    display: none;
   }
 `;
