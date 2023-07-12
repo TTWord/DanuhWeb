@@ -72,14 +72,11 @@ const Content = styled.div`
 `;
 
 const Back = styled.button`
-  width: 11px;
-  height: 19px;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Title = styled.div`
