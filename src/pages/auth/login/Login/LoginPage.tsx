@@ -98,7 +98,7 @@ const LoginPage = () => {
         <Title>이메일로 로그인</Title>
       </Header>
 
-      <Container>
+      <Form>
         <FormBox>
           <span>아이디</span>
           <EmailBox isFocus={isLoginFocus}>
@@ -171,6 +171,7 @@ const LoginPage = () => {
             onBlur={() => {
               setPassWDFocus(false);
             }}
+            autoComplete="password"
           />
         </FormBox>
 
@@ -178,7 +179,7 @@ const LoginPage = () => {
           아직 계정이 없으신가요?
           <SignInButton onClick={runJoinPage}>회원가입</SignInButton>
         </Join>
-      </Container>
+      </Form>
 
       <Footer>
         <SocialWrapper>
@@ -245,7 +246,7 @@ const Title = styled.div`
   align-items: center;
 `;
 
-const Container = styled.div`
+const Form = styled.form`
   width: 100%;
   flex: 1;
   padding: 0 24px;

@@ -1,20 +1,21 @@
 import styled, { css } from 'styled-components';
 import iconOther from '@/assets/svg/icons/icon-other.svg';
-import { useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-interface INewWord {
+interface IBookWord {
   wordId: number;
   word: string;
   mean: string;
   onClick: any;
 }
 
-const NewWord = ({ wordId, word, mean, onClick }: INewWord) => {
+const BookWord = ({ wordId, word, mean, onClick }: IBookWord) => {
   const [isOptionOpen, setOptionOpen] = useState(false);
   const navigate = useNavigate();
 
-  const onClickFunc = () => {
+  const onClickToggleOption = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     setOptionOpen(current => !current);
   };
 
@@ -27,11 +28,23 @@ const NewWord = ({ wordId, word, mean, onClick }: INewWord) => {
     onClick(wordId);
   };
 
+  useEffect(() => {
+    const onClickOutside = () => {
+      setOptionOpen(false);
+    };
+
+    window.addEventListener('click', onClickOutside);
+
+    return () => {
+      window.removeEventListener('click', onClickOutside);
+    };
+  }, []);
+
   return (
-    <WordWrapper onClick={onClickFunc}>
+    <WordWrapper>
       <WordBox>
         <Word>{word}</Word>
-        <Option>
+        <Option onClick={onClickToggleOption}>
           <img src={iconOther} alt="deleteIcon" />
           <OptionItems isActive={isOptionOpen}>
             <OptionItem onClick={updateWord}>수정하기</OptionItem>
@@ -44,7 +57,7 @@ const NewWord = ({ wordId, word, mean, onClick }: INewWord) => {
   );
 };
 
-export default NewWord;
+export default BookWord;
 
 const WordWrapper = styled.div`
   width: 100%;
