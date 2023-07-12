@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import NewWord from './components/NewWord';
+import NewWord from './components/BookWord';
 import useGetWord from './hooks/useGetWord';
 import useGetBookById from '@/pages/book/_id/hooks/useGetBookById';
 import useDeleteWord from '@/pages/book/_id/BookDet/hooks/useDeleteWord';
