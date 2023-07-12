@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 
 import useLogin from '@/pages/auth/login/Login/hooks/useLogin';
@@ -88,6 +88,12 @@ const LoginPage = () => {
     }
   }, [isDirectInput]);
 
+  const onLogin = useCallback(() => {
+    if (isOk) {
+      login(`${emailId}@${emailDomain}`, password);
+    }
+  }, [isOk, emailId, emailDomain, password, login]);
+
   return (
     <WebWrapper>
       <Header>
@@ -98,7 +104,12 @@ const LoginPage = () => {
         <Title>이메일로 로그인</Title>
       </Header>
 
-      <Form>
+      <Form
+        onSubmit={e => {
+          e.preventDefault();
+          onLogin();
+        }}
+      >
         <FormBox>
           <span>아이디</span>
           <EmailBox isFocus={isLoginFocus}>
@@ -177,8 +188,12 @@ const LoginPage = () => {
 
         <Join>
           아직 계정이 없으신가요?
-          <SignInButton onClick={runJoinPage}>회원가입</SignInButton>
+          <SignInButton onClick={runJoinPage} type="button">
+            회원가입
+          </SignInButton>
         </Join>
+
+        <Login type="submit" />
       </Form>
 
       <Footer>
@@ -196,14 +211,7 @@ const LoginPage = () => {
             </AppleLogin>
           </SocialButtonWrapper>
         </SocialWrapper>
-        <LoginButton
-          isActive={isOk}
-          onClick={() => {
-            if (isOk) {
-              login(`${emailId}@${emailDomain}`, password);
-            }
-          }}
-        >
+        <LoginButton isActive={isOk} onClick={onLogin}>
           로그인
         </LoginButton>
       </Footer>
@@ -214,6 +222,10 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
+const Login = styled.input`
+  display: none;
+`;
 
 const WebWrapper = styled.div`
   width: 100%;

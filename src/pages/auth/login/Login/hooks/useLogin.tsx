@@ -1,11 +1,12 @@
 import { api } from '@/api';
 import { AxiosError } from 'axios';
 
-import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import useToast from '@/hooks/useToast';
 
 const useLogin = () => {
   const navigate = useNavigate();
+  const toast = useToast();
   const login = async (username: string, password: string) => {
     try {
       const { data: response } = await api.auth.login(username, password);
@@ -18,19 +19,13 @@ const useLogin = () => {
         message: string;
       }>;
       const errorCode = err?.response?.status;
-      const errorMessage = err?.response?.data.message;
 
       switch (errorCode) {
         case 409:
-          Swal.fire({
-            icon: 'error',
-            title: errorMessage,
-          });
+          toast.error('계정 정보가 일치하지 않습니다.');
+          break;
         default:
-          Swal.fire({
-            icon: 'error',
-            title: 'Fail',
-          });
+          toast.error('알 수 없는 오류가 발생했습니다');
       }
     }
   };

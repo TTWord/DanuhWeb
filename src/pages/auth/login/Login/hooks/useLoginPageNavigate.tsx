@@ -1,5 +1,6 @@
 import useNavigatePop from '@/hooks/useNavigatePop';
 import useNavigatePush from '@/hooks/useNavigatePush';
+import { MouseEvent } from 'react';
 
 const useLoginPageNavigate = () => {
   const navigatePop = useNavigatePop();
