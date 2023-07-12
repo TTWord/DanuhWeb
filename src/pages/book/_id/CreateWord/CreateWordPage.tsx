@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate, useParams } from 'react-router-dom';
-import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
+import { useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import useAddWord from '@/pages/book/_id/CreateWord/hooks/useAddWord';
 import iconBack from '@/assets/svg/icons//icon-back-gray.svg';
+import useNavigatePop from '@/hooks/useNavigatePop';
 
 const CreateWordPage = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigatePop();
   const addWord = useAddWord();
 
   const bookId = Number(useParams().id);
@@ -166,7 +166,7 @@ const Input = styled.input`
 const Footer = styled.footer`
   width: 100%;
   padding: 0 24px;
-  padding-bottom: 48px;
+  padding-bottom: 36px;
   background-color: ${({ theme }) => theme.colors.white};
 `;
 
