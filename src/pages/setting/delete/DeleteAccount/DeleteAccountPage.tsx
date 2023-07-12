@@ -1,12 +1,12 @@
 import ConfirmPop from '@/components/common/popup/ConfirmPop';
-import useNavigatePush from '@/hooks/useNavigatePush';
+import useNavigatePop from '@/hooks/useNavigatePop';
 import { useState } from 'react';
 import styled from 'styled-components';
 import backImg from '@/assets/svg/icons/icon-back-button.svg';
 import useDeleteAccount from '@/pages/setting/Setting/hooks/useDeleteAccount';
 
 const DeleteAccountPage = () => {
-  const navigatePush = useNavigatePush();
+  const navigatePush = useNavigatePop();
   const deleteAccount = useDeleteAccount();
   const [isConfirmPopOpen, setIsConfirmPopOpen] = useState(false);
 

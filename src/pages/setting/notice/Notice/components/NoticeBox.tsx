@@ -1,39 +1,33 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSetRecoilState } from 'recoil';
 import { globalState } from '@/recoil';
 import NextButtonSVG from '@/components/svg/setting/NextButtonSVG';
+import useNavigatePush from '@/hooks/useNavigatePush';
+import nextIcon from '@/assets/svg/icons/icon-back-gray.svg';
 
 interface INoticeBox {
-  title?: string;
-  id?: number;
-  explain?: string;
+  title: string;
+  id: number;
+  content: string;
 }
 
-const NoticeBox: React.FC<INoticeBox> = (props: any) => {
-  const navigate = useNavigate();
-  const setTitle = useSetRecoilState(globalState.setting.noticeTitle);
+const NoticeBox: React.FC<INoticeBox> = (props: INoticeBox) => {
+  const navigate = useNavigatePush();
 
   const onClick = () => {
-    setTitle(props.title);
-    navigate(`/setting/notice/${props.id}`);
+    navigate(`/setting/notice/${props.id}`, {
+      state: { title: props.title, content: props.content },
+    });
   };
 
-  const [fill, setFill] = useState<boolean>(false);
-
   return (
-    <Content
-      onClick={onClick}
-      onMouseOver={() => setFill(true)}
-      onMouseOut={() => setFill(false)}
-    >
+    <Content onClick={onClick}>
       <TextWrapper>
         <Title>{props.title}</Title>
-        <Explain>{props.explain}</Explain>
+        <Explain>{props.content.split('.')[0]}</Explain>
       </TextWrapper>
-
-      {fill ? <NextButtonSVG fill="white" /> : <NextButtonSVG />}
+      <NextButton src={nextIcon} alt="next" />
     </Content>
   );
 };
@@ -41,37 +35,44 @@ const NoticeBox: React.FC<INoticeBox> = (props: any) => {
 export default NoticeBox;
 
 const Content = styled.div`
-  height: 99px;
-  background: #ffffff;
-  border-bottom: 1px solid #cccccc;
+  width: 100%;
+  height: 100px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[200]};
+  padding: 0px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
   transition: 0.4s;
 
   :hover {
-    background-color: #694ac2;
     cursor: pointer;
-    div {
-      color: white;
-    }
   }
 `;
 
 const TextWrapper = styled.div`
+  height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 `;
 
 const Title = styled.div`
-  font-weight: 500;
-  font-size: 20px;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 24px;
   color: black;
+  margin-bottom: 4px;
 `;
 
 const Explain = styled.div`
-  font-weight: 300;
-  font-size: 16px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
   color: black;
+`;
+
+const NextButton = styled.img`
+  rotate: calc(180deg);
 `;

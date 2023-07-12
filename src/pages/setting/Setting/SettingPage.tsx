@@ -9,6 +9,7 @@ import ContentBox from './components/ContentBox';
 import ConfirmPop from '@/components/common/popup/ConfirmPop';
 import useNavigatePush from '@/hooks/useNavigatePush';
 import useToast from '@/hooks/useToast';
+import iconSetting from '@/assets/svg/icons/icon-setting.svg';
 
 const SettingPage = () => {
   const getUserInfo = useGetUserInfo();
@@ -16,26 +17,33 @@ const SettingPage = () => {
   const toast = useToast();
   const navigatePush = useNavigatePush();
 
-  const [nickname, setNickname] = useRecoilState<string>(
-    globalState.auth.nickname,
-  );
-  const [username, setUsername] = useRecoilState<string>(
-    globalState.auth.username,
-  );
-  const [profile, setProfile] = useRecoilState<string>(
-    globalState.auth.profilePic,
-  );
-
+  const maxWords = 200;
+  const [myinfo, setMyInfo] = useState({
+    username: '',
+    nickname: '',
+    profile: '',
+    wordCount: '',
+    shareCount: '',
+    downloadCount: '',
+    recommendCount: '',
+  });
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
   const [isConfirmPopOpen, setIsConfirmPopOpen] = useState(false);
 
+  const setUserInfo = async () => {
+    const { data: response } = await getUserInfo();
+    setMyInfo({
+      username: response.username,
+      nickname: response.nickname,
+      profile: response?.url,
+      wordCount: response.word_count,
+      shareCount: response.share_count,
+      downloadCount: response.download_count,
+      recommendCount: response.recommend_count,
+    });
+  };
+
   useEffect(() => {
-    const setUserInfo = async () => {
-      const { data: response } = await getUserInfo();
-      setUsername(response.username);
-      setNickname(response.nickname);
-      setProfile(response.url);
-    };
     setUserInfo();
     setActiveMenu(3);
   }, []);
@@ -73,34 +81,55 @@ const SettingPage = () => {
   const dummyFunction = () => {};
 
   const ProfilePic = () => {
-    if (profile === undefined) {
-      return <div></div>;
+    if (myinfo.profile === undefined) {
+      return null;
     } else {
-      return <img src={profile} alt="profile" />;
+      return <img src={myinfo.profile} alt="profile" />;
     }
   };
 
   return (
     <WebWrapper>
-      <HeaderWrapper>
-        <SettingText>Setting</SettingText>
+      <Header>
+        <ProfileChange
+          onClick={moveProfilePage}
+          src={iconSetting}
+          alt="ProfileChange"
+        />
+      </Header>
+
+      <UserInfoWrapper>
         <ProfileWrapper>
-          <ImgWrapper>
-            <ProfileImg>
-              <ProfilePic />
-            </ProfileImg>
-            <ProfileChange onClick={moveProfilePage}>프로필변경</ProfileChange>
-          </ImgWrapper>
+          <ProfileImg>
+            <ProfilePic />
+          </ProfileImg>
 
           <ProfileContent>
-            <ProfileNickname>{nickname}</ProfileNickname>
-            <ProfileUsername>{username}</ProfileUsername>
+            <ProfileNickname>{myinfo.nickname}</ProfileNickname>
+            <ProfileUsername>{myinfo.username}</ProfileUsername>
 
             <ProfileNickname>{'단어개수'}</ProfileNickname>
-            <ProfileUsername>{'0/200'}</ProfileUsername>
+            <ProfileUsername>
+              {myinfo.wordCount}/{maxWords}
+            </ProfileUsername>
           </ProfileContent>
         </ProfileWrapper>
-      </HeaderWrapper>
+
+        <ShareInfoWrapper>
+          <ShareInfo>
+            <InfoNumber>{myinfo.shareCount}</InfoNumber>
+            <InfoName>공유단어장</InfoName>
+          </ShareInfo>
+          <ShareInfo>
+            <InfoNumber>{myinfo.downloadCount}</InfoNumber>
+            <InfoName>다운로드 횟수</InfoName>
+          </ShareInfo>
+          <ShareInfo>
+            <InfoNumber>{myinfo.recommendCount}</InfoNumber>
+            <InfoName>추천수</InfoName>
+          </ShareInfo>
+        </ShareInfoWrapper>
+      </UserInfoWrapper>
 
       <ContentWrapper>
         <ConfirmPop
@@ -136,84 +165,112 @@ const WebWrapper = styled.div`
 `;
 
 // 상단 부분
-const HeaderWrapper = styled.header`
+const Header = styled.div`
+  width: 100%;
+  height: 44px;
+  padding-right: 16px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+`;
+
+const ProfileChange = styled.img`
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+const UserInfoWrapper = styled.header`
   width: 100%;
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid black;
-  padding: 30px 30px;
-`;
-
-const SettingText = styled.div`
-  font-size: 36px;
-  font-weight: 300;
-  line-height: 36px;
-  color: #000000;
-  margin-bottom: 45px;
 `;
 
 const ProfileWrapper = styled.div`
   width: 100%;
   display: flex;
-`;
-
-const ImgWrapper = styled.div`
-  width: 96px;
-  display: flex;
-  flex-direction: column;
-  margin-right: 16px;
+  padding: 0 16px;
+  padding-bottom: 16px;
 `;
 
 const ProfileImg = styled.div`
-  width: 96px;
-  height: 96px;
+  width: 78px;
+  height: 78px;
   background: #e0e0e0;
   box-sizing: border-box;
   border: 1px solid #e0e0e0;
   border-radius: 17px;
-  margin-right: 17px;
+  margin-right: 16px;
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
-
+  border-radius: 100%;
+  margin-right: 16px;
   img {
-    width: 96px;
-    border-radius: 17px;
+    width: 100%;
+    border-radius: 100%;
   }
 `;
 
 const ProfileContent = styled.div`
   display: flex;
   flex-direction: column;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%;
+  //flex-shrink: 0;
 `;
 
 const ProfileNickname = styled.div`
-  width: 100%;
-  font-weight: 300;
-  font-size: 20px;
-  line-height: 20px;
-  margin-bottom: 7px;
+  color: ${({ theme }) => theme.colors.gray[800]};
 `;
 
 const ProfileUsername = styled.div`
-  width: 100%;
-  font-weight: 300;
-  font-size: 12px;
-  line-height: 12px;
-  color: #333333;
-  margin-bottom: 25px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.gray[400]};
+  margin-bottom: 4px;
 `;
 
-const ProfileChange = styled.button`
-  width: 95px;
-  height: 31px;
-  background: #7a7a7a;
-  border-radius: 5px;
+const ShareInfoWrapper = styled.div`
+  width: 100%;
+  font-size: 14px;
   font-weight: 300;
-  font-size: 10px;
-  color: white;
-  text-align: center;
+  line-height: 36px;
+  color: black;
+  background-color: ${({ theme }) => theme.colors.gray[100]};
+  padding: 16px;
+
+  display: flex;
+`;
+
+const ShareInfo = styled.div`
+  width: 100%;
+  aspect-ratio: 1/1;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
+
+  & + & {
+    margin-left: 5%;
+  }
+`;
+
+const InfoNumber = styled.div`
+  width: 50%;
+  height: 50%;
+  border-radius: 100%;
+  color: black;
+  background-color: ${({ theme }) => theme.colors.primary[100]};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10%;
+`;
+
+const InfoName = styled.div`
+  line-height: 100%;
 `;
 
 //설정 메뉴
@@ -225,6 +282,7 @@ const ContentWrapper = styled.div`
   scrollbar-width: none;
   -ms-overflow-style: none;
   flex: 1;
+  padding: 0 16px;
 
   ::-webkit-scrollbar {
     display: none;

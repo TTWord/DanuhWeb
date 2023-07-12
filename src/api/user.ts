@@ -37,4 +37,13 @@ export const userAPI = {
 
     return response;
   },
+
+  changePassword: async (oldPassword: string, newPassword: string) => {
+    const response = await instance.patch(`/user/userservice`, {
+      from_password: oldPassword,
+      to_password: newPassword,
+    });
+
+    return response;
+  },
 };

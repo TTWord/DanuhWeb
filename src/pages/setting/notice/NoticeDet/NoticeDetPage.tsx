@@ -1,13 +1,13 @@
 import styled from 'styled-components';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-
-import { globalState } from '@/recoil';
-import backImg from '@/assets/svg/icons/icon-back-button.svg';
+import { useLocation } from 'react-router-dom';
+import backImg from '@/assets/svg/icons/icon-back-gray.svg';
+import useNavigatePop from '@/hooks/useNavigatePop';
 
 const NoticeDetpage = () => {
-  const navigate = useNavigate();
-  const Title = useRecoilValue(globalState.setting.noticeTitle);
+  const navigate = useNavigatePop();
+  const location = useLocation();
+  const title = location.state.title;
+  const content = location.state.content;
 
   const goBack = () => {
     navigate('/setting/notice');
@@ -19,19 +19,10 @@ const NoticeDetpage = () => {
         <BackButton onClick={goBack}>
           <img src={backImg} alt="backImg" />
         </BackButton>
-        {Title}
+        {title}
       </HeaderWrapper>
 
-      <ContentWrapper>
-        공지사항 설명입니다. ㅁ잗러ㅏㅁㅈㄷ러매ㅏ절 ㅁ자덞ㅈ더라ㅐㅁ절
-        ㅁㅈㄷ러ㅑㅏㅈ매러ㅏㅈㅁㄷ래ㅏ ㅁㅈ다렂머ㅏㄹ댐저다ㅐㄹ공지사항
-        설명입니다. ㅁ잗러ㅏㅁㅈㄷ러매ㅏ절 ㅁ자덞ㅈ더라ㅐㅁ절
-        ㅁㅈㄷ러ㅑㅏㅈ매러ㅏㅈㅁㄷ래ㅏ ㅁㅈ다렂머ㅏㄹ댐저다ㅐㄹ공지사항
-        설명입니다. ㅁ잗러ㅏㅁㅈㄷ러매ㅏ절 ㅁ자덞ㅈ더라ㅐㅁ절
-        ㅁㅈㄷ러ㅑㅏㅈ매러ㅏㅈㅁㄷ래ㅏ ㅁㅈ다렂머ㅏㄹ댐저다ㅐㄹ공지사항
-        설명입니다. ㅁ잗러ㅏㅁㅈㄷ러매ㅏ절 ㅁ자덞ㅈ더라ㅐㅁ절
-        ㅁㅈㄷ러ㅑㅏㅈ매러ㅏㅈㅁㄷ래ㅏ ㅁㅈ다렂머ㅏㄹ댐저다ㅐㄹ
-      </ContentWrapper>
+      <ContentWrapper>{content}</ContentWrapper>
     </MainWrapper>
   );
 };
@@ -44,28 +35,28 @@ const MainWrapper = styled.div`
 `;
 
 const HeaderWrapper = styled.div`
-  position: relative;
   width: 100%;
-  height: 50px;
-  border-bottom: 1px solid #666666;
-  font-weight: 500;
+  height: 56px;
+  flex-shrink: 0;
+  padding: 0 16px;
   font-size: 16px;
+  font-weight: 600;
+  line-height: 140%;
   display: flex;
-  justify-content: center;
   align-items: center;
+  color: ${({ theme }) => theme.colors.gray[900]};
 `;
 
 const BackButton = styled.button`
-  position: absolute;
-  left: 20px;
-  img {
-    height: 12px;
-  }
+  margin-right: 16px;
 `;
 
 const ContentWrapper = styled.div`
   width: 100%;
-  padding: 19px 20px 0 20px;
-  font-weight: 300;
-  font-size: 16px;
+  height: 100%;
+  padding: 16px 20px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  color: ${({ theme }) => theme.colors.gray[600]};
 `;

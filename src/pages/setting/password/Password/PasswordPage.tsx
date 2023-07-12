@@ -2,13 +2,54 @@ import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import backIcon from '@/assets/svg/icons/icon-back-gray.svg';
 import useNavigatePop from '@/hooks/useNavigatePop';
+import { useEffect, ChangeEvent } from 'react';
+import useChangePassword from './hooks/useChangePassword';
 
+// 비밀번호 표시 버튼?
 const PasswordPage = () => {
   const navigate = useNavigatePop();
+  const changePassword = useChangePassword();
+
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isOk, setIsOk] = useState(false);
 
   const onBack = () => {
     navigate('/setting');
   };
+
+  const onClickOldPW = (e: ChangeEvent<HTMLInputElement>) => {
+    setOldPassword(e.target.value);
+  };
+
+  const onClickNewPW = (e: ChangeEvent<HTMLInputElement>) => {
+    setNewPassword(e.target.value);
+  };
+
+  const onClickConfirmPW = (e: ChangeEvent<HTMLInputElement>) => {
+    setConfirmPassword(e.target.value);
+  };
+
+  const onClickSubmit = async () => {
+    if (isOk) {
+      changePassword(oldPassword, newPassword);
+      //a123456! a1234567!
+    }
+  };
+
+  useEffect(() => {
+    if (
+      oldPassword.length > 0 &&
+      newPassword.length > 0 &&
+      confirmPassword.length > 0 &&
+      newPassword === confirmPassword
+    ) {
+      setIsOk(true);
+    } else {
+      setIsOk(false);
+    }
+  }, [oldPassword, newPassword, confirmPassword]);
 
   return (
     <WebWrapper>
@@ -19,19 +60,21 @@ const PasswordPage = () => {
       <Content>
         <TypeBox>
           <Type>기존 비밀번호</Type>
-          <InputBox />
+          <InputBox onChange={onClickOldPW} type="password" />
         </TypeBox>
         <TypeBox>
           <Type>신규 비밀번호</Type>
-          <InputBox />
+          <InputBox onChange={onClickNewPW} type="password" />
         </TypeBox>
         <TypeBox>
           <Type>신규 비밀번호 확인</Type>
-          <InputBox />
+          <InputBox onChange={onClickConfirmPW} type="password" />
         </TypeBox>
       </Content>
       <Footer>
-        <SubmitButton>변경하기</SubmitButton>
+        <SubmitButton onClick={onClickSubmit} isActive={isOk}>
+          변경하기
+        </SubmitButton>
       </Footer>
     </WebWrapper>
   );
@@ -101,10 +144,21 @@ const Footer = styled.footer`
   align-items: center;
 `;
 
-const SubmitButton = styled.button`
+const SubmitButton = styled.button<{
+  isActive: boolean;
+}>`
   width: 100%;
   height: 56px;
   background-color: grey;
   color: white;
   font-size: 24px;
+
+  ${({ isActive }) => {
+    return (
+      isActive &&
+      css`
+        background-color: ${({ theme }) => theme.colors.primary.default};
+      `
+    );
+  }}
 `;
