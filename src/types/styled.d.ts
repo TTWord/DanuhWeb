@@ -17,19 +17,24 @@ declare module 'styled-components' {
         900: string;
       };
       black: string;
-
       primary: {
         default: string;
         600: string;
         400: string;
         200: string;
         100: string;
+        hover: string;
+        pressed: string;
+        disabled: string;
       };
       secondary: {
         default: string;
         800: string;
         100: string;
       };
+      error: string;
+      warning: string;
+      success: string;
     };
     fonts: {
       pretendard: string;
