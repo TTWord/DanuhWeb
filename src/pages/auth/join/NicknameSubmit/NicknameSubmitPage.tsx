@@ -1,5 +1,6 @@
 import iconArrowBack from '@/assets/svg/icons/icon-back-button.svg';
 import useNavigatePop from '@/hooks/useNavigatePop';
+import useNavigatePush from '@/hooks/useNavigatePush';
 import { instance } from '@/instance';
 import { globalState } from '@/recoil';
 import { useState } from 'react';
@@ -12,6 +13,8 @@ const NicknameSubmitPage = () => {
   const [error, setError] = useState('');
   const [nickname, setNickname] = useRecoilState(globalState.auth.nickname);
   const [isOk, setIsOk] = useState(false);
+
+  const navigatePush = useNavigatePush();
 
   const { mutateAsync: checkNickname } = useMutation(
     async (nickname: string) => {
@@ -37,12 +40,11 @@ const NicknameSubmitPage = () => {
     }
   };
 
-  const navigate = useNavigate();
   const onNext = () => {
     if (isOk) {
       // 다음 페이지로 이동
 
-      navigate('/auth/join/info');
+      navigatePush('/auth/join/info');
     }
   };
 
