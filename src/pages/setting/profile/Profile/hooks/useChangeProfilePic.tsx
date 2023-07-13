@@ -1,9 +1,9 @@
 import { api } from '@/api';
 import { instance } from '@/instance';
-import { useNavigate } from 'react-router-dom';
+import useNavigatePop from '@/hooks/useNavigatePop';
 
 const useChangeProfilePic = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigatePop();
   const changeProfilePic = async (file: object) => {
     try {
       const { data: response } = await instance.post(

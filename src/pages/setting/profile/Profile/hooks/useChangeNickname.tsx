@@ -1,10 +1,10 @@
 import { api } from '@/api';
 import { AxiosError } from 'axios';
 import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
+import useNavigatePop from '@/hooks/useNavigatePop';
 
 const useChangeNickname = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigatePop();
 
   const changeNickname = async (newNickname: string) => {
     try {
