@@ -12,6 +12,7 @@ module.exports = function webpackConfig(env, args) {
       new HtmlWebpackPlugin({
         filename: 'index.html',
         template: 'public/index.html',
+        favicon: 'public/favicon.ico',
       }),
     ],
     entry: path.join(__dirname, 'src/index.tsx'),
