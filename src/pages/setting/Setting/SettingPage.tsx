@@ -205,8 +205,10 @@ const ProfileImg = styled.div`
   align-items: center;
   border-radius: 100%;
   margin-right: 16px;
+
   img {
     width: 100%;
+    aspect-ratio: 1/1;
     border-radius: 100%;
   }
 `;
