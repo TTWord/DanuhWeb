@@ -24,7 +24,7 @@ const menuList = [
     activeComponent: (
       <StudyMenu fill="#694AC2" stroke="#694AC2" selected={true} />
     ),
-    navigate: '/quiz',
+    navigate: '/learn',
   },
   {
     id: 2,

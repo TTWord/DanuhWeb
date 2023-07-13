@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 
 import StartPage from '@/pages/Start/StartPage';
 import BookRouter from './BookRouter';
-import QuizRouter from './QuizRouter';
+import LearnRouter from './LearnRouter';
 import ShareRouter from './ShareRouter';
 import AuthRouter from './AuthRouter';
 import SettingRouter from './SettingRouter';
@@ -34,8 +34,8 @@ const RouterContainer = () => {
           {/* 단어장 */}
           <Route path={'/book/*'} element={<BookRouter />} />
 
-          {/* 퀴즈 */}
-          <Route path={'/quiz/*'} element={<QuizRouter />} />
+          {/* 학습 (암기 & 퀴즈) */}
+          <Route path={'/learn/*'} element={<LearnRouter />} />
 
           {/* 공유 */}
           <Route path={'/share/*'} element={<ShareRouter />} />
