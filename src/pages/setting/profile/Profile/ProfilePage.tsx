@@ -1,7 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-
 import useGetUserInfo from '@/pages/setting//profile/Profile/hooks/useGetUserInfo';
 import useChangeNickname from '@/pages/setting//profile/Profile/hooks/useChangeNickname';
 import useChangeProfilePic from './hooks/useChangeProfilePic';
