@@ -1,8 +1,8 @@
-import { instance } from '@/instance';
-import { useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import iconOther from '@/assets/svg/icons/icon-other.svg';
+import sharingIcon from '@/assets/svg/icons/icon-sharing.svg';
+import donwloadedIcon from '@/assets/svg/icons/icon-downloaded.svg';
 
 const generateDateText = (dateText: string) => {
   const date = new Date(dateText);
@@ -58,8 +58,12 @@ const BookItem: React.FC<BookItemProps> = ({
       <Strong>{book.name}</Strong>
       <DataCreated>{generateDateText(book.created_at)}</DataCreated>
 
-      {Boolean(book.is_shared) && <IsSharing>공유중</IsSharing>}
-      {Boolean(book.share_id) && <IsDownloaded>다운로드</IsDownloaded>}
+      {Boolean(book.is_shared) && (
+        <IsSharing src={sharingIcon} alt="sharingIcon" />
+      )}
+      {Boolean(book.share_id) && (
+        <IsDownloaded src={donwloadedIcon} alt="donwloadedIcon" />
+      )}
     </Item>
   );
 };
@@ -71,7 +75,7 @@ const Item = styled.div`
   box-sizing: border-box;
   box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
   border-radius: 4px;
-  padding: 20px;
+  padding: 16px;
   padding-bottom: 25px;
   line-height: 1;
   display: flex;
@@ -87,22 +91,25 @@ const Item = styled.div`
 
 const Option = styled.div`
   position: absolute;
-  right: 0;
-  top: 0;
-  padding: 20px;
+  right: 16px;
+  top: 16px;
 `;
 
 const OptionItems = styled.div<{
   isActive: boolean;
 }>`
   position: absolute;
-  right: 0px;
+  right: 16px;
   top: 40px;
   box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
   background-color: white;
   z-index: 1;
   display: none;
   flex-direction: column;
+
+  img {
+    width: 24px;
+  }
 
   ${({ isActive }) =>
     isActive &&
@@ -144,52 +151,17 @@ const P = styled.p`
   padding: 20px;
 `;
 
-const IsSharing = styled(P)`
-  color: red;
-`;
-
-const IsDownloaded = styled(P)`
-  color: green;
-`;
-
-const Span = styled.span`
-  margin-left: 5px;
-  font-size: 12px;
-  font-weight: 500;
-  color: #666666;
-`;
-
-const Status = styled.div`
+const Img = styled.img`
+  width: 24px;
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 10px;
-  background-color: black;
-  border-radius: 0 0 5px 5px;
-  overflow: hidden;
+  right: 12px;
+  bottom: 16px;
 `;
 
-const Gage = styled.div<{
-  percentage: string;
-}>`
-  width: ${({ percentage }) => percentage};
-  height: 100%;
-  overflow: hidden;
+const IsSharing = styled(Img)`
+  //color: red;
 `;
 
-const ColorGage = styled.div<{
-  percentage: string;
-}>`
-  width: 1000%;
-  height: 100%;
-  position: relative;
-  left: calc(-${({ percentage }) => percentage} * 10 + 100%);
-  background: linear-gradient(
-    90deg,
-    #db5f5f 0%,
-    #df0a0a 50%,
-    #9f3ed3 75%,
-    #2316ce 100%
-  );
+const IsDownloaded = styled(Img)`
+  //color: green;
 `;
