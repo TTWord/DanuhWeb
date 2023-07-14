@@ -14,13 +14,14 @@ const lightTheme: DefaultTheme = {
       800: '#2E3038',
       900: '#191B23',
     },
-    black: '#000000',
+    black: '#111111',
     primary: {
-      default: '#734AE8',
-      600: '#8F6CF3',
-      400: '#CBBDF3',
-      200: '#E3DBFB',
-      100: '#F1ECFF',
+      800: '#5C50EB',
+      default: '#6E5FED',
+      600: '#8A77EF',
+      400: '#CAC0FF',
+      200: '#DFD9FF',
+      100: '#F0EDFF',
       hover: '#8865EB',
       pressed: '#9677EE',
       disabled: '#C4BFD2',
@@ -37,6 +38,148 @@ const lightTheme: DefaultTheme = {
   fonts: {
     pretendard: 'Pretendard',
     gmarketSans: 'GmarketSans',
+  },
+  typography: {
+    gmarketSans: {
+      md: {
+        18: {
+          fontFamily: 'GmarketSans',
+          fontSize: '18px',
+          lineHeight: '1.4',
+          fontWeight: '500',
+        },
+        14: {
+          fontFamily: 'GmarketSans',
+          fontSize: '14px',
+          lineHeight: '1.4',
+          fontWeight: '500',
+        },
+        12: {
+          fontFamily: 'GmarketSans',
+          fontSize: '12px',
+          lineHeight: '1.4',
+          fontWeight: '500',
+        },
+      },
+    },
+    pretendard: {
+      t1: {
+        sbd: {
+          fontFamily: 'Pretendard',
+          fontSize: '20px',
+          fontWeight: '600',
+          lineHeight: '1.4',
+        },
+      },
+      t2: {
+        sbd: {
+          fontFamily: 'Pretendard',
+          fontSize: '18px',
+          fontWeight: '600',
+          lineHeight: '1.4',
+        },
+        md: {
+          fontFamily: 'Pretendard',
+          fontSize: '18px',
+          fontWeight: '500',
+          lineHeight: '1.4',
+        },
+      },
+      t3: {
+        bd: {
+          fontFamily: 'Pretendard',
+          fontSize: '16px',
+          fontWeight: '700',
+          lineHeight: '1.4',
+        },
+        sbd: {
+          fontFamily: 'Pretendard',
+          fontSize: '16px',
+          fontWeight: '600',
+          lineHeight: '1.4',
+        },
+        md: {
+          fontFamily: 'Pretendard',
+          fontSize: '16px',
+          fontWeight: '500',
+          lineHeight: '1.4',
+        },
+      },
+      t4: {
+        sbd: {
+          fontFamily: 'Pretendard',
+          fontSize: '15px',
+          fontWeight: '600',
+          lineHeight: '1.4',
+        },
+        md: {
+          fontFamily: 'Pretendard',
+          fontSize: '15px',
+          fontWeight: '500',
+          lineHeight: '1.4',
+        },
+      },
+      b1: {
+        bd: {
+          fontFamily: 'Pretendard',
+          fontSize: '14px',
+          fontWeight: '700',
+          lineHeight: '1.4',
+        },
+        sbd: {
+          fontFamily: 'Pretendard',
+          fontSize: '14px',
+          fontWeight: '600',
+          lineHeight: '1.4',
+        },
+        md: {
+          fontFamily: 'Pretendard',
+          fontSize: '14px',
+          fontWeight: '500',
+          lineHeight: '1.4',
+        },
+        rg: {
+          fontFamily: 'Pretendard',
+          fontSize: '14px',
+          fontWeight: '400',
+          lineHeight: '1.4',
+        },
+      },
+      c1: {
+        sbd: {
+          fontFamily: 'Pretendard',
+          fontSize: '13px',
+          fontWeight: '600',
+          lineHeight: '1.4',
+        },
+        md: {
+          fontFamily: 'Pretendard',
+          fontSize: '13px',
+          fontWeight: '500',
+          lineHeight: '1.4',
+        },
+        rg: {
+          fontFamily: 'Pretendard',
+          fontSize: '13px',
+          fontWeight: '400',
+          lineHeight: '1.4',
+        },
+      },
+      c2: {
+        sbd: {
+          fontFamily: 'Pretendard',
+          fontSize: '12px',
+          fontWeight: '600',
+          lineHeight: '1.4',
+        },
+        rg: {
+          fontFamily: 'Pretendard',
+          fontSize: '12px',
+          fontWeight: '400',
+          lineHeight: '1.4',
+        },
+      },
+    },
   },
 };
 
@@ -54,13 +197,14 @@ const darkTheme: DefaultTheme = {
       800: '#2E3038',
       900: '#191B23',
     },
-    black: '#000000',
+    black: '#111111',
     primary: {
-      default: '#734AE8',
-      600: '#8F6CF3',
-      400: '#CBBDF3',
-      200: '#E3DBFB',
-      100: '#F1ECFF',
+      800: '#5C50EB',
+      default: '#6E5FED',
+      600: '#8A77EF',
+      400: '#CAC0FF',
+      200: '#DFD9FF',
+      100: '#F0EDFF',
       hover: '#8865EB',
       pressed: '#9677EE',
       disabled: '#C4BFD2',
@@ -77,6 +221,148 @@ const darkTheme: DefaultTheme = {
   fonts: {
     pretendard: 'Pretendard',
     gmarketSans: 'GmarketSans',
+  },
+  typography: {
+    gmarketSans: {
+      md: {
+        18: {
+          fontFamily: 'GmarketSans',
+          fontSize: '18px',
+          lineHeight: '1.4',
+          fontWeight: '500',
+        },
+        14: {
+          fontFamily: 'GmarketSans',
+          fontSize: '14px',
+          lineHeight: '1.4',
+          fontWeight: '500',
+        },
+        12: {
+          fontFamily: 'GmarketSans',
+          fontSize: '12px',
+          lineHeight: '1.4',
+          fontWeight: '500',
+        },
+      },
+    },
+    pretendard: {
+      t1: {
+        sbd: {
+          fontFamily: 'Pretendard',
+          fontSize: '20px',
+          fontWeight: '600',
+          lineHeight: '1.4',
+        },
+      },
+      t2: {
+        sbd: {
+          fontFamily: 'Pretendard',
+          fontSize: '18px',
+          fontWeight: '600',
+          lineHeight: '1.4',
+        },
+        md: {
+          fontFamily: 'Pretendard',
+          fontSize: '18px',
+          fontWeight: '500',
+          lineHeight: '1.4',
+        },
+      },
+      t3: {
+        bd: {
+          fontFamily: 'Pretendard',
+          fontSize: '16px',
+          fontWeight: '700',
+          lineHeight: '1.4',
+        },
+        sbd: {
+          fontFamily: 'Pretendard',
+          fontSize: '16px',
+          fontWeight: '600',
+          lineHeight: '1.4',
+        },
+        md: {
+          fontFamily: 'Pretendard',
+          fontSize: '16px',
+          fontWeight: '500',
+          lineHeight: '1.4',
+        },
+      },
+      t4: {
+        sbd: {
+          fontFamily: 'Pretendard',
+          fontSize: '15px',
+          fontWeight: '600',
+          lineHeight: '1.4',
+        },
+        md: {
+          fontFamily: 'Pretendard',
+          fontSize: '15px',
+          fontWeight: '500',
+          lineHeight: '1.4',
+        },
+      },
+      b1: {
+        bd: {
+          fontFamily: 'Pretendard',
+          fontSize: '14px',
+          fontWeight: '700',
+          lineHeight: '1.4',
+        },
+        sbd: {
+          fontFamily: 'Pretendard',
+          fontSize: '14px',
+          fontWeight: '600',
+          lineHeight: '1.4',
+        },
+        md: {
+          fontFamily: 'Pretendard',
+          fontSize: '14px',
+          fontWeight: '500',
+          lineHeight: '1.4',
+        },
+        rg: {
+          fontFamily: 'Pretendard',
+          fontSize: '14px',
+          fontWeight: '400',
+          lineHeight: '1.4',
+        },
+      },
+      c1: {
+        sbd: {
+          fontFamily: 'Pretendard',
+          fontSize: '13px',
+          fontWeight: '600',
+          lineHeight: '1.4',
+        },
+        md: {
+          fontFamily: 'Pretendard',
+          fontSize: '13px',
+          fontWeight: '500',
+          lineHeight: '1.4',
+        },
+        rg: {
+          fontFamily: 'Pretendard',
+          fontSize: '13px',
+          fontWeight: '400',
+          lineHeight: '1.4',
+        },
+      },
+      c2: {
+        sbd: {
+          fontFamily: 'Pretendard',
+          fontSize: '12px',
+          fontWeight: '600',
+          lineHeight: '1.4',
+        },
+        rg: {
+          fontFamily: 'Pretendard',
+          fontSize: '12px',
+          fontWeight: '400',
+          lineHeight: '1.4',
+        },
+      },
+    },
   },
 };
 
