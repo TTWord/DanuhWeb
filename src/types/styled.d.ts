@@ -19,6 +19,7 @@ declare module 'styled-components' {
       black: string;
       primary: {
         default: string;
+        800: string;
         600: string;
         400: string;
         200: string;
@@ -39,6 +40,151 @@ declare module 'styled-components' {
     fonts: {
       pretendard: string;
       gmarketSans: string;
+    };
+    typography: {
+      gmarketSans: {
+        md: {
+          18: {
+            fontFamily: string;
+            fontSize: string;
+            lineHeight: string;
+            fontWeight: string;
+          };
+          14: {
+            fontFamily: string;
+            fontSize: string;
+            lineHeight: string;
+            fontWeight: string;
+          };
+          12: {
+            fontFamily: string;
+            fontSize: string;
+            lineHeight: string;
+            fontWeight: string;
+          };
+        };
+      };
+      pretendard: {
+        t1: {
+          sbd: {
+            fontFamily: string;
+            fontSize: string;
+            lineHeight: string;
+            fontWeight: string;
+          };
+        };
+        t2: {
+          sbd: {
+            fontFamily: string;
+            fontSize: string;
+            lineHeight: string;
+            fontWeight: string;
+          };
+          md: {
+            fontFamily: string;
+            fontSize: string;
+            lineHeight: string;
+            fontWeight: string;
+          };
+        };
+        t3: {
+          bd: {
+            fontFamily: string;
+            fontSize: string;
+            lineHeight: string;
+            fontWeight: string;
+          };
+          sbd: {
+            fontFamily: string;
+            fontSize: string;
+            lineHeight: string;
+            fontWeight: string;
+          };
+          md: {
+            fontFamily: string;
+            fontSize: string;
+            lineHeight: string;
+            fontWeight: string;
+          };
+        };
+        t4: {
+          sbd: {
+            fontFamily: string;
+            fontSize: string;
+            lineHeight: string;
+            fontWeight: string;
+          };
+          md: {
+            fontFamily: string;
+            fontSize: string;
+            lineHeight: string;
+            fontWeight: string;
+          };
+        };
+        b1: {
+          bd: {
+            fontFamily: string;
+            fontSize: string;
+            lineHeight: string;
+            fontWeight: string;
+          };
+
+          sbd: {
+            fontFamily: string;
+            fontSize: string;
+            lineHeight: string;
+            fontWeight: string;
+          };
+          md: {
+            fontFamily: string;
+            fontSize: string;
+            lineHeight: string;
+            fontWeight: string;
+          };
+          rg: {
+            fontFamily: string;
+            fontSize: string;
+            lineHeight: string;
+            fontWeight: string;
+          };
+        };
+
+        c1: {
+          sbd: {
+            fontFamily: string;
+            fontSize: string;
+            lineHeight: string;
+            fontWeight: string;
+          };
+          md: {
+            fontFamily: string;
+            fontSize: string;
+            lineHeight: string;
+            fontWeight: string;
+          };
+          rg: {
+            fontFamily: string;
+            fontSize: string;
+            lineHeight: string;
+            fontWeight: string;
+          };
+        };
+
+        c2: {
+          sbd: {
+            fontFamily: string;
+            fontSize: string;
+            lineHeight: string;
+            fontWeight: string;
+          };
+          rg: {
+            fontFamily: string;
+            fontSize: string;
+            lineHeight: string;
+            fontWeight: string;
+          };
+        };
+      };
     };
   }
 }
