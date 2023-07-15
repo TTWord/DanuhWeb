@@ -6,7 +6,6 @@ import { globalState } from '@/recoil';
 import { api } from '@/api';
 import { AxiosError } from 'axios';
 import Swal from 'sweetalert2';
-import mascot from '@/assets/svg/logos/logo-character.svg';
 import iconMemo from '@/assets/svg/icons/icon-memo.svg';
 import iconBook from '@/assets/svg/icons/icon-book-new.svg';
 import iconDrawer from '@/assets/svg/icons/icon-drawer.svg';
@@ -59,7 +58,7 @@ const WelcomePage = () => {
         <>
           <UserNameText>
             <UserName>{userNickname}</UserName>
-            <div>님,</div>
+            <Span>님,</Span>
           </UserNameText>
           <Welcome>환영합니다</Welcome>
 
@@ -96,16 +95,14 @@ const WebWrapper = styled.div`
   justify-content: center;
   align-items: flex-start;
   position: relative;
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
 `;
 
 const UserNameText = styled.div`
-  color: #333333;
   display: flex;
-  font-family: ${({ theme }) => theme.fonts.gmarketSans};
   font-size: 24px;
   font-style: normal;
   font-weight: 500;
-  line-height: normal;
   color: ${({ theme }) => theme.colors.gray[700]};
   opacity: 0;
   animation: ${fadeIn} 1.5s linear forwards;
@@ -117,6 +114,13 @@ const UserName = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const Span = styled.span`
+  color: ${({ theme }) => theme.colors.gray[700]};
+  line-height: 100%;
+  display: flex;
+  align-items: end;
 `;
 
 const Welcome = styled.div`
