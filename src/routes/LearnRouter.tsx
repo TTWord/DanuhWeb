@@ -5,14 +5,11 @@ import BlindMemoPage from '@/pages/learn/memo/blind/Blind/BlindMemoPage';
 import QuizMainPage from '@/pages/learn/quiz/Quiz/QuizMainPage';
 import ChoiceSelectPage from '@/pages/learn/quiz/select/ChoiceSelectPage';
 import ChoiceBlindPage from '@/pages/learn/quiz/blind/choice/ChoiceBlindPage';
-import ShortAnswerPage from '@/pages/learn/quiz/typing/ShortAnswerPage';
+import ShortTypingPage from '@/pages/learn/quiz/typing/ShortTypingPage';
 import ShortBlindPage from '@/pages/learn/quiz/blind/shortanswer/ShortBlindPage';
-
 import ResultPage from '@/pages/learn/result/Result/ResultPage';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import RootLayout from '@/components/layout/RootLayout';
-
-import Test from '@/pages/test/Test';
 
 const QuizRouter = () => {
   const location = useLocation();
@@ -47,16 +44,13 @@ const QuizRouter = () => {
             {/* 퀴즈 단어장 선택 페이지 */}
             <Route path={'/'} element={<QuizMainPage />} />
             {/* 객관식 Select 문제 페이지 */}
-            <Route path={'/select/:id'} element={<ChoiceSelectPage />} />
+            <Route path={'/select'} element={<ChoiceSelectPage />} />
             {/* 객관식 Blind 문제 페이지 */}
-            <Route path={'/blind/choice/:id'} element={<ChoiceBlindPage />} />
+            <Route path={'/blind/choice'} element={<ChoiceBlindPage />} />
             {/* 주관식 Typing 문제 페이지 */}
-            <Route path={'/typing/:id'} element={<ShortAnswerPage />} />
+            <Route path={'/typing'} element={<ShortTypingPage />} />
             {/* 주관식 Blind 문제 페이지 */}
-            <Route
-              path={'/blind/shortanswer/:id'}
-              element={<ShortBlindPage />}
-            />
+            <Route path={'/blind/shortanswer'} element={<ShortBlindPage />} />
           </Routes>
         }
       />
