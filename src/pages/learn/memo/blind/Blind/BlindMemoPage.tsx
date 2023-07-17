@@ -1,36 +1,33 @@
 import styled from 'styled-components';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import iconClose from '@/assets/svg/icons/icon-close.svg';
-
-import { globalState } from '@/recoil';
-import { useRecoilValue } from 'recoil';
 import { useEffect, useState } from 'react';
 import ConfirmPop from '@/components/common/popup/ConfirmPop';
-import useGetBlindQuiz from './hooks/useGetBlindQuiz';
+import useGetBlindMemo from '@/pages/learn/memo/blind/Blind/hooks/useGetBlindMemo';
 
 const BlindMemoPage = () => {
   const navigate = useNavigate();
-  const getBlind = useGetBlindQuiz();
-  const { id } = useParams();
-  const [searchParams, setSearchParams] = useSearchParams();
-
+  const location = useLocation();
+  const { bookIds, mode } = location.state as {
+    bookIds: number[];
+    mode: 'word' | 'mean';
+  };
+  const getBlind = useGetBlindMemo();
   const [memoList, setMemoList] = useState([
     {
       word: '',
       mean: '',
     },
-  ]); //[...useRecoilValue(globalState.memo.memoList)];
+  ]);
 
   const [isConfirmPopOpen, setIsConfirmPopOpen] = useState(false);
   const [pageNum, setPageNum] = useState(0);
   const [showWord, setShowWord] = useState(false);
-  const memorizedFilter = false;
 
   const getBlindAPI = async () => {
     const { data: response } = await getBlind({
-      bookIds: String(id),
+      bookIds,
       count: 10,
-      memorizedFilter,
     });
     const data = response.problem;
 
@@ -43,10 +40,10 @@ const BlindMemoPage = () => {
   };
 
   useEffect(() => {
-    if (id && searchParams) {
+    if (bookIds) {
       getBlindAPI();
     }
-  }, [id, searchParams]);
+  }, [bookIds]);
 
   // 나가기 기능
   const onExitQuiz = () => {
@@ -71,9 +68,7 @@ const BlindMemoPage = () => {
     }
   };
 
-  if (memoList.length === 0 || !searchParams.get('mode')) return null;
-
-  const mode = searchParams.get('mode');
+  if (memoList.length === 0 || !mode) return null;
 
   return (
     <Container>
@@ -85,7 +80,11 @@ const BlindMemoPage = () => {
         onCancel={() => setIsConfirmPopOpen(false)}
         onConfirm={() => {
           setIsConfirmPopOpen(false);
-          navigate('/learn/blind');
+          navigate('/learn/memo', {
+            state: {
+              type: 'blind',
+            },
+          });
         }}
       />
       <Header>

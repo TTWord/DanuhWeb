@@ -1,7 +1,5 @@
 import { api } from '@/api';
 import Swal from 'sweetalert2';
-import { globalState } from '@/recoil';
-import { useSetRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 
