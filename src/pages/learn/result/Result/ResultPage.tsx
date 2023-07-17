@@ -1,30 +1,64 @@
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { api } from '@/api';
+import { useEffect, useState } from 'react';
 
 const ResultPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const answer: number = location?.state?.answer;
-  const length: number = location?.state?.length;
-  const memorize: number = location?.state?.memorize;
-  // 진행하던 퀴즈 페이지로 이동하는 용도
-  const quizType: string = location?.state?.quizType;
+  const { bookIds, correct, count, quizType } = location.state as {
+    bookIds: number[];
+    correct: number;
+    count: number;
+    quizType: string;
+  };
 
-  const targetBook: string = '전체';
-  const totalWord: number = 0;
-  const percentage: number =
-    length === (0 || undefined) ? 0 : (answer * 100) / length;
-  const memoryRates: number =
-    length === (0 || undefined) ? 0 : (memorize * 100) / length;
+  const [resultInfo, setResultInfo] = useState({
+    targetBook: '없음',
+    totalWords: 0,
+    answer: 0,
+    length: 0,
+    percentage: '0',
+    memoryRates: 0,
+  });
 
   const goQuiz = () => {
     if (quizType === undefined) {
       navigate(`/learn`);
     } else {
-      navigate(`/learn/${quizType}`);
+      navigate(`/learn/quiz`, {
+        state: {
+          type: quizType,
+        },
+      });
     }
   };
+
+  const getResult = async () => {
+    try {
+      const { data: response } = await api.memo.getResult({
+        bookIds,
+        correct,
+        count,
+      });
+
+      setResultInfo({
+        targetBook: response.books,
+        totalWords: response.total_count,
+        answer: correct,
+        length: response.count,
+        percentage: response.correct_prob,
+        memoryRates: response.memorized_count / response.total_count,
+      });
+    } catch (e: unknown) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getResult();
+  }, []);
 
   return (
     <MainWrapper>
@@ -33,32 +67,32 @@ const ResultPage = () => {
       <Container>
         <TargetBook>
           대상 단어장
-          <span>{targetBook}</span>
+          <span>{resultInfo.targetBook}</span>
         </TargetBook>
 
         <TotalWord>
           단어
-          <span>{totalWord}개</span>
+          <span>{resultInfo.totalWords}개</span>
         </TotalWord>
 
         <QuizWords>
           암기 단어
-          <span>{length}개</span>
+          <span>{resultInfo.length}개</span>
         </QuizWords>
 
         <AnswerWords>
           정답 단어
-          <span>{answer}개</span>
+          <span>{resultInfo.answer}개</span>
         </AnswerWords>
 
         <AnswerRates>
           정답률
-          <span>{percentage}%</span>
+          <span>{resultInfo.percentage}</span>
         </AnswerRates>
 
         <MemoryRates>
           암기률
-          <span>{memoryRates}%</span>
+          <span>{resultInfo.memoryRates}%</span>
         </MemoryRates>
       </Container>
 
