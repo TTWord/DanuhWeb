@@ -22,8 +22,7 @@ interface IBook extends IBookResponse {
 const MemoMainPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const state = location.state;
-  console.log(state);
+  const memoType = location.state.type;
 
   const { data: response } = useQuery('FlashCard/GetBooks', async () => {
     const response = await api.book.getBook();
@@ -76,14 +75,14 @@ const MemoMainPage = () => {
     }
 
     if (mode === 'word') {
-      navigate(`/learn/memo/flashcard`, {
+      navigate(`/learn/memo/${memoType}`, {
         state: {
           bookIds: books.filter(item => item.isSelected).map(item => item.id),
           mode: 'word',
         },
       });
     } else {
-      navigate(`/learn/memo/flashcard`, {
+      navigate(`/learn/memo/${memoType}`, {
         state: {
           bookIds: books.filter(item => item.isSelected).map(item => item.id),
           mode: 'mean',

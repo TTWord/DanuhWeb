@@ -1,22 +1,15 @@
 import { instance } from '@/instance';
 
+interface quizParams {
+  bookIds: number[];
+  count: number;
+  memorizedFilter: boolean;
+}
+
 export const quizAPI = {
-  getShortQuiz: async (bookId: string, number: number) => {
+  getTypingQuiz: async ({ bookIds, count, memorizedFilter }: quizParams) => {
     const response = await instance.post('/quiz/shortform', {
-      book_id: bookId,
-      number,
-    });
-
-    return response;
-  },
-
-  getChoiceQuiz: async (
-    bookIds: string,
-    count: number,
-    memorizedFilter: boolean,
-  ) => {
-    const response = await instance.post('/quiz/multiple', {
-      book_ids: bookIds,
+      book_ids: bookIds.join('&'),
       count,
       memorized_filter: memorizedFilter,
     });
@@ -24,13 +17,19 @@ export const quizAPI = {
     return response;
   },
 
-  getBlindQuiz: async (
-    bookIds: string,
-    count: number,
-    memorizedFilter: boolean,
-  ) => {
+  getSelectQuiz: async ({ bookIds, count, memorizedFilter }: quizParams) => {
     const response = await instance.post('/quiz/multiple', {
-      book_ids: bookIds,
+      book_ids: bookIds.join('&'),
+      count,
+      memorized_filter: memorizedFilter,
+    });
+
+    return response;
+  },
+
+  getBlindQuiz: async ({ bookIds, count, memorizedFilter }: quizParams) => {
+    const response = await instance.post('/quiz/blind', {
+      book_ids: bookIds.join('&'),
       count,
       memorized_filter: memorizedFilter,
     });

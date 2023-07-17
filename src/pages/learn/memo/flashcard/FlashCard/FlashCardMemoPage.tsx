@@ -1,44 +1,43 @@
 import styled from 'styled-components';
-import {
-  useLocation,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import iconClose from '@/assets/svg/icons/icon-close.svg';
-
-import { globalState } from '@/recoil';
-import { useRecoilValue } from 'recoil';
 import { useEffect, useState } from 'react';
 import ConfirmPop from '@/components/common/popup/ConfirmPop';
-import useGetMemorizeWord from './hooks/useGetMemo';
+import useGetFlashcardMemo from './hooks/useGetFlashcardMemo';
 
 const FlashCardMemoPage = () => {
   const navigate = useNavigate();
-  const getMemo = useGetMemorizeWord();
+  const getMemo = useGetFlashcardMemo();
   const location = useLocation();
+  const count = 10; // 옵션으로 빼야함
 
   const { bookIds, mode } = location.state as {
     bookIds: number[];
     mode: 'word' | 'mean';
   };
 
-  const memoList = [...useRecoilValue(globalState.memo.memoList)];
+  const [memoList, setMemoList] = useState([
+    { is_memorized: 0, mean: '', word: '' },
+  ]);
 
   const [isConfirmPopOpen, setIsConfirmPopOpen] = useState(false);
   const [pageNum, setPageNum] = useState(0);
   const [showWord, setShowWord] = useState(false);
 
+  const getMemoList = async () => {
+    const { data: response } = await getMemo({ bookIds, count });
+    setMemoList(response.words);
+  };
+
   useEffect(() => {
     if (bookIds) {
-      getMemo({ bookIds, count: 10 });
+      getMemoList();
     }
   }, [bookIds]);
 
   // 나가기 기능
   const onExitQuiz = () => {
     setIsConfirmPopOpen(true);
-    // navigate('/learn/flashcard');
   };
 
   const onNext = () => {
@@ -49,7 +48,11 @@ const FlashCardMemoPage = () => {
 
     if (showWord) {
       if (pageNum === memoList.length - 1) {
-        navigate('/learn/flashcard');
+        navigate('/learn/memo', {
+          state: {
+            type: 'flashcard',
+          },
+        });
         return;
       }
 
@@ -70,7 +73,11 @@ const FlashCardMemoPage = () => {
         onCancel={() => setIsConfirmPopOpen(false)}
         onConfirm={() => {
           setIsConfirmPopOpen(false);
-          navigate('/learn/flashcard');
+          navigate('/learn/memo', {
+            state: {
+              type: 'flashcard',
+            },
+          });
         }}
       />
       <Header>

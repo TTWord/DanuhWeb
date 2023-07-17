@@ -22,8 +22,9 @@ interface IBook extends IBookResponse {
 const QuizMainPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const state = location.state;
-  console.log(state);
+  const quizType = location.state.type;
+  const count = 10;
+  const memorizedFilter = false;
 
   const { data: response } = useQuery('FlashCard/GetBooks', async () => {
     const response = await api.book.getBook();
@@ -76,17 +77,21 @@ const QuizMainPage = () => {
     }
 
     if (mode === 'word') {
-      navigate(`/learn/memo/flashcard`, {
+      navigate(`/learn/quiz/${quizType}`, {
         state: {
           bookIds: books.filter(item => item.isSelected).map(item => item.id),
           mode: 'word',
+          count,
+          memorizedFilter,
         },
       });
     } else {
-      navigate(`/learn/memo/flashcard`, {
+      navigate(`/learn/quiz/${quizType}`, {
         state: {
           bookIds: books.filter(item => item.isSelected).map(item => item.id),
           mode: 'mean',
+          count,
+          memorizedFilter,
         },
       });
     }

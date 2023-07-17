@@ -6,24 +6,18 @@ import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 
 interface getBlindParams {
-  bookIds: string;
+  bookIds: number[];
   count: number;
-  memorizedFilter: boolean;
 }
 
-const useGetBlindQuiz = () => {
+const useGetBlindMemo = () => {
   const navigate = useNavigate();
 
-  const getBlind = async ({
-    bookIds,
-    count,
-    memorizedFilter,
-  }: getBlindParams) => {
+  const getBlind = async ({ bookIds, count }: getBlindParams) => {
     try {
       const { data: response } = await api.memo.getBlindWords({
         bookIds,
         count,
-        memorizedFilter,
       });
 
       return response;
@@ -44,4 +38,4 @@ const useGetBlindQuiz = () => {
   return getBlind;
 };
 
-export default useGetBlindQuiz;
+export default useGetBlindMemo;

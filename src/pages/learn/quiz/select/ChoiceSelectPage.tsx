@@ -1,18 +1,11 @@
 import styled from 'styled-components';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { AxiosError } from 'axios';
 import { api } from '@/api';
-import Swal from 'sweetalert2';
+import useGetSelectQuiz from './hooks/useGetSelectQuiz';
 import useToast from '@/hooks/useToast';
-import xButton from '@/assets/svg/icons/icon-x-button.svg';
 import CheckSVG from '../common/svg/CheckSVG';
-
-interface IGetQuiz {
-  bookId: string;
-  count: number;
-  memorizedFilter: boolean;
-}
+import QuizHeader from '../common/components/QuizHeader';
 
 interface IAnswerData {
   mean: string;
@@ -21,8 +14,16 @@ interface IAnswerData {
 
 const ChoiceSelectPage = () => {
   //// hooks ////
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { bookIds, mode, count, memorizedFilter } = location.state as {
+    bookIds: number[];
+    mode: 'word' | 'mean';
+    count: number;
+    memorizedFilter: boolean;
+  };
+
+  const getQuiz = useGetSelectQuiz();
   const toast = useToast();
   //// Varaiables ////
   // Timer Vars
@@ -30,13 +31,9 @@ const ChoiceSelectPage = () => {
   const [timer, setTimer] = useState(0);
 
   // Quiz Api Vars
-  const bookId = String(useParams().id);
-  const memorizedFilter: boolean = false;
-  const count: number = 10; // 퀴즈페이지의 단어장 선택 시 넘겨줄 것
   const [isLoading, setIsLoading] = useState(true);
   const [problems, setProblems] = useState([]); // 전체 문제
-  const [length, setLength] = useState(0); // 문제 길이 //useRecoilState(globalState.quiz.quizCount);
-  const mode = searchParams.get('mode');
+  const [length, setLength] = useState(0); // 문제 길이
 
   // Extract Quiz Vars
   // 현재 문제 목록
@@ -51,60 +48,14 @@ const ChoiceSelectPage = () => {
   const [currentMemorize, setCurrentMemorize] = useState(false);
 
   // Result Vars
-  const [result, setResult] = useState(0); // 맞춘 정답수 //useRecoilState(globalState.quiz.result);
-  const [isMemorize, setMemorized] = useState(0); // 암기 체크수 // useRecoilState(globalState.quiz.memorize); // recoil 변수 추가
+  const [result, setResult] = useState(0); // 맞춘 정답수
 
   // Components Vars
   const [number, setNumber] = useState(0); // 문제 진행도
-  const [isCheck, setIsCheck] = useState(false); // 암기 체크 여부
   const [isAnswered, setIsAnswered] = useState(false); // 정답 화면 표기용
   const [isCorrect, setIsCorrect] = useState(false); // 위 변수 통합용(체크 or 타임 아웃)
 
   //// Functions ////
-  const goChoice = () => {
-    navigate('/learn/choice');
-  };
-
-  // 퀴즈 API
-  const getQuizAPI = async ({ bookId, count, memorizedFilter }: IGetQuiz) => {
-    try {
-      const { data: response } = await api.quiz.getChoiceQuiz(
-        bookId,
-        count,
-        memorizedFilter,
-      );
-
-      if (response.status === 'OK') {
-        setIsLoading(false);
-        const getData = response.data.problem;
-
-        setProblems(getData);
-        setLength(getData.length);
-        extractQuiz(getData, number);
-      }
-    } catch (e: unknown) {
-      const err = e as AxiosError<{
-        message: string;
-      }>;
-      const errorMessage = err?.response?.data.message;
-      let swalMessage: string = '';
-      switch (errorMessage) {
-        case 'BOOK_NOT_FOUND':
-          swalMessage = '단어장이 선택되지 않았습니다';
-          break;
-        case 'WORD_LESS_THAN_COUNT':
-          swalMessage = '단어의 개수가 4개 미만입니다';
-          break;
-      }
-      Swal.fire({
-        icon: 'error',
-        title: swalMessage,
-      }).then(() => {
-        goChoice();
-      });
-    }
-  };
-
   // 문제 가져오기
   const extractQuiz = (value: any, number: number) => {
     const result = value[number];
@@ -118,15 +69,34 @@ const ChoiceSelectPage = () => {
     }
   };
 
+  // 퀴즈 API
+  const getQuizAPI = async () => {
+    const { data: response } = await getQuiz({
+      bookIds,
+      count,
+      memorizedFilter,
+    });
+    const getData = response.problem;
+
+    setProblems(getData);
+    setLength(getData.length);
+    extractQuiz(getData, number);
+    setIsLoading(false);
+  };
+
   // 문항 선택 버튼에서 사용할 함수
   const selectAnswer = (select: string) => {
-    if (select === currentAnswer?.mean) {
+    if (mode === 'word' && select === currentAnswer?.mean) {
+      setResult(current => current + 1);
+      setIsCorrect(true);
+    }
+    if (mode === 'mean' && select === currentAnswer?.word) {
       setResult(current => current + 1);
       setIsCorrect(true);
     }
   };
 
-  // 체크버튼 함수
+  // 체크버튼 함수 // 여기도 훅 뺄거임
   const onClickCheckButton = async () => {
     setCurrentMemorize(current => !current);
 
@@ -155,10 +125,10 @@ const ChoiceSelectPage = () => {
     if (number + 1 === length) {
       navigate('/learn/result', {
         state: {
-          length: length,
-          answer: result,
-          memorize: 0, // 값 넣어야함
-          quizType: 'choice',
+          bookIds,
+          count,
+          correct: result,
+          quizType: 'select',
         },
       });
     }
@@ -167,11 +137,7 @@ const ChoiceSelectPage = () => {
   //// useEffects ////
   // 객관식 퀴즈 가져옴
   useEffect(() => {
-    getQuizAPI({
-      bookId,
-      count,
-      memorizedFilter,
-    });
+    getQuizAPI();
   }, []);
 
   // 가져온 퀴즈를 화면에 뿌려줌
@@ -181,7 +147,7 @@ const ChoiceSelectPage = () => {
 
   // 타이머
   useEffect(() => {
-    if (!isAnswered) {
+    if (!isAnswered && problems) {
       const timeOutId = setTimeout(() => {
         if (timer !== 10000) {
           setTimer(current => current + 500);
@@ -197,7 +163,6 @@ const ChoiceSelectPage = () => {
   }, [timer, isAnswered]);
 
   //// Components ////
-
   const CreateChoiceButtons = (props: any) => {
     return (
       <ChoiceButton
@@ -217,24 +182,13 @@ const ChoiceSelectPage = () => {
 
       {!isLoading && (
         <>
-          <Header>
-            <TitleWrapper>
-              <button onClick={goChoice}>
-                <img src={xButton} alt="" />
-              </button>
-              <Title>문제풀기</Title>
-            </TitleWrapper>
-
-            <ProgressWrapper>
-              <ProgressBar value={(number + 1) * (100 / length)} max={100} />
-
-              <ProgressIndex>
-                {number + 1}/{length}
-              </ProgressIndex>
-
-              <ProgressTime value={(timer / timeMax) * 100} max={100} />
-            </ProgressWrapper>
-          </Header>
+          <QuizHeader
+            type={'select'}
+            number={number}
+            total={length}
+            timer={timer}
+            timeMax={timeMax}
+          />
 
           <Content>
             {/* 문제 컴포넌트 */}
@@ -317,35 +271,6 @@ const Loading = styled.div`
   align-items: center;
 `;
 
-const Header = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const TitleWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  height: 56px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  button {
-    position: absolute;
-    left: 12px;
-  }
-`;
-
-const Title = styled.div`
-  font-weight: 300;
-  font-size: 20px;
-  line-height: 20px;
-  text-align: center;
-  color: #0d0d0d;
-`;
-
 const Content = styled.div`
   width: 100%;
   display: flex;
@@ -353,50 +278,6 @@ const Content = styled.div`
   align-items: center;
   justify-content: center;
   flex: 1;
-`;
-
-const ProgressBar = styled.progress`
-  width: 100%;
-  height: 2px;
-  ::-webkit-progress-bar {
-    background: #d9d9d9;
-  }
-  ::-webkit-progress-value {
-    background: #e67979;
-  }
-  margin-bottom: 9px;
-`;
-
-const ProgressWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ProgressIndex = styled.div`
-  width: 100%;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 10px;
-  text-align: center;
-  color: #0d0d0d;
-`;
-
-const ProgressTime = styled.progress`
-  position: absolute;
-  right: 9px;
-  width: 54px;
-  height: 2px;
-  ::-webkit-progress-bar {
-    background: #d9d9d9;
-  }
-  ::-webkit-progress-value {
-    transition: 0.5s linear;
-    background: #e67979;
-  }
 `;
 
 const Word = styled.div`

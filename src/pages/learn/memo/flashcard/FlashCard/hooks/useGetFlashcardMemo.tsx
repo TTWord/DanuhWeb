@@ -1,7 +1,4 @@
 import { api } from '@/api';
-import Swal from 'sweetalert2';
-import { globalState } from '@/recoil';
-import { useSetRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import useToast from '@/hooks/useToast';
@@ -11,11 +8,9 @@ interface getMemoParams {
   count: number;
 }
 
-const useGetMemorizeWord = () => {
+const useGetFlashcardMemo = () => {
   const navigate = useNavigate();
   const toast = useToast();
-
-  const setMemoList = useSetRecoilState(globalState.memo.memoList);
 
   const getMemo = async ({ bookIds, count }: getMemoParams) => {
     try {
@@ -24,7 +19,7 @@ const useGetMemorizeWord = () => {
         count,
       });
 
-      setMemoList(response.data.words);
+      return response;
     } catch (e) {
       const err = e as AxiosError<{
         message: string;
@@ -44,4 +39,4 @@ const useGetMemorizeWord = () => {
   return getMemo;
 };
 
-export default useGetMemorizeWord;
+export default useGetFlashcardMemo;
