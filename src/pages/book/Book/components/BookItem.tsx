@@ -91,6 +91,9 @@ const Item = styled.div`
 
 const Option = styled.div`
   position: absolute;
+  height: 26px;
+  display: flex;
+  align-items: center;
   right: 16px;
   top: 16px;
 `;
