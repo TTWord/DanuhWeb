@@ -2,19 +2,19 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { TailSpin } from 'react-loader-spinner';
 import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
-import { useNavigate } from 'react-router-dom';
 import useGenerateBook from '@/pages/book/generate/GenerateBook/hooks/useGenerateBook';
 import iconBack from '@/assets/svg/icons//icon-back-gray.svg';
+import useNavigatePop from '@/hooks/useNavigatePop';
 
 const GenerateBookPage = () => {
-  const navigate = useNavigate();
+  const navigatePop = useNavigatePop();
   const { isLoading, generateBook } = useGenerateBook();
   const [textLength, setTextLength] = useState(0);
   const [bookName, setBookName] = useState('');
   const [sentense, setSentense] = useState('');
 
   const goBack = () => {
-    navigate('/book');
+    navigatePop('/book');
   };
 
   return (
