@@ -2,11 +2,12 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { css, keyframes } from 'styled-components';
 import iconCreateBook from '@/assets/svg/icons/icon-create-book.svg';
+import useNavigatePush from '@/hooks/useNavigatePush';
 
 interface AdditionalProps {}
 
 const Additional: React.FC<AdditionalProps> = () => {
-  const navigate = useNavigate();
+  const navigatePush = useNavigatePush();
   const [isActive, setActive] = useState(false);
 
   return (
@@ -20,7 +21,7 @@ const Additional: React.FC<AdditionalProps> = () => {
         <AdditionalItem
           isActive={isActive}
           targetPos={'140px'}
-          onClick={() => navigate('/book/create')}
+          onClick={() => navigatePush('/book/create')}
         >
           <Icon src={iconCreateBook} alt="icon" />
           <Text>단어장 만들기</Text>
@@ -28,7 +29,7 @@ const Additional: React.FC<AdditionalProps> = () => {
         <AdditionalItem
           isActive={isActive}
           targetPos={'80px'}
-          onClick={() => navigate('/book/generate')}
+          onClick={() => navigatePush('/book/generate')}
         >
           <Icon src={iconCreateBook} alt="icon" />
           <Text>단어장 생성기</Text>
@@ -144,7 +145,9 @@ const AdditionalItems = styled.div<{
   flex-direction: column;
 `;
 
-const Text = styled.div``;
+const Text = styled.div`
+  padding-bottom: 3px;
+`;
 
 const Icon = styled.img`
   //width: 24px;
@@ -173,7 +176,7 @@ const AdditionalItem = styled.div<{
   padding: 0 8px;
 
   ${Icon} {
-    padding-right: 4px;
+    padding-right: 8px;
   }
 
   ${Text} {

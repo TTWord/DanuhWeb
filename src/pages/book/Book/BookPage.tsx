@@ -7,6 +7,7 @@ import emptyIcon from '@/assets/svg/icons/icon-book-empty.svg';
 import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { globalState } from '@/recoil';
+import BookShareOptionPop from './components/BookShareOptionPop';
 
 const BookPage = () => {
   const { books, onItemClick, onClickUpdate, onClickRemove } =
@@ -22,6 +23,7 @@ const BookPage = () => {
 
   return (
     <WebWrapper>
+      <BookShareOptionPop />
       <Header>
         <div>
           <img src={danuhLogo} alt="logo" />

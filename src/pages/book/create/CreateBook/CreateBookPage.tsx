@@ -1,33 +1,32 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
 import { instance } from '@/instance';
-import { NavigateFunction, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { AxiosError } from 'axios';
 import StackLayout from '@/components/layout/StackLayout';
-
-// 생성한 단어장 전송하는 기능
-const createBook = async (bookName: string, navigate: NavigateFunction) => {
-  try {
-    const response = await instance.post('/book', {
-      name: bookName,
-    });
-    navigate(-1);
-  } catch (e: unknown) {
-    const error = e as AxiosError<{
-      message: string;
-    }>;
-    const errorMessage = error.response?.data?.message;
-    Swal.fire({
-      icon: 'error',
-      title: errorMessage,
-    });
-  }
-};
+import useNavigatePop from '@/hooks/useNavigatePop';
 
 const CreateBookPage = () => {
-  const navigate = useNavigate();
+  const navigatePop = useNavigatePop();
+
+  // 생성한 단어장 전송하는 기능
+  const createBook = useCallback(async (bookName: string) => {
+    try {
+      const response = await instance.post('/book', {
+        name: bookName,
+      });
+      navigatePop('/book');
+    } catch (e: unknown) {
+      const error = e as AxiosError<{
+        message: string;
+      }>;
+      const errorMessage = error.response?.data?.message;
+      Swal.fire({
+        icon: 'error',
+        title: errorMessage,
+      });
+    }
+  }, []);
 
   const [newBook, setNewBook] = useState('');
 
@@ -54,7 +53,7 @@ const CreateBookPage = () => {
         </BookInputWrapper>
         <CreateButton
           onClick={() => {
-            createBook(newBook, navigate);
+            createBook(newBook);
           }}
         >
           생성

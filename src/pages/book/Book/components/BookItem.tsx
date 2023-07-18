@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import iconOther from '@/assets/svg/icons/icon-other.svg';
 import sharingIcon from '@/assets/svg/icons/icon-sharing.svg';
 import donwloadedIcon from '@/assets/svg/icons/icon-downloaded.svg';
+import BookShareOptionPop from './BookShareOptionPop';
 
 const generateDateText = (dateText: string) => {
   const date = new Date(dateText);
@@ -52,6 +53,7 @@ const BookItem: React.FC<BookItemProps> = ({
           e.stopPropagation();
         }}
       >
+        <OptionItem onClick={() => onClickUpdate(book.id)}>공유설정</OptionItem>
         <OptionItem onClick={() => onClickUpdate(book.id)}>수정하기</OptionItem>
         <OptionItem onClick={() => onClickRemove(book.id)}>삭제하기</OptionItem>
       </OptionItems>
@@ -73,14 +75,13 @@ export default BookItem;
 const Item = styled.div`
   width: 100%;
   box-sizing: border-box;
-  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 10px 0 rgba(105, 74, 194, 0.08);
+  border: 1px solid ${({ theme }) => theme.colors.primary[100]};
   border-radius: 4px;
   padding: 16px;
-  padding-bottom: 25px;
   line-height: 1;
   display: flex;
   flex-direction: column;
-  gap: 15px;
   position: relative;
   cursor: pointer;
 
@@ -91,7 +92,7 @@ const Item = styled.div`
 
 const Option = styled.div`
   position: absolute;
-  height: 26px;
+  height: 24px;
   display: flex;
   align-items: center;
   right: 16px;
@@ -133,6 +134,7 @@ const OptionItem = styled.div`
 const Strong = styled.strong`
   font-family: ${({ theme }) => theme.fonts.pretendard};
   font-size: 16px;
+  line-height: 24px;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -141,17 +143,10 @@ const Strong = styled.strong`
 `;
 
 const DataCreated = styled.p`
-  font-size: 12px;
+  font-size: 13px;
   color: #999;
-`;
-
-const P = styled.p`
-  font-size: 12px;
-  color: #999;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  padding: 20px;
+  line-height: 18px;
+  margin-top: 10px;
 `;
 
 const Img = styled.img`
