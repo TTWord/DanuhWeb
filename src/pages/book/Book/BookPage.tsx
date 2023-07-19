@@ -4,7 +4,7 @@ import BookItem from '@/pages/book/Book/components/BookItem';
 import useBookPageLogic from './hooks/useBookPageLogic';
 import danuhLogo from '@/assets/svg/logos/logo-danuh-small.svg';
 import emptyIcon from '@/assets/svg/icons/icon-book-empty.svg';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { globalState } from '@/recoil';
 import BookShareOptionPop from './components/BookShareOptionPop';
@@ -13,17 +13,23 @@ const BookPage = () => {
   const { books, onItemClick, onClickUpdate, onClickRemove } =
     useBookPageLogic();
 
+  const [isOpen, setIsOpen] = useState(false);
+
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
 
   useEffect(() => {
     setActiveMenu(0);
   }, []);
 
+  const onClickShare = () => {
+    setIsOpen(true);
+  };
+
   if (!books) return null;
 
   return (
     <WebWrapper>
-      <BookShareOptionPop />
+      <BookShareOptionPop isOpen={isOpen} setIsOpen={setIsOpen} />
       <Header>
         <div>
           <img src={danuhLogo} alt="logo" />
@@ -46,6 +52,7 @@ const BookPage = () => {
               book={book}
               onItemClick={onItemClick}
               onClickUpdate={onClickUpdate}
+              onClickShare={onClickShare}
               onClickRemove={onClickRemove}
             />
           ))}

@@ -26,12 +26,14 @@ interface BookItemProps {
   };
   onItemClick: (bookId: number) => void;
   onClickUpdate: (bookId: number) => void;
+  onClickShare: (bookId: number) => void;
   onClickRemove: (bookId: number) => void;
 }
 
 const BookItem: React.FC<BookItemProps> = ({
   book,
   onItemClick,
+  onClickShare,
   onClickUpdate,
   onClickRemove,
 }) => {
@@ -53,7 +55,7 @@ const BookItem: React.FC<BookItemProps> = ({
           e.stopPropagation();
         }}
       >
-        <OptionItem onClick={() => onClickUpdate(book.id)}>공유설정</OptionItem>
+        <OptionItem onClick={() => onClickShare(book.id)}>공유설정</OptionItem>
         <OptionItem onClick={() => onClickUpdate(book.id)}>수정하기</OptionItem>
         <OptionItem onClick={() => onClickRemove(book.id)}>삭제하기</OptionItem>
       </OptionItems>
