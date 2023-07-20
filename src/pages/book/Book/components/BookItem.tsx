@@ -37,8 +37,19 @@ const BookItem: React.FC<BookItemProps> = ({
 }) => {
   const [isOptionOpen, setOptionOpen] = useState(false);
 
+  const [isBookSharePopOpen, setIsBookSharePopOpen] = useState(false);
+
+  const onClickShare = () => {
+    setIsBookSharePopOpen(true);
+  };
+
   return (
     <Item key={book.id} onClick={() => onItemClick(book.id)}>
+      <BookShareOptionPop
+        isOpen={isBookSharePopOpen}
+        setIsOpen={setIsBookSharePopOpen}
+        book={book}
+      />
       <Option
         onClick={e => {
           e.stopPropagation();
@@ -53,7 +64,7 @@ const BookItem: React.FC<BookItemProps> = ({
           e.stopPropagation();
         }}
       >
-        <OptionItem onClick={() => onClickUpdate(book.id)}>공유설정</OptionItem>
+        <OptionItem onClick={() => onClickShare()}>공유설정</OptionItem>
         <OptionItem onClick={() => onClickUpdate(book.id)}>수정하기</OptionItem>
         <OptionItem onClick={() => onClickRemove(book.id)}>삭제하기</OptionItem>
       </OptionItems>

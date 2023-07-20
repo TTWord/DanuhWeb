@@ -4,7 +4,7 @@ import BookItem from '@/pages/book/Book/components/BookItem';
 import useBookPageLogic from './hooks/useBookPageLogic';
 import danuhLogo from '@/assets/svg/logos/logo-danuh-small.svg';
 import emptyIcon from '@/assets/svg/icons/icon-book-empty.svg';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { globalState } from '@/recoil';
 import BookShareOptionPop from './components/BookShareOptionPop';
@@ -23,7 +23,6 @@ const BookPage = () => {
 
   return (
     <WebWrapper>
-      <BookShareOptionPop />
       <Header>
         <div>
           <img src={danuhLogo} alt="logo" />

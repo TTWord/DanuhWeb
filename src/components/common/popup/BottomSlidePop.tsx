@@ -2,37 +2,18 @@ import styled, { css, keyframes } from 'styled-components';
 import ReactModal from 'react-modal';
 import { useEffect, useState } from 'react';
 
-const modalStyle = {
-  overlay: {
-    backgroundColor: 'transparent',
-    zIndex: 10,
-    overflow: 'hidden',
-  },
-  content: {
-    backgroundColor: 'transparent',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    width: '100%',
-    height: '100%',
-    borderRadius: 0,
-    border: 0,
-    padding: 0,
-    overflow: 'hidden',
-  },
-};
-
 interface BottomSlidePopProps {
   isOpen: boolean;
   onPopClose: () => void;
   children: React.ReactNode;
+  height: number;
 }
 
 const BottomSlidePop: React.FC<BottomSlidePopProps> = ({
   isOpen,
   onPopClose,
   children,
+  height,
 }) => {
   const [isClose, setClose] = useState(false);
 
@@ -55,9 +36,11 @@ const BottomSlidePop: React.FC<BottomSlidePopProps> = ({
   }, [isClose]);
 
   return (
-    <ReactModal isOpen={isOpen} style={modalStyle}>
+    <ReactModal isOpen={isOpen}>
       <Background onClick={onClose} isClose={isClose}></Background>
-      <Slider isClose={isClose}>{children}</Slider>
+      <Slider isClose={isClose} height={height}>
+        {children}
+      </Slider>
     </ReactModal>
   );
 };
@@ -119,15 +102,17 @@ const SliderSlideOut = keyframes`
 
 const Slider = styled.div<{
   isClose: boolean;
+  height: number;
 }>`
   width: 100%;
-  height: 300px;
+  height: ${({ height }) => height}px;
   background-color: #ffffff;
   position: absolute;
   z-index: 10;
-  bottom: -300px;
+  bottom: -${({ height }) => height}px;
   animation: ${SliderSlideIn} 0.3s ease-in-out forwards;
-  border-radius: 20px 20px 0px 0px;
+  border-radius: 12px 12px 0px 0px;
+  transition: height 0.3s ease-in-out;
 
   ${({ isClose }) => {
     return (
