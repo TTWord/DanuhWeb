@@ -13,23 +13,16 @@ const BookPage = () => {
   const { books, onItemClick, onClickUpdate, onClickRemove } =
     useBookPageLogic();
 
-  const [isOpen, setIsOpen] = useState(false);
-
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
 
   useEffect(() => {
     setActiveMenu(0);
   }, []);
 
-  const onClickShare = () => {
-    setIsOpen(true);
-  };
-
   if (!books) return null;
 
   return (
     <WebWrapper>
-      <BookShareOptionPop isOpen={isOpen} setIsOpen={setIsOpen} />
       <Header>
         <div>
           <img src={danuhLogo} alt="logo" />
@@ -52,7 +45,6 @@ const BookPage = () => {
               book={book}
               onItemClick={onItemClick}
               onClickUpdate={onClickUpdate}
-              onClickShare={onClickShare}
               onClickRemove={onClickRemove}
             />
           ))}

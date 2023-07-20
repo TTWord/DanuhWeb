@@ -109,9 +109,10 @@ const Slider = styled.div<{
   background-color: #ffffff;
   position: absolute;
   z-index: 10;
-  bottom: -300px;
+  bottom: -${({ height }) => height}px;
   animation: ${SliderSlideIn} 0.3s ease-in-out forwards;
-  border-radius: 20px 20px 0px 0px;
+  border-radius: 12px 12px 0px 0px;
+  transition: height 0.3s ease-in-out;
 
   ${({ isClose }) => {
     return (
