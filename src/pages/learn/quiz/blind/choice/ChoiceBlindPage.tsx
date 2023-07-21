@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
 import { api } from '@/api';
@@ -7,12 +7,6 @@ import Swal from 'sweetalert2';
 import useToast from '@/hooks/useToast';
 import xButton from '@/assets/svg/icons/icon-x-button.svg';
 import CheckSVG from '../../common/svg/CheckSVG';
-
-interface IGetQuiz {
-  bookId: string;
-  count: number;
-  memorizedFilter: boolean;
-}
 
 interface IAnswerData {
   mean: string;
@@ -22,22 +16,26 @@ interface IAnswerData {
 const ChoiceBlindPage = () => {
   console.log('객관식 블라인드 페이지 파일만 생성');
   //// hooks ////
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const toast = useToast();
+
+  const { bookIds, mode, count, memorizedFilter } = location.state as {
+    bookIds: number[];
+    mode: 'word' | 'mean';
+    count: number;
+    memorizedFilter: boolean;
+  };
+  const choiceCount = 4;
   //// Varaiables ////
   // Timer Vars
   const timeMax = 10000;
   const [timer, setTimer] = useState(0);
 
   // Quiz Api Vars
-  const bookId = String(useParams().id);
-  const memorizedFilter: boolean = false;
-  const count: number = 10; // 퀴즈페이지의 단어장 선택 시 넘겨줄 것
   const [isLoading, setIsLoading] = useState(true);
   const [problems, setProblems] = useState([]); // 전체 문제
   const [length, setLength] = useState(0); // 문제 길이 //useRecoilState(globalState.quiz.quizCount);
-  const mode = searchParams.get('mode');
 
   // Extract Quiz Vars
   // 현재 문제 목록
@@ -67,13 +65,14 @@ const ChoiceBlindPage = () => {
   };
 
   // 퀴즈 API
-  const getQuizAPI = async ({ bookId, count, memorizedFilter }: IGetQuiz) => {
+  const getQuizAPI = async () => {
     try {
-      const { data: response } = await api.quiz.getChoiceQuiz(
-        bookId,
+      const { data: response } = await api.quiz.getBlindChoiceQuiz({
+        bookIds,
         count,
         memorizedFilter,
-      );
+        choiceCount,
+      });
 
       if (response.status === 'OK') {
         setIsLoading(false);
@@ -132,7 +131,7 @@ const ChoiceBlindPage = () => {
     setCurrentMemorize(current => !current);
 
     try {
-      const { data: response } = await api.memo.patchMemorizedStatus({
+      const { data: response } = await api.memo.patchMemoStatus({
         wordId: currentWordId,
         isMemorized: !currentMemorize,
       });
@@ -168,11 +167,7 @@ const ChoiceBlindPage = () => {
   //// useEffects ////
   // 객관식 퀴즈 가져옴
   useEffect(() => {
-    getQuizAPI({
-      bookId,
-      count,
-      memorizedFilter,
-    });
+    getQuizAPI();
   }, []);
 
   // 가져온 퀴즈를 화면에 뿌려줌

@@ -37,7 +37,7 @@ const ResultPage = () => {
 
   const getResult = async () => {
     try {
-      const { data: response } = await api.memo.getResult({
+      const { data: response } = await api.quiz.getResult({
         bookIds,
         correct,
         count,

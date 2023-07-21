@@ -104,8 +104,8 @@ const FlashCardMemoPage = () => {
       <Footer>
         <NextButton onClick={onNext}>
           {showWord && pageNum === memoList.length - 1 && '돌아가기'}
-          {showWord && pageNum !== memoList.length - 1 && '정답 보기'}
-          {!showWord && '다음'}
+          {showWord && pageNum !== memoList.length - 1 && '다음'}
+          {!showWord && '정답 보기'}
         </NextButton>
       </Footer>
     </Container>
