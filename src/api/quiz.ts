@@ -1,17 +1,27 @@
 import { instance } from '@/instance';
 
+interface getResultParams {
+  bookIds: number[];
+  count: number;
+  correct: number;
+}
+
 interface quizParams {
   bookIds: number[];
   count: number;
   memorizedFilter: boolean;
 }
 
+interface blindChoiceQuizParams extends quizParams {
+  choiceCount: number;
+}
+
 export const quizAPI = {
-  getTypingQuiz: async ({ bookIds, count, memorizedFilter }: quizParams) => {
-    const response = await instance.post('/quiz/shortform', {
+  getResult: async ({ bookIds, count, correct }: getResultParams) => {
+    const { data: response } = await instance.post('/memo', {
       book_ids: bookIds.join('&'),
       count,
-      memorized_filter: memorizedFilter,
+      correct,
     });
 
     return response;
@@ -27,8 +37,39 @@ export const quizAPI = {
     return response;
   },
 
-  getBlindQuiz: async ({ bookIds, count, memorizedFilter }: quizParams) => {
-    const response = await instance.post('/quiz/blind', {
+  getTypingQuiz: async ({ bookIds, count, memorizedFilter }: quizParams) => {
+    const response = await instance.post('/quiz/short', {
+      book_ids: bookIds.join('&'),
+      count,
+      memorized_filter: memorizedFilter,
+    });
+
+    return response;
+  },
+
+  // 선택지 개수 옵션 추가 예정
+  getBlindChoiceQuiz: async ({
+    bookIds,
+    count,
+    memorizedFilter,
+    choiceCount,
+  }: blindChoiceQuizParams) => {
+    const response = await instance.post('/quiz/blind/multiple', {
+      book_ids: bookIds.join('&'),
+      count,
+      memorized_filter: memorizedFilter,
+      choice_count: choiceCount,
+    });
+
+    return response;
+  },
+
+  getBlindShortAnswerQuiz: async ({
+    bookIds,
+    count,
+    memorizedFilter,
+  }: quizParams) => {
+    const response = await instance.post('/quiz/blind/short', {
       book_ids: bookIds.join('&'),
       count,
       memorized_filter: memorizedFilter,

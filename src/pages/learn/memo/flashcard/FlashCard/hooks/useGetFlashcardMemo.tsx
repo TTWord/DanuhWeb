@@ -14,7 +14,7 @@ const useGetFlashcardMemo = () => {
 
   const getMemo = async ({ bookIds, count }: getMemoParams) => {
     try {
-      const { data: response } = await api.memo.getMemorizeWord({
+      const { data: response } = await api.memo.getFlashcardWords({
         bookIds,
         count,
       });

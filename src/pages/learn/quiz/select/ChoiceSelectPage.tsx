@@ -101,7 +101,7 @@ const ChoiceSelectPage = () => {
     setCurrentMemorize(current => !current);
 
     try {
-      const { data: response } = await api.memo.patchMemorizedStatus({
+      const { data: response } = await api.memo.patchMemoStatus({
         wordId: currentWordId,
         isMemorized: !currentMemorize,
       });
