@@ -15,7 +15,16 @@ const BottomSlidePop: React.FC<BottomSlidePopProps> = ({
   children,
   height,
 }) => {
+  const [popIsOpen, setPopIsOpen] = useState(false);
   const [isClose, setClose] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setPopIsOpen(true);
+    } else {
+      setClose(true);
+    }
+  }, [isOpen]);
 
   const onClose = () => {
     setClose(true);
@@ -26,6 +35,7 @@ const BottomSlidePop: React.FC<BottomSlidePopProps> = ({
     if (isClose) {
       timeout = setTimeout(() => {
         setClose(false);
+        setPopIsOpen(false);
         onPopClose();
       }, 300);
     }
@@ -36,7 +46,7 @@ const BottomSlidePop: React.FC<BottomSlidePopProps> = ({
   }, [isClose]);
 
   return (
-    <ReactModal isOpen={isOpen}>
+    <ReactModal isOpen={popIsOpen}>
       <Background onClick={onClose} isClose={isClose}></Background>
       <Slider isClose={isClose} height={height}>
         {children}
@@ -82,21 +92,21 @@ const Background = styled.div<{ isClose: boolean }>`
   }}
 `;
 
-const SliderSlideIn = keyframes`
+const SliderSlideIn = (height: number) => keyframes`
 	0% {
-		bottom: -300px;
+		bottom: -${height}px;
 	}
 	100% {
 		bottom: 0px;
 	}
 `;
 
-const SliderSlideOut = keyframes`
+const SliderSlideOut = (height: number) => keyframes`
 	0% {
 		bottom: 0px;
 	}
 	100% {
-		bottom: -300px;
+		bottom: -${height}px;
 	}
 `;
 
@@ -110,15 +120,15 @@ const Slider = styled.div<{
   position: absolute;
   z-index: 10;
   bottom: -${({ height }) => height}px;
-  animation: ${SliderSlideIn} 0.3s ease-in-out forwards;
+  animation: ${({ height }) => SliderSlideIn(height)} 0.3s ease-in-out forwards;
   border-radius: 12px 12px 0px 0px;
   transition: height 0.3s ease-in-out;
 
-  ${({ isClose }) => {
+  ${({ isClose, height }) => {
     return (
       isClose &&
       css`
-        animation: ${SliderSlideOut} 0.3s ease-in-out forwards;
+        animation: ${SliderSlideOut(height)} 0.3s ease-in-out forwards;
       `
     );
   }}

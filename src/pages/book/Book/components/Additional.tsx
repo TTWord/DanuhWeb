@@ -3,15 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import styled, { css, keyframes } from 'styled-components';
 import iconCreateBook from '@/assets/svg/icons/icon-create-book.svg';
 import useNavigatePush from '@/hooks/useNavigatePush';
+import BookAddPop from './BookAddPop';
 
 interface AdditionalProps {}
 
 const Additional: React.FC<AdditionalProps> = () => {
   const navigatePush = useNavigatePush();
   const [isActive, setActive] = useState(false);
+  const [isBookAddPopOpen, setIsBookAddPopOpen] = useState(false);
 
   return (
     <Container>
+      <BookAddPop isOpen={isBookAddPopOpen} setIsOpen={setIsBookAddPopOpen} />
       <PlusBox onClick={() => setActive(current => !current)}>
         <PlusBoxNotActive isActive={isActive} />
         <PlusBoxActive isActive={isActive} />
@@ -21,7 +24,10 @@ const Additional: React.FC<AdditionalProps> = () => {
         <AdditionalItem
           isActive={isActive}
           targetPos={'140px'}
-          onClick={() => navigatePush('/book/create')}
+          onClick={() => {
+            setActive(false);
+            setIsBookAddPopOpen(true);
+          }}
         >
           <Icon src={iconCreateBook} alt="icon" />
           <Text>단어장 만들기</Text>
