@@ -7,21 +7,17 @@ import dogIcon from '@/assets/svg/icons/icon-dog.svg';
 import bookIcon from '@/assets/svg/icons/icon-book.svg';
 import medalIcon from '@/assets/svg/icons/icon-medal.svg';
 import useNavigatePush from '@/hooks/useNavigatePush';
-import useToast from '@/hooks/useToast';
 
 const AuthPage = () => {
   const navigatePush = useNavigatePush();
 
-  // const toast = useToast();
-
   const goLogin = () => {
     navigatePush('/auth/login');
-    // toast.success('토스트 테스트');
   };
 
   return (
     <WebWrapper>
-      <IconWrapper>
+      {/* <IconWrapper>
         <IconBanner>
           <img src={hatIcon} alt="hatIcon" />
           <img src={pencilIcon} alt="pencilIcon" />
@@ -36,12 +32,14 @@ const AuthPage = () => {
           <img src={bookIcon} alt="bookIcon" />
           <img src={medalIcon} alt="medalIcon" />
         </IconBanner>
-      </IconWrapper>
+      </IconWrapper> */}
 
-      <IntroduceWrapper>
-        <MainLogo src={logoImg} alt="logoImg" />
-        <Introduce>이미지, PDF, 글을 단어장으로 만들자!</Introduce>
-      </IntroduceWrapper>
+      <Content>
+        <IntroduceWrapper>
+          <MainLogo src={logoImg} alt="logoImg" />
+          <Introduce>이미지, PDF, 글을 단어장으로 만들자!</Introduce>
+        </IntroduceWrapper>
+      </Content>
 
       <LoginWrapper>
         <Login onClick={goLogin}>시작하기</Login>
@@ -86,19 +84,26 @@ const IconBanner = styled.div`
   justify-content: space-around;
 `;
 
-const IntroduceWrapper = styled.div`
+const Content = styled.div`
   width: 100%;
   margin: 0 auto;
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   padding: 0 16px;
+  position: relative;
+`;
+
+const IntroduceWrapper = styled.div`
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -40%);
 `;
 
 const MainLogo = styled.img`
-  width: 179px;
+  width: 180px;
   margin-bottom: 13px;
 `;
 
@@ -113,6 +118,7 @@ const Introduce = styled.span`
 const LoginWrapper = styled.footer`
   width: 100%;
   height: 48px;
+  flex-shrink: 0;
   margin-bottom: 32px;
   display: flex;
   justify-content: center;
