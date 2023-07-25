@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 import ReactModal from 'react-modal';
-import { useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 
 interface BottomSlidePopProps {
   isOpen: boolean;
@@ -26,7 +26,8 @@ const BottomSlidePop: React.FC<BottomSlidePopProps> = ({
     }
   }, [isOpen]);
 
-  const onClose = () => {
+  const onClose = (e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     setClose(true);
   };
 

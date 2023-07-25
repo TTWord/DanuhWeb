@@ -60,7 +60,7 @@ const BookShareOptionPop: React.FC<BookShareOptionPopProps> = ({
     <BottomSlidePop
       isOpen={isOpen}
       onPopClose={() => setIsOpen(false)}
-      height={!isShared ? 360 : 480}
+      height={480}
     >
       <Container
         onClick={e => {
@@ -69,7 +69,7 @@ const BookShareOptionPop: React.FC<BookShareOptionPopProps> = ({
       >
         <Header>
           <BookName>{book.name}</BookName>
-          <CloseButton>
+          <CloseButton onClick={() => setIsOpen(false)}>
             <img src={iconCloseSVG} alt="close" />
           </CloseButton>
         </Header>
@@ -202,7 +202,6 @@ const BookCommentWrapper = styled.div<{
   margin-top: 16px;
   margin-bottom: 16px;
   overflow: hidden;
-  transition: height 0.3s ease-in-out;
   box-sizing: border-box;
   border: 0;
 
