@@ -1,9 +1,11 @@
 import styled, { css } from 'styled-components';
 
-interface ButtonProps {}
+interface ButtonProps {
+  onClick?: () => void;
+}
 
-const CheckButton: React.FC<ButtonProps> = () => {
-  return <Button>중복확인</Button>;
+const CheckButton: React.FC<ButtonProps> = ({ onClick }) => {
+  return <Button onClick={onClick}>중복확인</Button>;
 };
 
 export default CheckButton;
@@ -15,7 +17,7 @@ const Button = styled.button`
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
-  font-size: 14px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 400;
   line-height: 140%;
