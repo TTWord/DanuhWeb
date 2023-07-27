@@ -24,8 +24,6 @@ const Counter = () => {
     return () => clearTimeout(timeOutId);
   }, [timer]);
 
-  //console.log(Math.floor(123 / 10), 123 % 10);
-
   return (
     <>
       <CounterBox>

@@ -1,16 +1,19 @@
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import iconArrowBack from '@/assets/svg/icons/icon-back-button.svg';
+import useNavigatePop from '@/hooks/useNavigatePop';
+import useNavigatePush from '@/hooks/useNavigatePush';
+import FooterButton from '@/components/common/button/FooterButton';
 
 const OAuthJoinPage = () => {
-  const navigate = useNavigate();
+  const navigatePop = useNavigatePop();
+  const navigatePush = useNavigatePush();
 
   const onBack = () => {
-    navigate('/auth/login');
+    navigatePop('/auth/login');
   };
 
   const onNext = () => {
-    navigate('/auth/oauth/join/nickname');
+    navigatePush('/auth/oauth/join/nickname');
   };
 
   return (
@@ -26,9 +29,7 @@ const OAuthJoinPage = () => {
         </Explain>
       </Content>
 
-      <Footer>
-        <Next onClick={onNext}>다음</Next>
-      </Footer>
+      <FooterButton onClick={onNext}>다음</FooterButton>
     </MainWrapper>
   );
 };
@@ -42,8 +43,7 @@ const MainWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0 24px;
-  font-family: ${({ theme }) => theme.fonts.pretendard};
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
 `;
 
 const Header = styled.header`
@@ -51,16 +51,20 @@ const Header = styled.header`
   height: 56px;
   display: flex;
   align-items: center;
+  padding: 0 20px;
+  img {
+    cursor: pointer;
+  }
 `;
 
 const Content = styled.div`
   width: 100%;
   height: 100%;
-  padding: 0 13px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   flex: 1;
+  padding: 0 36px;
 `;
 
 const Title = styled.div`

@@ -39,5 +39,5 @@ const MainWrapper = styled.div`
 
 const LogoImg = styled.img`
   position: absolute;
-  top: 25%;
+  top: 30%;
 `;

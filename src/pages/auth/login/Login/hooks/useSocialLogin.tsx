@@ -1,12 +1,15 @@
 import { api } from '@/api';
+import useToast from '@/hooks/useToast';
 
 const useSocialLogin = () => {
+  const toast = useToast();
+
   const socialLogin = async (social: string) => {
     try {
       const response = await api.auth.socialLogin(social);
       window.location.href = response.data.data.url;
     } catch (e: unknown) {
-      alert('소셜 로그인 에러');
+      toast.error('아직 지원하지 않는 기능입니다.');
     }
   };
 
@@ -20,7 +23,7 @@ const useSocialLogin = () => {
     socialLogin('apple');
   };
 
-  return { kakaoLogin, googleLogin, appleLogin };
+  return { googleLogin, kakaoLogin, appleLogin };
 };
 
 export default useSocialLogin;

@@ -7,6 +7,7 @@ import dogIcon from '@/assets/svg/icons/icon-dog.svg';
 import bookIcon from '@/assets/svg/icons/icon-book.svg';
 import medalIcon from '@/assets/svg/icons/icon-medal.svg';
 import useNavigatePush from '@/hooks/useNavigatePush';
+import FooterButton from '@/components/common/button/FooterButton';
 
 const AuthPage = () => {
   const navigatePush = useNavigatePush();
@@ -41,9 +42,7 @@ const AuthPage = () => {
         </IntroduceWrapper>
       </Content>
 
-      <LoginWrapper>
-        <Login onClick={goLogin}>시작하기</Login>
-      </LoginWrapper>
+      <FooterButton onClick={goLogin}>시작하기</FooterButton>
     </WebWrapper>
   );
 };
@@ -88,24 +87,21 @@ const Content = styled.div`
   width: 100%;
   margin: 0 auto;
   flex: 1;
-  padding: 0 16px;
   position: relative;
+  display: flex;
+  justify-content: center;
 `;
 
 const IntroduceWrapper = styled.div`
+  width: 100%;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -40%);
+  top: 30%;
 `;
 
-const MainLogo = styled.img`
-  width: 180px;
-  margin-bottom: 13px;
-`;
+const MainLogo = styled.img``;
 
 const Introduce = styled.span`
   font-family: ${({ theme }) => theme.fonts.gmarketSans};
@@ -113,27 +109,4 @@ const Introduce = styled.span`
   font-size: 12px;
   line-height: 12px;
   color: #6b6c76;
-`;
-
-const LoginWrapper = styled.footer`
-  width: 100%;
-  height: 48px;
-  flex-shrink: 0;
-  margin-bottom: 32px;
-  display: flex;
-  justify-content: center;
-  padding: 0 16px;
-`;
-
-const Login = styled.button`
-  width: 100%;
-  height: 100%;
-  font-family: ${({ theme }) => theme.fonts.gmarketSans};
-  font-weight: 400;
-  font-size: 14px;
-  text-align: center;
-  color: #ffffff;
-  background-color: #694ac2;
-  border: 1px solid #4928a9;
-  border-radius: 8px;
 `;
