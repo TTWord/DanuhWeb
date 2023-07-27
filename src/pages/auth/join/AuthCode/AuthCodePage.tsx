@@ -45,11 +45,9 @@ const AuthCodePage = () => {
   };
 
   const onClickRequestCode = async () => {
-    if (codeTimeOut) {
-      await sendmail(userEmail + '@' + userDomain, userPw, userNickname);
-      setCodeTimeOut(false);
-      setTimer(180);
-    }
+    await sendmail(userEmail + '@' + userDomain, userPw, userNickname);
+    setCodeTimeOut(false);
+    setTimer(180);
   };
 
   return (
@@ -84,10 +82,7 @@ const AuthCodePage = () => {
           <RequestAuthCodeComment>
             메일을 받지 못하셨나요?
           </RequestAuthCodeComment>
-          <AuthCodeResendButton
-            isActive={codeTimeOut}
-            onClick={onClickRequestCode}
-          />
+          <AuthCodeResendButton onClick={onClickRequestCode} />
         </CenterView>
 
         <BottomView>
