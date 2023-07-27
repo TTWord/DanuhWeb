@@ -5,9 +5,10 @@ import { instance } from '@/instance';
 import { globalState } from '@/recoil';
 import { useState } from 'react';
 import { useMutation } from 'react-query';
-import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled, { css } from 'styled-components';
+import FooterButton from '@/components/common/button/FooterButton';
+import CheckButton from '@/components/common/button/CheckButton';
 
 const NicknameSubmitPage = () => {
   const [error, setError] = useState('');
@@ -59,11 +60,13 @@ const NicknameSubmitPage = () => {
         <img src={iconArrowBack} alt="back" onClick={onBack} />
         <Chapter>1/3</Chapter>
       </Header>
+
       <Content>
         <TopView>
           <MainText>사용하실 이름을 알려주세요</MainText>
           <SubText>나중에 변경할 수 있어요</SubText>
         </TopView>
+
         <CenterView>
           <CenterViewWrapper>
             <Comment>한글, 영어, 숫자 사용 가능 12자 이내</Comment>
@@ -78,17 +81,16 @@ const NicknameSubmitPage = () => {
                   setNickname(e.target.value);
                 }}
               />
-              <CheckButton onClick={onClickDuplicateCheck}>
-                중복확인
-              </CheckButton>
+              <CheckButton onClick={onClickDuplicateCheck} />
             </Nickname>
             <Error isActive={isOk}>{error}</Error>
           </CenterViewWrapper>
         </CenterView>
+
         <BottomView>
-          <Next isActive={isOk} onClick={onNext}>
+          <FooterButton isActive={isOk} onClick={onNext}>
             다음
-          </Next>
+          </FooterButton>
         </BottomView>
       </Content>
     </Layout>
@@ -101,7 +103,6 @@ const Layout = styled.div`
   width: 100%;
   height: 100%;
   background-color: white;
-  padding: 0 20px;
 `;
 
 const Header = styled.div`
@@ -110,6 +111,7 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 24px;
 `;
 
 const Chapter = styled.div`
@@ -132,6 +134,7 @@ const TopView = styled.div`
   font-family: ${({ theme }) => theme.fonts.gmarketSans};
   color: #171717;
   font-weight: medium;
+  padding: 0 16px;
   margin-top: 25px;
   flex-shrink: 0;
 `;
@@ -151,6 +154,7 @@ const CenterView = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
+  padding: 0 24px;
 `;
 
 const CenterViewWrapper = styled.div`
@@ -183,17 +187,6 @@ const Input = styled.input`
   }
 `;
 
-const CheckButton = styled.button`
-  width: 60px;
-  height: 42px;
-  flex-shrink: 0;
-  background-color: #694ac2;
-  font-size: 12px;
-  color: white;
-  border-radius: 8px;
-  margin-left: 8px;
-  font-weight: 400;
-`;
 const Error = styled.div<{
   isActive: boolean;
 }>`
@@ -213,24 +206,4 @@ const BottomView = styled.div`
   width: 100%;
   height: 84px;
   flex-shrink: 0;
-`;
-
-const Next = styled.div<{
-  isActive: boolean;
-}>`
-  width: 100%;
-  height: 45px;
-  display: flex;
-  background-color: #999999;
-  color: white;
-  border-radius: 8px;
-  justify-content: center;
-  align-items: center;
-  transition: background-color 0.3s ease-in-out;
-
-  ${({ isActive }) =>
-    isActive &&
-    css`
-      background-color: #694ac2;
-    `}
 `;

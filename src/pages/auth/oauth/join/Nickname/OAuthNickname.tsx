@@ -1,5 +1,3 @@
-import iconArrowBack from '@/assets/svg/icons/icon-back-button.svg';
-import useNavigatePop from '@/hooks/useNavigatePop';
 import { instance } from '@/instance';
 import { globalState } from '@/recoil';
 import { useState } from 'react';
@@ -8,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled, { css } from 'styled-components';
 import { api } from '@/api';
+import FooterButton from '@/components/common/button/FooterButton';
+import CheckButton from '@/components/common/button/CheckButton';
 
 const OAuthNickname = () => {
   const [error, setError] = useState('');
@@ -76,18 +76,16 @@ const OAuthNickname = () => {
                   setNickname(e.target.value);
                 }}
               />
-              <CheckButton onClick={onClickDuplicateCheck}>
-                중복확인
-              </CheckButton>
+              <CheckButton onClick={onClickDuplicateCheck} />
             </Nickname>
             <Error isActive={isOk}>{error}</Error>
           </CenterViewWrapper>
         </CenterView>
       </Content>
       <BottomView>
-        <Next isActive={isOk} onClick={onNext}>
+        <FooterButton isActive={isOk} onClick={onNext}>
           다음
-        </Next>
+        </FooterButton>
       </BottomView>
     </Layout>
   );
@@ -101,10 +99,10 @@ const Layout = styled.div`
   background-color: white;
   display: flex;
   flex-direction: column;
-  padding: 0 20px;
 `;
 
 const Content = styled.div`
+  padding: 0 24px;
   padding-top: 56px;
   display: flex;
   flex-direction: column;
@@ -168,17 +166,6 @@ const Input = styled.input`
   }
 `;
 
-const CheckButton = styled.button`
-  width: 60px;
-  height: 42px;
-  flex-shrink: 0;
-  background-color: #694ac2;
-  font-size: 12px;
-  color: white;
-  border-radius: 8px;
-  margin-left: 8px;
-  font-weight: 400;
-`;
 const Error = styled.div<{
   isActive: boolean;
 }>`
@@ -199,24 +186,4 @@ const BottomView = styled.div`
   height: 45px;
   flex-shrink: 0;
   margin-bottom: 28px;
-`;
-
-const Next = styled.button<{
-  isActive: boolean;
-}>`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  background-color: #999999;
-  color: white;
-  border-radius: 8px;
-  justify-content: center;
-  align-items: center;
-  transition: background-color 0.3s ease-in-out;
-
-  ${({ isActive }) =>
-    isActive &&
-    css`
-      background-color: #694ac2;
-    `}
 `;
