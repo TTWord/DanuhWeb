@@ -1,11 +1,14 @@
 import { api } from '@/api';
 import { AxiosError } from 'axios';
-
+import { useState } from 'react';
+import useToast from '@/hooks/useToast';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
 
 const useSignup = () => {
   const navigate = useNavigate();
+  const toast = useToast();
+  const [isError, setIsError] = useState(false);
+
   const signup = async (
     username: string,
     password: string,
@@ -28,24 +31,18 @@ const useSignup = () => {
       }>;
       const errorMessage = err?.response?.data.message;
       switch (errorMessage) {
-        case 'EXPIRED_AUTH_CODE':
-          Swal.fire({
-            icon: 'error',
-            title: '인증코드가 만료되었습니다.',
-          });
+        case 'AUTH_EXPIRED_CODE':
+          toast.error('인증코드가 만료되었습니다.');
           break;
 
-        case 'INCORRECT_AUTH_CODE':
-          Swal.fire({
-            icon: 'error',
-            title: '인증코드가 올바르지 않습니다.',
-          });
+        case 'AUTH_INCORRECT_CODE':
+          setIsError(true);
           break;
       }
     }
   };
 
-  return signup;
+  return { signup, isError };
 };
 
 export default useSignup;
