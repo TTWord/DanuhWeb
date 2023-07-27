@@ -4,13 +4,14 @@ import styled, { css } from 'styled-components';
 import useLogin from '@/pages/auth/login/Login/hooks/useLogin';
 import useSocialLogin from './hooks/useSocialLogin';
 import BottomSlideSelectPop from '@/components/common/popup/BottomSlideSelectPop';
-
+import FooterButton from '@/components/common/button/FooterButton';
 import backButtonImg from '@/assets/svg/icons/icon-back-button.svg';
 import googleIcon from '@/assets/svg/icons/icon-google.svg';
 import kakaoIcon from '@/assets/svg/icons/icon-kakao.svg';
 import appleIcon from '@/assets/svg/icons/icon-apple.svg';
 import iconArrowDown from '@/assets/svg/icons/icon-arrow-down.svg';
 import useLoginPageNavigate from './hooks/useLoginPageNavigate';
+import iconEye from '@/assets/svg/icons/icon-eye.svg';
 
 const LoginPage = () => {
   const login = useLogin();
@@ -49,19 +50,19 @@ const LoginPage = () => {
   ];
 
   // 비밀번호 표시용
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  const [emailId, setEmailId] = useState<string>('');
-  const [emailDomain, setEmailDomain] = useState<string>('');
+  const [emailId, setEmailId] = useState('');
+  const [emailDomain, setEmailDomain] = useState('');
   const [isDirectInput, setDirectInput] = useState(false);
-  const [isLoginFocus, setLoginFocus] = useState<boolean>(false);
+  const [isLoginFocus, setLoginFocus] = useState(false);
 
-  const [password, setPassword] = useState<string>('');
-  const [isPassWDFocus, setPassWDFocus] = useState<boolean>(false);
+  const [password, setPassword] = useState('');
+  const [isPassWDFocus, setPassWDFocus] = useState(false);
 
-  const [isOk, setIsOk] = useState<boolean>(false);
-
+  const [isOk, setIsOk] = useState(false);
   const [isPopOpen, setIsPopOpen] = useState(false);
+
   const onSwitchPop = () => {
     setIsPopOpen(!isPopOpen);
   };
@@ -169,21 +170,31 @@ const LoginPage = () => {
 
         <FormBox>
           <span>비밀번호</span>
-          <PasswordBox
-            isFocus={isPassWDFocus}
-            onChange={e => {
-              setPassword(e.target.value);
-            }}
-            type={showPassword ? 'text' : 'password'}
-            placeholder="비밀번호"
-            onFocus={() => {
-              setPassWDFocus(true);
-            }}
-            onBlur={() => {
-              setPassWDFocus(false);
-            }}
-            autoComplete="password"
-          />
+          <PasswordBox>
+            <PasswordInput
+              isFocus={isPassWDFocus}
+              onChange={e => {
+                setPassword(e.target.value);
+              }}
+              type={showPassword ? 'text' : 'password'}
+              placeholder="비밀번호"
+              onFocus={() => {
+                setPassWDFocus(true);
+              }}
+              onBlur={() => {
+                setPassWDFocus(false);
+              }}
+              autoComplete="password"
+            />
+            <ShowPassword
+              onClick={() => {
+                setShowPassword(current => !current);
+              }}
+              src={iconEye}
+              alt="passwordLook"
+              isActive={isPassWDFocus}
+            />
+          </PasswordBox>
         </FormBox>
 
         <Join>
@@ -211,9 +222,9 @@ const LoginPage = () => {
             </AppleLogin>
           </SocialButtonWrapper>
         </SocialWrapper>
-        <LoginButton isActive={isOk} onClick={onLogin}>
+        <FooterButton isActive={isOk} onClick={onLogin}>
           로그인
-        </LoginButton>
+        </FooterButton>
       </Footer>
 
       {/* 공간 분리 */}
@@ -289,7 +300,6 @@ const EmailBox = styled.div<{ isFocus: boolean }>`
   background-color: white;
   display: flex;
   align-items: center;
-  position: relative;
   margin-top: 6px;
   border-bottom: 1px solid #e7e7e7;
 
@@ -372,8 +382,17 @@ const DirectInput = styled.input`
   }
 `;
 
-const PasswordBox = styled.input<{ isFocus: boolean }>`
+const PasswordBox = styled.div`
+  width: 100%;
   height: 42px;
+  display: flex;
+  align-items: center;
+  position: relative;
+`;
+
+const PasswordInput = styled.input<{ isFocus: boolean }>`
+  width: 100%;
+  height: 100%;
   padding-left: 16px;
   font-size: 16px;
   outline: none;
@@ -386,6 +405,27 @@ const PasswordBox = styled.input<{ isFocus: boolean }>`
       isFocus &&
       css`
         border-bottom: 1px solid ${({ theme }) => theme.colors.primary.default};
+      `
+    );
+  }}
+`;
+
+const ShowPassword = styled.img<{ isActive: boolean }>`
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 50%;
+  right: 0px;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: all 0.3s;
+
+  cursor: pointer;
+  ${({ isActive }) => {
+    return (
+      isActive &&
+      css`
+        opacity: 1;
       `
     );
   }}
@@ -447,8 +487,6 @@ const Footer = styled.footer`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 16px;
-  padding-bottom: 36px;
 `;
 
 const LoginButton = styled.button<{

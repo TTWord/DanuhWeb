@@ -1,6 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 import useSendmail from '@/pages/auth/join/Join/hooks/useSendmail';
 import { globalState } from '@/recoil';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -8,6 +7,8 @@ import { TailSpin } from 'react-loader-spinner';
 import iconArrowBack from '@/assets/svg/icons/icon-back-button.svg';
 import useNavigatePop from '@/hooks/useNavigatePop';
 import DomainSelectBox from './components/DomainSelectBox';
+import FooterButton from '@/components/common/button/FooterButton';
+import iconEye from '@/assets/svg/icons/icon-eye.svg';
 
 const JoinPage = () => {
   const [isOk, setIsOk] = useState(false);
@@ -28,6 +29,10 @@ const JoinPage = () => {
   const [userPwConfirm, setUserPWConfirm] = useState('');
   const [pwConfirmError, setPwConfirmError] = useState('');
   const nickname = useRecoilValue(globalState.auth.nickname);
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [isPassWDFocus, setPassWDFocus] = useState(false);
+  const [isConfirmPassWDFocus, setConfirmPassWDFocus] = useState(false);
 
   const inputUserEmailStart = (e: ChangeEvent<HTMLInputElement>) => {
     setUserEmailStart(e.target.value);
@@ -61,11 +66,11 @@ const JoinPage = () => {
 
   useEffect(() => {
     if (error.length > 0) {
-      if (error === 'INVALID_FORMAT_USERNAME') {
+      if (error === 'USER_INVALID_FORMAT_USERNAME') {
         setEmailError('이메일을 형식에 맞게 입력해주세요');
-      } else if (error === 'DUPLICATE_USERNAME') {
+      } else if (error === 'USER_DUPLICATE_USERNAME') {
         setEmailError('이미 가입된 이메일입니다');
-      } else if (error === 'INVALID_FORMAT_PASSWORD') {
+      } else if (error === 'USER_INVALID_FORMAT_PASSWORD') {
         setPwError('비밀번호를 형식에 맞게 입력해주세요');
       }
     }
@@ -121,17 +126,51 @@ const JoinPage = () => {
                 <Comment>영문포함, 숫자포함, 특수문자포함 8자 이상</Comment>
               </InputTitle>
               <InputWrapper>
-                <Input type="password" onChange={inputUserPw} value={userPw} />
+                <PassWordInput
+                  type="password"
+                  onChange={inputUserPw}
+                  value={userPw}
+                  isFocus={isPassWDFocus}
+                  onFocus={() => {
+                    setPassWDFocus(true);
+                  }}
+                  onBlur={() => {
+                    setPassWDFocus(false);
+                  }}
+                />
+                <ShowPassword
+                  onClick={() => {
+                    setShowPassword(current => !current);
+                  }}
+                  src={iconEye}
+                  alt="passwordLook"
+                  isActive={isPassWDFocus}
+                />
               </InputWrapper>
               <InputError>{pwError}</InputError>
             </InputBox>
             <InputBox>
               <InputTitle>비밀번호 확인</InputTitle>
               <InputWrapper>
-                <Input
+                <PassWordInput
                   type="password"
                   onChange={inputUserPwConfirm}
                   value={userPwConfirm}
+                  isFocus={isConfirmPassWDFocus}
+                  onFocus={() => {
+                    setConfirmPassWDFocus(true);
+                  }}
+                  onBlur={() => {
+                    setConfirmPassWDFocus(false);
+                  }}
+                />
+                <ShowPassword
+                  onClick={() => {
+                    setShowPassword(current => !current);
+                  }}
+                  src={iconEye}
+                  alt="passwordLook"
+                  isActive={isConfirmPassWDFocus}
                 />
               </InputWrapper>
               <InputError>{pwConfirmError}</InputError>
@@ -140,7 +179,7 @@ const JoinPage = () => {
         </CenterView>
 
         <BottomView>
-          <Next isActive={isOk} onClick={onJoin}>
+          <FooterButton isActive={isOk} onClick={onJoin}>
             {isLoading ? (
               <TailSpin
                 height="30"
@@ -154,7 +193,7 @@ const JoinPage = () => {
             ) : (
               '메일 인증하기'
             )}
-          </Next>
+          </FooterButton>
         </BottomView>
       </Content>
     </Layout>
@@ -167,7 +206,6 @@ const Layout = styled.div`
   width: 100%;
   height: 100%;
   background-color: white;
-  padding: 0 20px;
 `;
 
 const Header = styled.div`
@@ -176,6 +214,7 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 16px;
 `;
 
 const Chapter = styled.div`
@@ -198,6 +237,7 @@ const TopView = styled.div`
   font-family: ${({ theme }) => theme.fonts.gmarketSans};
   color: #171717;
   font-weight: medium;
+  padding: 0 16px;
   margin-top: 25px;
   flex-shrink: 0;
 `;
@@ -211,6 +251,7 @@ const CenterView = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
+  padding: 0 16px;
 `;
 
 const CenterViewWrapper = styled.div`
@@ -248,6 +289,7 @@ const InputWrapper = styled.div`
   display: flex;
   background-color: white;
   justify-content: space-between;
+  position: relative;
 `;
 
 const Input = styled.input`
@@ -259,6 +301,48 @@ const Input = styled.input`
   &::placeholder {
     color: #dadada;
   }
+`;
+
+const PassWordInput = styled.input<{ isFocus: boolean }>`
+  outline: none;
+  width: 100%;
+  color: #111111;
+  padding: 0 16px;
+  transition: all 0.3s;
+
+  ${({ isFocus }) => {
+    return (
+      isFocus &&
+      css`
+        border-bottom: 1px solid ${({ theme }) => theme.colors.primary.default};
+      `
+    );
+  }}
+
+  &::placeholder {
+    color: #dadada;
+  }
+`;
+
+const ShowPassword = styled.img<{ isActive: boolean }>`
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 50%;
+  right: 0px;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: all 0.3s;
+
+  cursor: pointer;
+  ${({ isActive }) => {
+    return (
+      isActive &&
+      css`
+        opacity: 1;
+      `
+    );
+  }}
 `;
 
 const SelectMail = styled.div`
