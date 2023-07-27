@@ -5,11 +5,12 @@ interface getBookResponse extends BackendResponse {
     created_at: string;
     id: number;
     is_downloaded: number;
-    is_shared: number;
+    is_shared: boolean;
     name: string;
     updated_at: string;
     user_id: number;
     share_id: number;
+    comment?: string;
   }[];
 }
 
