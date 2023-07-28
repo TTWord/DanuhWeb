@@ -28,7 +28,7 @@ const menuList = [
   },
   {
     id: 2,
-    component: <SharingMenu selected={false} />,
+    component: <SharingMenu stroke="#CBBDF3" selected={false} />,
     activeComponent: (
       <SharingMenu fill="#694AC2" stroke="#694AC2" selected={true} />
     ),
