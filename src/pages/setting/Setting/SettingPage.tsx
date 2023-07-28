@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { globalState } from '@/recoil';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { useEffect, useState } from 'react';
 
 import useGetUserInfo from '@/pages/setting//profile/Profile/hooks/useGetUserInfo';
@@ -10,6 +10,7 @@ import ConfirmPop from '@/components/common/popup/ConfirmPop';
 import useNavigatePush from '@/hooks/useNavigatePush';
 import useToast from '@/hooks/useToast';
 import iconSetting from '@/assets/svg/icons/icon-setting.svg';
+import iconInfo from '@/assets/svg/icons/icon-info.svg';
 
 const SettingPage = () => {
   const getUserInfo = useGetUserInfo();
@@ -91,7 +92,8 @@ const SettingPage = () => {
   return (
     <WebWrapper>
       <Header>
-        <ProfileChange
+        <Title>My page</Title>
+        <UserChangeButton
           onClick={moveProfilePage}
           src={iconSetting}
           alt="ProfileChange"
@@ -108,25 +110,49 @@ const SettingPage = () => {
             <ProfileNickname>{myinfo.nickname}</ProfileNickname>
             <ProfileUsername>{myinfo.username}</ProfileUsername>
 
-            <ProfileNickname>{'단어개수'}</ProfileNickname>
-            <ProfileUsername>
+            <WordNumTitle>단어개수</WordNumTitle>
+            <WordNumText>
               {myinfo.wordCount}/{maxWords}
-            </ProfileUsername>
+            </WordNumText>
           </ProfileContent>
         </ProfileWrapper>
 
         <ShareInfoWrapper>
           <ShareInfo>
-            <InfoNumber>{myinfo.shareCount}</InfoNumber>
             <InfoName>공유단어장</InfoName>
+            <InfoNumber>
+              {Number(myinfo.shareCount).toLocaleString()}
+            </InfoNumber>
           </ShareInfo>
           <ShareInfo>
-            <InfoNumber>{myinfo.downloadCount}</InfoNumber>
-            <InfoName>다운로드 횟수</InfoName>
+            <InfoName>
+              다운로드
+              <img
+                src={iconInfo}
+                alt="download"
+                onClick={() => {
+                  toast.comment('내 공유 단어장이 다운된 횟수');
+                }}
+              />
+            </InfoName>
+            <InfoNumber>
+              {Number(myinfo.downloadCount).toLocaleString()}
+            </InfoNumber>
           </ShareInfo>
           <ShareInfo>
-            <InfoNumber>{myinfo.recommendCount}</InfoNumber>
-            <InfoName>추천수</InfoName>
+            <InfoName>
+              추천
+              <img
+                src={iconInfo}
+                alt="recommend"
+                onClick={() => {
+                  toast.comment('내 공유 단어장이 추천받은 횟수');
+                }}
+              />
+            </InfoName>
+            <InfoNumber>
+              {Number(myinfo.recommendCount).toLocaleString()}
+            </InfoNumber>
           </ShareInfo>
         </ShareInfoWrapper>
       </UserInfoWrapper>
@@ -167,14 +193,21 @@ const WebWrapper = styled.div`
 // 상단 부분
 const Header = styled.div`
   width: 100%;
-  height: 44px;
-  padding-right: 16px;
+  height: 56px;
+  padding: 0 16px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
 `;
 
-const ProfileChange = styled.img`
+const Title = styled.div`
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 1.4;
+`;
+
+const UserChangeButton = styled.img`
   :hover {
     cursor: pointer;
   }
@@ -191,20 +224,26 @@ const ProfileWrapper = styled.div`
   display: flex;
   padding: 0 16px;
   padding-bottom: 16px;
+  justify-content: space-between;
+  overflow-wrap: anywhere;
+`;
+
+const Wrapper = styled.div`
+  width: 100%;
+  display: flex;
 `;
 
 const ProfileImg = styled.div`
-  width: 78px;
-  height: 78px;
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
   background: #e0e0e0;
   box-sizing: border-box;
   border: 1px solid #e0e0e0;
   border-radius: 17px;
-  margin-right: 16px;
   display: flex;
   align-items: center;
   border-radius: 100%;
-  margin-right: 16px;
 
   img {
     width: 100%;
@@ -220,17 +259,31 @@ const ProfileContent = styled.div`
   font-style: normal;
   font-weight: 600;
   line-height: 140%;
-  //flex-shrink: 0;
+  width: 100%;
+  margin-left: 16px;
 `;
 
 const ProfileNickname = styled.div`
   color: ${({ theme }) => theme.colors.gray[800]};
+  ${({ theme }) => theme.typography.pretendard.t3.sbd};
 `;
 
 const ProfileUsername = styled.div`
   font-weight: 500;
   color: ${({ theme }) => theme.colors.gray[400]};
   margin-bottom: 4px;
+  width: 100%;
+  ${({ theme }) => theme.typography.pretendard.b1.md};
+`;
+
+const WordNumTitle = styled.div`
+  ${({ theme }) => theme.typography.pretendard.b1.sbd};
+  color: ${({ theme }) => theme.colors.gray[800]};
+`;
+
+const WordNumText = styled.div`
+  ${({ theme }) => theme.typography.pretendard.b1.md};
+  color: ${({ theme }) => theme.colors.gray[400]};
 `;
 
 const ShareInfoWrapper = styled.div`
@@ -243,36 +296,51 @@ const ShareInfoWrapper = styled.div`
   padding: 16px;
 
   display: flex;
+  justify-content: center;
 `;
 
 const ShareInfo = styled.div`
-  width: 100%;
-  aspect-ratio: 1/1;
+  width: 100px;
   background-color: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-radius: 8px;
+  box-shadow: 0px 2px 10px 0px rgba(105, 74, 194, 0.08);
+  padding: 12px;
 
   & + & {
-    margin-left: 5%;
+    margin-left: 8px;
+  }
+`;
+
+const InfoName = styled.div`
+  ${({ theme }) => theme.typography.pretendard.b1.rg};
+  color: ${({ theme }) => theme.colors.gray[600]};
+  display: flex;
+  font-size: 14px;
+  justify-content: center;
+  width: 100%;
+
+  & > img {
+    margin-left: 4px;
   }
 `;
 
 const InfoNumber = styled.div`
-  width: 50%;
-  height: 50%;
-  border-radius: 100%;
-  color: black;
+  width: 90%;
+  border-radius: 4px;
+  color: ${({ theme }) => theme.colors.primary.default};
+  border: 1px solid ${({ theme }) => theme.colors.primary[200]};
   background-color: ${({ theme }) => theme.colors.primary[100]};
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10%;
-`;
+  margin-top: 10px;
+  padding: 6px 0;
 
-const InfoName = styled.div`
-  line-height: 100%;
+  ${({ theme }) => theme.typography.pretendard.b1.sbd};
 `;
 
 //설정 메뉴

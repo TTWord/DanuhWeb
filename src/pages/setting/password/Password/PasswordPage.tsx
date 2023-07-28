@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
-import backIcon from '@/assets/svg/icons/icon-back-gray.svg';
 import useNavigatePop from '@/hooks/useNavigatePop';
 import { useEffect, ChangeEvent } from 'react';
 import useChangePassword from './hooks/useChangePassword';
+import StackLayout from '@/components/layout/StackLayout';
 
 // 비밀번호 표시 버튼?
 const PasswordPage = () => {
@@ -34,7 +34,6 @@ const PasswordPage = () => {
   const onClickSubmit = async () => {
     if (isOk) {
       changePassword(oldPassword, newPassword);
-      //a123456! a1234567!
     }
   };
 
@@ -52,70 +51,64 @@ const PasswordPage = () => {
   }, [oldPassword, newPassword, confirmPassword]);
 
   return (
-    <WebWrapper>
-      <Header>
-        <BackButton onClick={onBack} src={backIcon} alt="backButton" />
-        비밀번호 변경하기
-      </Header>
-      <Content>
-        <TypeBox>
-          <Type>기존 비밀번호</Type>
-          <InputBox onChange={onClickOldPW} type="password" />
-        </TypeBox>
-        <TypeBox>
-          <Type>신규 비밀번호</Type>
-          <InputBox onChange={onClickNewPW} type="password" />
-        </TypeBox>
-        <TypeBox>
-          <Type>신규 비밀번호 확인</Type>
-          <InputBox onChange={onClickConfirmPW} type="password" />
-        </TypeBox>
-      </Content>
-      <Footer>
-        <SubmitButton onClick={onClickSubmit} isActive={isOk}>
-          변경하기
-        </SubmitButton>
-      </Footer>
-    </WebWrapper>
+    <StackLayout
+      topBar={{
+        title: '비밀번호 변경',
+      }}
+    >
+      <Container>
+        <Content>
+          <Line>
+            <Title>기존 비밀번호</Title>
+            <InputBox
+              onChange={onClickOldPW}
+              type="password"
+              placeholder="기존 비밀번호를 입력해 주세요"
+            />
+          </Line>
+          <Line>
+            <Title>신규 비밀번호</Title>
+            <InputBox
+              onChange={onClickNewPW}
+              type="password"
+              placeholder="신규 비밀번호를 입력해 주세요"
+            />
+          </Line>
+          <Line>
+            <Title>신규 비밀번호 확인</Title>
+            <InputBox
+              onChange={onClickConfirmPW}
+              type="password"
+              placeholder="신규 비밀번호를 입력해 주세요"
+            />
+          </Line>
+        </Content>
+        <Footer>
+          <SubmitButton onClick={onClickSubmit} isActive={isOk}>
+            변경하기
+          </SubmitButton>
+        </Footer>
+      </Container>
+    </StackLayout>
   );
 };
 export default PasswordPage;
 
-const WebWrapper = styled.div`
+const Container = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  font-family: ${({ theme }) => theme.fonts.pretendard};
-`;
-
-const Header = styled.header`
-  position: relative;
-  width: 100%;
-  height: 56px;
-  padding: 0 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-bottom: 1px solid black;
-`;
-
-const BackButton = styled.img`
-  position: absolute;
-  left: 16px;
-  :hover {
-    cursor: pointer;
-  }
 `;
 
 const Content = styled.div`
   width: 100%;
   height: 100%;
   flex: 1;
-  padding: 24px 16px;
+  padding: 24px;
 `;
 
-const TypeBox = styled.div`
+const Line = styled.div`
   width: 100%;
   font-size: 16px;
 
@@ -124,15 +117,31 @@ const TypeBox = styled.div`
   }
 `;
 
-const Type = styled.div``;
+const Title = styled.div`
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 140%;
+  color: ${({ theme }) => theme.colors.gray[900]};
+  margin-bottom: 8px;
+`;
 
 const InputBox = styled.input`
   width: 100%;
   height: 44px;
   outline: none;
-  margin-top: 12px;
   padding: 0 8px;
-  border: 1px solid black;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[200]};
+
+  &:focus {
+    border-bottom: 1px solid ${({ theme }) => theme.colors.primary.default};
+  }
+
+  ${({ theme }) => theme.typography.pretendard.t3.md};
+  color: ${({ theme }) => theme.colors.gray[900]};
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.gray[400]};
+  }
 `;
 
 const Footer = styled.footer`
@@ -142,16 +151,19 @@ const Footer = styled.footer`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
 `;
 
 const SubmitButton = styled.button<{
   isActive: boolean;
 }>`
   width: 100%;
-  height: 56px;
-  background-color: grey;
+  height: 48px;
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.colors.primary.disabled};
   color: white;
-  font-size: 24px;
+
+  ${({ theme }) => theme.typography.gmarketSans.md[14]};
 
   ${({ isActive }) => {
     return (
