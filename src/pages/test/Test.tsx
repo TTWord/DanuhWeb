@@ -1,3 +1,5 @@
+import CheckBox from '@/components/common/switch/CheckBox';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Snd from 'snd-lib';
 import styled from 'styled-components';
@@ -8,36 +10,20 @@ snd.load(Snd.KITS.SND01);
 
 const Test = () => {
   const navigate = useNavigate();
+  const [isChecked, setIsChecked] = useState(false);
 
   return (
     <Container>
+      <CheckBox
+        isChecked={isChecked}
+        onClick={() => setIsChecked(current => !current)}
+      />
       <Button
         onClick={() => {
           snd.play(Snd.SOUNDS.TAP);
         }}
       >
         123
-      </Button>
-      <Button
-        onClick={() => {
-          snd.play(Snd.SOUNDS.CELEBRATION);
-        }}
-      >
-        1234
-      </Button>
-      <Button
-        onClick={() => {
-          snd.play(Snd.SOUNDS.NOTIFICATION);
-        }}
-      >
-        1235
-      </Button>
-      <Button
-        onClick={() => {
-          snd.play(Snd.SOUNDS.CAUTION);
-        }}
-      >
-        123566
       </Button>
     </Container>
   );
