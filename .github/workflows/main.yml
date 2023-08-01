@@ -31,10 +31,10 @@ jobs:
           SERVER_NAME: ${{ secrets.ENV_SERVER_NAME }}
 
       - name: Install dependencies
-        run: yarn install
+        run: npm install
 
       - name: Build
-        run: yarn build
+        run: npm build
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
