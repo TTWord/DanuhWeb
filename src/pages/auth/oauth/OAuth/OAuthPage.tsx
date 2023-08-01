@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import iconLocal from '@/assets/svg/icons/icon-email.svg';
 import iconGoogle from '@/assets/svg/icons/icon-google.svg';
 import iconKakao from '@/assets/svg/icons/icon-kakao.svg';
 import iconApple from '@/assets/svg/icons/icon-apple-black.svg';
 import iconClose from '@/assets/svg/icons/icon-close.svg';
-import FooterButton from '@/components/common/button/FooterButton';
 import useSocialLogin from '../../login/Login/hooks/useSocialLogin';
 import useNavigatePop from '@/hooks/useNavigatePop';
 
@@ -80,6 +79,11 @@ const OAuthPage = () => {
     }
   };
 
+  // 소셜로그인 성공일때는 빈화면 출력
+  if (message === 'SUCCESS') {
+    return <MainWrapper></MainWrapper>;
+  }
+
   return (
     <MainWrapper>
       <Header>
@@ -98,8 +102,6 @@ const OAuthPage = () => {
           {'다른 메일 주소로 회원가입 할게요'}
         </OtherEmailLoginButton>
       </Center>
-
-      <FooterButton isActive={false}>시작하기</FooterButton>
     </MainWrapper>
   );
 };
