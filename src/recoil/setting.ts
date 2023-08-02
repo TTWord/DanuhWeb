@@ -5,4 +5,9 @@ export const setting = {
     key: 'noticeTitle',
     default: '',
   }),
+
+  directInputMode: atom({
+    key: 'directInputMode',
+    default: false,
+  }),
 };

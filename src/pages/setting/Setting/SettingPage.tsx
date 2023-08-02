@@ -17,6 +17,7 @@ const SettingPage = () => {
   const logout = useLogout();
   const toast = useToast();
   const navigatePush = useNavigatePush();
+  const [loginType, setLoginType] = useState('');
 
   const maxWords = 200;
   const [myinfo, setMyInfo] = useState({
@@ -33,6 +34,7 @@ const SettingPage = () => {
 
   const setUserInfo = async () => {
     const { data: response } = await getUserInfo();
+    setLoginType(response.login_type);
     setMyInfo({
       username: response.username,
       nickname: response.nickname,
@@ -66,9 +68,8 @@ const SettingPage = () => {
     navigatePush('/setting/password');
   };
 
-  // onClick에 사용하는 함수
-  const onClickVersion = () => {
-    toast.comment('버전 0.3');
+  const movePatchNotePage = () => {
+    navigatePush('/setting/patchnote');
   };
   const onClickLogout = () => {
     setIsConfirmPopOpen(true);
@@ -170,9 +171,12 @@ const SettingPage = () => {
           }}
         />
         <ContentBox title="공지사항" onClick={moveNoticePage} />
-        <ContentBox title="패치노트" onClick={onClickVersion} />
+        <ContentBox title="패치노트" onClick={movePatchNotePage} />
         {/* <ContentBox title="건의하기 / 버그신고" onClick={moveReportPage} /> */}
-        <ContentBox title="비밀번호 변경" onClick={movePasswordPage} />
+        {/* Local 가입 계정이 아니면 비밀번호 변경 미표시 */}
+        {loginType === 'local' && (
+          <ContentBox title="비밀번호 변경" onClick={movePasswordPage} />
+        )}
         <ContentBox title="로그아웃" onClick={onClickLogout} />
         <ContentBox title="탈퇴하기" onClick={onClickDeleteAccout} />
       </ContentWrapper>

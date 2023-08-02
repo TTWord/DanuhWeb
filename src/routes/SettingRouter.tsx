@@ -3,6 +3,7 @@ import NoticePage from '@/pages/setting/notice/Notice/NoticePage';
 import NotificationPage from '@/pages/setting/notification/Notification/NotificationPage';
 import ProfilePage from '@/pages/setting/profile/Profile/ProfilePage';
 import SettingPage from '@/pages/setting/Setting/SettingPage';
+import PatchNotePage from '@/pages/setting/patchnote/PatchNotePage';
 import ReportPage from '@/pages/setting/report/Report/ReportPage';
 import PasswordPage from '@/pages/setting/password/Password/PasswordPage';
 import DeleteAccountPage from '@/pages/setting/delete/DeleteAccount/DeleteAccountPage';
@@ -29,6 +30,9 @@ const SettingRouter = () => {
 
       {/* 공지사항 세부 페이지 */}
       <Route path={'/notice/:id'} element={<NoticeDetpage />} />
+
+      {/* 패치노트 페이지 */}
+      <Route path={'/patchnote'} element={<PatchNotePage />} />
 
       {/* 건의하기 / 버그신고 페이지 */}
       <Route path={'/report'} element={<ReportPage />} />
