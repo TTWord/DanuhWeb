@@ -1,35 +1,57 @@
 import styled, { css } from 'styled-components';
 import { globalState } from '@/recoil';
 import { useSetRecoilState } from 'recoil';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState, MouseEvent } from 'react';
 import useGetSharedBooks from './hooks/useGetSharedBooks';
-import useGetSharedBookByType from './hooks/useGetSharedBookByType';
 import SharingBook from './components/SharingBook';
+import iconSearch from '@/assets/svg/icons/icon-search.svg';
+import iconArrowUpRight from '@/assets/svg/icons/icon-arrow-up-right.svg';
+import iconArrowDown from '@/assets/svg/icons/icon-arrow-down.svg';
+import useNavigatePush from '@/hooks/useNavigatePush';
 
 const SharePage = () => {
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
-  const navigate = useNavigate();
+  const navigate = useNavigatePush();
   const { isLoading, getSharedBooks } = useGetSharedBooks();
-  const getSharedBookByTypeApI = useGetSharedBookByType();
   const [sharedBooks, setSharedBooks] = useState([]);
 
-  const [sortByDownload, setSortByDownload] = useState(false);
+  const [sortType, setSortType] = useState('최신순');
+  const [isTypeClicked, setIsTypeclicked] = useState(false);
 
   const getSharedBooksAPI = async () => {
-    const { data: response } = await getSharedBooks('');
+    let typeFilter;
+    switch (sortType) {
+      case '최신순':
+        typeFilter = 'updated_at';
+        break;
+      case '인기순':
+        typeFilter = 'popularity';
+        break;
+      case '다운로드순':
+        typeFilter = 'downloaded';
+        break;
+      default:
+        typeFilter = 'updated_at';
+        break;
+    }
+    const { data: response } = await getSharedBooks({ type: typeFilter });
 
     setSharedBooks(response);
   };
 
-  const getSharedBooksByType = async (type: string, order: string) => {
-    const { data: response } = await getSharedBookByTypeApI(type, order);
-    setSharedBooks(response);
+  const onClickType = () => {
+    setIsTypeclicked(current => !current);
+  };
+
+  const onClickTypeButton = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setSortType(e.currentTarget.innerText);
+    setIsTypeclicked(false);
   };
 
   useEffect(() => {
     getSharedBooksAPI();
-  }, []);
+  }, [sortType]);
 
   useEffect(() => {
     setActiveMenu(2);
@@ -44,59 +66,39 @@ const SharePage = () => {
     navigate('/share/search');
   };
 
-  const onClickSortByDownload = () => {
-    setSortByDownload(false);
-    getSharedBooksByType('downloaded', 'DESC');
-  };
-
-  const onClickSortByInquiry = () => {
-    setSortByDownload(true);
-    getSharedBooksByType('checked', 'DESC');
-  };
-
   //// Components ////
   return (
     <WebWrapper>
       <Header>
-        <Title>Share</Title>
-        <Search onClick={goSearchPage}>🔍</Search>
+        <PageTitle>Share</PageTitle>
+        <Search onClick={goSearchPage} src={iconSearch} alt="search" />
       </Header>
 
-      <Container>
-        <MyShraingList onClick={goMySharingBooks}>
-          내 공유 단어장 목록
-        </MyShraingList>
+      <MyShraingList onClick={goMySharingBooks}>
+        <span>{'나의 공유 단어장'}</span>
+        <img src={iconArrowUpRight} alt="arrowupright" />
+      </MyShraingList>
 
+      <Container>
         <SharingIndex>
-          <div>공유 단어장 목록</div>
-          <SortType>
-            <SortButton
-              onClick={onClickSortByDownload}
-              isSelected={!sortByDownload}
-            >
-              인기순
-            </SortButton>
-            <SortButton
-              onClick={onClickSortByInquiry}
-              isSelected={sortByDownload}
-            >
-              조회순
-            </SortButton>
+          <IndexTitle>공유 단어장</IndexTitle>
+
+          <SortType onClick={onClickType}>
+            <CurrentType>{sortType}</CurrentType>
+            <img src={iconArrowDown} alt="list" />
+            <TypeList isActive={isTypeClicked}>
+              <TypeButton onClick={onClickTypeButton}>{'최신순'}</TypeButton>
+              <TypeButton onClick={onClickTypeButton}>{'인기순'}</TypeButton>
+              <TypeButton onClick={onClickTypeButton}>
+                {'다운로드순'}
+              </TypeButton>
+            </TypeList>
           </SortType>
         </SharingIndex>
 
         <SharingBookWrapper>
           {sharedBooks.map((book: any) => (
-            <SharingBook
-              key={book.id}
-              shareId={book.id}
-              bookName={book.book_name}
-              userName={book.nickname}
-              updatedDate={book.updated_at}
-              view={book.checked}
-              download={book.downloaded}
-              recommand={0} // 아직 값 없음
-            />
+            <SharingBook key={book.id} book={book} />
           ))}
         </SharingBookWrapper>
       </Container>
@@ -111,27 +113,29 @@ const WebWrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 0 20px;
   overflow: hidden;
+  font-family: ${({ theme }) => theme.fonts.pretendard};
 `;
 
 const Header = styled.header`
   width: 100%;
   height: 56px;
+  flex-shrink: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  padding: 0 16px;
 `;
 
-const Title = styled.div`
+const PageTitle = styled.div`
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
   font-style: normal;
   font-weight: 700;
-  font-size: 36px;
+  font-size: 18px;
 `;
 
-const Search = styled.button`
-  width: 24px;
+const Search = styled.img`
+  cursor: pointer;
 `;
 
 const Container = styled.div`
@@ -139,21 +143,40 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  padding: 16px;
 `;
 
 const MyShraingList = styled.button`
-  width: 100%;
-  height: 74px;
-  background: #d9d9d9;
-  border-radius: 5px;
+  width: 142px;
+  height: 36px;
+  background-color: ${({ theme }) => theme.colors.primary[100]};
+  border-radius: 8px;
   color: black;
+  padding: 8px;
+  margin-top: 8px;
   margin-bottom: 20px;
+  margin: 8px 0px 5px 16px;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: space-between;
+  align-items: center;
+
+  span {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    color: ${({ theme }) => theme.colors.primary.default};
+  }
+
+  img {
+    width: 16px;
+  }
 `;
 
 const SharingIndex = styled.div`
   width: 100%;
-  height: 36px;
-  border-bottom: solid 1px #ececec;
+  height: 24px;
   display: flex;
   justify-content: space-between;
 
@@ -166,27 +189,72 @@ const SharingIndex = styled.div`
   margin-bottom: 15px;
 `;
 
-const SortType = styled.div`
-  display: flex;
-  align-items: center;
+const IndexTitle = styled.span`
+  ${({ theme }) => theme.typography.pretendard.t2.sbd};
+  color: ${({ theme }) => theme.colors.black};
 `;
 
-const SortButton = styled.button<{ isSelected?: boolean }>`
-  font-style: normal;
-  font-weight: 700;
-  font-size: 20px;
-  line-height: 24px;
-  color: gray;
-
-  & + & {
-    margin-left: 10px;
+const SortType = styled.div`
+  height: 24px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  img {
+    width: 12px;
+    margin-left: 8px;
   }
+`;
 
-  ${({ isSelected }) =>
-    isSelected &&
-    css`
-      color: black;
-    `}
+const CurrentType = styled.span`
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%;
+  color: ${({ theme }) => theme.colors.gray[500]};
+`;
+
+const TypeList = styled.div<{ isActive: boolean }>`
+  position: absolute;
+  top: 24px;
+  right: 0;
+  width: 188px;
+  height: 168px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid ${({ theme }) => theme.colors.primary[100]};
+  border-radius: 8px;
+  box-shadow: 0px 2px 10px 0px rgba(105, 74, 194, 0.08);
+  z-index: 1;
+
+  ${({ isActive }) => {
+    return isActive
+      ? css`
+          display: flex;
+        `
+      : css`
+          display: none;
+        `;
+  }}
+`;
+
+const TypeButton = styled.button`
+  height: 56px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 8px;
+
+  :nth-child(2) {
+    border-radius: 0px;
+    border-top: 1px solid ${({ theme }) => theme.colors.primary[100]};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.primary[100]};
+  }
 `;
 
 const SharingBookWrapper = styled.div`
@@ -196,7 +264,7 @@ const SharingBookWrapper = styled.div`
 
   flex-direction: column;
   overflow-y: auto;
-  padding-bottom: 72px;
+  padding-bottom: 108px;
 
   ::-webkit-scrollbar {
     display: none;
