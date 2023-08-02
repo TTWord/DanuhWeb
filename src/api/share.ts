@@ -4,14 +4,17 @@ interface ISharedBooks {
   nameFilter?: string;
   type?: string;
   order?: string;
-  id?: number;
+  mode?: string;
+  filter?: boolean;
 }
 
 export const shareAPI = {
-  getSharedBooks: async (nameFilter: string) => {
+  getSharedBooks: async ({ nameFilter, type, order }: ISharedBooks) => {
     const response = await instance.get(`/share`, {
       params: {
         name: nameFilter,
+        type: type,
+        order: order,
       },
     });
 
@@ -25,7 +28,7 @@ export const shareAPI = {
   },
 
   getSharedBookByType: async (type: string, order: string) => {
-    const response = await instance.get(`/share`, {
+    const { data: response } = await instance.get(`/share`, {
       params: {
         type,
         order,
@@ -36,8 +39,19 @@ export const shareAPI = {
   },
 
   downloadSharedBook: async (id: number) => {
-    const response = await instance.post(`/share`, {
+    const { data: response } = await instance.post(`/share`, {
       id,
+    });
+
+    return response;
+  },
+
+  getUserShareBooks: async ({ mode, order, filter }: ISharedBooks) => {
+    const { data: response } = await instance.get(`/share/user/${mode}`, {
+      params: {
+        order,
+        filter,
+      },
     });
 
     return response;
