@@ -22,12 +22,19 @@ const useDownloadSharedBook = () => {
       const err = e as AxiosError<{
         message: string;
       }>;
-
       const errorMessage = err?.response?.data.message;
-      Swal.fire({
-        icon: 'error',
-        title: errorMessage,
-      });
+
+      switch (errorMessage) {
+        case 'SHARE_BOOK_OWNER': {
+          toast.error('소유중인 단어장은 다운받을 수 없습니다.');
+          return;
+        }
+
+        default: {
+          toast.error('에러가 발생하였습니다.');
+          return;
+        }
+      }
     }
   };
 
