@@ -4,18 +4,22 @@ import Swal from 'sweetalert2';
 import { useState } from 'react';
 
 interface ISharedBooks {
-  nameFilter: string;
-  type: string;
-  order: string;
+  nameFilter?: string;
+  type?: string;
+  order?: string;
 }
 
 const useGetSharedBooks = () => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const getSharedBooks = async (nameFilter: string) => {
+  const getSharedBooks = async ({ nameFilter, type, order }: ISharedBooks) => {
     try {
       setIsLoading(true);
-      const { data: response } = await api.share.getSharedBooks(nameFilter);
+      const { data: response } = await api.share.getSharedBooks({
+        nameFilter,
+        type,
+        order,
+      });
       setIsLoading(false);
       return response;
     } catch (e: unknown) {
