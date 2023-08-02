@@ -4,14 +4,23 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import backImg from '@/assets/svg/icons/icon-back-button.svg';
 import useDeleteAccount from '@/pages/setting/Setting/hooks/useDeleteAccount';
+import DeleteMain from './components/DeleteMain';
+import DeleteVote from './components/DeleteVote';
+import FooterButton from '@/components/common/button/FooterButton';
 
 const DeleteAccountPage = () => {
   const navigatePush = useNavigatePop();
   const deleteAccount = useDeleteAccount();
   const [isConfirmPopOpen, setIsConfirmPopOpen] = useState(false);
+  const [isVoteMode, setVoteMode] = useState(true); //false로 바꾸어야함
+  const [isActive, setActive] = useState(false); //false로 바꾸어야함
 
-  const onClick = () => {
-    setIsConfirmPopOpen(true);
+  const onClickSetVodeMode = () => {
+    setVoteMode(true);
+  };
+
+  const onClickDelete = () => {
+    if (isActive) setIsConfirmPopOpen(true);
   };
 
   const goBack = () => {
@@ -21,9 +30,7 @@ const DeleteAccountPage = () => {
   return (
     <MainWrapper>
       <Header>
-        <BackButton onClick={goBack}>
-          <img src={backImg} alt="backImg" />
-        </BackButton>
+        <BackButton onClick={goBack} src={backImg} alt="backImg" />
         탈퇴하기
       </Header>
 
@@ -39,13 +46,16 @@ const DeleteAccountPage = () => {
             deleteAccount();
           }}
         />
-        <Text>탈퇴하면 계정은 다시 복구할 수 없습니다.</Text>
-        <Text>정말 탈퇴하시겠습니까?</Text>
+        {/* 탈퇴하기 메인 화면 */}
+        {!isVoteMode && <DeleteMain onClick={onClickSetVodeMode} />}
+        {/* 탈퇴하기 불편 사항 선택 & 최종 화면, 직접 입력 체크 input 출력 */}
+        {isVoteMode && <DeleteVote onClick={onClickSetVodeMode} />}
       </Content>
-
-      <Footer>
-        <Button onClick={onClick}>탈퇴하기</Button>
-      </Footer>
+      {isVoteMode && (
+        <FooterButton onClick={onClickDelete} isActive={isActive}>
+          탈퇴하기
+        </FooterButton>
+      )}
     </MainWrapper>
   );
 };
@@ -60,46 +70,34 @@ const MainWrapper = styled.div`
 `;
 
 const Header = styled.div`
-  position: relative;
   width: 100%;
-  height: 50px;
-  border-bottom: 1px solid #666666;
+  height: 56px;
+  color: ${({ theme }) => theme.colors.gray[900]};
+  ${({ theme }) => theme.typography.pretendard.t3.sbd}
   font-weight: 500;
   font-size: 16px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  flex-shrink: 0;
+  padding: 0 16px;
 `;
 
-const BackButton = styled.button`
-  position: absolute;
-  left: 20px;
-  img {
-    height: 12px;
-  }
+const BackButton = styled.img`
+  height: 12px;
+  margin-right: 16px;
+  cursor: pointer;
 `;
 
 const Content = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  flex: 1;
-  padding: 20px 20px;
-`;
+  justify-content: center;
+  align-items: center;
 
-const Text = styled.div`
-  font-size: 16px;
-`;
-
-const Footer = styled.footer`
-  padding: 0 22px;
-  padding-bottom: 22px;
-`;
-
-const Button = styled.button`
-  width: 100%;
-  height: 56px;
-  background-color: #bebebe;
-  border-radius: 5px;
-  color: white;
+  img {
+    width: 56px;
+    margin-bottom: 24px;
+  }
 `;
