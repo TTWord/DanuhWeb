@@ -4,9 +4,12 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import iconBack from '@/assets/svg/icons//icon-back-gray.svg';
 import { api } from '@/api';
+import useToast from '@/hooks/useToast';
+import FooterButton from '@/components/common/button/FooterButton';
 
 const ModifyWordPage = () => {
   const navigate = useNavigate();
+  const toast = useToast();
 
   const wordId = Number(useParams().id);
   const [word, setWord] = useState('단어를 입력해주세요');
@@ -80,22 +83,17 @@ const ModifyWordPage = () => {
         </WordBox>
       </Container>
 
-      <Footer>
-        <CreateButton
-          onClick={() => {
-            if (word === '' && mean === '') {
-              Swal.fire({
-                icon: 'warning',
-                title: '미입력칸이 있습니다.',
-              });
-            } else {
-              modifyWord(word, mean);
-            }
-          }}
-        >
-          수정하기
-        </CreateButton>
-      </Footer>
+      <FooterButton
+        onClick={() => {
+          if (word === '' && mean === '') {
+            toast.error('미입력칸이 있습니다.');
+          } else {
+            modifyWord(word, mean);
+          }
+        }}
+      >
+        수정하기
+      </FooterButton>
     </MainWrapper>
   );
 };
@@ -112,7 +110,7 @@ const MainWrapper = styled.div`
   align-items: center;
   font-family: ${({ theme }) => theme.fonts.pretendard};
   line-height: 140%;
-  background-color: ${({ theme }) => theme.colors.primary[100]};
+  //background-color: ${({ theme }) => theme.colors.primary[100]};
 `;
 
 //-- Header 영역 --//
@@ -186,25 +184,4 @@ const Input = styled.input`
   ::placeholder {
     color: #dadada;
   }
-`;
-
-const Footer = styled.footer`
-  width: 100%;
-  padding: 0 24px;
-  padding-bottom: 48px;
-  background-color: ${({ theme }) => theme.colors.white};
-`;
-
-const CreateButton = styled.button`
-  width: 100%;
-  height: 48px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${({ theme }) => theme.colors.primary.default};
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 16px;
-  color: #ffffff;
 `;
