@@ -1,9 +1,10 @@
 import BottomSlidePop from '@/components/common/popup/BottomSlidePop';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import iconCloseSVG from '@/assets/svg/icons/icon-close.svg';
 import { useMutation } from 'react-query';
-import { instance } from '@/instance';
+import { api } from '@/api';
+import { useNavigate } from 'react-router-dom';
 
 interface BookShareOptionPopProps {
   isOpen: boolean;
@@ -11,12 +12,12 @@ interface BookShareOptionPopProps {
   book: {
     created_at: string;
     id: number;
-    is_downloaded: number;
-    is_shared: number;
+    is_downloaded: boolean;
     name: string;
     updated_at: string;
-    user_id: number;
     share_id: number;
+    comment?: string;
+    is_sharing?: boolean;
   };
 }
 
@@ -25,27 +26,26 @@ const BookShareOptionPop: React.FC<BookShareOptionPopProps> = ({
   setIsOpen,
   book,
 }) => {
-  const [isShared, setIsShared] = useState(book.is_shared === 0 ? false : true);
+  const navigate = useNavigate();
+  const [isShared, setIsShared] = useState(false);
   const [comment, setComment] = useState('');
 
   const { mutateAsync: shareBook } = useMutation(async () => {
-    const response = await instance.post(`/book/share`, {
-      id: book.id,
-      comment,
-    });
-
+    const { data: response } = await api.book.setBookPublic(book.id, comment);
     console.log(response);
+    if (response.status === 'OK') {
+      onPopClose();
+      navigate('/book');
+    }
   });
 
   const { mutateAsync: unshareBook } = useMutation(async () => {
-    const response = await instance.delete(`/book/share`, {
-      data: {
-        id: book.id,
-        comment,
-      },
-    });
-
+    const { data: response } = await api.book.setBookPrivate(book.id);
     console.log(response);
+    if (response.status === 'OK') {
+      onPopClose();
+      navigate('/book');
+    }
   });
 
   const onClickSave = () => {
@@ -56,12 +56,17 @@ const BookShareOptionPop: React.FC<BookShareOptionPopProps> = ({
     }
   };
 
+  const onPopClose = () => {
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    if (book.is_sharing) setIsShared(book.is_sharing);
+    if (book.comment) setComment(book.comment);
+  }, [book]);
+
   return (
-    <BottomSlidePop
-      isOpen={isOpen}
-      onPopClose={() => setIsOpen(false)}
-      height={480}
-    >
+    <BottomSlidePop isOpen={isOpen} onPopClose={onPopClose} height={480}>
       <Container
         onClick={e => {
           e.stopPropagation();
@@ -69,7 +74,7 @@ const BookShareOptionPop: React.FC<BookShareOptionPopProps> = ({
       >
         <Header>
           <BookName>{book.name}</BookName>
-          <CloseButton onClick={() => setIsOpen(false)}>
+          <CloseButton onClick={onPopClose}>
             <img src={iconCloseSVG} alt="close" />
           </CloseButton>
         </Header>

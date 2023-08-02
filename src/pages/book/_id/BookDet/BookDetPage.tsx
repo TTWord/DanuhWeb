@@ -18,7 +18,17 @@ const BookDetPage = () => {
   const bookId: number = Number(useParams().id);
   const [bookName, setBookName] = useState('');
   const [words, setWords] = useState([]);
-  const [canSharing, setCanSharing] = useState(true);
+  const [book, setBook] = useState({
+    created_at: '',
+    id: 0,
+    is_downloaded: false,
+    is_sharing: false,
+    name: '',
+    updated_at: '',
+    user_id: 0,
+    share_id: 0,
+    comment: '',
+  });
 
   const getBook = async () => {
     const response = await getWord(bookId);
@@ -28,10 +38,8 @@ const BookDetPage = () => {
 
   const getBookNameFunc = async () => {
     const response = await getBookById(bookId);
-    if (response.share_id !== 0) {
-      setCanSharing(false);
-    }
 
+    setBook(response);
     setBookName(response.name);
   };
 
@@ -47,6 +55,12 @@ const BookDetPage = () => {
     }
   };
 
+  interface WordParams {
+    id: number;
+    word: string;
+    mean: string;
+  }
+
   return (
     <StackLayout
       topBar={{
@@ -61,24 +75,19 @@ const BookDetPage = () => {
       <BookContainer>
         {words.length === 0 && <EmptyWord bookId={bookId} />}
 
-        {words.map(items => {
+        {words.map((items: WordParams) => {
           return (
             <NewWord
-              // @ts-ignore
               key={items.id}
-              // @ts-ignore
               wordId={items.id}
-              // @ts-ignore
               word={items.word}
-              // @ts-ignore
               mean={items.mean}
-              // @ts-ignore
               onClick={onClickDeleteWord}
             />
           );
         })}
       </BookContainer>
-      <DetShare canSharing={canSharing} />
+      <DetShare book={book} />
       <DetPlus />
     </StackLayout>
   );

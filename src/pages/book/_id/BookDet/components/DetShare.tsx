@@ -1,41 +1,38 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import shareIcon from '@/assets/svg/icons/icon-share.svg';
 import { useParams } from 'react-router-dom';
-import BottomSlidePop from '@/components/common/popup/BottomSlidePop';
-
+import useGetBookById from '@/pages/book/_id/hooks/useGetBookById';
+import BookShareOptionPop from '@/pages/book/Book/components/BookShareOptionPop';
 interface DetShareProps {
-  canSharing: boolean;
+  book: {
+    created_at: string;
+    id: number;
+    is_downloaded: boolean;
+    name: string;
+    updated_at: string;
+    share_id: number;
+    comment?: string;
+    is_sharing?: boolean;
+  };
 }
 
-const DetShare: React.FC<DetShareProps> = status => {
-  const navigate = useNavigate();
+const DetShare: React.FC<DetShareProps> = ({ book }) => {
   const bookId = Number(useParams().id);
-  const [isPopOpen, setIsPopOpen] = useState(false);
+  const getBookById = useGetBookById();
 
-  const onPopOpen = () => {
-    setIsPopOpen(true);
-  };
+  const [isBookSharePopOpen, setIsBookSharePopOpen] = useState(false);
 
-  const onPopClose = () => {
-    setIsPopOpen(false);
-  };
-
-  const onClick = () => {
-    if (status.canSharing) {
-      navigate(`/book/${bookId}/share`);
-    } else {
-      alert('다운로드 받은 단어장은 공유할 수 없습니다.');
-    }
+  const onClickShare = () => {
+    setIsBookSharePopOpen(true);
   };
 
   return (
-    <Container onClick={onPopOpen}>
-      <BottomSlidePop
-        isOpen={isPopOpen}
-        onPopClose={onPopClose}
-        children={<div>1</div>}
+    <Container onClick={onClickShare}>
+      <BookShareOptionPop
+        isOpen={isBookSharePopOpen}
+        setIsOpen={setIsBookSharePopOpen}
+        book={book}
       />
 
       <img src={shareIcon} alt="share" />

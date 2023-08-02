@@ -4,13 +4,12 @@ interface getBookResponse extends BackendResponse {
   data: {
     created_at: string;
     id: number;
-    is_downloaded: number;
-    is_shared: boolean;
+    is_downloaded: boolean;
     name: string;
     updated_at: string;
-    user_id: number;
     share_id: number;
     comment?: string;
+    is_sharing?: boolean;
   }[];
 }
 
@@ -56,16 +55,17 @@ export const bookAPI = {
     const response = await instance.post(`/book/share`, {
       id: bookId,
       comment,
+      share: true,
     });
 
     return response;
   },
 
   setBookPrivate: async (bookId: number) => {
-    const response = await instance.delete(`/book/share`, {
-      data: {
-        id: bookId,
-      },
+    const response = await instance.post(`/book/share`, {
+      id: bookId,
+      comment: null,
+      share: false,
     });
 
     return response;
