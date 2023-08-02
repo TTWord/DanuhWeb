@@ -10,14 +10,10 @@ const ShareRouter = () => {
 
   return (
     <Routes location={location}>
-      {/* 공유 메인 페이지 */}
-
       <Route element={<RootLayout />}>
+        {/* 공유 메인 페이지 */}
         <Route path={'/'} element={<SharePage />} />
-      </Route>
-
-      {/* 내 공유 단어장 목록 페이지 */}
-      <Route element={<RootLayout />}>
+        {/* 내 공유 단어장 목록 페이지 */}
         <Route path={'/mysharing'} element={<MySharePage />} />
       </Route>
 
