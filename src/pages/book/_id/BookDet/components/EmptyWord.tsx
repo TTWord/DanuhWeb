@@ -58,4 +58,6 @@ const English = styled.div`
   color: ${({ theme }) => theme.colors.gray[400]};
 `;
 
-const PlusImg = styled.img``;
+const PlusImg = styled.img`
+  cursor: pointer;
+`;
