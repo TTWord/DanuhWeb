@@ -5,6 +5,7 @@ import iconCloseSVG from '@/assets/svg/icons/icon-close.svg';
 import { useMutation } from 'react-query';
 import { api } from '@/api';
 import { useNavigate } from 'react-router-dom';
+import useToast from '@/hooks/useToast';
 
 interface BookShareOptionPopProps {
   isOpen: boolean;
@@ -27,13 +28,15 @@ const BookShareOptionPop: React.FC<BookShareOptionPopProps> = ({
   book,
 }) => {
   const navigate = useNavigate();
+  const toast = useToast();
   const [isShared, setIsShared] = useState(false);
   const [comment, setComment] = useState('');
 
   const { mutateAsync: shareBook } = useMutation(async () => {
     const { data: response } = await api.book.setBookPublic(book.id, comment);
-    console.log(response);
+
     if (response.status === 'OK') {
+      toast.success('단어장이 공개되었습니다.');
       onPopClose();
       navigate('/book');
     }
@@ -41,9 +44,10 @@ const BookShareOptionPop: React.FC<BookShareOptionPopProps> = ({
 
   const { mutateAsync: unshareBook } = useMutation(async () => {
     const { data: response } = await api.book.setBookPrivate(book.id);
-    console.log(response);
+
     if (response.status === 'OK') {
       onPopClose();
+      toast.success('단어장이 비공개되었습니다.');
       navigate('/book');
     }
   });
