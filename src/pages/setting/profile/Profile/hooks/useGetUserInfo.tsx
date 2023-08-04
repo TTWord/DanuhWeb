@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 const useGetUserInfo = () => {
   const getUserInfo = async () => {
     try {
-      const { data: response } = await api.user.getUserInfo();
+      const { data: response } = await api.user.getMyInfo();
 
       return response;
     } catch (e: unknown) {
