@@ -1,31 +1,26 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import useAddWord from '@/pages/book/_id/CreateWord/hooks/useAddWord';
-import iconBack from '@/assets/svg/icons//icon-back-gray.svg';
-import useNavigatePop from '@/hooks/useNavigatePop';
+import TopBarDefault from '@/components/common/topBar/TopBarDefault';
+import useToast from '@/hooks/useToast';
 
 const CreateWordPage = () => {
-  const navigate = useNavigatePop();
+  const toast = useToast();
   const addWord = useAddWord();
 
   const bookId = Number(useParams().id);
   const [word, setWord] = useState('');
   const [mean, setMean] = useState('');
 
-  const goBack = () => {
-    navigate(`/book/${bookId}`);
+  const resetInput = () => {
+    setWord('');
+    setMean('');
   };
 
   return (
     <MainWrapper>
-      <Header>
-        <BackButton onClick={goBack}>
-          <img src={iconBack} alt="back" />
-        </BackButton>
-        <HeaderText>단어 추가</HeaderText>
-      </Header>
+      <TopBarDefault navigate={`/book/${bookId}`} title="단어 추가" />
 
       <Container>
         <WordBox>
@@ -35,6 +30,7 @@ const CreateWordPage = () => {
           <Input
             type="text"
             placeholder="단어를 입력해주세요"
+            value={word}
             onChange={e => {
               setWord(e.target.value);
             }}
@@ -48,6 +44,7 @@ const CreateWordPage = () => {
           <Input
             type="text"
             placeholder="뜻을 입력해주세요"
+            value={mean}
             onChange={e => {
               setMean(e.target.value);
             }}
@@ -59,12 +56,9 @@ const CreateWordPage = () => {
         <CreateButton
           onClick={() => {
             if (word === '' && mean === '') {
-              Swal.fire({
-                icon: 'warning',
-                title: '미입력칸이 있습니다.',
-              });
+              toast.error('미입력칸이 있습니다.');
             } else {
-              addWord({ bookId, word, mean });
+              addWord({ bookId, word, mean, resetInput });
             }
           }}
         >
@@ -88,28 +82,6 @@ const MainWrapper = styled.div`
   font-family: ${({ theme }) => theme.fonts.pretendard};
   line-height: 140%;
   background-color: ${({ theme }) => theme.colors.primary[100]};
-`;
-
-//-- Header 영역 --//
-const Header = styled.header`
-  width: 100%;
-  height: 56px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-`;
-
-const BackButton = styled.button`
-  width: 24px;
-  height: 24px;
-  margin: 0 16px;
-`;
-
-const HeaderText = styled.div`
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 140%;
-  color: ${({ theme }) => theme.colors.gray[800]};
 `;
 
 //--Container 영역--//
