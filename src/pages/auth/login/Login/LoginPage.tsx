@@ -186,14 +186,15 @@ const LoginPage = () => {
               }}
               autoComplete="password"
             />
-            <ShowPassword
-              onClick={() => {
-                setShowPassword(current => !current);
-              }}
-              src={iconEye}
-              alt="passwordLook"
-              isActive={isPassWDFocus}
-            />
+            {isPassWDFocus && (
+              <ShowPassword
+                onClick={() => {
+                  setShowPassword(current => !current);
+                }}
+                src={iconEye}
+                alt="passwordLook"
+              />
+            )}
           </PasswordBox>
         </FormBox>
 
@@ -410,25 +411,14 @@ const PasswordInput = styled.input<{ isFocus: boolean }>`
   }}
 `;
 
-const ShowPassword = styled.img<{ isActive: boolean }>`
+const ShowPassword = styled.img`
   width: 24px;
   height: 24px;
   position: absolute;
   top: 50%;
   right: 0px;
   transform: translate(-50%, -50%);
-  opacity: 0;
-  transition: all 0.3s;
-
   cursor: pointer;
-  ${({ isActive }) => {
-    return (
-      isActive &&
-      css`
-        opacity: 1;
-      `
-    );
-  }}
 `;
 
 const Join = styled.div`

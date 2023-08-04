@@ -18,6 +18,7 @@ const OAuthPage = () => {
   const accessToken: string | null = searchParams.get('accesstoken');
   const refreshToken: string | null = searchParams.get('refreshtoken');
   const isMember: string | null = searchParams.get('ismember');
+  const isNicknameSet: string | null = searchParams.get('nickname');
   const message: string | null = searchParams.get('message');
   const service: string | null = searchParams.get('service');
   const email: string | null = searchParams.get('email');
@@ -32,10 +33,10 @@ const OAuthPage = () => {
       localStorage.setItem('refresh_Token', refreshToken);
     }
 
-    if (isMember === '1') {
+    if (isMember === '1' && isNicknameSet === '1') {
       navigate('/auth/welcome');
     }
-    if (isMember === '0') {
+    if (isMember === '0' || isNicknameSet === '0') {
       navigate('/auth/oauth/join');
     }
   }, []);
