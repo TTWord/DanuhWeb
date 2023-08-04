@@ -1,7 +1,7 @@
 import { instance } from '@/instance';
 
 export const userAPI = {
-  getUserInfo: async () => {
+  getMyInfo: async () => {
     const response = await instance.get('/user/userservice');
 
     return response;
@@ -43,6 +43,12 @@ export const userAPI = {
       from_password: oldPassword,
       to_password: newPassword,
     });
+
+    return response;
+  },
+
+  getUserInfo: async (userId: number) => {
+    const response = await instance.get(`/user/profile/${userId}`);
 
     return response;
   },

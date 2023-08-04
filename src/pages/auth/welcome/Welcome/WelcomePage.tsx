@@ -21,7 +21,7 @@ const WelcomePage = () => {
 
   const getUserInfo = async () => {
     try {
-      const { data: response } = await api.user.getUserInfo();
+      const { data: response } = await api.user.getMyInfo();
 
       if (response.status === 'OK') {
         const username = response.data.username;
