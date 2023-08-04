@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import iconPlus from '@/assets/svg/icons/icon-plus.svg';
 import { useParams } from 'react-router-dom';
+import useNavigatePush from '@/hooks/useNavigatePush';
+
 interface DetPlusProps {}
 
 const DetPlus: React.FC<DetPlusProps> = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigatePush();
   const [isActive, setActive] = useState(false);
   const bookId = Number(useParams().id);
 
