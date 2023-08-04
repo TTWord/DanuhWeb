@@ -1,9 +1,11 @@
 import styled, { css } from 'styled-components';
 
-interface ButtonProps {}
+interface ButtonProps {
+  onClick: () => void;
+}
 
-const DownloadButton: React.FC<ButtonProps> = () => {
-  return <Button>다운로드</Button>;
+const DownloadButton: React.FC<ButtonProps> = ({ onClick }) => {
+  return <Button onClick={onClick}>다운로드</Button>;
 };
 
 export default DownloadButton;
@@ -15,12 +17,9 @@ const Button = styled.button`
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 140%;
+  ${({ theme }) => theme.typography.gmarketSans.md[14]}
+  line-height: 100%;
   color: white;
-  background-color: ${({ theme }) => theme.colors.primary[800]};
   border-radius: 100px;
-  font-family: ${({ theme }) => theme.fonts.gmarketSans};
+  background-color: ${({ theme }) => theme.colors.primary[800]};
 `;
