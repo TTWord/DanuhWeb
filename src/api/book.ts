@@ -64,7 +64,7 @@ export const bookAPI = {
   setBookPrivate: async (bookId: number) => {
     const response = await instance.post(`/book/share`, {
       id: bookId,
-      comment: null,
+      comment: '',
       share: false,
     });
 
