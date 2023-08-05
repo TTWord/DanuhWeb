@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import useGetUserInfo from '@/pages/setting//profile/Profile/hooks/useGetUserInfo';
 import useLogout from '@/pages/setting/Setting/hooks/useLogout';
 import ContentBox from './components/ContentBox';
-import ConfirmPop from '@/components/common/popup/ConfirmPop';
+import ConfirmPop from '@/pages/test/ConfirmPop';
 import useNavigatePush from '@/hooks/useNavigatePush';
 import useToast from '@/hooks/useToast';
 import iconSetting from '@/assets/svg/icons/icon-setting.svg';
@@ -161,15 +161,17 @@ const SettingPage = () => {
       <ContentWrapper>
         <ConfirmPop
           isOpen={isConfirmPopOpen}
-          message="정말 로그아웃 하시겠습니까?"
           cancelText="뒤로가기"
           confirmText="로그아웃"
+          height="180px"
           onCancel={() => setIsConfirmPopOpen(false)}
           onConfirm={() => {
             setIsConfirmPopOpen(false);
             logout();
           }}
-        />
+        >
+          <ConfirmPop.Title>정말 로그아웃 하시겠습니까?</ConfirmPop.Title>
+        </ConfirmPop>
         <ContentBox title="공지사항" onClick={moveNoticePage} />
         <ContentBox title="패치노트" onClick={movePatchNotePage} />
         {/* <ContentBox title="건의하기 / 버그신고" onClick={moveReportPage} /> */}

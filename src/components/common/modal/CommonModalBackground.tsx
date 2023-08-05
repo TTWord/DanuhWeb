@@ -19,6 +19,9 @@ const modalStyle = {
     border: 0,
     padding: 0,
     overflow: 'hidden',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 };
 

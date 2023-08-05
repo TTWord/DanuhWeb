@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
-import ConfirmPop from '@/components/common/popup/ConfirmPop';
 import { useRecoilState } from 'recoil';
 import { globalState } from '@/recoil';
 
