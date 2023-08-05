@@ -6,6 +6,7 @@ interface ISharedBooks {
   order?: string;
   mode?: string;
   filter?: boolean;
+  userId?: number;
 }
 
 export const shareAPI = {
@@ -28,7 +29,7 @@ export const shareAPI = {
   },
 
   getSharedBookByType: async (type: string, order: string) => {
-    const { data: response } = await instance.get(`/share`, {
+    const response = await instance.get(`/share`, {
       params: {
         type,
         order,
@@ -39,7 +40,7 @@ export const shareAPI = {
   },
 
   downloadSharedBook: async (id: number) => {
-    const { data: response } = await instance.post(`/share`, {
+    const response = await instance.post(`/share`, {
       id,
     });
 
@@ -51,6 +52,17 @@ export const shareAPI = {
       params: {
         order,
         filter,
+      },
+    });
+
+    return response;
+  },
+
+  getOtherUserShareBooks: async ({ userId, type, order }: ISharedBooks) => {
+    const response = await instance.get(`/share/user/${userId}`, {
+      params: {
+        type: type,
+        order: order,
       },
     });
 
