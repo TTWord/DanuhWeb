@@ -132,8 +132,9 @@ const HeaderWrapper = styled.header`
 //-- 컨테이너 --//
 const ContainerWrapper = styled.div`
   width: 100%;
+  height: 100%;
   padding-top: 26px;
-  padding-bottom: 70px;
+  padding-bottom: 56px;
   flex: 1;
   overflow: auto;
   ::-webkit-scrollbar {
@@ -143,8 +144,11 @@ const ContainerWrapper = styled.div`
 
 const Container = styled.div`
   width: 100%;
-  margin-bottom: 48px;
   overflow: auto;
+  :nth-child(1) {
+    margin-bottom: 56px;
+  }
+
   ::-webkit-scrollbar {
     display: none;
   }
