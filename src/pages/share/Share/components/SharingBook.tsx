@@ -7,6 +7,7 @@ import useNavigatePush from '@/hooks/useNavigatePush';
 interface ISharingBookProps {
   book: {
     id: number;
+    book_id?: number;
     book_name: string;
     nickname: string;
     word_count: number;
