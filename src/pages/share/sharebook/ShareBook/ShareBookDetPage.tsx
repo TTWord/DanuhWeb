@@ -4,7 +4,7 @@ import useGetSharedBookById from './hooks/useGetSharedBookById';
 import { useEffect, useMemo, useState } from 'react';
 import useNavigatePush from '@/hooks/useNavigatePush';
 import useDownloadSharedBook from './hooks/useDownloadSharedBook';
-import TopBarDefault from '@/components/common/topBar/TopBarDefault';
+import TopBarDefault from '@/components/common/header/TopBarDefault';
 import DownloadButton from '@/components/common/button/DownloadButton';
 import SharedWordBox from './components/SharedWordBox';
 import iconDown from '@/assets/svg/icons/icon-arrow-down.svg-small.svg';

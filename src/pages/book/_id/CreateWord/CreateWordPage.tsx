@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import useAddWord from '@/pages/book/_id/CreateWord/hooks/useAddWord';
-import TopBarDefault from '@/components/common/topBar/TopBarDefault';
+import TopBarDefault from '@/components/common/header/TopBarDefault';
 import useToast from '@/hooks/useToast';
 
 const CreateWordPage = () => {

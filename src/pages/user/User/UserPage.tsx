@@ -1,6 +1,6 @@
 import React, { useState, useEffect, MouseEvent } from 'react';
 import styled, { css } from 'styled-components';
-import TopBarDefault from '@/components/common/topBar/TopBarDefault';
+import TopBarDefault from '@/components/common/header/TopBarDefault';
 import defaultProfile from '@/assets/svg/logos/logo-profile-default.svg';
 import iconInfo from '@/assets/svg/icons/icon-info.svg';
 import useToast from '@/hooks/useToast';
@@ -63,6 +63,7 @@ const UserPage = () => {
     }
   };
 
+  // 필터 적용해야함
   const getUserShareBooks = async () => {
     try {
       const { data: response } = await api.share.getOtherUserShareBooks({
