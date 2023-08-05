@@ -42,5 +42,5 @@ const BackButton = styled.img`
 
 const Text = styled.div`
   ${({ theme }) => theme.typography.pretendard.t3.sbd}
-  padding-top: 1px;
+  padding-top: 2px;
 `;
