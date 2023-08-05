@@ -23,5 +23,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({ isChecked, onClick }) => {
 export default CheckBox;
 
 const Container = styled.div`
+  width: 24px;
+  height: 24px;
   cursor: pointer;
 `;
