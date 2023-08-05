@@ -1,89 +1,131 @@
-import styled from 'styled-components';
-import { useNavigate, useParams } from 'react-router-dom';
+import styled, { css } from 'styled-components';
+import { useParams } from 'react-router-dom';
 import useGetSharedBookById from './hooks/useGetSharedBookById';
-import { useEffect, useState } from 'react';
-import iconBack from '@/assets/svg/icons/icon-back-gray.svg';
+import { useEffect, useMemo, useState } from 'react';
+import useNavigatePush from '@/hooks/useNavigatePush';
 import useDownloadSharedBook from './hooks/useDownloadSharedBook';
+import TopBarDefault from '@/components/common/topBar/TopBarDefault';
+import DownloadButton from '@/components/common/button/DownloadButton';
+import SharedWordBox from './components/SharedWordBox';
+import iconDown from '@/assets/svg/icons/icon-arrow-down.svg-small.svg';
+import profileDefault from '@/assets/svg/logos/logo-profile-default.svg';
 
 const ShareBookDetPage = () => {
-  const shareId: number = Number(useParams().id);
-  const navigate = useNavigate();
-
-  const [bookName, setBookName] = useState('단어장1');
-  const [words, setWords] = useState([]);
-  const [comment, setComment] = useState('');
-  const [userId, setUserId] = useState(1);
-
+  const navigatePush = useNavigatePush();
   const getSharedBookByIdAPI = useGetSharedBookById();
   const downloadSharedBookAPI = useDownloadSharedBook();
 
+  const shareId = Number(useParams().id);
+  const [userinfo, setuserInfo] = useState({
+    bookName: '',
+    nickname: '',
+    comment: '',
+    profilePic: '',
+    userId: 0,
+    viewCount: 0,
+    downloadCount: 0,
+    recommendCount: 0,
+  });
+  const [words, setWords] = useState([]);
+  const height = useMemo(() => {
+    return userinfo.comment.split('\n').length;
+  }, [userinfo.comment]);
+  const [showMore, setShowMore] = useState(false);
+
   const getSharedBookById = async () => {
     const { data: response } = await getSharedBookByIdAPI(shareId);
-
-    //setBookName();
+    // 유저 정보
+    setuserInfo({
+      bookName: response.book_name,
+      nickname: response.nickname,
+      comment: response.comment,
+      profilePic: response?.url,
+      userId: response.user_id,
+      viewCount: response.checked,
+      downloadCount: response.downloaded,
+      recommendCount: response.recommended,
+    });
+    // 단어장의 단어
     setWords(response.words);
-    setComment(response.comment);
   };
 
   useEffect(() => {
     getSharedBookById();
   }, []);
 
-  const goBack = () => {
-    navigate('/share');
-  };
-
   const donwloadSharedBook = async () => {
     const response = await downloadSharedBookAPI(shareId);
   };
 
   const goUserProfile = () => {
-    navigate(`/user/${userId}`);
-  };
-
-  interface IShareWord {
-    word: string;
-    mean: string;
-  }
-
-  const SharedWord = ({ word, mean }: IShareWord) => {
-    return (
-      <WordBox>
-        <Word>{word}</Word>
-        <Mean>{mean}</Mean>
-      </WordBox>
-    );
+    navigatePush(`/user/${userinfo.userId}`, {
+      state: {
+        from: `/share/sharingbook/${shareId}`,
+      },
+    });
   };
 
   return (
     <MainWrapper>
-      <Header>
-        <img onClick={goBack} src={iconBack} alt="back" />
-        <div>{bookName}</div>
-      </Header>
+      <TopBarDefault navigate={'/share'} title={userinfo.bookName} />
 
       <Container>
-        <BookContent>
-          <ContentHeader>
+        <BookInfo>
+          <InfoHeader>
             <BookCreator onClick={goUserProfile}>
-              <ProFile />
-              <Name>이름</Name>
+              <ProFile>
+                <ProFilePic
+                  src={
+                    userinfo.profilePic ? userinfo.profilePic : profileDefault
+                  }
+                  alt="profilePic"
+                />
+              </ProFile>
+              <Name>{userinfo.nickname}</Name>
             </BookCreator>
-            <DownloadButton onClick={donwloadSharedBook}>
-              다운로드
-            </DownloadButton>
-          </ContentHeader>
+            <DownloadButton onClick={donwloadSharedBook} />
+          </InfoHeader>
 
-          <BookShareInfo>
-            조회 {100} 다운 {100} 추천 {100}
-          </BookShareInfo>
+          {userinfo.comment && (
+            <BookComment>
+              <CommentText height={height} showMore={showMore}>
+                {userinfo.comment}
+              </CommentText>
+              {height > 5 && (
+                <ShowMore
+                  onClick={() => {
+                    setShowMore(current => !current);
+                  }}
+                  showMore={showMore}
+                >
+                  {showMore ? '접기' : '더보기'}
+                  <img src={iconDown} alt="down" />
+                </ShowMore>
+              )}
 
-          <BookComment>{comment}</BookComment>
-        </BookContent>
+              <Triangle />
+            </BookComment>
+          )}
+
+          <Indicator>
+            <IndiBox>
+              <Type>조회</Type>
+              <Value>{userinfo.viewCount}</Value>
+            </IndiBox>
+            <IndiBox>
+              <Type>다운로드</Type>
+              <Value>{userinfo.downloadCount}</Value>
+            </IndiBox>
+            <IndiBox>
+              <Type>추천</Type>
+              <Value>{userinfo.recommendCount}</Value>
+            </IndiBox>
+          </Indicator>
+        </BookInfo>
 
         <WordWrapper>
-          {words.map((words: any) => (
-            <SharedWord key={words.id} word={words.word} mean={words.mean} />
+          {words.map((words, idx) => (
+            <SharedWordBox key={idx} words={words} />
           ))}
         </WordWrapper>
       </Container>
@@ -98,29 +140,7 @@ const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const Header = styled.div`
-  width: 100%;
-  height: 56px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-
-  img {
-    position: absolute;
-    left: 16px;
-
-    :hover {
-      cursor: pointer;
-    }
-  }
-
-  div {
-    font-weight: 700;
-    font-size: 30px;
-  }
+  flex-shrink: 0;
 `;
 
 const Container = styled.div`
@@ -129,17 +149,21 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex-shrink: 0;
-  padding: 24px 16px;
+  padding: 0px 16px;
+  padding-bottom: 56px;
 `;
 
-const BookContent = styled.div`
+const BookInfo = styled.div`
   width: 100%;
+  height: auto;
   display: flex;
   flex-direction: column;
+  padding: 16px;
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.colors.gray[100]};
 `;
 
-const ContentHeader = styled.div`
+const InfoHeader = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -151,74 +175,152 @@ const BookCreator = styled.button`
 `;
 
 const ProFile = styled.div`
-  width: 50px;
-  height: 50px;
-  background-color: gray;
+  width: 24px;
+  height: 24px;
+  border-radius: 24px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+`;
+
+const ProFilePic = styled.img`
+  width: 24px;
+  height: 24px;
+  border-radius: 24px;
+  width: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 100%;
 `;
 
 const Name = styled.div`
-  font-size: 20px;
+  ${({ theme }) => theme.typography.pretendard.t3.sbd}
+  padding-top: 2px;
   margin-left: 8px;
 `;
 
-const DownloadButton = styled.button`
-  height: 60%;
-  padding: 4px;
-  background-color: gray;
-  color: white;
-  font-size: 16px;
-  line-height: 16px;
+const Indicator = styled.div`
+  height: 20px;
+  padding: 0 2px;
+  display: flex;
+  align-items: center;
 `;
 
-const BookShareInfo = styled.div`
-  margin-top: 24px;
-  margin-bottom: 12px;
+const IndiBox = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+
+  & + & {
+    margin-left: 6px;
+    padding-left: 6px;
+    border-left: 1px solid ${({ theme }) => theme.colors.gray[300]};
+  }
+`;
+
+const Type = styled.span`
+  ${({ theme }) => theme.typography.pretendard.b1.rg}
+  color: ${({ theme }) => theme.colors.gray[600]};
+  display: flex;
+  align-items: center;
+`;
+
+const Value = styled.span`
+  ${({ theme }) => theme.typography.pretendard.b1.sbd}
+  color: ${({ theme }) => theme.colors.primary.default};
+  width: 48px;
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
 `;
 
 const BookComment = styled.div`
   width: 100%;
-  height: 140px;
-  padding: 24px;
-  font-size: 20px;
-  border: 1px solid gray;
+  height: auto;
+  padding: 10px 12px;
+  ${({ theme }) => theme.typography.pretendard.b1.rg}
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  overflow: visible;
+  border-radius: 4px;
+  margin-top: 14px;
+  margin-bottom: 16px;
+  transition: all 0.5s;
+`;
+
+const CommentText = styled.div<{
+  height: number;
+  showMore: boolean;
+}>`
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  white-space: pre-wrap;
+  overflow-y: hidden;
+
+  ${({ height, showMore }) => {
+    if (height > 5 && !showMore) {
+      // comment가 5줄 초과 & 더보기 미클릭
+      return css`
+        transition: all 0.3s;
+        height: calc(20 * 5px);
+      `;
+    } else if (height > 5 && showMore) {
+      // comment가 5줄 초과 & 더보기 클릭
+      return css`
+        transition: all 0.5s;
+        height: calc(20 * ${height}px);
+      `;
+    } else {
+      // comment가 5줄 이하일 때
+      return css`
+        height: calc(20 * ${height}px);
+      `;
+    }
+  }}
+`;
+
+const ShowMore = styled.button<{ showMore: boolean }>`
+  ${({ theme }) => theme.typography.pretendard.b1.sbd}
+  color: ${({ theme }) => theme.colors.gray[600]};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    cursor: pointer;
+
+    ${({ showMore }) => {
+      return (
+        showMore &&
+        css`
+          rotate: 180deg;
+        `
+      );
+    }}
+  }
+`;
+
+const Triangle = styled.div`
+  position: absolute;
+  top: -8px;
+  left: 8px;
+  width: 0px;
+  height: 0px;
+  border-bottom: 8px solid white;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
 `;
 
 const WordWrapper = styled.div`
   width: 100%;
-  height: 100%;
-  padding: 24px 0;
-  padding-bottom: 48px;
+  height: auto;
+  margin-top: 8px;
+  padding-bottom: 16px;
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const WordBox = styled.div`
-  width: 100%;
-  height: 72px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 12px 12px;
-  border: 1px solid gray;
-  box-sizing: border-box;
-
-  & + & {
-    margin-top: 8px;
-  }
-`;
-
-const Word = styled.div`
-  font-size: 16px;
-  line-height: 16px;
-`;
-
-const Mean = styled.div`
-  font-size: 16px;
-  line-height: 16px;
 `;
