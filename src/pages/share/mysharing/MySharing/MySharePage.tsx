@@ -53,6 +53,7 @@ const MySharingPage = () => {
 
   const onClickShareMode = () => {
     setIsToggle(false);
+    setIsTypeclicked(false);
     setMode('share');
   };
 
@@ -77,13 +78,6 @@ const MySharingPage = () => {
       <Header>
         <img onClick={goBack} src={iconBack} alt="iconBack" />
         <div>내 공유 단어장 목록</div>
-        <button
-          onClick={() => {
-            console.log(isToggle);
-          }}
-        >
-          test
-        </button>
       </Header>
 
       <Container>
@@ -124,7 +118,6 @@ const MySharingPage = () => {
                   onClick={(e: MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation();
                     setIsToggle(current => !current);
-                    console.log(isToggle);
                   }}
                 >
                   <ToggleBox isToggle={isToggle}>
