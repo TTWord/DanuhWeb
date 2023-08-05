@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { globalState } from '@/recoil';
 import { useSetRecoilState } from 'recoil';
 import { useEffect, useState } from 'react';
-
 import useGetUserInfo from '@/pages/setting//profile/Profile/hooks/useGetUserInfo';
 import useLogout from '@/pages/setting/Setting/hooks/useLogout';
 import ContentBox from './components/ContentBox';
@@ -11,6 +10,7 @@ import useNavigatePush from '@/hooks/useNavigatePush';
 import useToast from '@/hooks/useToast';
 import iconSetting from '@/assets/svg/icons/icon-setting.svg';
 import iconInfo from '@/assets/svg/icons/icon-info.svg';
+import defaultProfile from '@/assets/svg/logos/logo-profile-default.svg';
 
 const SettingPage = () => {
   const getUserInfo = useGetUserInfo();
@@ -24,10 +24,10 @@ const SettingPage = () => {
     username: '',
     nickname: '',
     profile: '',
-    wordCount: '',
-    shareCount: '',
-    downloadCount: '',
-    recommendCount: '',
+    wordCount: 0,
+    shareCount: 0,
+    downloadCount: 0,
+    recommendCount: 0,
   });
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
   const [isConfirmPopOpen, setIsConfirmPopOpen] = useState(false);
@@ -84,7 +84,7 @@ const SettingPage = () => {
 
   const ProfilePic = () => {
     if (myinfo.profile === undefined) {
-      return null;
+      return <img src={defaultProfile} alt="profile" />;
     } else {
       return <img src={myinfo.profile} alt="profile" />;
     }
@@ -174,7 +174,7 @@ const SettingPage = () => {
         </ConfirmPop>
         <ContentBox title="공지사항" onClick={moveNoticePage} />
         <ContentBox title="패치노트" onClick={movePatchNotePage} />
-        {/* <ContentBox title="건의하기 / 버그신고" onClick={moveReportPage} /> */}
+        <ContentBox title="건의하기 / 버그신고" onClick={moveReportPage} />
         {/* Local 가입 계정이 아니면 비밀번호 변경 미표시 */}
         {loginType === 'local' && (
           <ContentBox title="비밀번호 변경" onClick={movePasswordPage} />
@@ -234,18 +234,12 @@ const ProfileWrapper = styled.div`
   overflow-wrap: anywhere;
 `;
 
-const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-`;
-
 const ProfileImg = styled.div`
   width: 80px;
   height: 80px;
   flex-shrink: 0;
-  background: #e0e0e0;
   box-sizing: border-box;
-  border: 1px solid #e0e0e0;
+  //border: 1px solid #e0e0e0;
   border-radius: 17px;
   display: flex;
   align-items: center;
