@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import iconClose from '@/assets/svg/icons/icon-close.svg';
 import { useEffect, useState } from 'react';
-import ConfirmPop from '@/components/common/popup/ConfirmPop';
+import ConfirmPop from '@/pages/test/ConfirmPop';
 import useGetBlindMemo from '@/pages/learn/memo/blind/Blind/hooks/useGetBlindMemo';
 
 const BlindMemoPage = () => {
@@ -118,7 +118,7 @@ const BlindMemoPage = () => {
     <Container>
       <ConfirmPop
         isOpen={isConfirmPopOpen}
-        message="암기를 중단할까요?"
+        height="180px"
         cancelText="뒤로가기"
         confirmText="그만하기"
         onCancel={() => setIsConfirmPopOpen(false)}
@@ -130,7 +130,9 @@ const BlindMemoPage = () => {
             },
           });
         }}
-      />
+      >
+        <ConfirmPop.Title>암기를 중단할까요?</ConfirmPop.Title>
+      </ConfirmPop>
       <Header>
         <ExitButton onClick={onExitQuiz}>
           <img src={iconClose} alt="close-button" />

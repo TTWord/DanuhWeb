@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import iconClose from '@/assets/svg/icons/icon-close.svg';
 import { useEffect, useState } from 'react';
-import ConfirmPop from '@/components/common/popup/ConfirmPop';
+import ConfirmPop from '@/pages/test/ConfirmPop';
 import useGetFlashcardMemo from './hooks/useGetFlashcardMemo';
 
 const FlashCardMemoPage = () => {
@@ -67,9 +67,9 @@ const FlashCardMemoPage = () => {
     <Container>
       <ConfirmPop
         isOpen={isConfirmPopOpen}
-        message="암기를 중단할까요?"
         cancelText="뒤로가기"
         confirmText="그만하기"
+        height="180px"
         onCancel={() => setIsConfirmPopOpen(false)}
         onConfirm={() => {
           setIsConfirmPopOpen(false);
@@ -79,7 +79,9 @@ const FlashCardMemoPage = () => {
             },
           });
         }}
-      />
+      >
+        <ConfirmPop.Title>암기를 중단할까요?</ConfirmPop.Title>
+      </ConfirmPop>
       <Header>
         <ExitButton onClick={onExitQuiz}>
           <img src={iconClose} alt="close-button" />

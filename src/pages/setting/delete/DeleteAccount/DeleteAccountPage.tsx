@@ -1,4 +1,4 @@
-import ConfirmPop from '@/components/common/popup/ConfirmPop';
+import ConfirmPop from '@/pages/test/ConfirmPop';
 import useNavigatePop from '@/hooks/useNavigatePop';
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -37,15 +37,17 @@ const DeleteAccountPage = () => {
       <Content>
         <ConfirmPop
           isOpen={isConfirmPopOpen}
-          message="정말 회원을 탈퇴하시나요?"
           cancelText="뒤로가기"
           confirmText="탈퇴하기"
+          height="180px"
           onCancel={() => setIsConfirmPopOpen(false)}
           onConfirm={() => {
             setIsConfirmPopOpen(false);
             deleteAccount();
           }}
-        />
+        >
+          <ConfirmPop.Title>정말 회원을 탈퇴하시나요?</ConfirmPop.Title>
+        </ConfirmPop>
         {/* 탈퇴하기 메인 화면 */}
         {!isVoteMode && <DeleteMain onClick={onClickSetVodeMode} />}
         {/* 탈퇴하기 불편 사항 선택 & 최종 화면, 직접 입력 체크 input 출력 */}
