@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
-import useGetUserInfo from '@/pages/setting//profile/Profile/hooks/useGetUserInfo';
 import useChangeNickname from '@/pages/setting//profile/Profile/hooks/useChangeNickname';
 import useChangeProfilePic from './hooks/useChangeProfilePic';
 import backIcon from '@/assets/svg/icons/icon-back-gray.svg';
@@ -9,7 +8,7 @@ import useNavigatePop from '@/hooks/useNavigatePop';
 
 const ProfilePage = () => {
   const navigatePop = useNavigatePop();
-  const getUserInfo = useGetUserInfo();
+  // const getUserInfo = useGetUserInfo();
   const changeNewNickname = useChangeNickname();
 
   const [nickname, setNickname] = useState('');
@@ -52,11 +51,10 @@ const ProfilePage = () => {
 
   useEffect(() => {
     const setUserInfo = async () => {
-      const { data: response } = await getUserInfo();
-
-      setUsername(response.username);
-      setNickname(response.nickname);
-      setProfilePic(response.url);
+      // const { data: response } = await getUserInfo();
+      // setUsername(response.username);
+      // setNickname(response.nickname);
+      // setProfilePic(response.url);
     };
     setUserInfo();
   }, []);

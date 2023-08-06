@@ -1,8 +1,24 @@
 import { instance } from '@/instance';
 
+interface IGetMyInfoResponse extends BackendResponse {
+  data: {
+    id: number;
+    login_type: string;
+    username: string;
+    nickname: string;
+    recommend_count: number;
+    share_count: number;
+    word_count: number;
+    download_count: number;
+    url?: string;
+  };
+}
+
 export const userAPI = {
   getMyInfo: async () => {
-    const response = await instance.get('/user/userservice');
+    const response = await instance.get<IGetMyInfoResponse>(
+      '/user/userservice',
+    );
 
     return response;
   },

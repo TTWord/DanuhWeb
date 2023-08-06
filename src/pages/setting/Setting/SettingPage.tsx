@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { globalState } from '@/recoil';
 import { useSetRecoilState } from 'recoil';
 import { useEffect, useState } from 'react';
-import useGetUserInfo from '@/pages/setting//profile/Profile/hooks/useGetUserInfo';
 import useLogout from '@/pages/setting/Setting/hooks/useLogout';
 import ContentBox from './components/ContentBox';
 import ConfirmPop from '@/pages/test/ConfirmPop';
@@ -11,43 +10,25 @@ import useToast from '@/hooks/useToast';
 import iconSetting from '@/assets/svg/icons/icon-setting.svg';
 import iconInfo from '@/assets/svg/icons/icon-info.svg';
 import defaultProfile from '@/assets/svg/logos/logo-profile-default.svg';
+import { useQuery } from 'react-query';
+import { api } from '@/api';
 
 const SettingPage = () => {
-  const getUserInfo = useGetUserInfo();
   const logout = useLogout();
   const toast = useToast();
   const navigatePush = useNavigatePush();
-  const [loginType, setLoginType] = useState('');
 
   const maxWords = 200;
-  const [myinfo, setMyInfo] = useState({
-    username: '',
-    nickname: '',
-    profile: '',
-    wordCount: 0,
-    shareCount: 0,
-    downloadCount: 0,
-    recommendCount: 0,
+  const { data: about } = useQuery('MyPage/GetMyAbout', async () => {
+    const { data: response } = await api.user.getMyInfo();
+
+    return response.data;
   });
+
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
   const [isConfirmPopOpen, setIsConfirmPopOpen] = useState(false);
 
-  const setUserInfo = async () => {
-    const { data: response } = await getUserInfo();
-    setLoginType(response.login_type);
-    setMyInfo({
-      username: response.username,
-      nickname: response.nickname,
-      profile: response?.url,
-      wordCount: response.word_count,
-      shareCount: response.share_count,
-      downloadCount: response.download_count,
-      recommendCount: response.recommend_count,
-    });
-  };
-
   useEffect(() => {
-    setUserInfo();
     setActiveMenu(3);
   }, []);
 
@@ -79,16 +60,7 @@ const SettingPage = () => {
     navigatePush('/setting/delete');
   };
 
-  // 코드 정상 동작을 위한 임의의 함수
-  const dummyFunction = () => {};
-
-  const ProfilePic = () => {
-    if (myinfo.profile === undefined) {
-      return <img src={defaultProfile} alt="profile" />;
-    } else {
-      return <img src={myinfo.profile} alt="profile" />;
-    }
-  };
+  if (!about) return null;
 
   return (
     <WebWrapper>
@@ -104,16 +76,16 @@ const SettingPage = () => {
       <UserInfoWrapper>
         <ProfileWrapper>
           <ProfileImg>
-            <ProfilePic />
+            <img src={about.url ?? defaultProfile} alt="profile" />
           </ProfileImg>
 
           <ProfileContent>
-            <ProfileNickname>{myinfo.nickname}</ProfileNickname>
-            <ProfileUsername>{myinfo.username}</ProfileUsername>
+            <ProfileNickname>{about.nickname}</ProfileNickname>
+            <ProfileUsername>{about.username}</ProfileUsername>
 
             <WordNumTitle>단어개수</WordNumTitle>
             <WordNumText>
-              {myinfo.wordCount}/{maxWords}
+              {about.word_count}/{maxWords}
             </WordNumText>
           </ProfileContent>
         </ProfileWrapper>
@@ -122,7 +94,7 @@ const SettingPage = () => {
           <ShareInfo>
             <InfoName>공유단어장</InfoName>
             <InfoNumber>
-              {Number(myinfo.shareCount).toLocaleString()}
+              {Number(about.share_count).toLocaleString()}
             </InfoNumber>
           </ShareInfo>
           <ShareInfo>
@@ -137,7 +109,7 @@ const SettingPage = () => {
               />
             </InfoName>
             <InfoNumber>
-              {Number(myinfo.downloadCount).toLocaleString()}
+              {Number(about.download_count).toLocaleString()}
             </InfoNumber>
           </ShareInfo>
           <ShareInfo>
@@ -152,7 +124,7 @@ const SettingPage = () => {
               />
             </InfoName>
             <InfoNumber>
-              {Number(myinfo.recommendCount).toLocaleString()}
+              {Number(about.recommend_count).toLocaleString()}
             </InfoNumber>
           </ShareInfo>
         </ShareInfoWrapper>
@@ -176,7 +148,7 @@ const SettingPage = () => {
         <ContentBox title="패치노트" onClick={movePatchNotePage} />
         <ContentBox title="건의하기 / 버그신고" onClick={moveReportPage} />
         {/* Local 가입 계정이 아니면 비밀번호 변경 미표시 */}
-        {loginType === 'local' && (
+        {about.login_type === 'local' && (
           <ContentBox title="비밀번호 변경" onClick={movePasswordPage} />
         )}
         <ContentBox title="로그아웃" onClick={onClickLogout} />
