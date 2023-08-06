@@ -5,15 +5,30 @@ import useChangeProfilePic from './hooks/useChangeProfilePic';
 import backIcon from '@/assets/svg/icons/icon-back-gray.svg';
 import removeIcon from '@/assets/svg/icons/Icon-input-x-button.svg';
 import useNavigatePop from '@/hooks/useNavigatePop';
+import { useQuery } from 'react-query';
+import { api } from '@/api';
 
 const ProfilePage = () => {
   const navigatePop = useNavigatePop();
-  // const getUserInfo = useGetUserInfo();
   const changeNewNickname = useChangeNickname();
+
+  const { data: about } = useQuery('MyPage/GetMyAbout', async () => {
+    const { data: response } = await api.user.getMyInfo();
+
+    return response.data;
+  });
+
+  useEffect(() => {
+    if (about) {
+      setUsername(about.username);
+      setNickname(about.nickname);
+      setProfilePic(about.url);
+    }
+  }, [about]);
 
   const [nickname, setNickname] = useState('');
   const [username, setUsername] = useState('');
-  const [profilePic, setProfilePic] = useState('');
+  const [profilePic, setProfilePic] = useState<string | undefined>();
   const [newNickname, setNewNickname] = useState('');
 
   const changeProfilePic = useChangeProfilePic();
@@ -48,16 +63,6 @@ const ProfilePage = () => {
   const removeNickname = () => {
     if (inputRef.current) inputRef.current.value = '';
   };
-
-  useEffect(() => {
-    const setUserInfo = async () => {
-      // const { data: response } = await getUserInfo();
-      // setUsername(response.username);
-      // setNickname(response.nickname);
-      // setProfilePic(response.url);
-    };
-    setUserInfo();
-  }, []);
 
   const changeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewNickname(e.target.value);
