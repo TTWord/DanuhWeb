@@ -75,9 +75,9 @@ const SettingPage = () => {
 
       <UserInfoWrapper>
         <ProfileWrapper>
-          <ProfileImg>
+          <Picture>
             <img src={about.url ?? defaultProfile} alt="profile" />
-          </ProfileImg>
+          </Picture>
 
           <ProfileContent>
             <ProfileNickname>{about.nickname}</ProfileNickname>
@@ -206,12 +206,12 @@ const ProfileWrapper = styled.div`
   overflow-wrap: anywhere;
 `;
 
-const ProfileImg = styled.div`
+const Picture = styled.div`
   width: 80px;
   height: 80px;
   flex-shrink: 0;
   box-sizing: border-box;
-  //border: 1px solid #e0e0e0;
+  border: 1px solid ${({ theme }) => theme.colors.gray[200]};
   border-radius: 17px;
   display: flex;
   align-items: center;
