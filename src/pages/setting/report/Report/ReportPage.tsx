@@ -1,30 +1,50 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import backIcon from '@/assets/svg/icons/icon-back-gray.svg';
-import useNavigatePop from '@/hooks/useNavigatePop';
 import BottomSlideSelectPop from '@/components/common/popup/BottomSlideSelectPop';
-
-const print = console.log;
+import TopBarDefault from '@/components/common/header/TopBarDefault';
+import useToast from '@/hooks/useToast';
+import FooterButton from '@/components/common/button/FooterButton';
+import { api } from '@/api';
+import useNavigatePop from '@/hooks/useNavigatePop';
 
 const ReportPage = () => {
+  const toast = useToast();
   const navigate = useNavigatePop();
 
   const [isPopOpen, setIsPopOpen] = useState(false);
-
+  const [canSubmit, setCanSubmit] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
   const [reportType, setReportType] = useState('');
-  const [content, setContent] = useState('');
+  const [contents, setContents] = useState('');
+
+  const reportSubmit = async () => {
+    try {
+      const { data: response } = await api.user.report({
+        reportType,
+        contents,
+      });
+
+      toast.success('의견 제출 감사합니다!');
+      navigate('/setting');
+    } catch (e) {
+      toast.error('에러가 발생하였습니다.');
+      console.log(e);
+    }
+  };
 
   const domainList = [
     {
       text: '건의사항',
       onClick: () => {
-        setReportType('suggest');
+        setIsSelected(true);
+        setReportType('건의사항');
       },
     },
     {
       text: '버그신고',
       onClick: () => {
-        setReportType('bug');
+        setIsSelected(true);
+        setReportType('버그신고');
       },
     },
   ];
@@ -37,26 +57,27 @@ const ReportPage = () => {
     setIsPopOpen(false);
   };
 
-  const onBack = () => {
-    navigate('/setting');
+  const onSubmit = () => {
+    if (reportType === '') toast.error('유형을 선택해주세요!');
+    else if (contents === '') toast.error('내용을 입력해주세요!');
+    else reportSubmit();
   };
 
-  const onSubmit = () => {
-    print(reportType);
-  };
+  useEffect(() => {
+    if (reportType !== '' && contents !== '') setCanSubmit(true);
+    else setCanSubmit(false);
+  }, [reportType, contents]);
 
   return (
     <WebWrapper>
-      <Header>
-        <BackButton onClick={onBack} src={backIcon} alt="backButton" />
-        건의하기 / 버그신고
-      </Header>
+      <TopBarDefault navigate="/setting" title="건의하기 / 버그신고" />
+
       <Content>
         <GuideMessage>버그 신고의 경우 자세하게 기재해주세요</GuideMessage>
         <ReportType>
           유형
-          <ReportTypeSelectBox onClick={onPopOpen}>
-            {reportType}
+          <ReportTypeSelectBox isSelected={isSelected} onClick={onPopOpen}>
+            {reportType === '' ? '유형을 선택해주세요' : reportType}
           </ReportTypeSelectBox>
           <BottomSlideSelectPop
             isOpen={isPopOpen}
@@ -68,16 +89,17 @@ const ReportPage = () => {
           내용
           <TextBox
             onChange={e => {
-              setContent(e.target.value);
+              setContents(e.target.value);
             }}
-            placeholder="영어 문장을 입력해주세요"
-            cols={100}
+            placeholder="내용을 입력해주세요"
+            cols={10}
           />
         </ReportType>
       </Content>
-      <Footer>
-        <SubmitButton onClick={onSubmit}>전송하기</SubmitButton>
-      </Footer>
+
+      <FooterButton onClick={onSubmit} isActive={canSubmit}>
+        전송하기
+      </FooterButton>
     </WebWrapper>
   );
 };
@@ -91,25 +113,6 @@ const WebWrapper = styled.div`
   font-family: ${({ theme }) => theme.fonts.pretendard};
 `;
 
-const Header = styled.header`
-  position: relative;
-  width: 100%;
-  height: 56px;
-  padding: 0 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-bottom: 1px solid black;
-`;
-
-const BackButton = styled.img`
-  position: absolute;
-  left: 16px;
-  :hover {
-    cursor: pointer;
-  }
-`;
-
 const Content = styled.div`
   width: 100%;
   height: 100%;
@@ -117,12 +120,13 @@ const Content = styled.div`
   padding: 0 16px;
   display: flex;
   flex-direction: column;
+  font-size: 16px;
 `;
 
 const GuideMessage = styled.div`
   width: 100%;
   color: #a1a1a1;
-  font-size: 16px;
+
   margin-top: 18px;
   margin-bottom: 25px;
 `;
@@ -133,50 +137,39 @@ const ReportType = styled.div`
   margin-bottom: 8px;
 `;
 
-const ReportTypeSelectBox = styled.div`
+const ReportTypeSelectBox = styled.div<{ isSelected: boolean }>`
   width: 100%;
   height: 54px;
+  display: flex;
+  align-items: center;
   border: 1px solid black;
+  padding: 0 16px;
   margin-bottom: 32px;
+  color: gray;
+  cursor: pointer;
 
-  :hover {
-    cursor: pointer;
-  }
+  ${({ isSelected }) => {
+    return (
+      isSelected &&
+      css`
+        color: black;
+      `
+    );
+  }}
 `;
 
 const TextBox = styled.textarea`
   width: 100%;
   height: 300px;
   font-weight: 500;
-  font-size: 12px;
   line-height: 12px;
   color: black;
   border: 1px solid black;
-  padding: 8px 8px;
+  padding: 16px 16px;
   resize: none;
   outline: none;
 
   ::placeholder {
     color: #c0c0c0;
   }
-  ::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const Footer = styled.footer`
-  width: 100%;
-  padding: 0 20px;
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const SubmitButton = styled.button`
-  width: 100%;
-  height: 56px;
-  background-color: grey;
-  color: white;
-  font-size: 24px;
 `;
