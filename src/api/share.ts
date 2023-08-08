@@ -9,6 +9,19 @@ interface ISharedBooks {
   userId?: number;
 }
 
+interface IGetUserBooksResponse extends BackendResponse {
+  data: {
+    map(arg0: (book: any, idx: any) => JSX.Element): import('react').ReactNode;
+    book_id: number;
+    book_name: string;
+    nickname: string;
+    downloaded: number;
+    id: number;
+    word_count: number;
+    recommended: number;
+  };
+}
+
 export const shareAPI = {
   getSharedBooks: async ({ nameFilter, type, order }: ISharedBooks) => {
     const response = await instance.get(`/share`, {
@@ -59,12 +72,15 @@ export const shareAPI = {
   },
 
   getOtherUserShareBooks: async ({ userId, type, order }: ISharedBooks) => {
-    const response = await instance.get(`/share/user/${userId}`, {
-      params: {
-        type: type,
-        order: order,
+    const response = await instance.get<IGetUserBooksResponse>(
+      `/share/user/${userId}`,
+      {
+        params: {
+          type: type,
+          order: order,
+        },
       },
-    });
+    );
 
     return response;
   },

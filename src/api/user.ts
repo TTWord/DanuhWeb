@@ -14,6 +14,23 @@ interface IGetMyInfoResponse extends BackendResponse {
   };
 }
 
+interface IGetOtherUserInfoResponse extends BackendResponse {
+  data: {
+    id: number;
+    nickname: string;
+    recommend_count: number;
+    share_count: number;
+    word_count: number;
+    download_count: number;
+    url?: string;
+  };
+}
+
+interface ReportParams {
+  reportType: string;
+  contents: string;
+}
+
 export const userAPI = {
   getMyInfo: async () => {
     const response = await instance.get<IGetMyInfoResponse>(
@@ -25,23 +42,6 @@ export const userAPI = {
 
   deleteAccount: async () => {
     const response = await instance.delete('/user/userservice');
-
-    return response;
-  },
-
-  modifyAccount: async (
-    id: string,
-    username: string,
-    password: string,
-    nickname: string,
-    certification_id: string,
-  ) => {
-    const response = await instance.put(`/user/${id}`, {
-      username,
-      password,
-      nickname,
-      certification_id,
-    });
 
     return response;
   },
@@ -64,7 +64,26 @@ export const userAPI = {
   },
 
   getUserInfo: async (userId: number) => {
-    const response = await instance.get(`/user/profile/${userId}`);
+    const response = await instance.get<IGetOtherUserInfoResponse>(
+      `/user/profile/${userId}`,
+    );
+
+    return response;
+  },
+
+  report: async ({ reportType, contents }: ReportParams) => {
+    const response = await instance.post(`/user/userservice/report`, {
+      type: reportType,
+      contents,
+    });
+
+    return response;
+  },
+
+  survey: async (contents: string | Array<string | object>) => {
+    const response = await instance.post(`/user/userservice/survey`, {
+      contents,
+    });
 
     return response;
   },
