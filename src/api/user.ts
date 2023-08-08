@@ -80,7 +80,7 @@ export const userAPI = {
     return response;
   },
 
-  survey: async (contents: string | Array<string | object>) => {
+  survey: async (contents: String[]) => {
     const response = await instance.post(`/user/userservice/survey`, {
       contents,
     });

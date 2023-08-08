@@ -1,38 +1,40 @@
 import styled, { css } from 'styled-components';
-import { useState } from 'react';
+import { useState, MouseEvent, useRef } from 'react';
 import CheckBox from '@/components/common/switch/CheckBox';
 import { useSetRecoilState } from 'recoil';
 import { globalState } from '@/recoil';
 
 interface VotebuttonProps {
-  onClick?: () => void;
+  voteOnClick?: (text: string) => void;
   text: string;
 }
 
-const VoteButton = ({ onClick, text }: VotebuttonProps) => {
+const VoteButton = ({ voteOnClick, text }: VotebuttonProps) => {
+  const textRef = useRef<HTMLDivElement>(null);
   const [isSelect, setIsSelect] = useState(false);
+  const [value, setValue] = useState('');
   const setIsDirectInput = useSetRecoilState(
     globalState.setting.directInputMode,
   );
 
-  const onClickFunc = () => {
+  const onClick = () => {
     // 버튼 체크 용
     setIsSelect(current => !current);
 
-    // 온클릭 이벤트 넘길때만
-    if (onClick) {
-      onClick();
-    }
-    // 직접 입력모드 감지시
+    const data = textRef.current?.innerText;
+
+    // 버튼 타입에 따라 분기
     if (text === '직접 입력') {
       setIsDirectInput(current => !current);
+    } else if (voteOnClick && data) {
+      voteOnClick(data);
     }
   };
 
   return (
     <ButtonWrapper>
-      <CheckBox isChecked={isSelect} onClick={onClickFunc} />
-      <Text>{text}</Text>
+      <CheckBox isChecked={isSelect} onClick={onClick} />
+      <Text ref={textRef}>{text}</Text>
     </ButtonWrapper>
   );
 };
@@ -42,11 +44,18 @@ export default VoteButton;
 const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
+
   & + & {
     margin-top: 20px;
   }
 `;
 
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const Text = styled.div`
+  width: 100%;
   ${({ theme }) => theme.typography.pretendard.b1.md}
 `;
