@@ -12,7 +12,14 @@ export const darkMode = atom({
   default: false,
 });
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
 
 const App = () => {
   const isDark = useRecoilValue(darkMode);
