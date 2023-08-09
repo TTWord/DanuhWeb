@@ -5,7 +5,7 @@ import DeleteSurvey from './components/DeleteSurvey';
 import TopBarDefault from '@/components/common/header/TopBarDefault';
 
 const DeleteAccountPage = () => {
-  const [isVoteMode, setVoteMode] = useState(true); //false로 바꾸어야함
+  const [isVoteMode, setVoteMode] = useState(false); //false로 바꾸어야함
 
   const onClickSetVodeMode = () => {
     setVoteMode(true);
