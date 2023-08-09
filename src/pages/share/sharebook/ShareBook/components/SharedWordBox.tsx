@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import iconOther from '@/assets/svg/icons/icon-other.svg';
 
 interface IShareWord {
   words: {
@@ -13,13 +12,6 @@ const SharedWordBox = ({ words }: IShareWord) => {
     <WordBox>
       <Word>{words.word}</Word>
       <Mean>{words.mean}</Mean>
-      <Other
-        onClick={() => {
-          console.log('클릭');
-        }}
-        src={iconOther}
-        alt="other"
-      />
     </WordBox>
   );
 };
@@ -53,13 +45,4 @@ const Word = styled.div`
 const Mean = styled.div`
   color: ${({ theme }) => theme.colors.gray[500]};
   ${({ theme }) => theme.typography.pretendard.c1.rg}
-`;
-
-const Other = styled.img`
-  width: 24px;
-  height: 24px;
-  position: absolute;
-  top: 18px;
-  right: 4px;
-  cursor: pointer;
 `;

@@ -1,59 +1,97 @@
 import styled, { css } from 'styled-components';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import iconBack from '@/assets/svg/icons/icon-back-gray.svg';
-import SharingBook from '../../Share/components/SharingBook';
+import { useState } from 'react';
+import iconSearch from '@/assets/svg/icons/icon-search.svg';
+import SearchedBook from './components/SearchedBook';
 import useGetSharedBooks from '../../Share/hooks/useGetSharedBooks';
+import TopBarDefault from '@/components/common/header/TopBarDefault';
 
 const SearchBooksPage = () => {
-  const navigate = useNavigate();
   const { isLoading, getSharedBooks } = useGetSharedBooks();
   const [sharedBooks, setSharedBooks] = useState([]);
+  const [value, setValue] = useState('');
   const [keyword, setKeyword] = useState('');
+  const [isFocused, setIsFocused] = useState<boolean>(false);
 
-  const goBack = () => {
-    navigate('/share');
+  const onFocus = () => {
+    setIsFocused(true);
+  };
+
+  const onBlur = () => {
+    setIsFocused(false);
+  };
+
+  const onClose = () => {
+    setValue('');
   };
 
   const onChange = (e: any) => {
-    setKeyword(e.target.value);
+    setValue(e.target.value);
   };
 
   const getSharedBooksAPI = async () => {
-    const { data: response } = await getSharedBooks(keyword);
+    const keyWord = value;
+    setKeyword(value);
+    const { data: response } = await getSharedBooks({ nameFilter: keyWord });
 
     setSharedBooks(response);
   };
 
   return (
     <MainWrapper>
-      <Header>
-        <img onClick={goBack} src={iconBack} alt="back" />
-        <div>검색</div>
-      </Header>
+      <TopBarDefault navigate="/share" title="단어장 검색" />
 
       <Container>
-        <SearchWrapper>
-          <input
+        <SearchBox isFocused={isFocused}>
+          <InputBox
             onChange={onChange}
             type="text"
-            placeholder="검색어를 입력하시오"
+            value={value}
+            placeholder="어떤 단어장을 찾고 있나요?"
+            onFocus={onFocus}
+            onBlur={onBlur}
           />
-          <button onClick={getSharedBooksAPI}>🔍</button>
-        </SearchWrapper>
+          <CloseButton isView={isFocused} onClick={onClose}>
+            <svg
+              width="21"
+              height="21"
+              viewBox="0 0 21 21"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                x="0.731445"
+                y="0.199707"
+                width="20"
+                height="20"
+                rx="10"
+                fill="#EEEEF2"
+              />
+              <path
+                d="M7.19629 13.7354L14.2674 6.66428"
+                stroke="#C5C6D0"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M14.2676 13.7354L7.19651 6.66428"
+                stroke="#C5C6D0"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </CloseButton>
+          <SearchButton
+            onClick={getSharedBooksAPI}
+            src={iconSearch}
+            alt="search"
+          />
+        </SearchBox>
 
         <SharingBookWrapper>
           {sharedBooks.map((book: any, idx) => (
-            <SharingBook
-              key={idx}
-              shareId={book.id}
-              bookName={book.book_name}
-              userName={book.nickname}
-              updatedDate={book.updated_at}
-              view={book.checked}
-              download={book.downloaded}
-              recommand={0} // 아직 값 없음
-            />
+            <SearchedBook key={idx} book={book} keyword={keyword} />
           ))}
         </SharingBookWrapper>
       </Container>
@@ -71,29 +109,6 @@ const MainWrapper = styled.div`
   align-items: center;
 `;
 
-const Header = styled.div`
-  width: 100%;
-  height: 56px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-
-  img {
-    position: absolute;
-    left: 16px;
-
-    :hover {
-      cursor: pointer;
-    }
-  }
-
-  div {
-    font-weight: 700;
-    font-size: 30px;
-  }
-`;
-
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -101,14 +116,13 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 24px 16px;
+  padding: 0 16px;
 `;
 
 const SharingBookWrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
-
   flex-direction: column;
   overflow-y: auto;
   margin-top: 16px;
@@ -119,18 +133,43 @@ const SharingBookWrapper = styled.div`
   }
 `;
 
-const SearchWrapper = styled.div`
+const SearchBox = styled.div<{
+  isFocused: boolean;
+}>`
   width: 100%;
-  //height: 56px;
-  padding: 16px 16px;
+  height: 44px;
   display: flex;
   align-items: center;
-  border: 1px solid black;
+  padding: 0 8px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[200]};
 
-  input {
-    width: 100%;
-    height: 20px;
-    outline: none;
-    font-size: 16px;
-  }
+  ${({ isFocused }) =>
+    isFocused &&
+    css`
+      border-bottom: 1px solid ${({ theme }) => theme.colors.primary.default};
+    `}
+`;
+
+const InputBox = styled.input`
+  width: 100%;
+`;
+
+const SearchButton = styled.img`
+  width: 24px;
+  cursor: pointer;
+`;
+
+const CloseButton = styled.button<{
+  isView: boolean;
+}>`
+  width: 20px;
+  height: 20px;
+  margin-right: 16px;
+  opacity: 0;
+
+  ${({ isView }) =>
+    isView &&
+    css`
+      opacity: 1;
+    `}
 `;
