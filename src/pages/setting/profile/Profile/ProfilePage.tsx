@@ -2,8 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import useChangeNickname from '@/pages/setting//profile/Profile/hooks/useChangeNickname';
 import useChangeProfilePic from './hooks/useChangeProfilePic';
-import backIcon from '@/assets/svg/icons/icon-back-gray.svg';
-import useNavigatePop from '@/hooks/useNavigatePop';
 import { useMutation, useQuery } from 'react-query';
 import { api } from '@/api';
 import InputAndCheck from '@/components/common/input/InputAndCheck';
@@ -11,9 +9,9 @@ import defaultProfile from '@/assets/svg/logos/logo-profile-default.svg';
 import iconPencil from './svg/icon-pencil.svg';
 import { instance } from '@/instance';
 import StackLayout from '@/components/layout/StackLayout';
+import FooterButton from '@/components/common/button/FooterButton';
 
 const ProfilePage = () => {
-  const navigatePop = useNavigatePop();
   const changeNewNickname = useChangeNickname();
   const [error, setError] = useState<string | null>(null);
   const [isOk, setIsOk] = useState(false);
@@ -26,14 +24,13 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (about) {
-      setUsername(about.username);
       setNickname(about.nickname);
+      setNewNickname(about.nickname);
       setProfilePic(about.url);
     }
   }, [about]);
 
   const [nickname, setNickname] = useState('');
-  const [username, setUsername] = useState('');
   const [profilePic, setProfilePic] = useState<string | undefined>();
   const [newNickname, setNewNickname] = useState('');
 
@@ -59,11 +56,6 @@ const ProfilePage = () => {
   // 버튼 클릭하여 none처리한 file input 버튼 클릭
   const uploadOnClick = () => {
     profilePicRef.current.click();
-  };
-
-  // 뒤로 가기 기능
-  const goBack = () => {
-    navigatePop('/setting');
   };
 
   const { mutateAsync: checkNickname } = useMutation(
@@ -103,19 +95,21 @@ const ProfilePage = () => {
             <img src={iconPencil} alt="pencil" />
           </PicEditButton>
         </Picture>
+
         <InputAndCheck
           onChange={value => {
             setError(null);
-            setNickname(value);
+            setNewNickname(value);
           }}
-          value={nickname}
+          value={newNickname}
           onClickButton={async () => {
-            await checkNickname(nickname);
+            await checkNickname(newNickname);
 
             setError('해당 닉네임을 사용하실 수 있습니다');
             setIsOk(true);
           }}
         />
+
         <Error isActive={isOk}>{error}</Error>
       </ContentWrapper>
 
@@ -132,7 +126,7 @@ const ProfilePage = () => {
           }
         }}
       >
-        <ApplyButton isActive={error === null || isOk}>저장하기</ApplyButton>
+        <FooterButton isActive={error === null || isOk}>저장하기</FooterButton>
       </ProfileForm>
     </StackLayout>
   );
@@ -154,32 +148,6 @@ const Error = styled.div<{
     css`
       color: #0ac54a;
     `}
-`;
-
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-style: normal;
-`;
-
-const Header = styled.div`
-  width: 100%;
-  height: 56px;
-  font-weight: 600;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 140%;
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-  flex-shrink: 0;
-`;
-
-const BackButton = styled.button`
-  margin-right: 16px;
 `;
 
 const ContentWrapper = styled.div`
@@ -243,25 +211,4 @@ const ProfileForm = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 24px 20px;
-`;
-
-const ApplyButton = styled.button<{
-  isActive: boolean;
-}>`
-  width: 100%;
-  height: 48px;
-  border-radius: 5px;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 140%;
-  text-align: center;
-  color: #ffffff;
-  background-color: ${({ theme }) => theme.colors.primary.disabled};
-
-  ${({ isActive }) =>
-    isActive &&
-    css`
-      background-color: ${({ theme }) => theme.colors.primary.default};
-    `}
 `;
