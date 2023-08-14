@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
 
 import CheckBox from './CheckBox';
-import { useState } from 'react';
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
-  title: 'switch/CheckBox',
+  title: 'Switch/CheckBox',
   component: CheckBox,
   argTypes: {
     isChecked: {
@@ -24,7 +24,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    isChecked: true,
-    onClick: () => {},
+    isChecked: false,
+    onClick: action('onClick'),
   },
 };
