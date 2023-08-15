@@ -66,7 +66,9 @@ const CustomStyles = createGlobalStyle`
 
   body > #root {
     font-size: 16px;
+    width: 100%;
     height: 100%;
+    position: fixed;
   }
 
   div::-webkit-scrollbar {

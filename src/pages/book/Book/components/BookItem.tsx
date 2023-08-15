@@ -4,6 +4,7 @@ import iconOther from '@/assets/svg/icons/icon-other.svg';
 import sharingIcon from '@/assets/svg/icons/icon-sharing.svg';
 import donwloadedIcon from '@/assets/svg/icons/icon-downloaded.svg';
 import BookShareOptionPop from './BookShareOptionPop';
+import BottomSlidePop from '@/components/common/popup/BottomSlidePop';
 
 const generateDateText = (dateText: string) => {
   const date = new Date(dateText);
@@ -36,8 +37,8 @@ const BookItem: React.FC<BookItemProps> = ({
   onClickRemove,
 }) => {
   const [isOptionOpen, setOptionOpen] = useState(false);
-
   const [isBookSharePopOpen, setIsBookSharePopOpen] = useState(false);
+  const [isBottomSlidePopOpen, setIsBottomSlidePopOpen] = useState(false);
 
   const onClickShare = () => {
     setIsBookSharePopOpen(true);
@@ -50,6 +51,15 @@ const BookItem: React.FC<BookItemProps> = ({
         setIsOpen={setIsBookSharePopOpen}
         book={book}
       />
+      <BottomSlidePop
+        isOpen={isBottomSlidePopOpen}
+        onPopClose={() => {
+          setIsBottomSlidePopOpen(false);
+        }}
+        height={312}
+      >
+        asdasdasdas
+      </BottomSlidePop>
       <Top>
         <Strong>{book.name}</Strong>
         <Option

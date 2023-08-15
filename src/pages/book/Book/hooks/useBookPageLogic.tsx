@@ -1,16 +1,18 @@
 import { api } from '@/api';
 import useNavigatePush from '@/hooks/useNavigatePush';
 import { instance } from '@/instance';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 
 const useBookPageLogic = () => {
   const queryClient = useQueryClient();
+
   const { data: books } = useQuery('BookPage/GetBooks', async () => {
     const response = await api.book.getBook();
 
     return response.data;
   });
+
   const navigatePush = useNavigatePush();
 
   const onClickUpdate = useCallback(async (bookId: number) => {

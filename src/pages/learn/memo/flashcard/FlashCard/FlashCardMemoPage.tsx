@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import iconClose from '@/assets/svg/icons/icon-close.svg';
 import { useEffect, useState } from 'react';
-import ConfirmPop from '@/pages/test/ConfirmPop';
+import ConfirmPop from '@/components/common/popup/ConfirmPop';
 import useGetFlashcardMemo from './hooks/useGetFlashcardMemo';
 
 const FlashCardMemoPage = () => {

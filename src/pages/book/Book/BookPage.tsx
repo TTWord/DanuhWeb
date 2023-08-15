@@ -4,7 +4,7 @@ import BookItem from '@/pages/book/Book/components/BookItem';
 import useBookPageLogic from './hooks/useBookPageLogic';
 import danuhLogo from '@/assets/svg/logos/logo-danuh-small.svg';
 import emptyIcon from '@/assets/svg/icons/icon-book-empty.svg';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { globalState } from '@/recoil';
 
@@ -109,8 +109,4 @@ const Items = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
 `;

@@ -4,7 +4,7 @@ import { useSetRecoilState } from 'recoil';
 import { useEffect, useState } from 'react';
 import useLogout from '@/pages/setting/Setting/hooks/useLogout';
 import ContentBox from './components/ContentBox';
-import ConfirmPop from '@/pages/test/ConfirmPop';
+import ConfirmPop from '@/components/common/popup/ConfirmPop';
 import useNavigatePush from '@/hooks/useNavigatePush';
 import useToast from '@/hooks/useToast';
 import iconSetting from '@/assets/svg/icons/icon-setting.svg';
@@ -12,18 +12,22 @@ import iconInfo from '@/assets/svg/icons/icon-info.svg';
 import defaultProfile from '@/assets/svg/logos/logo-profile-default.svg';
 import { useQuery } from 'react-query';
 import { api } from '@/api';
+import useSettingPageLogic from './hooks/useSettingPageLogic';
 
 const SettingPage = () => {
   const logout = useLogout();
   const toast = useToast();
-  const navigatePush = useNavigatePush();
+  const {
+    about,
+    moveProfilePage,
+    moveNoticePage,
+    movePasswordPage,
+    movePatchNotePage,
+    moveReportPage,
+    moveAccountDeletePage,
+  } = useSettingPageLogic();
 
   const maxWords = 200;
-  const { data: about } = useQuery('MyPage/GetMyAbout', async () => {
-    const { data: response } = await api.user.getMyInfo();
-
-    return response.data;
-  });
 
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
   const [isConfirmPopOpen, setIsConfirmPopOpen] = useState(false);
@@ -32,32 +36,8 @@ const SettingPage = () => {
     setActiveMenu(3);
   }, []);
 
-  // 해당 페이지로 이동하는 함수
-  const moveProfilePage = () => {
-    navigatePush('/setting/profile');
-  };
-
-  const moveNoticePage = () => {
-    navigatePush('/setting/notice');
-  };
-
-  const moveReportPage = () => {
-    navigatePush('/setting/report');
-  };
-
-  const movePasswordPage = () => {
-    navigatePush('/setting/password');
-  };
-
-  const movePatchNotePage = () => {
-    navigatePush('/setting/patchnote');
-  };
   const onClickLogout = () => {
     setIsConfirmPopOpen(true);
-  };
-
-  const onClickDeleteAccout = () => {
-    navigatePush('/setting/delete');
   };
 
   if (!about) return null;
@@ -152,7 +132,7 @@ const SettingPage = () => {
           <ContentBox title="비밀번호 변경" onClick={movePasswordPage} />
         )}
         <ContentBox title="로그아웃" onClick={onClickLogout} />
-        <ContentBox title="탈퇴하기" onClick={onClickDeleteAccout} />
+        <ContentBox title="탈퇴하기" onClick={moveAccountDeletePage} />
       </ContentWrapper>
     </WebWrapper>
   );

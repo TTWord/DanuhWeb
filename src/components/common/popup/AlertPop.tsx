@@ -9,7 +9,7 @@ interface OkayPopProps {
   children: React.ReactNode;
 }
 
-const OkayPop: React.FC<OkayPopProps> = ({
+const AlertPop: React.FC<OkayPopProps> = ({
   isOpen,
   onClose,
   okayText = '확인',
@@ -43,7 +43,7 @@ const OkayPop: React.FC<OkayPopProps> = ({
   );
 };
 
-export default OkayPop;
+export default AlertPop;
 
 const BackgroundAnimation = keyframes`
   0% {
@@ -71,13 +71,13 @@ const Background = styled.div<{
   width: 100%;
   height: 100%;
   background-color: rgba(72, 72, 72, 0.3);
-  animation: ${BackgroundAnimation} 1s ease-in-out;
+  animation: ${BackgroundAnimation} 0.5s ease-in-out;
 
   ${({ closeState }) =>
     closeState &&
     css`
       background-color: rgba(0, 0, 0, 0);
-      animation: ${BackgroundAnimationReverse} 1s ease-in-out;
+      animation: ${BackgroundAnimationReverse} 0.5s ease-in-out;
     `}
 `;
 
@@ -114,7 +114,7 @@ const Box = styled.div<{
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  animation: ${BoxAnimation} 0.6s ease-in-out;
+  animation: ${BoxAnimation} 0.3s ease-in-out;
   border-radius: 10px;
   font-size: 16px;
   opacity: 1;
@@ -123,7 +123,7 @@ const Box = styled.div<{
     closeState &&
     css`
       opacity: 0;
-      animation: ${BoxAnimationReverse} 0.6s ease-in-out;
+      animation: ${BoxAnimationReverse} 0.3s ease-in-out;
     `}
 `;
 
