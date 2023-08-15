@@ -1,5 +1,5 @@
 import styled, { StyledComponent, css, keyframes } from 'styled-components';
-import CommonModalBackground from '../../components/common/modal/CommonModalBackground';
+import CommonModalBackground from '../modal/CommonModalBackground';
 import { useEffect, useState } from 'react';
 
 interface ConfirmPopProps {
@@ -97,13 +97,13 @@ const Background = styled.div<{
   height: 100%;
   background-color: rgba(72, 72, 72, 0.3);
 
-  animation: ${BackgroundAnimation} 1s ease-in-out;
+  animation: ${BackgroundAnimation} 0.5s ease-in-out;
 
   ${({ closeState }) =>
     closeState &&
     css`
       background-color: rgba(0, 0, 0, 0);
-      animation: ${BackgroundAnimationReverse} 1s ease-in-out;
+      animation: ${BackgroundAnimationReverse} 0.5s ease-in-out;
     `}
 `;
 
@@ -145,13 +145,13 @@ const Container = styled.div<{
   justify-content: center;
 
   opacity: 1;
-  animation: ${BoxAnimation} 0.6s ease-in-out;
+  animation: ${BoxAnimation} 0.3s ease-in-out;
 
   ${({ closeState }) =>
     closeState &&
     css`
       opacity: 0;
-      animation: ${BoxAnimationReverse} 0.6s ease-in-out;
+      animation: ${BoxAnimationReverse} 0.3s ease-in-out;
     `}
 `;
 
