@@ -8,7 +8,6 @@ import useDeleteAccount from '@/pages/setting/Setting/hooks/useDeleteAccount';
 import Input from '@/components/common/input/Input';
 
 const DeleteSurvey = () => {
-  //const [isConfirmPopOpen, setIsConfirmPopOpen] = useState(false);
   const deleteAccount = useDeleteAccount();
   const [isActive, setActive] = useState(false);
   const [inputValue, setInputValue] = useState('');
@@ -16,7 +15,7 @@ const DeleteSurvey = () => {
   const isDirectInput = useRecoilValue(globalState.setting.directInputMode);
 
   const voteOnClick = (text: string) => {
-    setSurveyData(surveyData => {
+    setSurveyData((surveyData) => {
       const index = surveyData.indexOf(text);
       if (index > -1) {
         surveyData.splice(index, 1);
@@ -63,7 +62,7 @@ const DeleteSurvey = () => {
             type={'fit'}
             placeholder="사유를 입력해주세요"
             value={inputValue}
-            onChange={text => {
+            onChange={(text) => {
               setInputValue(text);
             }}
           />

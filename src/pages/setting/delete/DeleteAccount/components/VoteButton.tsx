@@ -44,18 +44,15 @@ export default VoteButton;
 const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
+  padding-bottom: 1px;
 
   & + & {
-    margin-top: 20px;
+    margin-top: 24px;
   }
-`;
-
-const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
 `;
 
 const Text = styled.div`
   width: 100%;
   ${({ theme }) => theme.typography.pretendard.b1.md}
+  margin-left: 4px;
 `;
