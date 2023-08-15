@@ -79,9 +79,9 @@ const FlashCardMemoPage = () => {
             },
           });
         }}
-      >
-        <ConfirmPop.Title>암기를 중단할까요?</ConfirmPop.Title>
-      </ConfirmPop>
+        type="title"
+        title="암기를 중단할까요?"
+      />
       <Header>
         <ExitButton onClick={onExitQuiz}>
           <img src={iconClose} alt="close-button" />

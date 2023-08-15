@@ -52,7 +52,7 @@ const BlindMemoPage = () => {
       //concat과 splice 정리해보기
       const newData = blindData.concat(memoList.splice(0, 3));
       setBlindData(
-        newData.filter(item => item !== undefined) as {
+        newData.filter((item) => item !== undefined) as {
           word: string;
           mean: string;
         }[],
@@ -66,7 +66,7 @@ const BlindMemoPage = () => {
       blindData.shift();
       const newData = blindData.concat(memoList.splice(0, 1));
       setBlindData(
-        newData.filter(item => item !== undefined) as {
+        newData.filter((item) => item !== undefined) as {
           word: string;
           mean: string;
         }[],
@@ -130,9 +130,9 @@ const BlindMemoPage = () => {
             },
           });
         }}
-      >
-        <ConfirmPop.Title>암기를 중단할까요?</ConfirmPop.Title>
-      </ConfirmPop>
+        type="title"
+        title="암기를 중단할까요?"
+      />
       <Header>
         <ExitButton onClick={onExitQuiz}>
           <img src={iconClose} alt="close-button" />

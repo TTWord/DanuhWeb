@@ -10,12 +10,12 @@ interface ConfirmPopProps {
   onCancel: () => void;
   children?: React.ReactNode;
   height?: string;
+  type?: 'custom' | 'title' | 'desc';
+  title?: string;
+  description?: string;
 }
 
-const ConfirmPop: React.FC<ConfirmPopProps> & {
-  Title: StyledComponent<'div', any, {}, never>;
-  Comment: StyledComponent<'div', any, {}, never>;
-} = ({
+const ConfirmPop: React.FC<ConfirmPopProps> = ({
   isOpen,
   height,
   onConfirm,
@@ -23,6 +23,9 @@ const ConfirmPop: React.FC<ConfirmPopProps> & {
   confirmText = '확인',
   cancelText = '취소',
   children,
+  type,
+  title,
+  description,
 }) => {
   const [closeState, setCloseState] = useState(false);
 
@@ -44,7 +47,16 @@ const ConfirmPop: React.FC<ConfirmPopProps> & {
       <Background closeState={closeState} />
       <Transparent>
         <Container closeState={closeState} height={height}>
-          <Content>{children}</Content>
+          <Content>
+            {type === 'custom' && children}
+            {type === 'title' && <Title>{title}</Title>}
+            {type === 'desc' && (
+              <>
+                <Title>{title}</Title>
+                <Desc>{description}</Desc>
+              </>
+            )}
+          </Content>
           <ButtonGroup>
             <Button onClick={onClickClose}>{cancelText}</Button>
             <Button onClick={onConfirm}>{confirmText}</Button>
@@ -56,18 +68,6 @@ const ConfirmPop: React.FC<ConfirmPopProps> & {
 };
 
 export default ConfirmPop;
-
-const Title = styled.div`
-  ${({ theme }) => theme.typography.pretendard.t3.bd};
-`;
-
-const Comment = styled.div`
-  margin-top: 8px;
-  ${({ theme }) => theme.typography.pretendard.b1.rg};
-`;
-
-ConfirmPop.Title = Title;
-ConfirmPop.Comment = Comment;
 
 const BackgroundAnimation = keyframes`
   0% {
@@ -181,5 +181,23 @@ const Button = styled.button`
   & + & {
     border-left: 1px solid ${({ theme }) => theme.colors.gray[200]};
     color: ${({ theme }) => theme.colors.primary.default};
+  }
+`;
+
+const Title = styled.div`
+  ${({ theme }) => theme.typography.pretendard.t3.bd}
+  color: ${({ theme }) => theme.colors.gray[800]};
+  text-align: center;
+  word-break: break-all;
+`;
+
+const Desc = styled.div`
+  color: ${({ theme }) => theme.colors.gray[600]};
+  ${({ theme }) => theme.typography.pretendard.b1.rg};
+  word-break: break-all;
+  text-align: center;
+
+  ${Title} + & {
+    margin-top: 4px;
   }
 `;
