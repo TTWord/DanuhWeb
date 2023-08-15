@@ -5,10 +5,10 @@ import DeleteSurvey from './components/DeleteSurvey';
 import TopBarDefault from '@/components/common/header/TopBarDefault';
 
 const DeleteAccountPage = () => {
-  const [isVoteMode, setVoteMode] = useState(true); //false로 바꾸어야함
+  const [isSurveyMode, setSurveyMode] = useState(false);
 
   const onClickSetVodeMode = () => {
-    setVoteMode(true);
+    setSurveyMode(true);
   };
 
   return (
@@ -17,9 +17,9 @@ const DeleteAccountPage = () => {
 
       <Content>
         {/* 탈퇴하기 메인 화면 */}
-        {!isVoteMode && <DeleteMain onClick={onClickSetVodeMode} />}
+        {!isSurveyMode && <DeleteMain onClick={onClickSetVodeMode} />}
         {/* 탈퇴하기 불편 사항 선택 & 최종 화면, 직접 입력 체크 input 출력 */}
-        {isVoteMode && <DeleteSurvey />}
+        {isSurveyMode && <DeleteSurvey />}
       </Content>
     </MainWrapper>
   );
