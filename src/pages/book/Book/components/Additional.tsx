@@ -152,7 +152,6 @@ const AdditionalItems = styled.div<{
 `;
 
 const Text = styled.div`
-  padding-bottom: 3px;
 `;
 
 const Icon = styled.img`

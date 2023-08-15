@@ -130,17 +130,17 @@ const MySharingPage = () => {
           </SortType>
         </SortWrapper>
 
-        {/* currentBooks으로 변경해야함 sampleData */}
+        {/* 빈 화면 */}
         {currentBooks.length === 0 && (
           <EmptyBook>
             <img src={emptyIcon} alt="empty" />
-            <span>아직 공유한 단어장이 없어요</span>
+            <span>{!isToggle && '아직 공유한 단어장이 없어요'}</span>
+            <span>{isToggle && '아직 추천한 단어장이 없어요'}</span>
             <span>Sharing is caring!</span>
           </EmptyBook>
         )}
 
         <BookWrapper>
-          {/* currentBooks으로 변경해야함 sampleData */}
           {currentBooks.length !== 0 &&
             currentBooks.map((book: any, idx) => (
               <MyShareBookList key={idx} book={book} mode={mode} />

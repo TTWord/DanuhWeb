@@ -4,6 +4,9 @@ import iconOther from '@/assets/svg/icons/icon-other.svg';
 import sharingIcon from '@/assets/svg/icons/icon-sharing.svg';
 import donwloadedIcon from '@/assets/svg/icons/icon-downloaded.svg';
 import BookShareOptionPop from './BookShareOptionPop';
+import BottomSlidePop from '@/components/common/popup/BottomSlidePop';
+
+import CloseSvg from '../svg/close.svg';
 
 const generateDateText = (dateText: string) => {
   const date = new Date(dateText);
@@ -35,7 +38,7 @@ const BookItem: React.FC<BookItemProps> = ({
   onClickUpdate,
   onClickRemove,
 }) => {
-  const [isOptionOpen, setOptionOpen] = useState(false);
+  const [isOptionOpen, setIsOptionOpen] = useState(false);
 
   const [isBookSharePopOpen, setIsBookSharePopOpen] = useState(false);
 
@@ -44,46 +47,55 @@ const BookItem: React.FC<BookItemProps> = ({
   };
 
   return (
-    <Item key={book.id} onClick={() => onItemClick(book.id)}>
+    <>
       <BookShareOptionPop
         isOpen={isBookSharePopOpen}
         setIsOpen={setIsBookSharePopOpen}
         book={book}
       />
-      <Top>
-        <Strong>{book.name}</Strong>
-        <Option
-          onClick={e => {
-            e.stopPropagation();
-            setOptionOpen(!isOptionOpen);
-          }}
-        >
-          <img src={iconOther} alt="other" />
-          <OptionItems
-            isActive={isOptionOpen}
+      <BottomSlidePop
+        isOpen={isOptionOpen}
+        onPopClose={() => setIsOptionOpen(false)}
+        height={312}
+      >
+        <BookOptionHeader>
+          <BookOptionTitle>단어장 A</BookOptionTitle>
+          <BookOptionCloseButton>
+            <img src={CloseSvg} alt="close" />
+          </BookOptionCloseButton>
+        </BookOptionHeader>
+        <BookOptionContent>
+          <BookOptionItem onClick={onClickShare}>공유 설정</BookOptionItem>
+          <BookOptionItem onClick={() => onClickUpdate(book.id)}>
+            수정하기
+          </BookOptionItem>
+          <BookOptionItem onClick={() => onClickRemove(book.id)} red>
+            단어장 삭제
+          </BookOptionItem>
+        </BookOptionContent>
+      </BottomSlidePop>
+      <Item key={book.id} onClick={() => onItemClick(book.id)}>
+        <Top>
+          <Strong>{book.name}</Strong>
+          <Option
             onClick={e => {
               e.stopPropagation();
+              setIsOptionOpen(current => !current);
             }}
           >
-            <OptionItem onClick={() => onClickShare()}>공유설정</OptionItem>
-            <OptionItem onClick={() => onClickUpdate(book.id)}>
-              수정하기
-            </OptionItem>
-            <OptionItem onClick={() => onClickRemove(book.id)}>
-              삭제하기
-            </OptionItem>
-          </OptionItems>
-        </Option>
-      </Top>
+            <img src={iconOther} alt="other" />
+          </Option>
+        </Top>
 
-      <Bottom>
-        <DataCreated>{generateDateText(book.created_at)}</DataCreated>
-        {book.is_sharing && <IsSharing src={sharingIcon} alt="sharingIcon" />}
-        {book.is_downloaded && (
-          <IsDownloaded src={donwloadedIcon} alt="donwloadedIcon" />
-        )}
-      </Bottom>
-    </Item>
+        <Bottom>
+          <DataCreated>{generateDateText(book.created_at)}</DataCreated>
+          {book.is_sharing && <IsSharing src={sharingIcon} alt="sharingIcon" />}
+          {book.is_downloaded && (
+            <IsDownloaded src={donwloadedIcon} alt="donwloadedIcon" />
+          )}
+        </Bottom>
+      </Item>
+    </>
   );
 };
 
@@ -131,36 +143,6 @@ const Option = styled.div`
   position: relative;
 `;
 
-const OptionItems = styled.div<{
-  isActive: boolean;
-}>`
-  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
-  background-color: white;
-  z-index: 1;
-  display: none;
-  flex-direction: column;
-  position: absolute;
-  top: 24px;
-  img {
-    width: 24px;
-  }
-
-  ${({ isActive }) =>
-    isActive &&
-    css`
-      display: flex;
-    `}
-`;
-
-const OptionItem = styled.div`
-  width: 100px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 12px;
-`;
-
 const Strong = styled.strong`
   width: 100%;
   font-family: ${({ theme }) => theme.fonts.pretendard};
@@ -189,4 +171,46 @@ const IsSharing = styled(Img)`
 
 const IsDownloaded = styled(Img)`
   //color: green;
+`;
+
+const BookOptionHeader = styled.div`
+  display: flex;
+  width: 100%;
+  height: 56px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+`;
+
+const BookOptionTitle = styled.div`
+  ${({ theme }) => theme.typography.pretendard.t2.sbd};
+  color: ${({ theme }) => theme.colors.primary.default};
+`;
+
+const BookOptionCloseButton = styled.button``;
+
+const BookOptionContent = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 0 24px;
+`;
+
+const BookOptionItem = styled.div<{
+  red?: boolean;
+}>`
+  width: 100%;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  color: ${({ theme }) => theme.colors.gray[800]};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[200]};
+  font-size: 16px;
+  line-height: 140%;
+  font-weight: 600;
+
+  ${({ theme, red }) =>
+    red &&
+    css`
+      color: ${theme.colors.error};
+    `};
 `;
