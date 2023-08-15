@@ -2,18 +2,24 @@ import { useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
 import styled, { css, keyframes } from 'styled-components';
 
-interface OkayPopProps {
+interface AlertPopProps {
   isOpen: boolean;
   onClose: () => void;
-  okayText?: string;
-  children: React.ReactNode;
+  buttonText?: string;
+  type?: 'custom' | 'title' | 'desc';
+  children?: React.ReactNode;
+  title?: string;
+  description?: string;
 }
 
-const AlertPop: React.FC<OkayPopProps> = ({
+const AlertPop: React.FC<AlertPopProps> = ({
   isOpen,
   onClose,
-  okayText = '확인',
+  buttonText = '확인',
   children,
+  type = 'custom',
+  title,
+  description,
 }) => {
   const [closeState, setCloseState] = useState(false);
 
@@ -26,7 +32,7 @@ const AlertPop: React.FC<OkayPopProps> = ({
       setTimeout(() => {
         onClose();
         setCloseState(false);
-      }, 1000);
+      }, 500);
     }
   }, [closeState]);
 
@@ -35,8 +41,17 @@ const AlertPop: React.FC<OkayPopProps> = ({
       <Background closeState={closeState} />
       <Transparent>
         <Box closeState={closeState}>
-          <Content>{children}</Content>
-          <Button onClick={onClickClose}>{okayText}</Button>
+          <Content>
+            {type === 'custom' && children}
+            {type === 'title' && <Title>{title}</Title>}
+            {type === 'desc' && (
+              <>
+                <Title>{title}</Title>
+                <Desc>{description}</Desc>
+              </>
+            )}
+          </Content>
+          <Button onClick={onClickClose}>{buttonText}</Button>
         </Box>
       </Transparent>
     </ReactModal>
@@ -109,10 +124,10 @@ const Box = styled.div<{
   closeState: boolean;
 }>`
   width: 264px;
+  min-height: 180px;
   background-color: white;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
   animation: ${BoxAnimation} 0.3s ease-in-out;
   border-radius: 10px;
@@ -130,7 +145,7 @@ const Box = styled.div<{
 const Button = styled.button`
   width: 100%;
   padding: 10px;
-  height: 47px;
+  height: 48px;
   color: ${({ theme }) => theme.colors.primary.default};
   border-top: 1px solid ${({ theme }) => theme.colors.gray[200]};
   font-weight: bold;
@@ -139,4 +154,29 @@ const Button = styled.button`
   align-items: center;
 `;
 
-const Content = styled.div``;
+const Content = styled.div`
+  padding: 32px 0;
+  height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const Title = styled.div`
+  ${({ theme }) => theme.typography.pretendard.t3.bd}
+  color: ${({ theme }) => theme.colors.gray[800]};
+  text-align: center;
+  word-break: break-all;
+`;
+
+const Desc = styled.div`
+  color: ${({ theme }) => theme.colors.gray[600]};
+  ${({ theme }) => theme.typography.pretendard.b1.rg};
+  word-break: break-all;
+  text-align: center;
+
+  ${Title} + & {
+    margin-top: 4px;
+  }
+`;

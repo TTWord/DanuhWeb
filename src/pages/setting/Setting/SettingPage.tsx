@@ -1,22 +1,18 @@
 import styled from 'styled-components';
 import { globalState } from '@/recoil';
 import { useSetRecoilState } from 'recoil';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useLogout from '@/pages/setting/Setting/hooks/useLogout';
 import ContentBox from './components/ContentBox';
 import ConfirmPop from '@/components/common/popup/ConfirmPop';
-import useNavigatePush from '@/hooks/useNavigatePush';
-import useToast from '@/hooks/useToast';
 import iconSetting from '@/assets/svg/icons/icon-setting.svg';
 import iconInfo from '@/assets/svg/icons/icon-info.svg';
 import defaultProfile from '@/assets/svg/logos/logo-profile-default.svg';
-import { useQuery } from 'react-query';
-import { api } from '@/api';
 import useSettingPageLogic from './hooks/useSettingPageLogic';
+import AlertPop from '@/components/common/popup/AlertPop';
 
 const SettingPage = () => {
   const logout = useLogout();
-  const toast = useToast();
   const {
     about,
     moveProfilePage,
@@ -32,6 +28,10 @@ const SettingPage = () => {
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
   const [isConfirmPopOpen, setIsConfirmPopOpen] = useState(false);
 
+  const onClickHelp = useCallback(() => {
+    setIsAlertOpen(true);
+  }, []);
+
   useEffect(() => {
     setActiveMenu(3);
   }, []);
@@ -40,107 +40,123 @@ const SettingPage = () => {
     setIsConfirmPopOpen(true);
   };
 
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+
   if (!about) return null;
 
   return (
-    <WebWrapper>
-      <Header>
-        <Title>My page</Title>
-        <UserChangeButton
-          onClick={moveProfilePage}
-          src={iconSetting}
-          alt="ProfileChange"
-        />
-      </Header>
+    <>
+      <AlertPop
+        type="custom"
+        isOpen={isAlertOpen}
+        onClose={() => setIsAlertOpen(false)}
+      >
+        <AlertPopTitle>다운로드</AlertPopTitle>
+        <AlertPopDesc>내 공유 단어장이 다운로드 된 횟수</AlertPopDesc>
+        <AlertPopTitle>추천</AlertPopTitle>
+        <AlertPopDesc>내 공유 단어장이 추전받은 횟수</AlertPopDesc>
+      </AlertPop>
+      <Container>
+        <Header>
+          <Title>My Page</Title>
+          <UserChangeButton
+            onClick={moveProfilePage}
+            src={iconSetting}
+            alt="ProfileChange"
+          />
+        </Header>
 
-      <UserInfoWrapper>
-        <ProfileWrapper>
-          <Picture>
-            <img src={about.url ?? defaultProfile} alt="profile" />
-          </Picture>
+        <UserInfoWrapper>
+          <ProfileWrapper>
+            <Picture>
+              <img src={about.url ?? defaultProfile} alt="profile" />
+            </Picture>
 
-          <ProfileContent>
-            <ProfileNickname>{about.nickname}</ProfileNickname>
-            <ProfileUsername>{about.username}</ProfileUsername>
+            <ProfileContent>
+              <ProfileNickname>{about.nickname}</ProfileNickname>
+              <ProfileUsername>{about.username}</ProfileUsername>
 
-            <WordNumTitle>단어개수</WordNumTitle>
-            <WordNumText>
-              {about.word_count}/{maxWords}
-            </WordNumText>
-          </ProfileContent>
-        </ProfileWrapper>
+              <WordNumTitle>단어개수</WordNumTitle>
+              <WordNumText>
+                {about.word_count}/{maxWords}
+              </WordNumText>
+            </ProfileContent>
+          </ProfileWrapper>
 
-        <ShareInfoWrapper>
-          <ShareInfo>
-            <InfoName>공유단어장</InfoName>
-            <InfoNumber>
-              {Number(about.share_count).toLocaleString()}
-            </InfoNumber>
-          </ShareInfo>
-          <ShareInfo>
-            <InfoName>
-              다운로드
-              <img
-                src={iconInfo}
-                alt="download"
-                onClick={() => {
-                  toast.comment('내 공유 단어장이 다운된 횟수');
-                }}
-              />
-            </InfoName>
-            <InfoNumber>
-              {Number(about.download_count).toLocaleString()}
-            </InfoNumber>
-          </ShareInfo>
-          <ShareInfo>
-            <InfoName>
-              추천
-              <img
-                src={iconInfo}
-                alt="recommend"
-                onClick={() => {
-                  toast.comment('내 공유 단어장이 추천받은 횟수');
-                }}
-              />
-            </InfoName>
-            <InfoNumber>
-              {Number(about.recommend_count).toLocaleString()}
-            </InfoNumber>
-          </ShareInfo>
-        </ShareInfoWrapper>
-      </UserInfoWrapper>
+          <ShareInfoWrapper>
+            <ShareInfo>
+              <InfoName>공유단어장</InfoName>
+              <InfoNumber>
+                {Number(about.share_count).toLocaleString()}
+              </InfoNumber>
+            </ShareInfo>
+            <ShareInfo>
+              <InfoName>
+                다운로드
+                <img
+                  src={iconInfo}
+                  alt="download"
+                  onClick={() => {
+                    onClickHelp();
+                    // toast.comment('내 공유 단어장이 다운된 횟수');
+                  }}
+                />
+              </InfoName>
+              <InfoNumber>
+                {Number(about.download_count).toLocaleString()}
+              </InfoNumber>
+            </ShareInfo>
+            <ShareInfo>
+              <InfoName>
+                추천
+                <img
+                  src={iconInfo}
+                  alt="recommend"
+                  onClick={() => {
+                    onClickHelp();
+                    // toast.comment('내 공유 단어장이 추천받은 횟수');
+                  }}
+                />
+              </InfoName>
+              <InfoNumber>
+                {Number(about.recommend_count).toLocaleString()}
+              </InfoNumber>
+            </ShareInfo>
+          </ShareInfoWrapper>
+        </UserInfoWrapper>
 
-      <ContentWrapper>
-        <ConfirmPop
-          isOpen={isConfirmPopOpen}
-          cancelText="뒤로가기"
-          confirmText="로그아웃"
-          height="180px"
-          onCancel={() => setIsConfirmPopOpen(false)}
-          onConfirm={() => {
-            setIsConfirmPopOpen(false);
-            logout();
-          }}
-        >
-          <ConfirmPop.Title>정말 로그아웃 하시겠습니까?</ConfirmPop.Title>
-        </ConfirmPop>
-        <ContentBox title="공지사항" onClick={moveNoticePage} />
-        <ContentBox title="패치노트" onClick={movePatchNotePage} />
-        <ContentBox title="건의하기 / 버그신고" onClick={moveReportPage} />
-        {/* Local 가입 계정이 아니면 비밀번호 변경 미표시 */}
-        {about.login_type === 'local' && (
-          <ContentBox title="비밀번호 변경" onClick={movePasswordPage} />
-        )}
-        <ContentBox title="로그아웃" onClick={onClickLogout} />
-        <ContentBox title="탈퇴하기" onClick={moveAccountDeletePage} />
-      </ContentWrapper>
-    </WebWrapper>
+        <ContentWrapper>
+          <ConfirmPop
+            isOpen={isConfirmPopOpen}
+            cancelText="뒤로가기"
+            confirmText="로그아웃"
+            height="180px"
+            onCancel={() => setIsConfirmPopOpen(false)}
+            onConfirm={() => {
+              setIsConfirmPopOpen(false);
+              logout();
+            }}
+            type="title"
+            title="정말 로그아웃 하시겠습니까?"
+          />
+          <ContentBox title="공지사항" onClick={moveNoticePage} />
+          <ContentBox title="패치노트" onClick={movePatchNotePage} />
+          <ContentBox title="건의하기 / 버그신고" onClick={moveReportPage} />
+          {/* Local 가입 계정이 아니면 비밀번호 변경 미표시 */}
+          {about.login_type === 'local' && (
+            <ContentBox title="비밀번호 변경" onClick={movePasswordPage} />
+          )}
+          <ContentBox title="로그아웃" onClick={onClickLogout} />
+          <ContentBox title="탈퇴하기" onClick={moveAccountDeletePage} />
+        </ContentWrapper>
+      </Container>
+    </>
   );
 };
 
 export default SettingPage;
 
-const WebWrapper = styled.div`
+const Container = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -307,5 +323,22 @@ const ContentWrapper = styled.div`
 
   ::-webkit-scrollbar {
     display: none;
+  }
+`;
+
+const AlertPopTitle = styled.div`
+  ${({ theme }) => theme.typography.pretendard.t3.bd};
+  color: ${({ theme }) => theme.colors.gray[900]};
+  text-align: center;
+`;
+
+const AlertPopDesc = styled.div`
+  ${({ theme }) => theme.typography.pretendard.b1.rg};
+  color: ${({ theme }) => theme.colors.gray[600]};
+  text-align: center;
+  margin-top: 4px;
+
+  & + ${AlertPopTitle} {
+    margin-top: 24px;
   }
 `;
