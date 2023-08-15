@@ -18,7 +18,7 @@ interface blindChoiceQuizParams extends quizParams {
 
 export const quizAPI = {
   getResult: async ({ bookIds, count, correct }: getResultParams) => {
-    const { data: response } = await instance.post('/memo', {
+    const { data: response } = await instance.post('/quiz', {
       book_ids: bookIds.join('&'),
       count,
       correct,
