@@ -68,6 +68,7 @@
     "source-map-loader": "^4.0.1",
     "storybook": "^7.2.0",
     "tailwindcss": "^3.2.4",
+    "tsconfig-paths-webpack-plugin": "^4.1.0",
     "twin.macro": "^3.1.0",
     "typescript": "^4.9.4",
     "webpack": "^5.75.0",

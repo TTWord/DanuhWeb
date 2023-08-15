@@ -159,7 +159,6 @@ const Header = styled.div`
 `;
 
 const Title = styled.div`
-  font-family: ${({ theme }) => theme.fonts.gmarketSans};
   font-weight: bold;
   font-size: 18px;
   line-height: 1.4;

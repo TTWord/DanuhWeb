@@ -54,6 +54,10 @@ const PasswordPage = () => {
     <StackLayout
       topBar={{
         title: '비밀번호 변경',
+        back: {
+          isShow: true,
+          location: '/setting',
+        },
       }}
     >
       <Container>
