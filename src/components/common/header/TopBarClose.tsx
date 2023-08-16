@@ -30,7 +30,7 @@ const TopBar = styled.div`
 const Button = styled.button`
   width: 24px;
   height: 24px;
-  display: felx;
+  display: flex;
   justify-content: center;
   align-items: center;
 `;
