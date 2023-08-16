@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue, useRecoilState } from 'recoil';
-import { globalState } from '@/recoil';
 import { api } from '@/api';
 import { AxiosError } from 'axios';
-import Swal from 'sweetalert2';
 import iconMemo from '@/assets/svg/icons/icon-memo.svg';
 import iconBook from '@/assets/svg/icons/icon-book-new.svg';
 import iconDrawer from '@/assets/svg/icons/icon-drawer.svg';
+import useToast from '@/hooks/useToast';
 
 const WelcomePage = () => {
   const navigate = useNavigate();
-  const [userEmail, setUserEmail] = useRecoilState(globalState.auth.username);
-  const [userDomain, setUserDomain] = useRecoilState(globalState.auth.domain);
-  const [userNickname, setUserNickname] = useRecoilState(
-    globalState.auth.nickname,
-  );
+  const toast = useToast();
+  const [userNickname, setUserNickname] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const getUserInfo = async () => {
@@ -24,9 +19,6 @@ const WelcomePage = () => {
       const { data: response } = await api.user.getMyInfo();
 
       if (response.status === 'OK') {
-        const username = response.data.username;
-        setUserEmail(username.split('@')[0]);
-        setUserDomain(username.split('@')[1]);
         setUserNickname(response.data.nickname);
         setIsLoading(true);
         setTimeout(() => {
@@ -38,10 +30,11 @@ const WelcomePage = () => {
         message: string;
       }>;
       const errorMessage = err?.response?.data.message;
-      Swal.fire({
-        icon: 'error',
-        title: errorMessage,
-      });
+      switch (errorMessage) {
+        default:
+          toast.error('에러가 발생하였습니다.');
+          break;
+      }
     }
   };
 
