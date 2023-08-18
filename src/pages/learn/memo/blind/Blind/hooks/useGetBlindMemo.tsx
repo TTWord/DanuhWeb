@@ -1,7 +1,7 @@
 import { api } from '@/api';
-import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
+import useToast from '@/hooks/useToast';
 import { AxiosError } from 'axios';
+import useNavigatePop from '@/hooks/useNavigatePop';
 
 interface getBlindParams {
   bookIds: number[];
@@ -9,7 +9,8 @@ interface getBlindParams {
 }
 
 const useGetBlindMemo = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigatePop();
+  const toast = useToast();
 
   const getBlind = async ({ bookIds, count }: getBlindParams) => {
     try {
@@ -23,13 +24,24 @@ const useGetBlindMemo = () => {
       const err = e as AxiosError<{
         message: string;
       }>;
-      const errorMessage = err.response?.data?.message;
-      Swal.fire({
-        icon: 'error',
-        title: errorMessage,
-      }).then(() => {
-        navigate('/learn/blind');
-      });
+      const errorMessage = err?.response?.data.message;
+
+      switch (errorMessage) {
+        case 'BOOK_IDS_NOT_INSERTED':
+          toast.error('단어장의 이름이 지정되지 않았습니다.');
+          break;
+        case 'BOOK_ACCESS_DENIED':
+          toast.error('본인 소유의 단어장이 아닙니다.');
+          break;
+        case 'BOOK_NOT_FOUND':
+          toast.error('존재하지 않는 단어장입니다.');
+          break;
+        default:
+          toast.error('에러가 발생하였습니다.');
+          break;
+      }
+
+      navigate('/learn/blind');
     }
   };
 

@@ -1,6 +1,5 @@
 import { api } from '@/api';
 import { AxiosError } from 'axios';
-import Swal from 'sweetalert2';
 import useToast from '@/hooks/useToast';
 
 interface IUseAddWord {
@@ -36,7 +35,7 @@ const useAddWord = () => {
           toast.error('에러가 발생하였습니다.');
           break;
         case 'BOOK_ACCESS_DENIED':
-          toast.error('에러가 발생하였습니다.');
+          toast.error('본인 소유의 단어장이 아닙니다.');
           break;
         case 'BOOK_DOWNLOADED':
           toast.error('다운로드 받은 단어장에는 단어를 추가할 수 없습니다.');
@@ -48,11 +47,6 @@ const useAddWord = () => {
           toast.error('에러가 발생하였습니다.');
           break;
       }
-
-      Swal.fire({
-        icon: 'error',
-        title: errorMessage,
-      });
     }
   };
 

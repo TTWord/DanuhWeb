@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import { useNavigate, useParams } from 'react-router-dom';
+import useToast from '@/hooks/useToast';
 import iconBack from '@/assets/svg/icons//icon-back-gray.svg';
 import { api } from '@/api';
-import useToast from '@/hooks/useToast';
 import FooterButton from '@/components/common/button/FooterButton';
 
 const ModifyWordPage = () => {
@@ -63,7 +62,7 @@ const ModifyWordPage = () => {
           <Input
             type="text"
             placeholder={word}
-            onChange={e => {
+            onChange={(e) => {
               setWord(e.target.value);
             }}
           />
@@ -76,7 +75,7 @@ const ModifyWordPage = () => {
           <Input
             type="text"
             placeholder={mean}
-            onChange={e => {
+            onChange={(e) => {
               setMean(e.target.value);
             }}
           />

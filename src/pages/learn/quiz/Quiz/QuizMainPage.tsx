@@ -2,17 +2,20 @@ import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { api } from '@/api';
-import Swal from 'sweetalert2';
+import useToast from '@/hooks/useToast';
 import BookItem from './components/BookItem';
 import StackLayout from '@/components/layout/StackLayout';
 import { useQuery } from 'react-query';
 
 interface IBookResponse {
-  id: number;
-  name: string;
-  user_id: number;
   created_at: string;
+  id: number;
+  is_downloaded: boolean;
+  name: string;
   updated_at: string;
+  share_id: number;
+  comment?: string;
+  is_sharing?: boolean;
 }
 
 interface IBook extends IBookResponse {
@@ -22,6 +25,7 @@ interface IBook extends IBookResponse {
 const QuizMainPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const toast = useToast();
   const quizType = location.state.type;
   const count = 10;
   const memorizedFilter = false;
@@ -48,7 +52,7 @@ const QuizMainPage = () => {
   }, [response]);
 
   const setSelected = (idx: number) => {
-    setBooks(current => {
+    setBooks((current) => {
       const arr = [...current];
       arr[idx].isSelected = !arr[idx].isSelected;
       return arr;
@@ -63,23 +67,22 @@ const QuizMainPage = () => {
   const runQuiz = () => {
     let flag = false;
 
-    books.forEach(item => {
+    books.forEach((item) => {
       if (item.isSelected) {
         flag = true;
       }
     });
 
     if (!flag) {
-      Swal.fire({
-        icon: 'warning',
-        title: '단어장을 선택해주세요.',
-      });
+      toast.error('단어장을 선택해주세요.');
     }
 
     if (mode === 'word') {
       navigate(`/learn/quiz/${quizType}`, {
         state: {
-          bookIds: books.filter(item => item.isSelected).map(item => item.id),
+          bookIds: books
+            .filter((item) => item.isSelected)
+            .map((item) => item.id),
           mode: 'word',
           count,
           memorizedFilter,
@@ -88,7 +91,9 @@ const QuizMainPage = () => {
     } else {
       navigate(`/learn/quiz/${quizType}`, {
         state: {
-          bookIds: books.filter(item => item.isSelected).map(item => item.id),
+          bookIds: books
+            .filter((item) => item.isSelected)
+            .map((item) => item.id),
           mode: 'mean',
           count,
           memorizedFilter,

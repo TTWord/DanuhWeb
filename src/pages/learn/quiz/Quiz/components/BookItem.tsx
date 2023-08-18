@@ -4,7 +4,7 @@ import iconCheck from '@/assets/svg/icons/icon-check-circle-purple.svg';
 interface IBookResponse {
   id: number;
   name: string;
-  user_id: number;
+  user_id?: number;
   created_at: string;
   updated_at: string;
 }
