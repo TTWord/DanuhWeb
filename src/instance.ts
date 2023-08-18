@@ -1,6 +1,5 @@
 // axios instance
 import axios from 'axios';
-import Swal from 'sweetalert2';
 
 export const instance = axios.create({
   baseURL: process.env.SERVER_NAME,
@@ -12,7 +11,7 @@ export const instance = axios.create({
   },
 });
 
-instance.interceptors.request.use(config => {
+instance.interceptors.request.use((config) => {
   const accessToken = localStorage.getItem('access_Token');
   const refreshToken = localStorage.getItem('refresh_Token');
   const requestUrl = '/auth/refreshtoken';
@@ -26,10 +25,10 @@ instance.interceptors.request.use(config => {
 });
 
 instance.interceptors.response.use(
-  response => {
+  (response) => {
     return response;
   },
-  error => {
+  (error) => {
     const errorMessage = error.response.data.message;
 
     if (errorMessage === 'EXPIRED_ACCESS_TOKEN') {
@@ -48,12 +47,10 @@ instance.interceptors.response.use(
     ) {
       localStorage.removeItem('access_Token');
       localStorage.removeItem('refresh_Token');
-      Swal.fire({
-        icon: 'error',
-        title: '로그인 시간이 만료되었습니다.',
-      }).then(() => {
-        window.location.href = '/auth';
-      });
+
+      // 임시 알림 창
+      alert('로그인 시간이 만료되었습니다.');
+      window.location.href = '/auth';
     }
 
     return Promise.reject(error);

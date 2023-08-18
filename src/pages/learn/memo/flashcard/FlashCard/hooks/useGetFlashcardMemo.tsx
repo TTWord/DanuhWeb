@@ -29,7 +29,7 @@ const useGetFlashcardMemo = () => {
       if (errorMessage === 'WORD_LESS_THAN_COUNT') {
         toast.error('단어 개수가 4개 이상 필요합니다.');
       } else {
-        toast.error(errorMessage || '알 수 없는 오류가 발생했습니다.');
+        toast.error('알 수 없는 오류가 발생했습니다.');
       }
 
       navigate('/learn/flashcard');

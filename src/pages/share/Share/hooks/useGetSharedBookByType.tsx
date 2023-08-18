@@ -1,8 +1,10 @@
 import { api } from '@/api';
 import { AxiosError } from 'axios';
-import Swal from 'sweetalert2';
+import useToast from '@/hooks/useToast';
 
 const useGetSharedBookByType = () => {
+  const toast = useToast();
+
   const getSharedBookByType = async (type: string, order: string) => {
     try {
       const { data: response } = await api.share.getSharedBookByType(
@@ -17,10 +19,12 @@ const useGetSharedBookByType = () => {
       }>;
 
       const errorMessage = err?.response?.data.message;
-      Swal.fire({
-        icon: 'error',
-        title: errorMessage,
-      });
+
+      switch (errorMessage) {
+        default:
+          toast.error('에러가 발생하였습니다.');
+          break;
+      }
     }
   };
 

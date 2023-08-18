@@ -1,10 +1,11 @@
 import { api } from '@/api';
 import { AxiosError } from 'axios';
-import Swal from 'sweetalert2';
+import useToast from '@/hooks/useToast';
 import useNavigatePop from '@/hooks/useNavigatePop';
 
 const useChangeNickname = () => {
   const navigate = useNavigatePop();
+  const toast = useToast();
 
   const changeNickname = async (newNickname: string) => {
     try {
@@ -18,10 +19,15 @@ const useChangeNickname = () => {
         message: string;
       }>;
       const errorMessage = err?.response?.data.message;
-      Swal.fire({
-        icon: 'error',
-        title: errorMessage,
-      });
+
+      switch (errorMessage) {
+        case 'USER_DUPLICATE_NICKNAME':
+          toast.error('이미 사용중인 닉네임입니다.');
+          break;
+        default:
+          toast.error('에러가 발생하였습니다.');
+          break;
+      }
     }
   };
 

@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
 import { api } from '@/api';
-import Swal from 'sweetalert2';
 import useToast from '@/hooks/useToast';
 import xButton from '@/assets/svg/icons/icon-x-button.svg';
 import CheckSVG from '../../common/svg/CheckSVG';
@@ -64,6 +63,8 @@ const ShortBlindPage = () => {
 
   // 퀴즈 API
   const getQuizAPI = async () => {
+    const toast = useToast();
+
     try {
       const { data: response } = await api.quiz.getBlindShortAnswerQuiz({
         bookIds,
@@ -84,21 +85,23 @@ const ShortBlindPage = () => {
         message: string;
       }>;
       const errorMessage = err?.response?.data.message;
-      let swalMessage: string = '';
+
       switch (errorMessage) {
-        case 'BOOK_NOT_FOUND':
-          swalMessage = '단어장이 선택되지 않았습니다';
+        case 'BOOK_IDS_NOT_INSERTED':
+          toast.error('단어장이 선택되지 않았습니다.');
           break;
-        case 'WORD_LESS_THAN_COUNT':
-          swalMessage = '단어의 개수가 4개 미만입니다';
+        case 'BOOK_ACCESS_DENIED':
+          toast.error('본인 소유의 단어장이 아닙니다.');
+          break;
+        case 'BOOK_NOT_FOUND':
+          toast.error('단어장이 존재하지 않습니다.');
+          break;
+        default:
+          toast.error('에러가 발생하였습니다.');
           break;
       }
-      Swal.fire({
-        icon: 'error',
-        title: swalMessage,
-      }).then(() => {
-        goChoice();
-      });
+
+      navigate('/learn/choice');
     }
   };
 
@@ -118,14 +121,14 @@ const ShortBlindPage = () => {
   // 문항 선택 버튼에서 사용할 함수
   const selectAnswer = (select: string) => {
     if (select === currentAnswer?.mean) {
-      setResult(current => current + 1);
+      setResult((current) => current + 1);
       setIsCorrect(true);
     }
   };
 
   // 체크버튼 함수
   const onClickCheckButton = async () => {
-    setCurrentMemorize(current => !current);
+    setCurrentMemorize((current) => !current);
 
     try {
       const { data: response } = await api.memo.patchMemoStatus({
@@ -146,7 +149,7 @@ const ShortBlindPage = () => {
   // 다음 버튼 함수
   const onClickNextButton = () => {
     setNumber(number + 1);
-    setIsAnswered(current => !current);
+    setIsAnswered((current) => !current);
     setIsCorrect(false);
     setTimer(0);
     if (number + 1 === length) {
@@ -177,7 +180,7 @@ const ShortBlindPage = () => {
     if (!isAnswered) {
       const timeOutId = setTimeout(() => {
         if (timer !== 10000) {
-          setTimer(current => current + 500);
+          setTimer((current) => current + 500);
         }
         if (timer === 10000) {
           setIsAnswered(true);
@@ -196,7 +199,7 @@ const ShortBlindPage = () => {
       <ChoiceButton
         onClick={() => {
           selectAnswer(props.example);
-          setIsAnswered(current => !current);
+          setIsAnswered((current) => !current);
         }}
       >
         {props.example}

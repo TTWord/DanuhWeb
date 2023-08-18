@@ -1,6 +1,6 @@
 import { api } from '@/api';
 import { AxiosError } from 'axios';
-import Swal from 'sweetalert2';
+import useToast from '@/hooks/useToast';
 import { useState } from 'react';
 
 interface ISharedBooks {
@@ -10,6 +10,7 @@ interface ISharedBooks {
 }
 
 const useGetSharedBooks = () => {
+  const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
   const getSharedBooks = async ({ nameFilter, type, order }: ISharedBooks) => {
@@ -28,10 +29,12 @@ const useGetSharedBooks = () => {
       }>;
 
       const errorMessage = err?.response?.data.message;
-      Swal.fire({
-        icon: 'error',
-        title: errorMessage,
-      });
+
+      switch (errorMessage) {
+        default:
+          toast.error('에러가 발생하였습니다.');
+          break;
+      }
     }
   };
 

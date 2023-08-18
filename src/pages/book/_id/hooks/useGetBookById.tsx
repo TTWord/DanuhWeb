@@ -1,8 +1,10 @@
 import { api } from '@/api';
 import { AxiosError } from 'axios';
-import Swal from 'sweetalert2';
+import useToast from '@/hooks/useToast';
 
 const useGetBookById = () => {
+  const toast = useToast();
+
   const getBookById = async (bookId: number) => {
     try {
       const { data: response } = await api.book.getBookById(bookId);
@@ -14,10 +16,18 @@ const useGetBookById = () => {
       }>;
 
       const errorMessage = err?.response?.data.message;
-      Swal.fire({
-        icon: 'error',
-        title: errorMessage,
-      });
+
+      switch (errorMessage) {
+        case 'BOOK_ACCESS_DENIED':
+          toast.error('본인 소유의 단어장이 아닙니다.');
+          break;
+        case 'BOOK_NOT_FOUND':
+          toast.error('단어장이 존재하지 않습니다.');
+          break;
+        default:
+          toast.error('에러가 발생하였습니다.');
+          break;
+      }
     }
   };
 

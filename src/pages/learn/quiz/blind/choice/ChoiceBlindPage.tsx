@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
 import { api } from '@/api';
-import Swal from 'sweetalert2';
 import useToast from '@/hooks/useToast';
 import xButton from '@/assets/svg/icons/icon-x-button.svg';
 import CheckSVG from '../../common/svg/CheckSVG';
@@ -87,21 +86,27 @@ const ChoiceBlindPage = () => {
         message: string;
       }>;
       const errorMessage = err?.response?.data.message;
-      let swalMessage: string = '';
+
       switch (errorMessage) {
-        case 'BOOK_NOT_FOUND':
-          swalMessage = '단어장이 선택되지 않았습니다';
-          break;
         case 'WORD_LESS_THAN_COUNT':
-          swalMessage = '단어의 개수가 4개 미만입니다';
+          toast.error('단어 개수가 4개 이상 필요합니다.');
+          break;
+        case 'BOOK_IDS_NOT_INSERTED':
+          toast.error('선택된 단어장이 없습니다.');
+          break;
+        case 'BOOK_ACCESS_DENIED':
+          toast.error('본인 소유의 단어장이 아닙니다.');
+          break;
+        case 'BOOK_NOT_FOUND':
+          toast.error('없는 단어장입니다.');
+          break;
+        case 'QUIZ_COUNT_ERROR':
+          toast.error('퀴즈 최소개수가 아닙니다.');
+          break;
+        default:
+          toast.error('');
           break;
       }
-      Swal.fire({
-        icon: 'error',
-        title: swalMessage,
-      }).then(() => {
-        goChoice();
-      });
     }
   };
 
@@ -121,14 +126,14 @@ const ChoiceBlindPage = () => {
   // 문항 선택 버튼에서 사용할 함수
   const selectAnswer = (select: string) => {
     if (select === currentAnswer?.mean) {
-      setResult(current => current + 1);
+      setResult((current) => current + 1);
       setIsCorrect(true);
     }
   };
 
   // 체크버튼 함수
   const onClickCheckButton = async () => {
-    setCurrentMemorize(current => !current);
+    setCurrentMemorize((current) => !current);
 
     try {
       const { data: response } = await api.memo.patchMemoStatus({
@@ -149,7 +154,7 @@ const ChoiceBlindPage = () => {
   // 다음 버튼 함수
   const onClickNextButton = () => {
     setNumber(number + 1);
-    setIsAnswered(current => !current);
+    setIsAnswered((current) => !current);
     setIsCorrect(false);
     setTimer(0);
     if (number + 1 === length) {
@@ -180,7 +185,7 @@ const ChoiceBlindPage = () => {
     if (!isAnswered) {
       const timeOutId = setTimeout(() => {
         if (timer !== 10000) {
-          setTimer(current => current + 500);
+          setTimer((current) => current + 500);
         }
         if (timer === 10000) {
           setIsAnswered(true);
@@ -199,7 +204,7 @@ const ChoiceBlindPage = () => {
       <ChoiceButton
         onClick={() => {
           selectAnswer(props.example);
-          setIsAnswered(current => !current);
+          setIsAnswered((current) => !current);
         }}
       >
         {props.example}

@@ -1,8 +1,10 @@
 import { api } from '@/api';
-import Swal from 'sweetalert2';
+import useToast from '@/hooks/useToast';
 import { AxiosError } from 'axios';
 
 const useDeleteWord = () => {
+  const toast = useToast();
+
   const deleteWord = async (wordId: number) => {
     try {
       const { data: response } = await api.word.deleteWord(wordId);
@@ -11,14 +13,19 @@ const useDeleteWord = () => {
       const err = e as AxiosError<{
         message: string;
       }>;
-      const errorCode = err?.response?.status;
+
       const errorMessage = err?.response?.data.message;
 
-      if (errorCode === 403 || errorCode === 404) {
-        Swal.fire({
-          icon: 'error',
-          title: errorMessage,
-        });
+      switch (errorMessage) {
+        case 'BOOK_ACCESS_DENIED':
+          toast.error('본인 소유의 단어장이 아닙니다.');
+          break;
+        case 'WORD_NOT_FOUND':
+          toast.error('단어가 존재하지 않습니다.');
+          break;
+        default:
+          toast.error('에러가 발생하였습니다.');
+          break;
       }
     }
   };
