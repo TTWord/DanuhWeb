@@ -62,9 +62,9 @@ const Input: React.FC<InputProps> = ({
                 onChange('');
               }
             }}
-          >
-            <img src={iconClose} alt="close" />
-          </CloseButton>
+            src={iconClose}
+            alt="close"
+          />
         </Container>
       );
 
@@ -87,12 +87,12 @@ const Input: React.FC<InputProps> = ({
             }}
             value={value}
           />
-          <EyeButton isView={isFocused} onClick={() => onPasswordView()}>
-            <img
-              src={isPasswordView ? iconHide : iconShow}
-              alt="passwordLook"
-            />
-          </EyeButton>
+          <EyeButton
+            isView={isFocused}
+            onClick={onPasswordView}
+            src={isPasswordView ? iconHide : iconShow}
+            alt="passwordLook"
+          />
         </Container>
       );
   }
@@ -131,7 +131,7 @@ const InputBox = styled.input`
   }
 `;
 
-const CloseButton = styled.button<{
+const CloseButton = styled.img<{
   isView: boolean;
 }>`
   width: 20px;
@@ -145,6 +145,7 @@ const CloseButton = styled.button<{
   right: 8px;
   top: 50%;
   transform: translateY(-50%);
+  cursor: pointer;
   opacity: 0;
   visibility: hidden;
 
@@ -156,7 +157,7 @@ const CloseButton = styled.button<{
     `}
 `;
 
-const EyeButton = styled.button<{
+const EyeButton = styled.img<{
   isView: boolean;
 }>`
   width: 24px;
@@ -169,6 +170,7 @@ const EyeButton = styled.button<{
   right: 8px;
   top: 50%;
   transform: translateY(-50%);
+  cursor: pointer;
   opacity: 0;
   visibility: hidden;
 
