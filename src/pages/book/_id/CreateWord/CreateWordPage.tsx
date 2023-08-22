@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import useAddWord from '@/pages/book/_id/CreateWord/hooks/useAddWord';
-import TopBarDefault from '@/components/common/header/TopBarDefault';
+import TopBar from '@/components/common/header/TopBar';
 import useToast from '@/hooks/useToast';
 
 const CreateWordPage = () => {
@@ -20,7 +20,7 @@ const CreateWordPage = () => {
 
   return (
     <MainWrapper>
-      <TopBarDefault navigate={`/book/${bookId}`} title="단어 추가" />
+      <TopBar type={'default'} navigate={`/book/${bookId}`} title="단어 추가" />
 
       <Container>
         <WordBox>
@@ -31,7 +31,7 @@ const CreateWordPage = () => {
             type="text"
             placeholder="단어를 입력해주세요"
             value={word}
-            onChange={e => {
+            onChange={(e) => {
               setWord(e.target.value);
             }}
           />
@@ -45,7 +45,7 @@ const CreateWordPage = () => {
             type="text"
             placeholder="뜻을 입력해주세요"
             value={mean}
-            onChange={e => {
+            onChange={(e) => {
               setMean(e.target.value);
             }}
           />

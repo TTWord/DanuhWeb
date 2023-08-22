@@ -4,7 +4,7 @@ import useGetSharedBookById from './hooks/useGetSharedBookById';
 import { useEffect, useMemo, useState } from 'react';
 import useNavigatePush from '@/hooks/useNavigatePush';
 import useDownloadSharedBook from './hooks/useDownloadSharedBook';
-import TopBarDefault from '@/components/common/header/TopBarDefault';
+import TopBar from '@/components/common/header/TopBar';
 import DownloadButton from '@/components/common/button/DownloadButton';
 import SharedWordBox from './components/SharedWordBox';
 import iconDown from '@/assets/svg/icons/icon-arrow-down.svg-small.svg';
@@ -67,7 +67,7 @@ const ShareBookDetPage = () => {
 
   return (
     <MainWrapper>
-      <TopBarDefault navigate={'/share'} title={userinfo.bookName} />
+      <TopBar type={'default'} navigate={'/share'} title={userinfo.bookName} />
 
       <Container>
         <BookInfo>
@@ -94,7 +94,7 @@ const ShareBookDetPage = () => {
               {height > 5 && (
                 <ShowMore
                   onClick={() => {
-                    setShowMore(current => !current);
+                    setShowMore((current) => !current);
                   }}
                   showMore={showMore}
                 >

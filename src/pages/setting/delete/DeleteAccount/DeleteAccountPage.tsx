@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import DeleteMain from './components/DeleteMain';
 import DeleteSurvey from './components/DeleteSurvey';
-import TopBarDefault from '@/components/common/header/TopBarDefault';
+import TopBar from '@/components/common/header/TopBar';
 
 const DeleteAccountPage = () => {
   const [isSurveyMode, setSurveyMode] = useState(false);
@@ -13,7 +13,7 @@ const DeleteAccountPage = () => {
 
   return (
     <MainWrapper>
-      <TopBarDefault navigate="/setting" title="탈퇴하기" />
+      <TopBar type={'default'} navigate="/setting" title="탈퇴하기" />
 
       <Content>
         {/* 탈퇴하기 메인 화면 */}

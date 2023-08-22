@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import TopBarDefault from '@/components/common/header/TopBarDefault';
+import TopBar from '@/components/common/header/TopBar';
 
 const PatchNotePage = () => {
   const patchData = [
@@ -33,7 +33,7 @@ const PatchNotePage = () => {
 
   return (
     <WebWrapper>
-      <TopBarDefault navigate="/setting" title="패치노트" />
+      <TopBar type={'default'} navigate="/setting" title="패치노트" />
 
       <Center>
         {patchData.map((item, idx) => {
