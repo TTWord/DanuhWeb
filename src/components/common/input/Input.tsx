@@ -146,11 +146,13 @@ const CloseButton = styled.button<{
   top: 50%;
   transform: translateY(-50%);
   opacity: 0;
+  visibility: hidden;
 
   ${({ isView }) =>
     isView &&
     css`
       opacity: 1;
+      visibility: visible;
     `}
 `;
 
@@ -168,10 +170,12 @@ const EyeButton = styled.button<{
   top: 50%;
   transform: translateY(-50%);
   opacity: 0;
+  visibility: hidden;
 
   ${({ isView }) =>
     isView &&
     css`
       opacity: 1;
+      visibility: visible;
     `}
 `;
