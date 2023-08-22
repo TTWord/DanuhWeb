@@ -20,7 +20,7 @@ const JoinPage = () => {
   );
 
   const [userEmailEnd, setUserEmailEnd] = useRecoilState(
-    globalState.auth.domain,
+    globalState.auth.emailDomain,
   );
 
   const [emailError, setEmailError] = useState('');
@@ -140,7 +140,7 @@ const JoinPage = () => {
                 />
                 <ShowPassword
                   onClick={() => {
-                    setShowPassword(current => !current);
+                    setShowPassword((current) => !current);
                   }}
                   src={iconEye}
                   alt="passwordLook"
@@ -166,7 +166,7 @@ const JoinPage = () => {
                 />
                 <ShowPassword
                   onClick={() => {
-                    setShowPassword(current => !current);
+                    setShowPassword((current) => !current);
                   }}
                   src={iconEye}
                   alt="passwordLook"

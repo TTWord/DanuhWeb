@@ -13,7 +13,7 @@ import Counter from './components/Counter';
 
 const AuthCodePage = () => {
   const userEmail = useRecoilValue(globalState.auth.username);
-  const userDomain = useRecoilValue(globalState.auth.domain);
+  const userDomain = useRecoilValue(globalState.auth.emailDomain);
   const userPw = useRecoilValue(globalState.auth.password);
   const userNickname = useRecoilValue(globalState.auth.nickname);
 

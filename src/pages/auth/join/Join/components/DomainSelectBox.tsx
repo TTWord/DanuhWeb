@@ -7,7 +7,7 @@ import iconArrowDown from '@/assets/svg/icons/icon-arrow-down.svg';
 
 const DomainSelectBox = () => {
   const [userEmailEnd, setUserEmailEnd] = useRecoilState(
-    globalState.auth.domain,
+    globalState.auth.emailDomain,
   );
 
   const [userEmailEditMode, setUserEmailEditMode] = useState(false);

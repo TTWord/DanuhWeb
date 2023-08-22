@@ -1,79 +1,29 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-
 import useLogin from '@/pages/auth/login/Login/hooks/useLogin';
 import useSocialLogin from './hooks/useSocialLogin';
-import BottomSlideSelectPop from '@/components/common/popup/BottomSlideSelectPop';
 import FooterButton from '@/components/common/button/FooterButton';
-import backButtonImg from '@/assets/svg/icons/icon-back-button.svg';
 import googleIcon from '@/assets/svg/icons/icon-google.svg';
 import kakaoIcon from '@/assets/svg/icons/icon-kakao.svg';
 import appleIcon from '@/assets/svg/icons/icon-apple.svg';
-import iconArrowDown from '@/assets/svg/icons/icon-arrow-down.svg';
 import useLoginPageNavigate from './hooks/useLoginPageNavigate';
-import iconEye from '@/assets/svg/icons/icon-eye.svg';
+
+import TopBar from '@/components/common/header/TopBar';
+import Title from '@/components/common/header/Title';
+import InputLogin from '@/components/common/input/InputLogin';
+import Input from '@/components/common/input/Input';
 
 const LoginPage = () => {
   const login = useLogin();
   const { kakaoLogin, googleLogin, appleLogin } = useSocialLogin();
   const { runAuthPage, runJoinPage } = useLoginPageNavigate();
 
-  const domainList = [
-    {
-      text: 'naver.com',
-      onClick: () => {
-        setEmailDomain('naver.com');
-        setDirectInput(false);
-      },
-    },
-    {
-      text: 'gmail.com',
-      onClick: () => {
-        setEmailDomain('gmail.com');
-        setDirectInput(false);
-      },
-    },
-    {
-      text: 'daum.net',
-      onClick: () => {
-        setEmailDomain('daum.com');
-        setDirectInput(false);
-      },
-    },
-    {
-      text: '직접입력',
-      onClick: () => {
-        setEmailDomain('');
-        setDirectInput(true);
-      },
-    },
-  ];
-
-  // 비밀번호 표시용
-  const [showPassword, setShowPassword] = useState(false);
-
   const [emailId, setEmailId] = useState('');
   const [emailDomain, setEmailDomain] = useState('');
-  const [isDirectInput, setDirectInput] = useState(false);
-  const [isLoginFocus, setLoginFocus] = useState(false);
 
   const [password, setPassword] = useState('');
-  const [isPassWDFocus, setPassWDFocus] = useState(false);
 
   const [isOk, setIsOk] = useState(false);
-  const [isPopOpen, setIsPopOpen] = useState(false);
-
-  const onSwitchPop = () => {
-    setIsPopOpen(!isPopOpen);
-  };
-
-  const onPopClose = () => {
-    setIsPopOpen(false);
-  };
-
-  const inputUserEmailEnd = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmailDomain(e.target.value);
-  };
 
   useEffect(() => {
     if (emailId.length > 0 && emailDomain.length > 0 && password.length > 0) {
@@ -83,12 +33,6 @@ const LoginPage = () => {
     }
   }, [emailId, emailDomain, password]);
 
-  useEffect(() => {
-    if (isDirectInput === true) {
-      setEmailDomain('');
-    }
-  }, [isDirectInput]);
-
   const onLogin = useCallback(() => {
     if (isOk) {
       login(`${emailId}@${emailDomain}`, password);
@@ -97,105 +41,27 @@ const LoginPage = () => {
 
   return (
     <WebWrapper>
-      <Header>
-        <BackButton onClick={runAuthPage}>
-          <img src={backButtonImg} alt="backButtonImg" />
-        </BackButton>
-
-        <Title>이메일로 로그인</Title>
-      </Header>
+      <TopBar type="default" navigate="/auth" />
+      <Title title="이메일로 로그인" />
 
       <Form
-        onSubmit={e => {
+        onSubmit={(e) => {
           e.preventDefault();
           onLogin();
         }}
       >
         <FormBox>
-          <span>아이디</span>
-          <EmailBox isFocus={isLoginFocus}>
-            <EmailID
-              onChange={e => {
-                setEmailId(e.target.value);
-              }}
-              type="text"
-              placeholder="이메일"
-              onFocus={() => {
-                setLoginFocus(true);
-              }}
-              onBlur={() => {
-                setLoginFocus(false);
-              }}
-            />
-            <EmailCenter>@</EmailCenter>
-
-            <EmailDomain
-              onClick={() => {
-                if (!isDirectInput) {
-                  setLoginFocus(current => !current);
-                  onSwitchPop();
-                }
-              }}
-            >
-              {!isDirectInput ? (
-                <MailButton onClick={onSwitchPop}>
-                  <MailText isActive={emailDomain.length > 0}>
-                    {emailDomain.length > 0 ? emailDomain : '선택'}
-                  </MailText>
-                  <img src={iconArrowDown} alt="arrow" />
-                </MailButton>
-              ) : (
-                <MailButton>
-                  <DirectInput
-                    onChange={inputUserEmailEnd}
-                    placeholder="직접입력"
-                    onFocus={() => {
-                      setLoginFocus(true);
-                    }}
-                    onBlur={() => {
-                      setLoginFocus(false);
-                    }}
-                  />
-                  <img src={iconArrowDown} alt="arrow" onClick={onSwitchPop} />
-                </MailButton>
-              )}
-              <BottomSlideSelectPop
-                isOpen={isPopOpen}
-                onPopClose={onPopClose}
-                data={domainList}
-              />
-            </EmailDomain>
-          </EmailBox>
+          <Span>아이디</Span>
+          <InputLogin setEmailId={setEmailId} setDomain={setEmailDomain} />
         </FormBox>
 
         <FormBox>
-          <span>비밀번호</span>
-          <PasswordBox>
-            <PasswordInput
-              isFocus={isPassWDFocus}
-              onChange={e => {
-                setPassword(e.target.value);
-              }}
-              type={showPassword ? 'text' : 'password'}
-              placeholder="비밀번호"
-              onFocus={() => {
-                setPassWDFocus(true);
-              }}
-              onBlur={() => {
-                setPassWDFocus(false);
-              }}
-              autoComplete="password"
-            />
-            {isPassWDFocus && (
-              <ShowPassword
-                onClick={() => {
-                  setShowPassword(current => !current);
-                }}
-                src={iconEye}
-                alt="passwordLook"
-              />
-            )}
-          </PasswordBox>
+          <Span>비밀번호</Span>
+          <Input
+            type="password"
+            placeholder="비밀번호1"
+            onChange={(pw: string) => setPassword(pw)}
+          />
         </FormBox>
 
         <Join>
@@ -227,8 +93,6 @@ const LoginPage = () => {
           로그인
         </FooterButton>
       </Footer>
-
-      {/* 공간 분리 */}
     </WebWrapper>
   );
 };
@@ -245,29 +109,6 @@ const WebWrapper = styled.div`
   background-color: white;
   display: flex;
   flex-direction: column;
-`;
-
-const Header = styled.header`
-  width: 100%;
-  padding-left: 16px;
-`;
-
-const BackButton = styled.button`
-  width: 100%;
-  height: 56px;
-  display: flex;
-  align-items: center;
-`;
-
-const Title = styled.div`
-  width: 100%;
-  height: 50px;
-  font-family: ${({ theme }) => theme.fonts.gmarketSans};
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 140%;
-  display: flex;
-  align-items: center;
 `;
 
 const Form = styled.form`
@@ -288,137 +129,10 @@ const FormBox = styled.div`
   font-size: 12px;
   color: #242424;
   margin-bottom: 24px;
-
-  span {
-    font-weight: bold;
-  }
 `;
 
-const EmailBox = styled.div<{ isFocus: boolean }>`
-  height: 42px;
-  display: flex;
-  font-size: 16px;
-  background-color: white;
-  display: flex;
-  align-items: center;
-  margin-top: 6px;
-  border-bottom: 1px solid #e7e7e7;
-
-  ${({ isFocus }) => {
-    return (
-      isFocus &&
-      css`
-        border-bottom: 1px solid ${({ theme }) => theme.colors.primary.default};
-      `
-    );
-  }}
-`;
-
-const EmailID = styled.input`
-  width: 50%;
-  height: 100%;
-  padding-left: 16px;
-  padding-right: 8px;
-  display: flex;
-  align-items: center;
-  outline: none;
-
-  ::placeholder {
-    color: #dadada;
-  }
-`;
-
-const EmailCenter = styled.div`
-  width: 20px;
-  flex-shrink: 0;
-  text-align: center;
-`;
-
-const EmailDomain = styled.div`
-  width: 50%;
-  height: 100%;
-  padding-left: 8px;
-  padding-right: 16px;
-  display: flex;
-  align-items: center;
-  outline: none;
-  color: #dadada;
-
-  :hover {
-    cursor: pointer;
-  }
-`;
-
-const MailText = styled.div<{
-  isActive: boolean;
-}>`
-  width: 100%;
-
-  ${({ isActive }) =>
-    isActive &&
-    css`
-      color: #111111;
-    `}
-`;
-
-const MailButton = styled.div`
-  display: flex;
-  width: 100%;
-  cursor: pointer;
-
-  img {
-    width: 11px;
-  }
-`;
-
-const DirectInput = styled.input`
-  width: 100%;
-  height: 100%;
-  padding-right: 16px;
-  display: flex;
-  align-items: center;
-  outline: none;
-  ::placeholder {
-    color: #dadada;
-  }
-`;
-
-const PasswordBox = styled.div`
-  width: 100%;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  position: relative;
-`;
-
-const PasswordInput = styled.input<{ isFocus: boolean }>`
-  width: 100%;
-  height: 100%;
-  padding-left: 16px;
-  font-size: 16px;
-  outline: none;
-  margin-top: 6px;
-  border-bottom: 1px solid #e7e7e7;
-  border-radius: 0;
-
-  ${({ isFocus }) => {
-    return (
-      isFocus &&
-      css`
-        border-bottom: 1px solid ${({ theme }) => theme.colors.primary.default};
-      `
-    );
-  }}
-`;
-
-const ShowPassword = styled.img`
-  width: 24px;
-  height: 24px;
-  position: absolute;
-  top: 50%;
-  right: 0px;
-  transform: translate(-50%, -50%);
-  cursor: pointer;
+const Span = styled.span`
+  ${({ theme }) => theme.typography.pretendard.b1.md};
 `;
 
 const Join = styled.div`
@@ -477,27 +191,4 @@ const Footer = styled.footer`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const LoginButton = styled.button<{
-  isActive: boolean;
-}>`
-  width: 100%;
-  height: 48px;
-  border-radius: 8px;
-  font-family: ${({ theme }) => theme.fonts.gmarketSans};
-  font-weight: 400;
-  font-size: 14px;
-  color: white;
-  text-align: center;
-  background-color: #c5c6d0;
-
-  ${({ isActive }) => {
-    return (
-      isActive &&
-      css`
-        background-color: ${({ theme }) => theme.colors.primary.default};
-      `
-    );
-  }}
 `;
