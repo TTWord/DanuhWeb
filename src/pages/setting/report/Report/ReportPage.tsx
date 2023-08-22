@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import BottomSlideSelectPop from '@/components/common/popup/BottomSlideSelectPop';
-import TopBarDefault from '@/components/common/header/TopBarDefault';
+import TopBar from '@/components/common/header/TopBar';
 import useToast from '@/hooks/useToast';
 import FooterButton from '@/components/common/button/FooterButton';
 import { api } from '@/api';
@@ -70,7 +70,11 @@ const ReportPage = () => {
 
   return (
     <WebWrapper>
-      <TopBarDefault navigate="/setting" title="건의하기 / 버그신고" />
+      <TopBar
+        type={'default'}
+        navigate="/setting"
+        title="건의하기 / 버그신고"
+      />
 
       <Content>
         <GuideMessage>버그 신고의 경우 자세하게 기재해주세요</GuideMessage>
@@ -88,7 +92,7 @@ const ReportPage = () => {
         <ReportType>
           내용
           <TextBox
-            onChange={e => {
+            onChange={(e) => {
               setContents(e.target.value);
             }}
             placeholder="내용을 입력해주세요"
