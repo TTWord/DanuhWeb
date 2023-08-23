@@ -62,9 +62,9 @@ const Input: React.FC<InputProps> = ({
                 onChange('');
               }
             }}
-            src={iconClose}
-            alt="close"
-          />
+          >
+            <img src={iconClose} alt="close" />
+          </CloseButton>
         </Container>
       );
 
@@ -131,7 +131,7 @@ const InputBox = styled.input`
   }
 `;
 
-const CloseButton = styled.img<{
+const CloseButton = styled.div<{
   isView: boolean;
 }>`
   width: 20px;
