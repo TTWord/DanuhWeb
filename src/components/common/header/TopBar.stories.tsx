@@ -26,16 +26,6 @@ export const Default: Story = {
     navigate: '/',
     type: 'default',
   },
-  decorators: [
-    (Story) => (
-      <ThemeProvider theme={lightTheme}>
-        <BrowserRouter>
-          <GlobalStyles />
-          <Story />
-        </BrowserRouter>
-      </ThemeProvider>
-    ),
-  ],
 };
 
 export const Search: Story = {
@@ -44,16 +34,6 @@ export const Search: Story = {
     navigate: '/',
     type: 'search',
   },
-  decorators: [
-    (Story) => (
-      <ThemeProvider theme={lightTheme}>
-        <BrowserRouter>
-          <GlobalStyles />
-          <Story />
-        </BrowserRouter>
-      </ThemeProvider>
-    ),
-  ],
 };
 
 export const Page: Story = {
@@ -64,16 +44,6 @@ export const Page: Story = {
     currentPage: 1,
     lastPage: 3,
   },
-  decorators: [
-    (Story) => (
-      <ThemeProvider theme={lightTheme}>
-        <BrowserRouter>
-          <GlobalStyles />
-          <Story />
-        </BrowserRouter>
-      </ThemeProvider>
-    ),
-  ],
 };
 
 export const Button: Story = {
@@ -82,16 +52,6 @@ export const Button: Story = {
     navigate: '/',
     type: 'button',
   },
-  decorators: [
-    (Story) => (
-      <ThemeProvider theme={lightTheme}>
-        <BrowserRouter>
-          <GlobalStyles />
-          <Story />
-        </BrowserRouter>
-      </ThemeProvider>
-    ),
-  ],
 };
 
 export const Setting: Story = {
@@ -100,30 +60,10 @@ export const Setting: Story = {
     navigate: '/',
     type: 'setting',
   },
-  decorators: [
-    (Story) => (
-      <ThemeProvider theme={lightTheme}>
-        <BrowserRouter>
-          <GlobalStyles />
-          <Story />
-        </BrowserRouter>
-      </ThemeProvider>
-    ),
-  ],
 };
 
 export const Close: Story = {
   args: {
     type: 'close',
   },
-  decorators: [
-    (Story) => (
-      <ThemeProvider theme={lightTheme}>
-        <BrowserRouter>
-          <GlobalStyles />
-          <Story />
-        </BrowserRouter>
-      </ThemeProvider>
-    ),
-  ],
 };
