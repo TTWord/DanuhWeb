@@ -4,16 +4,18 @@ interface ButtonProps {
   isActive?: boolean;
   children: React.ReactNode;
   onClick?: () => void;
+  ref?: React.MutableRefObject<null>;
 }
 
 const FooterButton: React.FC<ButtonProps> = ({
   isActive,
   children,
   onClick,
+  ref,
 }) => {
   return (
     <ButtonWrapper>
-      <Button onClick={onClick} isActive={isActive}>
+      <Button ref={ref} onClick={onClick} isActive={isActive}>
         {children}
       </Button>
     </ButtonWrapper>
