@@ -41,4 +41,12 @@ export const authAPI = {
 
     return response;
   },
+
+  checkNickname: async (nickname: string) => {
+    const response = await instance.post('/auth/check/nickname', {
+      nickname,
+    });
+
+    return response;
+  },
 };

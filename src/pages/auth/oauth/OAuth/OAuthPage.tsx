@@ -5,9 +5,11 @@ import iconLocal from '@/assets/svg/icons/icon-email.svg';
 import iconGoogle from '@/assets/svg/icons/icon-google.svg';
 import iconKakao from '@/assets/svg/icons/icon-kakao.svg';
 import iconApple from '@/assets/svg/icons/icon-apple-black.svg';
-import iconClose from '@/assets/svg/icons/icon-close.svg';
 import useSocialLogin from '../../login/Login/hooks/useSocialLogin';
 import useNavigatePop from '@/hooks/useNavigatePop';
+
+import TopBar from '@/components/common/header/TopBar';
+import Title from '@/components/common/header/Title';
 
 const OAuthPage = () => {
   const location = useLocation();
@@ -23,7 +25,7 @@ const OAuthPage = () => {
   const service: string | null = searchParams.get('service');
   const email: string | null = searchParams.get('email');
 
-  const localLogin = () => {
+  const goLocalLogin = () => {
     navigate('/auth/login');
   };
 
@@ -45,7 +47,7 @@ const OAuthPage = () => {
     switch (service) {
       case 'local':
         return (
-          <ServiceLoginButton onClick={localLogin}>
+          <ServiceLoginButton onClick={goLocalLogin}>
             <ServiceLogo src={iconLocal} alt="loginLogo" />
             <ServiceText>이메일 계정으로 로그인</ServiceText>
           </ServiceLoginButton>
@@ -80,31 +82,36 @@ const OAuthPage = () => {
     }
   };
 
-  // 소셜로그인 성공일때는 빈화면 출력
-  if (message === 'SUCCESS') {
-    return <MainWrapper></MainWrapper>;
+  switch (message) {
+    //
+    default: {
+      return <MainWrapper>로그인으로 돌아갑니다.</MainWrapper>;
+    }
+
+    // 소셜로그인 성공일때는 빈화면 출력
+    case 'SUCCESS':
+      return <MainWrapper></MainWrapper>;
+
+    // 동일 이메일에 대한 다른 소셜가입이 되어 있을 때
+    case 'USER_ALREADY_REGISTERED':
+      return (
+        <MainWrapper>
+          <TopBar type="close" onClick={goLocalLogin} />
+          <Title title="이미 만들어진 계정이 있어요" />
+
+          <Center>
+            <UserEmail>{email}</UserEmail>
+            <Description>
+              {'해당 메일 주소는 구글계정으로 가입되어있어요!'}
+            </Description>
+            <ServiceType />
+            <OtherEmailLoginButton onClick={goLocalLogin}>
+              {'다른 메일 주소로 회원가입 할게요'}
+            </OtherEmailLoginButton>
+          </Center>
+        </MainWrapper>
+      );
   }
-
-  return (
-    <MainWrapper>
-      <Header>
-        <CloseImg onClick={localLogin} src={iconClose} alt="close" />
-      </Header>
-
-      <TopText>이미 만들어진 계정이 있어요</TopText>
-
-      <Center>
-        <UserEmail>{email}</UserEmail>
-        <Description>
-          {'해당 메일 주소는 구글계정으로 가입되어있어요!'}
-        </Description>
-        <ServiceType />
-        <OtherEmailLoginButton onClick={localLogin}>
-          {'다른 메일 주소로 회원가입 할게요'}
-        </OtherEmailLoginButton>
-      </Center>
-    </MainWrapper>
-  );
 };
 
 export default OAuthPage;
@@ -116,30 +123,6 @@ const MainWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   font-family: ${({ theme }) => theme.fonts.gmarketSans};
-`;
-
-const Header = styled.div`
-  width: 100%;
-  height: 56px;
-  display: flex;
-  justify-content: end;
-  margin-top: 24px;
-  padding-right: 16px;
-  flex-shrink: 0;
-`;
-
-const CloseImg = styled.img`
-  width: 24px;
-  cursor: pointer;
-`;
-
-const TopText = styled.div`
-  width: 100%;
-  height: 50px;
-  ${({ theme }) => theme.typography.gmarketSans.md[18]};
-  display: flex;
-  padding-left: 16px;
-  flex-shrink: 0;
 `;
 
 const Center = styled.div`

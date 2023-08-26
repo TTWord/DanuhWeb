@@ -1,24 +1,27 @@
-import { instance } from '@/instance';
 import { globalState } from '@/recoil';
 import { useState } from 'react';
 import { useMutation } from 'react-query';
-import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled, { css } from 'styled-components';
 import { api } from '@/api';
+import TopBar from '@/components/common/header/TopBar';
+import Title from '@/components/common/header/Title';
 import FooterButton from '@/components/common/button/FooterButton';
-import CheckButton from '@/components/common/button/CheckButton';
+import InputAndCheck from '@/components/common/input/InputAndCheck';
+import useNavigatePush from '@/hooks/useNavigatePush';
+import { AxiosError } from 'axios';
+import useToast from '@/hooks/useToast';
 
 const OAuthNickname = () => {
+  const navigate = useNavigatePush();
+  const toast = useToast();
   const [error, setError] = useState('');
   const [nickname, setNickname] = useRecoilState(globalState.auth.nickname);
   const [isOk, setIsOk] = useState(false);
 
   const { mutateAsync: checkNickname } = useMutation(
     async (nickname: string) => {
-      const { data: response } = await instance.post('/auth/check/nickname', {
-        nickname,
-      });
+      const { data: response } = await api.auth.checkNickname(nickname);
 
       return response;
     },
@@ -38,9 +41,11 @@ const OAuthNickname = () => {
     }
   };
 
-  const navigate = useNavigate();
-
-  const setUserNickname = () => {};
+  const onChange = (text: string) => {
+    setIsOk(false);
+    setError('');
+    setNickname(text);
+  };
 
   const onNext = async () => {
     if (isOk) {
@@ -50,43 +55,47 @@ const OAuthNickname = () => {
           navigate('/auth/welcome');
         }
       } catch (e: unknown) {
-        console.log(e);
+        const err = e as AxiosError<{
+          message: string;
+        }>;
+        const errorMessage = err?.response?.data.message;
+
+        switch (errorMessage) {
+          case 'USER_INVALID_USERNAME':
+            toast.error('형식에 맞지 않는 닉네임입니다.');
+            break;
+          case 'USER_DUPLICATE_NICKNAME':
+            toast.error('이미 사용 중인 닉네임입니다.');
+            break;
+          default:
+            toast.error('에러가 발생하였습니다.');
+            break;
+        }
       }
     }
   };
 
   return (
     <Layout>
+      <TopBar navigate="/auth/oauth/join" />
+
+      <Title title="사용하실 이름을 알려주세요" />
+      <SubTitle>나중에 변경할 수 있어요</SubTitle>
       <Content>
-        <TopView>
-          <MainText>사용하실 이름을 알려주세요</MainText>
-          <SubText>나중에 변경할 수 있어요</SubText>
-        </TopView>
-        <CenterView>
-          <CenterViewWrapper>
-            <Comment>한글, 영어, 숫자 사용 가능 12자 이내</Comment>
-            <Nickname>
-              <Input
-                type="text"
-                placeholder="yettojell"
-                value={nickname}
-                onChange={e => {
-                  setIsOk(false);
-                  setError('');
-                  setNickname(e.target.value);
-                }}
-              />
-              <CheckButton onClick={onClickDuplicateCheck} />
-            </Nickname>
-            <Error isActive={isOk}>{error}</Error>
-          </CenterViewWrapper>
-        </CenterView>
+        <Comment>한글, 영어, 숫자 사용 가능 12자 이내</Comment>
+        <InputAndCheck
+          type="default"
+          placeholder="your name"
+          onChange={onChange}
+          value={nickname}
+          onClickButton={onClickDuplicateCheck}
+        />
+        <Error isActive={isOk}>{error}</Error>
       </Content>
-      <BottomView>
-        <FooterButton isActive={isOk} onClick={onNext}>
-          다음
-        </FooterButton>
-      </BottomView>
+
+      <FooterButton isActive={isOk} onClick={onNext}>
+        다음
+      </FooterButton>
     </Layout>
   );
 };
@@ -101,69 +110,26 @@ const Layout = styled.div`
   flex-direction: column;
 `;
 
+const SubTitle = styled.div`
+  ${({ theme }) => theme.typography.gmarketSans.md[14]}
+  padding-top: 20px;
+  padding-left: 16px;
+`;
+
 const Content = styled.div`
+  width: 100%;
+  height: 100%;
   padding: 0 24px;
-  padding-top: 56px;
+  padding-top: 10vh;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  justify-content: space-between;
   flex: 1;
-`;
-
-const TopView = styled.div`
-  font-family: ${({ theme }) => theme.fonts.gmarketSans};
-  color: #171717;
-  font-weight: medium;
-  margin-top: 25px;
-  flex-shrink: 0;
-`;
-
-const MainText = styled.div`
-  font-size: 18px;
-`;
-
-const SubText = styled.div`
-  font-size: 14px;
-  font-weight: 300;
-  margin-top: 15px;
-`;
-
-const CenterView = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-`;
-
-const CenterViewWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin-top: -100px;
 `;
 
 const Comment = styled.div`
   font-size: 12px;
   font-weight: 400;
   margin-bottom: 10px;
-`;
-
-const Nickname = styled.div`
-  display: flex;
-  width: 100%;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  border-bottom: 1px solid #e7e7e7;
-  outline: none;
-  padding: 0 16px;
-  font-size: 16px;
-
-  &::placeholder {
-    color: #dadada;
-  }
 `;
 
 const Error = styled.div<{
@@ -179,11 +145,4 @@ const Error = styled.div<{
     css`
       color: #0ac54a;
     `}
-`;
-
-const BottomView = styled.div`
-  width: 100%;
-  height: 45px;
-  flex-shrink: 0;
-  margin-bottom: 28px;
 `;

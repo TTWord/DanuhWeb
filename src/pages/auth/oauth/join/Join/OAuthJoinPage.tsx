@@ -1,16 +1,10 @@
 import styled from 'styled-components';
-import iconArrowBack from '@/assets/svg/icons/icon-back-button.svg';
-import useNavigatePop from '@/hooks/useNavigatePop';
 import useNavigatePush from '@/hooks/useNavigatePush';
 import FooterButton from '@/components/common/button/FooterButton';
+import TopBar from '@/components/common/header/TopBar';
 
 const OAuthJoinPage = () => {
-  const navigatePop = useNavigatePop();
   const navigatePush = useNavigatePush();
-
-  const onBack = () => {
-    navigatePop('/auth/login');
-  };
 
   const onNext = () => {
     navigatePush('/auth/oauth/join/nickname');
@@ -18,9 +12,7 @@ const OAuthJoinPage = () => {
 
   return (
     <MainWrapper>
-      <Header>
-        <img src={iconArrowBack} alt="back" onClick={onBack} />
-      </Header>
+      <TopBar type="default" navigate="/auth/login" />
 
       <Content>
         <Title>소셜 회원가입</Title>
@@ -46,17 +38,6 @@ const MainWrapper = styled.div`
   font-family: ${({ theme }) => theme.fonts.gmarketSans};
 `;
 
-const Header = styled.header`
-  width: 100%;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  padding: 0 20px;
-  img {
-    cursor: pointer;
-  }
-`;
-
 const Content = styled.div`
   width: 100%;
   height: 100%;
@@ -79,22 +60,4 @@ const Explain = styled.span`
   font-size: 16px;
   line-height: 140%;
   color: #5b5b5b;
-`;
-
-const Footer = styled.footer`
-  width: 100%;
-  height: 45px;
-  flex-shrink: 0;
-  margin-bottom: 28px;
-`;
-
-const Next = styled.button`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${({ theme }) => theme.colors.primary.default};
-  color: white;
-  border-radius: 8px;
 `;

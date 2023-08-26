@@ -1,15 +1,16 @@
-import React, { useState, useEffect, useCallback, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import styled, { css } from 'styled-components';
 import { globalState } from '@/recoil';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import useSignup from '@/pages/auth/join/AuthCode/hooks/useSignup';
-import iconArrowBack from '@/assets/svg/icons/icon-back-button.svg';
-import useNavigatePop from '@/hooks/useNavigatePop';
 import { TailSpin } from 'react-loader-spinner';
 import FooterButton from '@/components/common/button/FooterButton';
 import AuthCodeResendButton from '@/components/common/button/AuthCodeResendButton';
 import useSendmail from '@/pages/auth/join/Join/hooks/useSendmail';
 import Counter from './components/Counter';
+
+import TopBar from '@/components/common/header/TopBar';
+import Title from '@/components/common/header/Title';
 
 const AuthCodePage = () => {
   const userEmail = useRecoilValue(globalState.auth.username);
@@ -22,9 +23,7 @@ const AuthCodePage = () => {
 
   //const [timer, setTimer] = useState(1);
   const setTimer = useSetRecoilState(globalState.auth.timer);
-  const [codeTimeOut, setCodeTimeOut] = useRecoilState(
-    globalState.auth.codeTimeOut,
-  );
+  const setCodeTimeOut = useSetRecoilState(globalState.auth.codeTimeOut);
   const [isOk, setOk] = useState(false);
   const [authCode, setAuthCode] = useState('');
 
@@ -38,12 +37,6 @@ const AuthCodePage = () => {
     setAuthCode(inputUserCode);
   };
 
-  const navigatePop = useNavigatePop();
-
-  const onBack = () => {
-    navigatePop('/auth/join/info');
-  };
-
   const onClickRequestCode = async () => {
     await sendmail(userEmail + '@' + userDomain, userPw, userNickname);
     setCodeTimeOut(false);
@@ -52,16 +45,14 @@ const AuthCodePage = () => {
 
   return (
     <Layout>
-      <Header>
-        <img src={iconArrowBack} alt="back" onClick={onBack} />
-        <Chapter>3/3</Chapter>
-      </Header>
-
+      <TopBar
+        type={'page'}
+        navigate="/auth/join/info"
+        currentPage={3}
+        lastPage={3}
+      />
+      <Title title="인증코드가 발송되었어요" />
       <Content>
-        <TopView>
-          <MainText>인증코드가 발송되었어요</MainText>
-        </TopView>
-
         <CenterView>
           <AuthGuideBox>
             <AuthEmail>{userEmail + '@' + userDomain}</AuthEmail>
@@ -126,24 +117,8 @@ const Layout = styled.div`
   width: 100%;
   height: 100%;
   background-color: white;
-`;
-
-const Header = styled.div`
-  width: 100%;
-  height: 64px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
-`;
-
-const Chapter = styled.div`
-  font-size: 12px;
-  padding: 4px 8px;
-  line-height: 16px;
-  border-radius: 20px;
-  background-color: #c7b3ff;
-  color: #ffffff;
+  flex-direction: column;
 `;
 
 const Content = styled.div`
@@ -151,19 +126,6 @@ const Content = styled.div`
   flex-direction: column;
   height: calc(100% - 64px);
   justify-content: space-between;
-`;
-
-const TopView = styled.div`
-  font-family: ${({ theme }) => theme.fonts.gmarketSans};
-  color: #171717;
-  font-weight: medium;
-  padding: 0 16px;
-  margin-top: 25px;
-  flex-shrink: 0;
-`;
-
-const MainText = styled.div`
-  font-size: 18px;
 `;
 
 const CenterView = styled.div`
