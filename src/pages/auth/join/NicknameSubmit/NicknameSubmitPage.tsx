@@ -1,27 +1,27 @@
-import iconArrowBack from '@/assets/svg/icons/icon-back-button.svg';
-import useNavigatePop from '@/hooks/useNavigatePop';
 import useNavigatePush from '@/hooks/useNavigatePush';
-import { instance } from '@/instance';
 import { globalState } from '@/recoil';
 import { useState } from 'react';
 import { useMutation } from 'react-query';
 import { useRecoilState } from 'recoil';
 import styled, { css } from 'styled-components';
+import { api } from '@/api';
 import FooterButton from '@/components/common/button/FooterButton';
-import CheckButton from '@/components/common/button/CheckButton';
+import TopBar from '@/components/common/header/TopBar';
+import Title from '@/components/common/header/Title';
+import InputAndCheck from '@/components/common/input/InputAndCheck';
+import { AxiosError } from 'axios';
+import useToast from '@/hooks/useToast';
 
 const NicknameSubmitPage = () => {
+  const navigatePush = useNavigatePush();
+  const toast = useToast();
   const [error, setError] = useState('');
   const [nickname, setNickname] = useRecoilState(globalState.auth.nickname);
   const [isOk, setIsOk] = useState(false);
 
-  const navigatePush = useNavigatePush();
-
   const { mutateAsync: checkNickname } = useMutation(
     async (nickname: string) => {
-      const { data: response } = await instance.post('/auth/check/nickname', {
-        nickname,
-      });
+      const { data: response } = await api.auth.checkNickname(nickname);
 
       return response;
     },
@@ -36,63 +36,59 @@ const NicknameSubmitPage = () => {
         // 다음 버튼 활성화
         setIsOk(true);
       }
-    } catch (e) {
-      setError('해당 닉네임을 사용하실 수 없습니다');
+    } catch (e: unknown) {
+      const err = e as AxiosError<{
+        message: string;
+      }>;
+      const errorMessage = err?.response?.data.message;
+
+      switch (errorMessage) {
+        case 'USER_INVALID_USERNAME':
+          toast.error('형식에 맞지 않는 닉네임입니다.');
+          break;
+        case 'USER_DUPLICATE_NICKNAME':
+          toast.error('이미 사용 중인 닉네임입니다.');
+          break;
+        default:
+          toast.error('에러가 발생하였습니다.');
+          break;
+      }
     }
+  };
+
+  const onChange = (text: string) => {
+    setIsOk(false);
+    setError('');
+    setNickname(text);
   };
 
   const onNext = () => {
     if (isOk) {
       // 다음 페이지로 이동
-
       navigatePush('/auth/join/info');
     }
   };
 
-  const navigatePop = useNavigatePop();
-  const onBack = () => {
-    navigatePop('/auth/login');
-  };
-
   return (
     <Layout>
-      <Header>
-        <img src={iconArrowBack} alt="back" onClick={onBack} />
-        <Chapter>1/3</Chapter>
-      </Header>
+      <TopBar type="page" navigate="/auth/login" currentPage={1} lastPage={3} />
+      <Title title="사용하실 이름을 알려주세요" />
+      <SubTitle>나중에 변경할 수 있어요</SubTitle>
 
       <Content>
-        <TopView>
-          <MainText>사용하실 이름을 알려주세요</MainText>
-          <SubText>나중에 변경할 수 있어요</SubText>
-        </TopView>
-
-        <CenterView>
-          <CenterViewWrapper>
-            <Comment>한글, 영어, 숫자 사용 가능 12자 이내</Comment>
-            <Nickname>
-              <Input
-                type="text"
-                placeholder="yettojell"
-                value={nickname}
-                onChange={e => {
-                  setIsOk(false);
-                  setError('');
-                  setNickname(e.target.value);
-                }}
-              />
-              <CheckButton onClick={onClickDuplicateCheck} />
-            </Nickname>
-            <Error isActive={isOk}>{error}</Error>
-          </CenterViewWrapper>
-        </CenterView>
-
-        <BottomView>
-          <FooterButton isActive={isOk} onClick={onNext}>
-            다음
-          </FooterButton>
-        </BottomView>
+        <Comment>한글, 영어, 숫자 사용 가능 12자 이내</Comment>
+        <InputAndCheck
+          type="default"
+          placeholder="your name"
+          onChange={onChange}
+          value={nickname}
+          onClickButton={onClickDuplicateCheck}
+        />
+        <Error isActive={isOk}>{error}</Error>
       </Content>
+      <FooterButton isActive={isOk} onClick={onNext}>
+        다음
+      </FooterButton>
     </Layout>
   );
 };
@@ -103,88 +99,30 @@ const Layout = styled.div`
   width: 100%;
   height: 100%;
   background-color: white;
-`;
-
-const Header = styled.div`
-  width: 100%;
-  height: 64px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
+  flex-direction: column;
 `;
 
-const Chapter = styled.div`
-  font-size: 12px;
-  padding: 4px 8px;
-  line-height: 16px;
-  border-radius: 20px;
-  background-color: #c7b3ff;
-  color: #ffffff;
+const SubTitle = styled.div`
+  ${({ theme }) => theme.typography.gmarketSans.md[14]}
+  padding-left: 16px;
+  margin-top: 20px;
 `;
 
 const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: calc(100% - 64px);
-  justify-content: space-between;
-`;
-
-const TopView = styled.div`
-  font-family: ${({ theme }) => theme.fonts.gmarketSans};
-  color: #171717;
-  font-weight: medium;
-  padding: 0 16px;
-  margin-top: 25px;
-  flex-shrink: 0;
-`;
-
-const MainText = styled.div`
-  font-size: 18px;
-`;
-
-const SubText = styled.div`
-  font-size: 14px;
-  font-weight: 300;
-  margin-top: 15px;
-`;
-
-const CenterView = styled.div`
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
   padding: 0 24px;
-`;
-
-const CenterViewWrapper = styled.div`
+  padding-top: 10vh;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  margin-top: -100px;
+  flex: 1;
 `;
 
 const Comment = styled.div`
   font-size: 12px;
   font-weight: 400;
   margin-bottom: 10px;
-`;
-
-const Nickname = styled.div`
-  display: flex;
-  width: 100%;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  border-bottom: 1px solid #e7e7e7;
-  outline: none;
-  padding: 0 16px;
-  font-size: 16px;
-
-  &::placeholder {
-    color: #dadada;
-  }
 `;
 
 const Error = styled.div<{
@@ -200,10 +138,4 @@ const Error = styled.div<{
     css`
       color: #0ac54a;
     `}
-`;
-
-const BottomView = styled.div`
-  width: 100%;
-  height: 84px;
-  flex-shrink: 0;
 `;
