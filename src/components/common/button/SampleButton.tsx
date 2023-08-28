@@ -2,23 +2,25 @@ import styled, { css } from 'styled-components';
 
 interface ButtonProps {
   onClick: () => void;
+  text: string;
 }
 
-const CheckButton: React.FC<ButtonProps> = ({ onClick }) => {
-  return <Button onClick={onClick}>중복확인</Button>;
+const SampleButton: React.FC<ButtonProps> = ({ onClick, text }) => {
+  return <Button onClick={onClick}>{text}</Button>;
 };
 
-export default CheckButton;
+export default SampleButton;
 
 const Button = styled.button`
-  width: 60px;
-  height: 44px;
+  width: 86px;
+  height: 29px;
+  padding-top: 2px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
+  ${({ theme }) => theme.typography.gmarketSans.md[12]}
   color: white;
+  border-radius: 100px;
   background-color: ${({ theme }) => theme.colors.primary[800]};
-  border-radius: 8px;
-  ${({ theme }) => theme.typography.gmarketSans.md[12]};
 `;

@@ -11,14 +11,14 @@ const DownloadButton: React.FC<ButtonProps> = ({ onClick }) => {
 export default DownloadButton;
 
 const Button = styled.button`
-  width: 84px;
-  height: 36px;
+  width: 76px;
+  height: 32px;
+  padding-top: 2px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
-  ${({ theme }) => theme.typography.gmarketSans.md[14]}
-  line-height: 100%;
+  ${({ theme }) => theme.typography.gmarketSans.md[12]}
   color: white;
   border-radius: 100px;
   background-color: ${({ theme }) => theme.colors.primary[800]};
