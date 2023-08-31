@@ -79,6 +79,11 @@ const CustomStyles = createGlobalStyle`
     display: none;
   }
 
+  textarea {
+    resize: none;
+    outline: none;
+  }
+
   input {
     outline: none;
   }
