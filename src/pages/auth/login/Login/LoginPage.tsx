@@ -59,7 +59,7 @@ const LoginPage = () => {
           <Span>비밀번호</Span>
           <Input
             type="password"
-            placeholder="비밀번호1"
+            placeholder="비밀번호"
             onChange={(pw: string) => setPassword(pw)}
           />
         </FormBox>

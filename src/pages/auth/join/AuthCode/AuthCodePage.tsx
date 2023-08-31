@@ -1,14 +1,12 @@
 import React, { useState, ChangeEvent } from 'react';
 import styled, { css } from 'styled-components';
 import { globalState } from '@/recoil';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil';
 import useSignup from '@/pages/auth/join/AuthCode/hooks/useSignup';
 import { TailSpin } from 'react-loader-spinner';
 import FooterButton from '@/components/common/button/FooterButton';
-import AuthCodeResendButton from '@/components/common/button/AuthCodeResendButton';
 import useSendmail from '@/pages/auth/join/Join/hooks/useSendmail';
 import Counter from './components/Counter';
-
 import TopBar from '@/components/common/header/TopBar';
 import Title from '@/components/common/header/Title';
 
@@ -23,7 +21,9 @@ const AuthCodePage = () => {
 
   //const [timer, setTimer] = useState(1);
   const setTimer = useSetRecoilState(globalState.auth.timer);
-  const setCodeTimeOut = useSetRecoilState(globalState.auth.codeTimeOut);
+  const [codeTimeOut, setCodeTimeOut] = useRecoilState(
+    globalState.auth.codeTimeOut,
+  );
   const [isOk, setOk] = useState(false);
   const [authCode, setAuthCode] = useState('');
 
@@ -38,9 +38,11 @@ const AuthCodePage = () => {
   };
 
   const onClickRequestCode = async () => {
-    await sendmail(userEmail + '@' + userDomain, userPw, userNickname);
-    setCodeTimeOut(false);
-    setTimer(180);
+    if (codeTimeOut) {
+      await sendmail(userEmail + '@' + userDomain, userPw, userNickname);
+      setCodeTimeOut(false);
+      setTimer(180);
+    }
   };
 
   return (
@@ -73,7 +75,9 @@ const AuthCodePage = () => {
           <RequestAuthCodeComment>
             메일을 받지 못하셨나요?
           </RequestAuthCodeComment>
-          <AuthCodeResendButton onClick={onClickRequestCode} />
+          <AuthCodeResendButton onClick={onClickRequestCode}>
+            인증코드 재발송
+          </AuthCodeResendButton>
         </CenterView>
 
         <BottomView>
@@ -239,4 +243,22 @@ const CodeError = styled.div<{ isError: boolean }>`
       `
     );
   }}
+`;
+
+const AuthCodeResendButton = styled.button`
+  width: 88px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  font-family: ${({ theme }) => theme.fonts.pretendard};
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  color: ${({ theme }) => theme.colors.primary.default};
+  background-color: ${({ theme }) => theme.colors.primary[100]};
+  border-radius: 20px;
+  border: 1px solid ${({ theme }) => theme.colors.primary[400]};
 `;
