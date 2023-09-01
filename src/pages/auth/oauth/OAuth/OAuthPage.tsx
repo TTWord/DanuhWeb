@@ -10,6 +10,7 @@ import useNavigatePop from '@/hooks/useNavigatePop';
 
 import TopBar from '@/components/common/header/TopBar';
 import Title from '@/components/common/header/Title';
+import LoginButton from '@/components/common/button/LoginButton';
 
 const OAuthPage = () => {
   const location = useLocation();
@@ -47,34 +48,38 @@ const OAuthPage = () => {
     switch (service) {
       case 'local':
         return (
-          <ServiceLoginButton onClick={goLocalLogin}>
-            <ServiceLogo src={iconLocal} alt="loginLogo" />
-            <ServiceText>이메일 계정으로 로그인</ServiceText>
-          </ServiceLoginButton>
+          <LoginButton
+            text="이메일 계정으로 로그인"
+            img={iconLocal}
+            onClick={goLocalLogin}
+          />
         );
 
       case 'google':
         return (
-          <ServiceLoginButton onClick={googleLogin}>
-            <ServiceLogo src={iconGoogle} alt="loginLogo" />
-            <ServiceText>구글 계정으로 로그인</ServiceText>
-          </ServiceLoginButton>
+          <LoginButton
+            text="구글 계정으로 로그인"
+            img={iconGoogle}
+            onClick={googleLogin}
+          />
         );
 
       case 'kakao':
         return (
-          <ServiceLoginButton onClick={kakaoLogin}>
-            <ServiceLogo src={iconKakao} alt="loginLogo" />
-            <ServiceText>카카오 계정으로 로그인</ServiceText>
-          </ServiceLoginButton>
+          <LoginButton
+            text="카카오 계정으로 로그인"
+            img={iconKakao}
+            onClick={kakaoLogin}
+          />
         );
 
       case 'apple':
         return (
-          <ServiceLoginButton onClick={appleLogin}>
-            <ServiceLogo src={iconApple} alt="loginLogo" />
-            <ServiceText>애플 계정으로 로그인</ServiceText>
-          </ServiceLoginButton>
+          <LoginButton
+            text="애플 계정으로 로그인"
+            img={iconApple}
+            onClick={appleLogin}
+          />
         );
 
       default:
@@ -83,7 +88,7 @@ const OAuthPage = () => {
   };
 
   switch (message) {
-    //
+    // 에러 발생 시 출력 되는 화면
     default: {
       return <MainWrapper>로그인으로 돌아갑니다.</MainWrapper>;
     }
@@ -144,32 +149,6 @@ const UserEmail = styled.span`
 const Description = styled.span`
   ${({ theme }) => theme.typography.gmarketSans.md[14]};
   margin-top: 16px;
-`;
-
-const ServiceLoginButton = styled.button`
-  width: 100%;
-  height: 44px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 6px 12px;
-  border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme.colors.primary.default};
-  background-color: white;
-  margin: 40px 0;
-  position: relative;
-`;
-
-const ServiceLogo = styled.img`
-  width: 24px;
-  width: 24px;
-  position: absolute;
-  left: 12px;
-`;
-
-const ServiceText = styled.span`
-  ${({ theme }) => theme.typography.gmarketSans.md[12]};
-  color: ${({ theme }) => theme.colors.primary.default};
 `;
 
 const OtherEmailLoginButton = styled.button`
