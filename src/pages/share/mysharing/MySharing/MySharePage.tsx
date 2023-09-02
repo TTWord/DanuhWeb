@@ -7,7 +7,7 @@ import { globalState } from '@/recoil';
 import MyShareBookList from './components/MyShareBookList';
 import emptyIcon from '@/assets/svg/icons/icon-book-empty.svg';
 import useNavigatePop from '@/hooks/useNavigatePop';
-import iconArrowDown from '@/assets/svg/icons/icon-arrow-down.svg';
+import iconChevronDownSmall from '@/assets/svg/icons/icon-chevron-down-small.svg';
 
 const MySharingPage = () => {
   const navigatePop = useNavigatePop();
@@ -37,7 +37,7 @@ const MySharingPage = () => {
   };
 
   const onClickType = () => {
-    setIsTypeclicked(current => !current);
+    setIsTypeclicked((current) => !current);
   };
 
   const onClickTypeButton = (e: MouseEvent<HTMLButtonElement>) => {
@@ -83,7 +83,7 @@ const MySharingPage = () => {
       <Container>
         <ModeWrapper>
           <Mode isSelected={mode === 'share'} onClick={onClickShareMode}>
-            공유한
+            공유하는
           </Mode>
           <Mode isSelected={mode === 'download'} onClick={onClickDownloadMode}>
             공유받은
@@ -94,7 +94,7 @@ const MySharingPage = () => {
         <SortWrapper>
           <SortType onClick={onClickType}>
             <CurrentType>{sortType}</CurrentType>
-            <img src={iconArrowDown} alt="list" />
+            <img src={iconChevronDownSmall} alt="list" />
             <TypeList
               isActive={isTypeClicked}
               isDownloadMode={mode === 'download'}
@@ -117,7 +117,7 @@ const MySharingPage = () => {
                   isDownloadMode={mode === 'download'}
                   onClick={(e: MouseEvent<HTMLButtonElement>) => {
                     e.stopPropagation();
-                    setIsToggle(current => !current);
+                    setIsToggle((current) => !current);
                   }}
                 >
                   <ToggleBox isToggle={isToggle}>
@@ -194,18 +194,18 @@ const ModeWrapper = styled.div`
   height: 32px;
   padding: 0 16px;
   display: flex;
-  ${({ theme }) => theme.typography.pretendard.t2.sbd};
+  ${({ theme }) => theme.typography.pretendard.t1.sbd};
 `;
 
 const Mode = styled.div<{ isSelected?: boolean }>`
-  height: 28px;
+  height: 36px;
   color: ${({ theme }) => theme.colors.primary[200]};
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   padding: 0 4px;
-  padding-bottom: 2px;
+  box-sizing: border-box;
 
   ${({ isSelected }) =>
     isSelected &&
@@ -217,6 +217,7 @@ const Mode = styled.div<{ isSelected?: boolean }>`
 
   :nth-child(3) {
     cursor: default;
+    padding: 0 2px;
     color: ${({ theme }) => theme.colors.primary.default};
   }
 `;
@@ -237,9 +238,10 @@ const SortType = styled.div`
   align-items: center;
   position: relative;
   cursor: pointer;
+
   img {
-    width: 12px;
-    margin-left: 8px;
+    width: 24px;
+    margin-left: 2px;
   }
 `;
 

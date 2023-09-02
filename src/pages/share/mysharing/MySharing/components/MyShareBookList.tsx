@@ -95,7 +95,7 @@ const BookName = styled.span`
 `;
 
 const Username = styled.span`
-  ${({ theme }) => theme.typography.pretendard.c2.rg};
+  ${({ theme }) => theme.typography.pretendard.c1.rg};
   color: ${({ theme }) => theme.colors.gray[600]};
 `;
 
@@ -108,7 +108,7 @@ const BookUpdateinfo = styled.div`
 `;
 
 const UpdateDate = styled.span`
-  ${({ theme }) => theme.typography.pretendard.c2.rg};
+  ${({ theme }) => theme.typography.pretendard.c1.rg};
   color: ${({ theme }) => theme.colors.gray[500]};
 `;
 
@@ -129,10 +129,12 @@ const InfoBox = styled.div`
   }
 `;
 
-const IconRecommend = styled.img``;
+const IconRecommend = styled.img`
+  width: 16px;
+`;
 
 const IconDownload = styled.img`
-  width: 20px;
+  width: 16px;
 `;
 
 const Indicator = styled.span`

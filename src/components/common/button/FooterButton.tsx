@@ -48,21 +48,18 @@ const Button = styled.button<{
   color: white;
   border-radius: 8px;
   font-family: ${({ theme }) => theme.fonts.gmarketSans};
+  background-color: ${({ theme }) => theme.colors.primary.default};
+
+  &:active {
+    opacity: 0.7;
+  }
 
   ${({ isActive }) => {
-    switch (isActive) {
-      case true:
-        return css`
-          background-color: ${({ theme }) => theme.colors.primary.default};
-        `;
-      case false:
-        return css`
-          background-color: ${({ theme }) => theme.colors.primary.disabled};
-        `;
-      default:
-        return css`
-          background-color: ${({ theme }) => theme.colors.primary.default};
-        `;
-    }
+    return (
+      isActive === false &&
+      css`
+        background-color: ${({ theme }) => theme.colors.primary.disabled};
+      `
+    );
   }};
 `;

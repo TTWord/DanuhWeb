@@ -50,7 +50,7 @@ declare module 'styled-components' {
             lineHeight: string;
             fontWeight: string;
           };
-          14: {
+          16: {
             fontFamily: string;
             fontSize: string;
             lineHeight: string;
