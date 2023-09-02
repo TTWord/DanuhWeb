@@ -2,9 +2,6 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useSetRecoilState } from 'recoil';
 import { globalState } from '@/recoil';
-import bulbIcon from '@/assets/svg/icons/icon-bulb.svg';
-import leafIcon from '@/assets/svg/icons/icon-leaf.svg';
-import treeIcon from '@/assets/svg/icons/icon-tree.svg';
 import SelectButtonComponent from './components/SelectButtonComponent';
 
 const LearnPage = () => {
@@ -18,12 +15,10 @@ const LearnPage = () => {
     {
       title: '단어암기',
       type: 'flashcard',
-      icon: bulbIcon,
     },
     {
       title: '단어암기',
       type: 'blind',
-      icon: bulbIcon,
     },
   ];
 
@@ -31,51 +26,45 @@ const LearnPage = () => {
     {
       title: '객관식',
       type: 'select',
-      icon: leafIcon,
     },
     {
       title: '객관식',
       type: 'blind',
-      icon: leafIcon,
       typeDetail: 'choice',
     },
     {
       title: '주관식',
       type: 'typing',
-      icon: treeIcon,
+      lineColor: 'purple',
     },
     {
       title: '주관식',
       type: 'blind',
-      icon: treeIcon,
       typeDetail: 'shortanswer',
+      lineColor: 'purple',
     },
   ];
 
   interface IButtonItem {
     title: string;
     type: string;
-    icon: string;
     typeDetail?: string;
   }
 
   return (
     <Wrapper>
-      <HeaderWrapper>학습하기</HeaderWrapper>
+      <Header>Quiz</Header>
 
       <ContainerWrapper>
         <Container>
           <QuizTitle>암기하기</QuizTitle>
           <SelectWrapper>
-            {memoList.map((itme: IButtonItem, idx) => {
+            {memoList.map((item: IButtonItem, idx) => {
               return (
                 <SelectButtonComponent
                   key={idx}
                   naviURL={'/learn/memo'}
-                  title={itme.title}
-                  type={itme.type}
-                  icon={itme.icon}
-                  typeDetail={itme.typeDetail}
+                  {...item}
                 />
               );
             })}
@@ -84,15 +73,12 @@ const LearnPage = () => {
         <Container>
           <QuizTitle>문제 풀기</QuizTitle>
           <SelectWrapper>
-            {quizList.map((itme: IButtonItem, idx) => {
+            {quizList.map((item: IButtonItem, idx) => {
               return (
                 <SelectButtonComponent
                   key={idx}
                   naviURL={'/learn/quiz'}
-                  title={itme.title}
-                  type={itme.type}
-                  icon={itme.icon}
-                  typeDetail={itme.typeDetail}
+                  {...item}
                 />
               );
             })}
@@ -115,7 +101,7 @@ const Wrapper = styled.div`
 `;
 
 //-- 헤더 --//
-const HeaderWrapper = styled.header`
+const Header = styled.header`
   width: 100%;
   height: 56px;
   padding: 0 16px;
@@ -133,10 +119,11 @@ const HeaderWrapper = styled.header`
 const ContainerWrapper = styled.div`
   width: 100%;
   height: 100%;
-  padding-top: 26px;
-  padding-bottom: 56px;
+  margin-top: 4px;
+  padding: 0 16px;
   flex: 1;
   overflow: auto;
+
   ::-webkit-scrollbar {
     display: none;
   }
@@ -144,29 +131,19 @@ const ContainerWrapper = styled.div`
 
 const Container = styled.div`
   width: 100%;
-  overflow: auto;
-  :nth-child(1) {
-    margin-bottom: 56px;
-  }
 
-  ::-webkit-scrollbar {
-    display: none;
+  & + & {
+    margin-top: 40px;
   }
 `;
 
 const QuizTitle = styled.div`
-  padding: 0 0 13px 22px;
-  font-family: ${({ theme }) => theme.fonts.pretendard};
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 17px;
-  color: #333333;
-  color: black;
+  ${({ theme }) => theme.typography.pretendard.t1.sbd};
 `;
 
 const SelectWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  padding: 0 22px;
+  margin-top: 16px;
 `;

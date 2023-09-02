@@ -115,8 +115,7 @@ const TextDiv = styled.div`
   span {
     margin-left: 8px;
     color: ${({ theme }) => theme.colors.gray[500]};
-    font-weight: 500;
-    font-size: 14px;
+    ${({ theme }) => theme.typography.pretendard.t4.md};
   }
 `;
 

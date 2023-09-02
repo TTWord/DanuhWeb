@@ -48,9 +48,9 @@ const lightTheme: DefaultTheme = {
           lineHeight: '1.4',
           fontWeight: '500',
         },
-        14: {
+        16: {
           fontFamily: 'GmarketSans',
-          fontSize: '14px',
+          fontSize: '16px',
           lineHeight: '1.4',
           fontWeight: '500',
         },
@@ -231,9 +231,9 @@ const darkTheme: DefaultTheme = {
           lineHeight: '1.4',
           fontWeight: '500',
         },
-        14: {
+        16: {
           fontFamily: 'GmarketSans',
-          fontSize: '14px',
+          fontSize: '16px',
           lineHeight: '1.4',
           fontWeight: '500',
         },

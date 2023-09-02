@@ -76,9 +76,9 @@ const BookItem: React.FC<BookItemProps> = ({
         <Top>
           <Strong>{book.name}</Strong>
           <Option
-            onClick={e => {
+            onClick={(e) => {
               e.stopPropagation();
-              setIsOptionOpen(current => !current);
+              setIsOptionOpen((current) => !current);
             }}
           >
             <img src={iconOther} alt="other" />
@@ -114,6 +114,11 @@ const Item = styled.div`
   flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
+  user-select: none;
+
+  &:active {
+    background-color: ${({ theme }) => theme.colors.primary[100]};
+  }
 
   & + & {
     margin-top: 8px;

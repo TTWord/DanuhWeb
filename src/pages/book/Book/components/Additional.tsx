@@ -15,7 +15,7 @@ const Additional: React.FC<AdditionalProps> = () => {
   return (
     <Container>
       <BookAddPop isOpen={isBookAddPopOpen} setIsOpen={setIsBookAddPopOpen} />
-      <PlusBox onClick={() => setActive(current => !current)}>
+      <PlusBox onClick={() => setActive((current) => !current)}>
         <PlusBoxNotActive isActive={isActive} />
         <PlusBoxActive isActive={isActive} />
         <PlusIcon isActive={isActive} />
@@ -151,8 +151,7 @@ const AdditionalItems = styled.div<{
   flex-direction: column;
 `;
 
-const Text = styled.div`
-`;
+const Text = styled.div``;
 
 const Icon = styled.img`
   //width: 24px;
@@ -169,16 +168,22 @@ const AdditionalItem = styled.div<{
   width: 100%;
   height: 30%;
   border-radius: 30px;
-  background: black;
+  background-color: ${({ theme }) => theme.colors.primary.default};
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.3);
   color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: all 0.3s;
   right: 30px;
   bottom: 30px;
   padding: 0 8px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  user-select: none;
+
+  &:active {
+    background-color: ${({ theme }) => theme.colors.primary[400]};
+  }
 
   ${Icon} {
     padding-right: 8px;
@@ -186,8 +191,6 @@ const AdditionalItem = styled.div<{
 
   ${Text} {
     font-size: 14px;
-    transform: scale(0);
-    transition: all 0.3s;
   }
 
   ${({ isActive, targetPos }) =>
@@ -197,10 +200,7 @@ const AdditionalItem = styled.div<{
       height: 48px;
       bottom: ${targetPos};
       right: 0px;
-      background-color: ${({ theme }) => theme.colors.primary.default};
 
-      ${Text} {
-        transform: scale(1);
-      }
+      opacity: 1;
     `}
 `;
