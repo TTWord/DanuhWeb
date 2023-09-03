@@ -4,7 +4,7 @@ import useSendmail from '@/pages/auth/join/Join/hooks/useSendmail';
 import { globalState } from '@/recoil';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { TailSpin } from 'react-loader-spinner';
-import FooterButton from '@/components/common/button/FooterButton';
+import WideButton from '@/components/common/button/WideButton';
 import TopBar from '@/components/common/header/TopBar';
 import Title from '@/components/common/header/Title';
 import InputLogin from '@/components/common/input/InputLogin';
@@ -121,7 +121,7 @@ const JoinPage = () => {
         </CenterView>
 
         <BottomView>
-          <FooterButton ref={buttonRef} isActive={isOk} onClick={onJoin}>
+          <WideButton ref={buttonRef} isActive={isOk} onClick={onJoin}>
             {isLoading ? (
               <TailSpin
                 height="30"
@@ -135,7 +135,7 @@ const JoinPage = () => {
             ) : (
               '메일 인증하기'
             )}
-          </FooterButton>
+          </WideButton>
         </BottomView>
       </Content>
       {/* Form 태그로 바꾸기 */}

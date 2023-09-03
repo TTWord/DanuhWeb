@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import FooterButton from './FooterButton';
+import WideButton from './WideButton';
 import { useState } from 'react';
 
 interface ButtonProps {
@@ -11,8 +11,8 @@ interface ButtonProps {
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
-  title: 'Button/FooterButton',
-  component: FooterButton,
+  title: 'Button/WideButton',
+  component: WideButton,
   tags: ['autodocs'],
   argTypes: {
     children: {
@@ -29,14 +29,14 @@ const meta = {
       setIsActive((current) => !current);
     };
 
-    return <FooterButton {...args} isActive={isActive} onClick={onClick} />;
+    return <WideButton {...args} isActive={isActive} onClick={onClick} />;
   },
-} satisfies Meta<typeof FooterButton>;
+} satisfies Meta<typeof WideButton>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = (args: ButtonProps) => <FooterButton {...args} />;
+export const Default: Story = (args: ButtonProps) => <WideButton {...args} />;
 Default.args = {
   children: '하단 버튼',
 };

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import VoteButton from './VoteButton';
 import { globalState } from '@/recoil';
 import { useRecoilValue } from 'recoil';
-import FooterButton from '@/components/common/button/FooterButton';
+import WideButton from '@/components/common/button/WideButton';
 import useDeleteAccount from '@/pages/setting/Setting/hooks/useDeleteAccount';
 import Input from '@/components/common/input/Input';
 
@@ -69,9 +69,9 @@ const DeleteSurvey = () => {
         )}
       </Center>
 
-      <FooterButton onClick={onClickDelete} isActive={isActive}>
+      <WideButton onClick={onClickDelete} isActive={isActive}>
         탈퇴하기
-      </FooterButton>
+      </WideButton>
     </SurveyWrapper>
   );
 };

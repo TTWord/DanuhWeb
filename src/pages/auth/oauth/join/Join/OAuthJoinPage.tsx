@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import useNavigatePush from '@/hooks/useNavigatePush';
-import FooterButton from '@/components/common/button/FooterButton';
+import WideButton from '@/components/common/button/WideButton';
 import TopBar from '@/components/common/header/TopBar';
 
 const OAuthJoinPage = () => {
@@ -21,7 +21,7 @@ const OAuthJoinPage = () => {
         </Explain>
       </Content>
 
-      <FooterButton onClick={onNext}>다음</FooterButton>
+      <WideButton onClick={onNext}>다음</WideButton>
     </MainWrapper>
   );
 };

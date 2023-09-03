@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useToast from '@/hooks/useToast';
 import iconBack from '@/assets/svg/icons//icon-back-gray.svg';
 import { api } from '@/api';
-import FooterButton from '@/components/common/button/FooterButton';
+import WideButton from '@/components/common/button/WideButton';
 
 const ModifyWordPage = () => {
   const navigate = useNavigate();
@@ -82,7 +82,7 @@ const ModifyWordPage = () => {
         </WordBox>
       </Container>
 
-      <FooterButton
+      <WideButton
         onClick={() => {
           if (word === '' && mean === '') {
             toast.error('미입력칸이 있습니다.');
@@ -92,7 +92,7 @@ const ModifyWordPage = () => {
         }}
       >
         수정하기
-      </FooterButton>
+      </WideButton>
     </MainWrapper>
   );
 };
