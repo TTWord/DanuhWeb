@@ -27,8 +27,7 @@ const Button = styled.button<{
   color: white;
   background-color: ${({ theme }) => theme.colors.primary[800]};
   border-radius: 100px;
-  ${({ theme }) => theme.typography.gmarketSans.md[14]};
-  font-size: 16px; // 폰트 시스템에 16이 없어서 임시 작성
+  ${({ theme }) => theme.typography.gmarketSans.md[16]};
 
   ${({ buttonType }) => {
     switch (buttonType) {

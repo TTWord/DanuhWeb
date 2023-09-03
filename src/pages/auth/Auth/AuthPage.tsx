@@ -7,7 +7,7 @@ import dogIcon from '@/assets/svg/icons/icon-dog.svg';
 import bookIcon from '@/assets/svg/icons/icon-book.svg';
 import medalIcon from '@/assets/svg/icons/icon-medal.svg';
 import useNavigatePush from '@/hooks/useNavigatePush';
-import FooterButton from '@/components/common/button/FooterButton';
+import WideButton from '@/components/common/button/WideButton';
 
 const AuthPage = () => {
   const navigatePush = useNavigatePush();
@@ -42,7 +42,7 @@ const AuthPage = () => {
         </IntroduceWrapper>
       </Content>
 
-      <FooterButton onClick={goLogin}>시작하기</FooterButton>
+      <WideButton onClick={goLogin}>시작하기</WideButton>
     </WebWrapper>
   );
 };

@@ -72,7 +72,7 @@ const BookShareOptionPop: React.FC<BookShareOptionPopProps> = ({
   return (
     <BottomSlidePop isOpen={isOpen} onPopClose={onPopClose} height={480}>
       <Container
-        onClick={e => {
+        onClick={(e) => {
           e.stopPropagation();
         }}
       >
@@ -97,7 +97,7 @@ const BookShareOptionPop: React.FC<BookShareOptionPopProps> = ({
               <BookCommentTextArea
                 placeholder="단어장에 대한 설명 입력"
                 value={comment}
-                onChange={e => {
+                onChange={(e) => {
                   setComment(e.target.value);
                 }}
               ></BookCommentTextArea>
@@ -199,7 +199,7 @@ const SaveButton = styled.button`
   border-radius: 8px;
   color: ${({ theme }) => theme.colors.white};
 
-  ${({ theme }) => theme.typography.gmarketSans.md[14]};
+  ${({ theme }) => theme.typography.gmarketSans.md[16]};
 `;
 
 const BookCommentWrapper = styled.div<{

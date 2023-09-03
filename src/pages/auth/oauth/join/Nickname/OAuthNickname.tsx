@@ -6,7 +6,7 @@ import styled, { css } from 'styled-components';
 import { api } from '@/api';
 import TopBar from '@/components/common/header/TopBar';
 import Title from '@/components/common/header/Title';
-import FooterButton from '@/components/common/button/FooterButton';
+import WideButton from '@/components/common/button/WideButton';
 import InputAndCheck from '@/components/common/input/InputAndCheck';
 import useNavigatePush from '@/hooks/useNavigatePush';
 import { AxiosError } from 'axios';
@@ -93,9 +93,9 @@ const OAuthNickname = () => {
         <Error isActive={isOk}>{error}</Error>
       </Content>
 
-      <FooterButton isActive={isOk} onClick={onNext}>
+      <WideButton isActive={isOk} onClick={onNext}>
         다음
-      </FooterButton>
+      </WideButton>
     </Layout>
   );
 };
@@ -111,7 +111,8 @@ const Layout = styled.div`
 `;
 
 const SubTitle = styled.div`
-  ${({ theme }) => theme.typography.gmarketSans.md[14]}
+  ${({ theme }) => theme.typography.gmarketSans.md[16]};
+  font-size: 14px;
   padding-top: 20px;
   padding-left: 16px;
 `;

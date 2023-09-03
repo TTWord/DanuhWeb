@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import BottomSlideSelectPop from '@/components/common/popup/BottomSlideSelectPop';
 import TopBar from '@/components/common/header/TopBar';
 import useToast from '@/hooks/useToast';
-import FooterButton from '@/components/common/button/FooterButton';
+import WideButton from '@/components/common/button/WideButton';
 import { api } from '@/api';
 import useNavigatePop from '@/hooks/useNavigatePop';
 
@@ -101,9 +101,9 @@ const ReportPage = () => {
         </ReportType>
       </Content>
 
-      <FooterButton onClick={onSubmit} isActive={canSubmit}>
+      <WideButton onClick={onSubmit} isActive={canSubmit}>
         전송하기
-      </FooterButton>
+      </WideButton>
     </WebWrapper>
   );
 };

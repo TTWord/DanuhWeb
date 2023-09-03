@@ -4,6 +4,7 @@ import useNavigatePop from '@/hooks/useNavigatePop';
 import { useEffect, ChangeEvent } from 'react';
 import useChangePassword from './hooks/useChangePassword';
 import StackLayout from '@/components/layout/StackLayout';
+import WideButton from '@/components/common/button/WideButton';
 
 // 비밀번호 표시 버튼?
 const PasswordPage = () => {
@@ -88,9 +89,9 @@ const PasswordPage = () => {
           </Line>
         </Content>
         <Footer>
-          <SubmitButton onClick={onClickSubmit} isActive={isOk}>
+          <WideButton onClick={onClickSubmit} isActive={isOk}>
             변경하기
-          </SubmitButton>
+          </WideButton>
         </Footer>
       </Container>
     </StackLayout>
@@ -167,7 +168,8 @@ const SubmitButton = styled.button<{
   background-color: ${({ theme }) => theme.colors.primary.disabled};
   color: white;
 
-  ${({ theme }) => theme.typography.gmarketSans.md[14]};
+  ${({ theme }) => theme.typography.gmarketSans.md[16]};
+  font-size: 14px;
 
   ${({ isActive }) => {
     return (

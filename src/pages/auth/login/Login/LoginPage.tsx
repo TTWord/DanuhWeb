@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import useLogin from '@/pages/auth/login/Login/hooks/useLogin';
 import useSocialLogin from './hooks/useSocialLogin';
-import FooterButton from '@/components/common/button/FooterButton';
+import WideButton from '@/components/common/button/WideButton';
 import googleIcon from '@/assets/svg/icons/icon-google.svg';
 import kakaoIcon from '@/assets/svg/icons/icon-kakao.svg';
 import appleIcon from '@/assets/svg/icons/icon-apple.svg';
@@ -89,9 +89,9 @@ const LoginPage = () => {
             </AppleLogin>
           </SocialButtonWrapper>
         </SocialWrapper>
-        <FooterButton isActive={isOk} onClick={onLogin}>
+        <WideButton isActive={isOk} onClick={onLogin}>
           로그인
-        </FooterButton>
+        </WideButton>
       </Footer>
     </WebWrapper>
   );

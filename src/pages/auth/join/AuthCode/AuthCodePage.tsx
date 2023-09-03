@@ -4,7 +4,7 @@ import { globalState } from '@/recoil';
 import { useRecoilValue, useSetRecoilState, useRecoilState } from 'recoil';
 import useSignup from '@/pages/auth/join/AuthCode/hooks/useSignup';
 import { TailSpin } from 'react-loader-spinner';
-import FooterButton from '@/components/common/button/FooterButton';
+import WideButton from '@/components/common/button/WideButton';
 import useSendmail from '@/pages/auth/join/Join/hooks/useSendmail';
 import Counter from './components/Counter';
 import TopBar from '@/components/common/header/TopBar';
@@ -82,7 +82,7 @@ const AuthCodePage = () => {
 
         <BottomView>
           <CodeError isError={isError}>인증코드를 다시 확인해주세요</CodeError>
-          <FooterButton
+          <WideButton
             isActive={isOk}
             onClick={() => {
               if (isOk) {
@@ -108,7 +108,7 @@ const AuthCodePage = () => {
             ) : (
               '시작하기'
             )}
-          </FooterButton>
+          </WideButton>
         </BottomView>
       </Content>
     </Layout>
