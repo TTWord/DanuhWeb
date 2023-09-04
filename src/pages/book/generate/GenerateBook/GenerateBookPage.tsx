@@ -1,41 +1,30 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { TailSpin } from 'react-loader-spinner';
-import arrowBackImg from '@/assets/svg/icons/icon-arrow-back-button.svg';
+import arrowBackImg from './svg/icon-arrow-secondary.svg';
 import useGenerateBook from '@/pages/book/generate/GenerateBook/hooks/useGenerateBook';
-import iconBack from '@/assets/svg/icons//icon-back-gray.svg';
-import useNavigatePop from '@/hooks/useNavigatePop';
+import TopBar from '@/components/common/header/TopBar';
+import WideButton from '@/components/common/button/WideButton';
+import Input from '@/components/common/input/Input';
+import TextField from '@/components/common/input/TextField';
 
 const GenerateBookPage = () => {
-  const navigatePop = useNavigatePop();
   const { isLoading, generateBook } = useGenerateBook();
-  const [textLength, setTextLength] = useState(0);
   const [bookName, setBookName] = useState('');
   const [sentense, setSentense] = useState('');
 
-  const goBack = () => {
-    navigatePop('/book');
-  };
-
   return (
     <MainWrapper>
-      <Header>
-        <BackButton onClick={goBack}>
-          <img src={iconBack} alt="arrowBackImg" />
-        </BackButton>
-        <HeaderText>단어장 생성기</HeaderText>
-      </Header>
+      <TopBar type={'default'} navigate={'/book'} title={'단어장 생성기'} />
 
       <Content>
         <BookNameWrapper>
           <BookNameTitle>단어장 이름은</BookNameTitle>
-
-          <BookNaming
-            type="text"
-            placeholder="단어장 이름을 입력해주세요"
-            onChange={e => {
-              setBookName(e.target.value);
-            }}
+          <Input
+            type={'fit'}
+            placeholder={'단어장 이름을 입력해주세요'}
+            value={bookName}
+            onChange={setBookName}
           />
         </BookNameWrapper>
 
@@ -48,23 +37,18 @@ const GenerateBookPage = () => {
           <GuideText>
             현재 단어장 생성기는 영어 to 한국어만 지원합니다.
           </GuideText>
-
-          <SentenceInputWrapper>
-            <SentenceInput
-              onChange={e => {
-                setSentense(e.target.value);
-                setTextLength(e.target.value.length);
-              }}
-              placeholder="영어 문장을 입력해주세요"
-              cols={100}
-            />
-            <CountInput>{textLength}/2000</CountInput>
-          </SentenceInputWrapper>
         </GenerateWrapper>
+        <TextField
+          placeholder={'영어 문장을 입력해주세요'}
+          value={sentense}
+          onChange={setSentense}
+          cols={100}
+        />
       </Content>
 
       <Footer>
-        <GenerateButton
+        <WideButton
+          isActive={false}
           onClick={() => {
             if (!isLoading) {
               generateBook({ bookName, sentense });
@@ -83,7 +67,7 @@ const GenerateBookPage = () => {
               visible={true}
             />
           )}
-        </GenerateButton>
+        </WideButton>
       </Footer>
     </MainWrapper>
   );
@@ -94,42 +78,18 @@ const GenerateBookPage = () => {
 
 export default GenerateBookPage;
 
-//== 스타일 정의 ==//
 //-- 전체 wrapper --//
 const MainWrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   font-family: ${({ theme }) => theme.fonts.pretendard};
   line-height: 140%;
   background-color: ${({ theme }) => theme.colors.primary[100]};
 `;
 
-//-- Header 영역 --//
-const Header = styled.header`
-  width: 100%;
-  height: 56px;
-  display: flex;
-  align-items: center;
-`;
-
-const BackButton = styled.button`
-  width: 24px;
-  height: 24px;
-  margin: 0 16px;
-`;
-
-const HeaderText = styled.div`
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 140%;
-  color: ${({ theme }) => theme.colors.gray[800]};
-`;
-
 //-- 단어장 이름 영역 --//
-
 const Content = styled.div`
   width: 100%;
   height: 100%;
@@ -137,7 +97,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0px 24px;
+  padding: 40px 24px 16px 24px;
   padding-top: 40px;
   background-color: ${({ theme }) => theme.colors.white};
 `;
@@ -150,26 +110,13 @@ const BookNameWrapper = styled.div`
 `;
 
 const BookNameTitle = styled.div`
-  font-weight: 600;
+  font-family: ${({ theme }) => theme.fonts.pretendard};
   font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
   line-height: 140%;
   color: ${({ theme }) => theme.colors.gray[900]};
   margin-bottom: 24px;
-`;
-
-const BookNaming = styled.input`
-  width: 100%;
-  height: 42px;
-  padding: 10px 0;
-  font-size: 16px;
-  font-weight: 500;
-  outline: none;
-  border-bottom: 1px solid #e7e7e7;
-  background: #fff;
-
-  ::placeholder {
-    color: #dadada;
-  }
 `;
 
 //-- 단어장 생성기 영역 --//
@@ -187,15 +134,14 @@ const GuideLangWrapper = styled.div`
 `;
 
 const LangDiv = styled.div`
-  height: 100%;
-  background: #ffffff;
   padding: 8px 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme }) => theme.colors.gray[100]};
   border-radius: 8px;
   border: 1px solid ${({ theme }) => theme.colors.gray[300]};
+  background-color: ${({ theme }) => theme.colors.gray[100]};
+  font-family: ${({ theme }) => theme.fonts.pretendard};
   font-size: 20px;
   font-weight: 600;
   line-height: 140%;
@@ -203,70 +149,21 @@ const LangDiv = styled.div`
 `;
 
 const GuideArrow = styled.img`
-  transform: rotate(180deg);
   margin: 0 8px;
 `;
 
 const GuideText = styled.div`
+  font-family: ${({ theme }) => theme.fonts.pretendard};
   font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
   color: ${({ theme }) => theme.colors.gray[600]};
   margin: 16px 0;
-`;
-
-const SentenceInputWrapper = styled.div`
-  width: 100%;
-  height: 230px;
-  padding: 16px 16px;
-  background: #ffffff;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 14px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const SentenceInput = styled.textarea`
-  width: 100%;
-  height: 100%;
-  font-weight: 500;
-  font-size: 14px;
-  resize: none;
-  outline: none;
-  ::placeholder {
-    color: #dadada;
-  }
-  ::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const CountInput = styled.div`
-  width: 100%;
-  height: 18px;
-  font-size: 13px;
-  font-weight: 500;
-  text-align: right;
 `;
 
 //-- 생성하기 버튼 영역 --//
 const Footer = styled.footer`
   width: 100%;
-  padding: 0 24px;
-  padding-bottom: 24px;
   background-color: ${({ theme }) => theme.colors.white};
-`;
-
-const GenerateButton = styled.button`
-  width: 100%;
-  height: 48px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: ${({ theme }) => theme.colors.primary.default};
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 16px;
-  color: #ffffff;
 `;
