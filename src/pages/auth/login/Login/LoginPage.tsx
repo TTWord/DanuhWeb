@@ -41,66 +41,70 @@ const LoginPage = () => {
 
   return (
     <WebWrapper>
-      <TopBar type="default" navigate="/auth" />
-      <Title title="이메일로 로그인" />
-
       <Form
         onSubmit={(e) => {
           e.preventDefault();
+          e.stopPropagation();
           onLogin();
         }}
       >
-        <FormBox>
-          <Span>아이디</Span>
-          <InputLogin setEmailId={setEmailId} setDomain={setEmailDomain} />
-        </FormBox>
+        <TopBar type="default" navigate="/auth" />
+        <Title title="이메일로 로그인" />
 
-        <FormBox>
-          <Span>비밀번호</Span>
-          <Input
-            type="password"
-            placeholder="비밀번호"
-            onChange={(pw: string) => setPassword(pw)}
-          />
-        </FormBox>
+        <FormWrapper>
+          <FormBox>
+            <Span>아이디</Span>
+            <InputLogin setEmailId={setEmailId} setDomain={setEmailDomain} />
+          </FormBox>
 
-        <Join>
-          아직 계정이 없으신가요?
-          <SignInButton onClick={runJoinPage} type="button">
-            회원가입
-          </SignInButton>
-        </Join>
+          <FormBox>
+            <Span>비밀번호</Span>
+            <Input
+              type="password"
+              placeholder="비밀번호"
+              onChange={(pw: string) => setPassword(pw)}
+            />
+          </FormBox>
 
-        <Login type="submit" />
+          <Join>
+            아직 계정이 없으신가요?
+            <SignInButton onClick={runJoinPage} type="button">
+              회원가입
+            </SignInButton>
+          </Join>
+        </FormWrapper>
+
+        <Footer>
+          <SocialWrapper>
+            SNS로 로그인하기
+            <SocialButtonWrapper>
+              <GoogleLogin onClick={googleLogin} type="button">
+                <img src={googleIcon} alt="googleIcon" />
+              </GoogleLogin>
+              <KakaoLogin onClick={kakaoLogin} type="button">
+                <img src={kakaoIcon} alt="kakaoIcon" />
+              </KakaoLogin>
+              <AppleLogin onClick={appleLogin} type="button">
+                <img src={appleIcon} alt="appleIcon" />
+              </AppleLogin>
+            </SocialButtonWrapper>
+          </SocialWrapper>
+          <FooterButton isActive={isOk} type={'submit'}>
+            로그인
+          </FooterButton>
+        </Footer>
       </Form>
-
-      <Footer>
-        <SocialWrapper>
-          SNS로 로그인하기
-          <SocialButtonWrapper>
-            <GoogleLogin onClick={googleLogin}>
-              <img src={googleIcon} alt="googleIcon" />
-            </GoogleLogin>
-            <KakaoLogin onClick={kakaoLogin}>
-              <img src={kakaoIcon} alt="kakaoIcon" />
-            </KakaoLogin>
-            <AppleLogin onClick={appleLogin}>
-              <img src={appleIcon} alt="appleIcon" />
-            </AppleLogin>
-          </SocialButtonWrapper>
-        </SocialWrapper>
-        <FooterButton isActive={isOk} onClick={onLogin}>
-          로그인
-        </FooterButton>
-      </Footer>
     </WebWrapper>
   );
 };
 
 export default LoginPage;
 
-const Login = styled.input`
-  display: none;
+const Form = styled.form`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 const WebWrapper = styled.div`
@@ -111,7 +115,7 @@ const WebWrapper = styled.div`
   flex-direction: column;
 `;
 
-const Form = styled.form`
+const FormWrapper = styled.div`
   width: 100%;
   flex: 1;
   padding: 0 24px;

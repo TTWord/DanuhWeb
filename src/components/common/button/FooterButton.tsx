@@ -5,6 +5,7 @@ interface ButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
   ref?: React.MutableRefObject<null>;
+  type?: 'button' | 'submit';
 }
 
 const FooterButton: React.FC<ButtonProps> = ({
@@ -12,10 +13,11 @@ const FooterButton: React.FC<ButtonProps> = ({
   children,
   onClick,
   ref,
+  type = 'button',
 }) => {
   return (
     <ButtonWrapper>
-      <Button ref={ref} onClick={onClick} isActive={isActive}>
+      <Button ref={ref} onClick={onClick} isActive={isActive} type={type}>
         {children}
       </Button>
     </ButtonWrapper>

@@ -1,8 +1,10 @@
 import React from 'react';
 import { createGlobalStyle } from 'styled-components';
-import { GlobalStyles as BaseStyles } from 'twin.macro';
+import reset from 'styled-reset';
 
 const CustomStyles = createGlobalStyle`
+  ${reset}
+
   @font-face {
       font-family: 'GmarketSans';
       src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansLight.woff') format('woff');
@@ -96,12 +98,21 @@ const CustomStyles = createGlobalStyle`
   button, input, a {
     -webkit-tap-highlight-color: transparent;
   }
-  
-  `;
+
+  button, input {
+    box-sizing: border-box;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+  }
+
+  div {
+    box-sizing: border-box;
+  }
+`;
 
 const GlobalStyles = () => (
   <>
-    <BaseStyles />
     <CustomStyles />
   </>
 );
