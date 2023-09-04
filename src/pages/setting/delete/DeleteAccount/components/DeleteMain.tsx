@@ -42,12 +42,13 @@ const Text = styled.div`
 `;
 
 const Button = styled.button`
-  width: 148px;
-  height: 48px;
+  width: 100x;
+  height: 29px;
+  display: inline-flex;
+  align-items: center;
   background-color: ${({ theme }) => theme.colors.primary[800]};
-  border-radius: 100px;
+  border-radius: 20px;
   color: white;
-  padding: 16px 8px;
-  text-align: center;
-  ${({ theme }) => theme.typography.gmarketSans.md[14]}
+  padding: 6px 12px;
+  ${({ theme }) => theme.typography.gmarketSans.md[12]};
 `;
