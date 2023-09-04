@@ -53,7 +53,7 @@ const InputLogin: React.FC<InputProps> = ({ setEmailId, setDomain }) => {
 
   const SelectButton = () => {
     return (
-      <Select>
+      <Select type="button">
         <svg
           onClick={() => {
             if (isDirectInput) onSwitchPop();

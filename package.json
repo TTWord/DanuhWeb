@@ -33,7 +33,8 @@
     "react-transition-group": "^4.4.5",
     "recoil": "^0.7.6",
     "snd-lib": "^1.1.2",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.6",
+    "styled-reset": "^4.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.5",
