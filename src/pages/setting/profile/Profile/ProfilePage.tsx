@@ -9,7 +9,7 @@ import defaultProfile from '@/assets/svg/logos/logo-profile-default.svg';
 import iconPencil from './svg/icon-pencil.svg';
 import { instance } from '@/instance';
 import StackLayout from '@/components/layout/StackLayout';
-import FooterButton from '@/components/common/button/FooterButton';
+import WideButton from '@/components/common/button/WideButton';
 
 const ProfilePage = () => {
   const changeNewNickname = useChangeNickname();
@@ -97,7 +97,7 @@ const ProfilePage = () => {
         </Picture>
 
         <InputAndCheck
-          onChange={value => {
+          onChange={(value) => {
             setError(null);
             setNewNickname(value);
           }}
@@ -114,7 +114,7 @@ const ProfilePage = () => {
       </ContentWrapper>
 
       <ProfileForm
-        onSubmit={e => {
+        onSubmit={(e) => {
           e.preventDefault();
           if (file) {
             const formData = new FormData();
@@ -126,7 +126,7 @@ const ProfilePage = () => {
           }
         }}
       >
-        <FooterButton isActive={error === null || isOk}>저장하기</FooterButton>
+        <WideButton isActive={error === null || isOk}>저장하기</WideButton>
       </ProfileForm>
     </StackLayout>
   );

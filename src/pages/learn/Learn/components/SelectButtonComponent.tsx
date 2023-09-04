@@ -30,8 +30,6 @@ const SelectButtonComponent = ({
     }
   };
 
-  console.log(lineColor);
-
   return (
     <SelectButton onClick={onClick} lineColor={lineColor}>
       <Tag>{title}</Tag>

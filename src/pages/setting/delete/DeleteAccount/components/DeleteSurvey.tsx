@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import VoteButton from './VoteButton';
 import { globalState } from '@/recoil';
 import { useRecoilValue } from 'recoil';
-import FooterButton from '@/components/common/button/FooterButton';
+import WideButton from '@/components/common/button/WideButton';
 import useDeleteAccount from '@/pages/setting/Setting/hooks/useDeleteAccount';
 import Input from '@/components/common/input/Input';
 
@@ -69,9 +69,9 @@ const DeleteSurvey = () => {
         )}
       </Center>
 
-      <FooterButton onClick={onClickDelete} isActive={isActive}>
+      <WideButton onClick={onClickDelete} isActive={isActive}>
         탈퇴하기
-      </FooterButton>
+      </WideButton>
     </SurveyWrapper>
   );
 };
@@ -96,11 +96,19 @@ const Center = styled.div`
 
 const Title = styled.div`
   color: black;
-  ${({ theme }) => theme.typography.pretendard.t2.sbd}
+  font-family: ${({ theme }) => theme.fonts.pretendard};
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%;
   margin-bottom: 24px;
 
   div {
+    font-family: ${({ theme }) => theme.fonts.pretendard};
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
     margin-top: 4px;
-    ${({ theme }) => theme.typography.pretendard.c1.md}
   }
 `;

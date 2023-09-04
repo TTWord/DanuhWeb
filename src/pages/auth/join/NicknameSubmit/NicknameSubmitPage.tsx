@@ -5,7 +5,7 @@ import { useMutation } from 'react-query';
 import { useRecoilState } from 'recoil';
 import styled, { css } from 'styled-components';
 import { api } from '@/api';
-import FooterButton from '@/components/common/button/FooterButton';
+import WideButton from '@/components/common/button/WideButton';
 import TopBar from '@/components/common/header/TopBar';
 import Title from '@/components/common/header/Title';
 import InputAndCheck from '@/components/common/input/InputAndCheck';
@@ -86,9 +86,9 @@ const NicknameSubmitPage = () => {
         />
         <Error isActive={isOk}>{error}</Error>
       </Content>
-      <FooterButton isActive={isOk} onClick={onNext}>
+      <WideButton isActive={isOk} onClick={onNext}>
         다음
-      </FooterButton>
+      </WideButton>
     </Layout>
   );
 };
@@ -104,7 +104,8 @@ const Layout = styled.div`
 `;
 
 const SubTitle = styled.div`
-  ${({ theme }) => theme.typography.gmarketSans.md[14]}
+  ${({ theme }) => theme.typography.gmarketSans.md[16]};
+  font-size: 14px;
   padding-left: 16px;
   margin-top: 20px;
 `;

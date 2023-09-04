@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { useState, MouseEvent, useRef } from 'react';
+import { useState, useRef } from 'react';
 import CheckBox from '@/components/common/switch/CheckBox';
 import { useSetRecoilState } from 'recoil';
 import { globalState } from '@/recoil';
@@ -12,20 +12,19 @@ interface VotebuttonProps {
 const VoteButton = ({ voteOnClick, text }: VotebuttonProps) => {
   const textRef = useRef<HTMLDivElement>(null);
   const [isSelect, setIsSelect] = useState(false);
-  const [value, setValue] = useState('');
   const setIsDirectInput = useSetRecoilState(
     globalState.setting.directInputMode,
   );
 
   const onClick = () => {
     // 버튼 체크 용
-    setIsSelect(current => !current);
+    setIsSelect((current) => !current);
 
     const data = textRef.current?.innerText;
 
     // 버튼 타입에 따라 분기
     if (text === '직접 입력') {
-      setIsDirectInput(current => !current);
+      setIsDirectInput((current) => !current);
     } else if (voteOnClick && data) {
       voteOnClick(data);
     }
@@ -53,6 +52,10 @@ const ButtonWrapper = styled.div`
 
 const Text = styled.div`
   width: 100%;
-  ${({ theme }) => theme.typography.pretendard.b1.md}
-  margin-left: 4px;
+  font-family: ${({ theme }) => theme.fonts.pretendard};
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%;
+  margin-left: 8px;
 `;

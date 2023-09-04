@@ -8,7 +8,7 @@ interface ButtonProps {
   type?: 'button' | 'submit';
 }
 
-const FooterButton: React.FC<ButtonProps> = ({
+const WideButton: React.FC<ButtonProps> = ({
   isActive,
   children,
   onClick,
@@ -24,7 +24,7 @@ const FooterButton: React.FC<ButtonProps> = ({
   );
 };
 
-export default FooterButton;
+export default WideButton;
 
 const ButtonWrapper = styled.div`
   width: 100%;

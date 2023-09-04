@@ -147,7 +147,11 @@ const UserEmail = styled.span`
 `;
 
 const Description = styled.span`
-  ${({ theme }) => theme.typography.gmarketSans.md[14]};
+  font-family: ${({ theme }) => theme.fonts.pretendard};
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%;
   margin-top: 16px;
 `;
 
