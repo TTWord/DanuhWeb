@@ -13,6 +13,30 @@ const meta = {
     height: {
       type: 'number',
     },
+    placeholder: {
+      type: 'string',
+    },
+    value: {
+      type: 'string',
+    },
+    onChange: {
+      type: 'function',
+    },
+    cols: {
+      type: 'number',
+    },
+  },
+  render: (props) => {
+    const [value, setValue] = useState('');
+
+    return (
+      <TextField
+        {...props}
+        placeholder={'TextField 입니다.'}
+        onChange={setValue}
+        value={value}
+      />
+    );
   },
 } satisfies Meta<typeof TextField>;
 
@@ -21,7 +45,16 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
+    value: '',
+    placeholder: 'TextField 입니다.',
+  },
+};
+
+export const Resize: Story = {
+  args: {
     width: 312,
     height: 320,
+    value: '',
+    placeholder: 'TextField 입니다.',
   },
 };
