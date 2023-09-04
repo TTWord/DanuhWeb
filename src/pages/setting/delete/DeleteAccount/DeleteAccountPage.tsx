@@ -41,9 +41,4 @@ const Content = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  img {
-    width: 56px;
-    margin-bottom: 24px;
-  }
 `;

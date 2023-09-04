@@ -161,13 +161,20 @@ const Items = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  padding: 16px 8px;
+  padding-bottom: 0px;
 `;
 
 const Item = styled.button`
-  padding: 12px 24px;
   width: 100%;
+  height: 38px;
+  padding: 8px;
   text-align: left;
   font-size: 16px;
+
+  & + & {
+    margin-top: 20px;
+  }
 `;
 
 const SlideTopLine = styled.div`

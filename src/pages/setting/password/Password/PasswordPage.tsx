@@ -1,24 +1,19 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
-import useNavigatePop from '@/hooks/useNavigatePop';
 import { useEffect, ChangeEvent } from 'react';
 import useChangePassword from './hooks/useChangePassword';
 import StackLayout from '@/components/layout/StackLayout';
 import WideButton from '@/components/common/button/WideButton';
+import Input from '@/components/common/input/Input';
 
 // 비밀번호 표시 버튼?
 const PasswordPage = () => {
-  const navigate = useNavigatePop();
   const changePassword = useChangePassword();
 
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isOk, setIsOk] = useState(false);
-
-  const onBack = () => {
-    navigate('/setting');
-  };
 
   const onClickOldPW = (e: ChangeEvent<HTMLInputElement>) => {
     setOldPassword(e.target.value);
@@ -123,9 +118,7 @@ const Line = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 12px;
-  font-weight: 300;
-  line-height: 140%;
+  ${({ theme }) => theme.typography.pretendard.b1.rg};
   color: ${({ theme }) => theme.colors.gray[900]};
   margin-bottom: 8px;
 `;
