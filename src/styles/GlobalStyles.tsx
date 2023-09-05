@@ -90,6 +90,7 @@ const CustomStyles = createGlobalStyle`
     outline: none;
   }
 
+
   input:-webkit-autofill {
    -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
    -webkit-text-size-adjust: inherit;
@@ -99,11 +100,15 @@ const CustomStyles = createGlobalStyle`
     -webkit-tap-highlight-color: transparent;
   }
 
-  button, input {
+  * {
     box-sizing: border-box;
+  }
+
+  button, input, textarea {
     border: none;
     background-color: transparent;
     padding: 0;
+    font-size: inherit;
   }
 
   button {

@@ -38,9 +38,9 @@ const BookItem: React.FC<BookItemProps> = ({
 }) => {
   const [isOptionOpen, setIsOptionOpen] = useState(false);
   const [isBookSharePopOpen, setIsBookSharePopOpen] = useState(false);
-  const [isBottomSlidePopOpen, setIsBottomSlidePopOpen] = useState(false);
 
   const onClickShare = () => {
+    setIsOptionOpen(false);
     setIsBookSharePopOpen(true);
   };
 
@@ -57,8 +57,12 @@ const BookItem: React.FC<BookItemProps> = ({
         height={312}
       >
         <BookOptionHeader>
-          <BookOptionTitle>단어장 A</BookOptionTitle>
-          <BookOptionCloseButton>
+          <BookOptionTitle>{book.name}</BookOptionTitle>
+          <BookOptionCloseButton
+            onClick={() => {
+              setIsOptionOpen(false);
+            }}
+          >
             <img src={CloseSvg} alt="close" />
           </BookOptionCloseButton>
         </BookOptionHeader>
