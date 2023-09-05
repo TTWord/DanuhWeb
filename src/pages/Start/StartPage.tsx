@@ -8,7 +8,12 @@ const StartPage = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      navigate('/auth');
+      const refreshToken = localStorage.getItem('refresh_Token');
+      if (refreshToken) {
+        navigate('/book');
+      } else {
+        navigate('/auth');
+      }
     }, 2000);
   }, []);
 
