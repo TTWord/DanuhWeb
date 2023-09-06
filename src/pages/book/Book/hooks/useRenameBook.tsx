@@ -2,6 +2,7 @@ import { api } from '@/api';
 import { AxiosError } from 'axios';
 import useToast from '@/hooks/useToast';
 import useNavigatePop from '@/hooks/useNavigatePop';
+import { useQueryClient } from 'react-query';
 
 interface IUseRenameBook {
   bookId: number;
@@ -9,15 +10,16 @@ interface IUseRenameBook {
 }
 
 const useRenameBook = () => {
-  const navigate = useNavigatePop();
   const toast = useToast();
+  const queryClient = useQueryClient();
 
   const renameBook = async ({ bookId, newName }: IUseRenameBook) => {
     try {
       const { data: response } = await api.book.renameBook(bookId, newName);
 
       if (response.status === 'OK') {
-        navigate('/book');
+        toast.success('단어장 이름이 변경되었습니다.');
+        queryClient.invalidateQueries('BookPage/GetBooks');
       }
     } catch (e: unknown) {
       const err = e as AxiosError<{

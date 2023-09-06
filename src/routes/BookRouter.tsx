@@ -1,6 +1,5 @@
 import BookDetPage from '@/pages/book/_id/BookDet/BookDetPage';
 import BookPage from '@/pages/book/Book/BookPage';
-import ChangeBookPage from '@/pages/book/_id/ChangeBook/ChangeBookPage';
 import CreateWordPage from '@/pages/book/_id/CreateWord/CreateWordPage';
 import GenerateBookPage from '@/pages/book/generate/GenerateBook/GenerateBookPage';
 import ModifyWordPage from '@/pages/book/_id/ModifyWord/ModifyWordPage';
@@ -19,9 +18,6 @@ const BookRouter = () => {
 
       {/* 단어장 생성기 페이지 */}
       <Route path={'/generate'} element={<GenerateBookPage />} />
-
-      {/* 단어장 수정하기 페이지 */}
-      <Route path={'/:id/change'} element={<ChangeBookPage />} />
 
       {/* 단어장 페이지 */}
       <Route path={'/:id'} element={<BookDetPage />} />
