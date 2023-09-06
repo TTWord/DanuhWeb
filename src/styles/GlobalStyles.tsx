@@ -114,10 +114,6 @@ const CustomStyles = createGlobalStyle`
   button {
     cursor: pointer;
   }
-
-  div {
-    box-sizing: border-box;
-  }
 `;
 
 const GlobalStyles = () => (

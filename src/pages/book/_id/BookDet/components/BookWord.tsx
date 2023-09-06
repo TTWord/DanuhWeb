@@ -1,7 +1,9 @@
 import styled, { css } from 'styled-components';
 import iconOther from '@/assets/svg/icons/icon-other.svg';
-import { MouseEvent, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { MouseEvent, useEffect, useMemo, useState } from 'react';
+import BottomSlidePop from '@/components/common/popup/BottomSlidePop';
+import closeSvg from '../svg/close.svg';
+import useNavigatePush from '@/hooks/useNavigatePush';
 
 interface IBookWord {
   wordId: number;
@@ -11,26 +13,31 @@ interface IBookWord {
 }
 
 const BookWord = ({ wordId, word, mean, onClick }: IBookWord) => {
-  const [isOptionOpen, setOptionOpen] = useState(false);
-  const navigate = useNavigate();
+  const [isOptionOpen, setIsOptionOpen] = useState(false);
+  const navigatePush = useNavigatePush();
 
   const onClickToggleOption = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    setOptionOpen(current => !current);
+    setIsOptionOpen((current) => !current);
   };
 
   const updateWord = (e: any) => {
     e.stopPropagation();
-    navigate(`/book/${wordId}/modify`);
+    setIsOptionOpen(false);
+
+    navigatePush(`/book/${wordId}/modify`);
   };
 
   const deleteWord = () => {
-    onClick(wordId);
+    setIsOptionOpen(false);
+    setTimeout(() => {
+      onClick(wordId);
+    }, 0);
   };
 
   useEffect(() => {
     const onClickOutside = () => {
-      setOptionOpen(false);
+      setIsOptionOpen(false);
     };
 
     window.addEventListener('click', onClickOutside);
@@ -42,14 +49,32 @@ const BookWord = ({ wordId, word, mean, onClick }: IBookWord) => {
 
   return (
     <WordWrapper>
+      <BottomSlidePop
+        isOpen={isOptionOpen}
+        onPopClose={() => setIsOptionOpen(false)}
+        height={312}
+      >
+        <BookOptionHeader>
+          <BookOptionTitle>Meaning</BookOptionTitle>
+          <BookOptionCloseButton
+            onClick={() => {
+              setIsOptionOpen(false);
+            }}
+          >
+            <img src={closeSvg} alt="close" />
+          </BookOptionCloseButton>
+        </BookOptionHeader>
+        <BookOptionContent>
+          <BookOptionItem onClick={updateWord}>단어 수정</BookOptionItem>
+          <BookOptionItem onClick={deleteWord} red>
+            단어 삭제
+          </BookOptionItem>
+        </BookOptionContent>
+      </BottomSlidePop>
       <WordBox>
         <Word>{word}</Word>
         <Option onClick={onClickToggleOption}>
           <img src={iconOther} alt="deleteIcon" />
-          <OptionItems isActive={isOptionOpen}>
-            <OptionItem onClick={updateWord}>수정하기</OptionItem>
-            <OptionItem onClick={deleteWord}>삭제하기</OptionItem>
-          </OptionItems>
         </Option>
       </WordBox>
       <Mean>{mean}</Mean>
@@ -82,16 +107,15 @@ const WordBox = styled.div`
 `;
 
 const Word = styled.span`
-  font-weight: 700;
-  font-size: 15px;
-  line-height: 24px;
   color: ${({ theme }) => theme.colors.gray[800]};
+
+  ${({ theme }) => theme.typography.pretendard.t3.sbd};
 `;
 
 const Mean = styled.span`
-  font-size: 13px;
-  line-height: 20px;
   color: ${({ theme }) => theme.colors.gray[400]};
+
+  ${({ theme }) => theme.typography.pretendard.c1.rg};
 `;
 
 const Option = styled.button`
@@ -124,4 +148,52 @@ const OptionItem = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 12px;
+`;
+
+const BookOptionHeader = styled.div`
+  display: flex;
+  width: 100%;
+  height: 56px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+`;
+
+const BookOptionTitle = styled.div`
+  ${({ theme }) => theme.typography.pretendard.t2.sbd};
+  color: ${({ theme }) => theme.colors.gray[900]};
+`;
+
+const BookOptionCloseButton = styled.button``;
+
+const BookOptionContent = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 0 24px;
+`;
+
+const BookOptionItem = styled.div<{
+  red?: boolean;
+}>`
+  width: 100%;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  color: ${({ theme }) => theme.colors.gray[800]};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[200]};
+  font-size: 16px;
+  line-height: 140%;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+
+  &:active {
+    background-color: ${({ theme }) => theme.colors.gray[100]};
+  }
+
+  ${({ theme, red }) =>
+    red &&
+    css`
+      color: ${theme.colors.error};
+    `};
 `;

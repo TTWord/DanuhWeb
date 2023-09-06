@@ -5,9 +5,11 @@ import useToast from '@/hooks/useToast';
 import iconBack from '@/assets/svg/icons//icon-back-gray.svg';
 import { api } from '@/api';
 import WideButton from '@/components/common/button/WideButton';
+import useNavigatePop from '@/hooks/useNavigatePop';
 
 const ModifyWordPage = () => {
   const navigate = useNavigate();
+  const navigatePop = useNavigatePop();
   const toast = useToast();
 
   const wordId = Number(useParams().id);
@@ -16,7 +18,7 @@ const ModifyWordPage = () => {
   const [bookId, setBookId] = useState(0);
 
   const goBack = () => {
-    navigate(`/book/${bookId}`);
+    navigatePop(`/book/${bookId}`);
   };
 
   const getWordData = async () => {
