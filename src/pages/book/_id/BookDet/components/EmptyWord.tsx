@@ -36,6 +36,12 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
+  user-select: none;
+
+  &:active {
+    background-color: ${({ theme }) => theme.colors.gray[100]};
+  }
 `;
 
 const TextWrapper = styled.div`
@@ -49,6 +55,8 @@ const Korean = styled.div`
   line-height: 24px;
   color: ${({ theme }) => theme.colors.gray[500]};
   margin-bottom: 4px;
+
+  ${({ theme }) => theme.typography.pretendard.t2.sbd}
 `;
 
 const English = styled.div`
@@ -56,6 +64,8 @@ const English = styled.div`
   font-weight: 400;
   line-height: 20px;
   color: ${({ theme }) => theme.colors.gray[400]};
+
+  ${({ theme }) => theme.typography.pretendard.b1.rg}
 `;
 
 const PlusImg = styled.img`
