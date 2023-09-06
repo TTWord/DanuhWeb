@@ -112,6 +112,8 @@ const Header = styled.header`
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
+  font-weight: 700;
+
   color: #171717;
 `;
 

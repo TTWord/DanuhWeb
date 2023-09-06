@@ -1,38 +1,33 @@
 import BottomSlidePop from '@/components/common/popup/BottomSlidePop';
-import { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import iconCloseSVG from '@/assets/svg/icons/icon-close.svg';
-import { instance } from '@/instance';
-import { AxiosError } from 'axios';
-import useToast from '@/hooks/useToast';
-import { useQueryClient } from 'react-query';
 import Input from '@/components/common/input/Input';
+import useRenameBook from '../hooks/useRenameBook';
 
-interface BookAddPopProps {
+interface BookModifyPopProps {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
+  bookId: number;
+  bookName: string;
+  onClickUpdate: (bookId: number) => void;
 }
 
-const BookAddPop: React.FC<BookAddPopProps> = ({ isOpen, setIsOpen }) => {
+const BookModifyPop: React.FC<BookModifyPopProps> = ({
+  isOpen,
+  setIsOpen,
+  bookId,
+  bookName,
+}) => {
   const [inputText, setInputText] = useState('');
-  const toast = useToast();
-  const queryClient = useQueryClient();
+  const renameBook = useRenameBook();
 
-  const createBook = useCallback(async (bookName: string) => {
-    try {
-      await instance.post('/book', {
-        name: bookName,
-      });
+  useEffect(() => {
+    setInputText(bookName);
+  }, [bookName]);
 
-      toast.success('단어장이 생성되었습니다');
-      queryClient.invalidateQueries('BookPage/GetBooks');
-    } catch (e: unknown) {
-      toast.success('단어장 생성에 실패했습니다');
-    }
-  }, []);
-
-  const onClickCreate = () => {
-    createBook(inputText);
+  const onClickModify = () => {
+    renameBook({ bookId, newName: inputText });
     setIsOpen(false);
   };
 
@@ -70,7 +65,7 @@ const BookAddPop: React.FC<BookAddPopProps> = ({ isOpen, setIsOpen }) => {
             </CountLine>
           </TopContent>
           <BottomContent>
-            <CreateButton onClick={onClickCreate}>생성하기</CreateButton>
+            <CreateButton onClick={onClickModify}>수정하기</CreateButton>
           </BottomContent>
         </Content>
       </Container>
@@ -78,7 +73,7 @@ const BookAddPop: React.FC<BookAddPopProps> = ({ isOpen, setIsOpen }) => {
   );
 };
 
-export default BookAddPop;
+export default BookModifyPop;
 
 const Container = styled.div`
   width: 100%;

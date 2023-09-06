@@ -6,6 +6,7 @@ import donwloadedIcon from '@/assets/svg/icons/icon-downloaded.svg';
 import BookShareOptionPop from './BookShareOptionPop';
 import BottomSlidePop from '@/components/common/popup/BottomSlidePop';
 import CloseSvg from '../svg/close.svg';
+import BookModifyPop from './BookModifyPop';
 const generateDateText = (dateText: string) => {
   const date = new Date(dateText);
 
@@ -38,6 +39,7 @@ const BookItem: React.FC<BookItemProps> = ({
 }) => {
   const [isOptionOpen, setIsOptionOpen] = useState(false);
   const [isBookSharePopOpen, setIsBookSharePopOpen] = useState(false);
+  const [isBookAddPopOpen, setIsBookAddPopOpen] = useState(false);
 
   const onClickShare = () => {
     setIsOptionOpen(false);
@@ -46,11 +48,19 @@ const BookItem: React.FC<BookItemProps> = ({
 
   return (
     <>
+      <BookModifyPop
+        isOpen={isBookAddPopOpen}
+        setIsOpen={setIsBookAddPopOpen}
+        bookId={book.id}
+        bookName={book.name}
+        onClickUpdate={onClickUpdate}
+      />
       <BookShareOptionPop
         isOpen={isBookSharePopOpen}
         setIsOpen={setIsBookSharePopOpen}
         book={book}
       />
+
       <BottomSlidePop
         isOpen={isOptionOpen}
         onPopClose={() => setIsOptionOpen(false)}
@@ -68,10 +78,21 @@ const BookItem: React.FC<BookItemProps> = ({
         </BookOptionHeader>
         <BookOptionContent>
           <BookOptionItem onClick={onClickShare}>공유 설정</BookOptionItem>
-          <BookOptionItem onClick={() => onClickUpdate(book.id)}>
+          <BookOptionItem
+            onClick={() => {
+              setIsOptionOpen(false);
+              setIsBookAddPopOpen(true);
+            }}
+          >
             수정하기
           </BookOptionItem>
-          <BookOptionItem onClick={() => onClickRemove(book.id)} red>
+          <BookOptionItem
+            onClick={() => {
+              setIsOptionOpen(false);
+              onClickRemove(book.id);
+            }}
+            red
+          >
             단어장 삭제
           </BookOptionItem>
         </BookOptionContent>
@@ -186,7 +207,7 @@ const BookOptionHeader = styled.div`
   height: 56px;
   justify-content: space-between;
   align-items: center;
-  padding: 0 16px;
+  padding: 0 20px;
 `;
 
 const BookOptionTitle = styled.div`
@@ -214,6 +235,12 @@ const BookOptionItem = styled.div<{
   font-size: 16px;
   line-height: 140%;
   font-weight: 600;
+  user-select: none;
+  cursor: pointer;
+
+  &:active {
+    background-color: ${({ theme }) => theme.colors.gray[100]};
+  }
 
   ${({ theme, red }) =>
     red &&
