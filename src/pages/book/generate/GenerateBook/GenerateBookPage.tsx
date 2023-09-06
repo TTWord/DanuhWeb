@@ -165,5 +165,8 @@ const GuideText = styled.div`
 //-- 생성하기 버튼 영역 --//
 const Footer = styled.footer`
   width: 100%;
+  flex-shrink: 0;
+  padding: 0 24px;
+  padding-bottom: 36px;
   background-color: ${({ theme }) => theme.colors.white};
 `;

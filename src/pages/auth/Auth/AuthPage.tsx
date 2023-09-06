@@ -56,6 +56,8 @@ const WebWrapper = styled.div`
   flex-direction: column;
   background-color: white;
   overflow: hidden;
+  padding: 0 24px;
+  padding-bottom: 36px;
 `;
 
 // 무한 롤링 배너

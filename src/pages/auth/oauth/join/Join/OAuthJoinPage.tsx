@@ -20,8 +20,9 @@ const OAuthJoinPage = () => {
           소셜 로그인 최초 이용 시 필요한<br></br>추가 정보를 입력합니다.
         </Explain>
       </Content>
-
-      <WideButton onClick={onNext}>다음</WideButton>
+      <BottomView>
+        <WideButton onClick={onNext}>다음</WideButton>
+      </BottomView>
     </MainWrapper>
   );
 };
@@ -60,4 +61,11 @@ const Explain = styled.span`
   font-size: 16px;
   line-height: 140%;
   color: #5b5b5b;
+`;
+
+const BottomView = styled.div`
+  width: 100%;
+  flex-shrink: 0;
+  padding: 0 24px;
+  padding-bottom: 36px;
 `;
