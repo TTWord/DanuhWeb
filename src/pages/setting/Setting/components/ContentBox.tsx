@@ -17,8 +17,11 @@ const Content = styled.div`
   background: #ffffff;
   display: flex;
   align-items: center;
-  transition: 0.4s;
   flex-shrink: 0;
+
+  &:active {
+    background: ${(props) => props.theme.colors.gray[100]};
+  }
 
   & + & {
     border-top: 1px solid #f5f2ff;

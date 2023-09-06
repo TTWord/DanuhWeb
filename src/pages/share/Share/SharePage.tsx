@@ -40,7 +40,7 @@ const SharePage = () => {
   };
 
   const onClickType = () => {
-    setIsTypeclicked(current => !current);
+    setIsTypeclicked((current) => !current);
   };
 
   const onClickTypeButton = (e: MouseEvent<HTMLButtonElement>) => {
@@ -160,6 +160,11 @@ const MyShraingList = styled.button`
   flex-shrink: 0;
   justify-content: space-between;
   align-items: center;
+  user-select: none;
+
+  &:active {
+    background-color: ${({ theme }) => theme.colors.primary[200]};
+  }
 
   span {
     font-size: 16px;
