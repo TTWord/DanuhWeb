@@ -62,6 +62,10 @@ const Book = styled.button`
   padding-bottom: 12px;
   flex-shrink: 0;
 
+  &:active {
+    background-color: ${({ theme }) => theme.colors.primary[100]};
+  }
+
   & + & {
     margin-top: 8px;
   }

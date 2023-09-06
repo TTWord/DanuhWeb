@@ -126,6 +126,11 @@ const MyShraingList = styled.button`
   flex-shrink: 0;
   justify-content: space-between;
   align-items: center;
+  user-select: none;
+
+  &:active {
+    background-color: ${({ theme }) => theme.colors.primary[200]};
+  }
 
   span {
     font-size: 16px;

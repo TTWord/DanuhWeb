@@ -152,6 +152,12 @@ const Button = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  outline: none;
+  border-radius: 0 0 10px 10px;
+
+  &:active {
+    background-color: ${({ theme }) => theme.colors.gray[100]};
+  }
 `;
 
 const Content = styled.div`

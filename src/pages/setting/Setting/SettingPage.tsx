@@ -181,9 +181,7 @@ const Title = styled.div`
 `;
 
 const UserChangeButton = styled.img`
-  :hover {
-    cursor: pointer;
-  }
+  cursor: pointer;
 `;
 
 const UserInfoWrapper = styled.header`

@@ -177,6 +177,11 @@ const Button = styled.button`
   font-size: 14px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.gray[400]};
+  border-radius: 0 0 10px 10px;
+
+  &:active {
+    background-color: ${({ theme }) => theme.colors.gray[100]};
+  }
 
   & + & {
     border-left: 1px solid ${({ theme }) => theme.colors.gray[200]};

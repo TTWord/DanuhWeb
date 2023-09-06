@@ -10,7 +10,7 @@ interface InputAndCheckProps {
   onClickButton?: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
-const InputAndCheck: React.FC<InputAndCheckProps> = props => {
+const InputAndCheck: React.FC<InputAndCheckProps> = (props) => {
   return (
     <Group>
       <Input {...props} />
@@ -38,4 +38,8 @@ const Button = styled.button`
   ${({ theme }) => theme.typography.gmarketSans.md[12]};
   color: ${({ theme }) => theme.colors.white};
   border-radius: 8px;
+
+  &:active {
+    background-color: ${({ theme }) => theme.colors.primary[600]};
+  }
 `;
