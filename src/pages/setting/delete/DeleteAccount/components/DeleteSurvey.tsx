@@ -68,10 +68,11 @@ const DeleteSurvey = () => {
           />
         )}
       </Center>
-
-      <WideButton onClick={onClickDelete} isActive={isActive}>
-        탈퇴하기
-      </WideButton>
+      <BottomView>
+        <WideButton onClick={onClickDelete} isActive={isActive}>
+          탈퇴하기
+        </WideButton>
+      </BottomView>
     </SurveyWrapper>
   );
 };
@@ -111,4 +112,11 @@ const Title = styled.div`
     line-height: 140%;
     margin-top: 4px;
   }
+`;
+
+const BottomView = styled.div`
+  width: 100%;
+  flex-shrink: 0;
+  padding: 0 24px;
+  padding-bottom: 36px;
 `;

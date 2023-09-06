@@ -101,9 +101,11 @@ const ReportPage = () => {
         </ReportType>
       </Content>
 
-      <WideButton onClick={onSubmit} isActive={canSubmit}>
-        전송하기
-      </WideButton>
+      <BottomView>
+        <WideButton onClick={onSubmit} isActive={canSubmit}>
+          전송하기
+        </WideButton>
+      </BottomView>
     </WebWrapper>
   );
 };
@@ -176,4 +178,11 @@ const TextBox = styled.textarea`
   ::placeholder {
     color: #c0c0c0;
   }
+`;
+
+const BottomView = styled.div`
+  width: 100%;
+  flex-shrink: 0;
+  padding: 0 24px;
+  padding-bottom: 36px;
 `;

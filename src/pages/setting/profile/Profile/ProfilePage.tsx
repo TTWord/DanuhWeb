@@ -208,6 +208,9 @@ const PicEditButton = styled.button`
 
 const ProfileForm = styled.form`
   width: 100%;
+  flex-shrink: 0;
+  padding: 0 24px;
+  padding-bottom: 36px;
   display: flex;
   justify-content: center;
   align-items: center;

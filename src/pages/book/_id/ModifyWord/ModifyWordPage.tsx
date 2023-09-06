@@ -84,17 +84,19 @@ const ModifyWordPage = () => {
         </WordBox>
       </Container>
 
-      <WideButton
-        onClick={() => {
-          if (word === '' && mean === '') {
-            toast.error('미입력칸이 있습니다.');
-          } else {
-            modifyWord(word, mean);
-          }
-        }}
-      >
-        수정하기
-      </WideButton>
+      <BottomView>
+        <WideButton
+          onClick={() => {
+            if (word === '' && mean === '') {
+              toast.error('미입력칸이 있습니다.');
+            } else {
+              modifyWord(word, mean);
+            }
+          }}
+        >
+          수정하기
+        </WideButton>
+      </BottomView>
     </MainWrapper>
   );
 };
@@ -185,4 +187,11 @@ const Input = styled.input`
   ::placeholder {
     color: #dadada;
   }
+`;
+
+const BottomView = styled.div`
+  width: 100%;
+  flex-shrink: 0;
+  padding: 0 24px;
+  padding-bottom: 36px;
 `;
