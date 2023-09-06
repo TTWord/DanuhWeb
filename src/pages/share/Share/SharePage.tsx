@@ -4,10 +4,10 @@ import { useSetRecoilState } from 'recoil';
 import { useEffect, useState, MouseEvent } from 'react';
 import useGetSharedBooks from './hooks/useGetSharedBooks';
 import SharingBook from './components/SharingBook';
-import iconSearch from '@/assets/svg/icons/icon-search.svg';
 import iconArrowUpRight from '@/assets/svg/icons/icon-arrow-up-right.svg';
 import iconArrowDown from '@/assets/svg/icons/icon-arrow-down.svg';
 import useNavigatePush from '@/hooks/useNavigatePush';
+import TopBar from '@/components/common/header/TopBar';
 
 const SharePage = () => {
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
@@ -40,7 +40,7 @@ const SharePage = () => {
   };
 
   const onClickType = () => {
-    setIsTypeclicked(current => !current);
+    setIsTypeclicked((current) => !current);
   };
 
   const onClickTypeButton = (e: MouseEvent<HTMLButtonElement>) => {
@@ -69,10 +69,7 @@ const SharePage = () => {
   //// Components ////
   return (
     <WebWrapper>
-      <Header>
-        <PageTitle>Share</PageTitle>
-        <Search onClick={goSearchPage} src={iconSearch} alt="search" />
-      </Header>
+      <TopBar type="search" title="Share" onClick={goSearchPage} />
 
       <MyShraingList onClick={goMySharingBooks}>
         <span>{'나의 공유 단어장'}</span>
@@ -117,45 +114,14 @@ const WebWrapper = styled.div`
   font-family: ${({ theme }) => theme.fonts.pretendard};
 `;
 
-const Header = styled.header`
-  width: 100%;
-  height: 56px;
-  flex-shrink: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 16px;
-`;
-
-const PageTitle = styled.div`
-  font-family: ${({ theme }) => theme.fonts.gmarketSans};
-  font-style: normal;
-  font-weight: 700;
-  font-size: 18px;
-`;
-
-const Search = styled.img`
-  cursor: pointer;
-`;
-
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
-`;
-
 const MyShraingList = styled.button`
   width: 142px;
-  height: 36px;
+  height: 35px;
   background-color: ${({ theme }) => theme.colors.primary[100]};
   border-radius: 8px;
   color: black;
   padding: 8px;
-  margin-top: 8px;
-  margin-bottom: 20px;
-  margin: 8px 0px 5px 16px;
+  margin: 8px 0px 5px 16px; // 아래 Container 컴포넌트에 padding 속성적용
   display: flex;
   flex-shrink: 0;
   justify-content: space-between;
@@ -172,6 +138,14 @@ const MyShraingList = styled.button`
   img {
     width: 16px;
   }
+`;
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
 `;
 
 const SharingIndex = styled.div`

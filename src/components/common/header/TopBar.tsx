@@ -31,9 +31,26 @@ const TopBar = ({
     case 'search':
       return (
         <SearchWrapper>
-          <Text>{title}</Text>
+          <TextG>{title}</TextG>
           <SearchButton onClick={onClick} src={iconSearch} alt="search" />
         </SearchWrapper>
+      );
+
+    case 'setting':
+      return (
+        <SettingWrapper>
+          <TextG>{title}</TextG>
+          <SettingButton onClick={onClick} src={iconSetting} alt="setting" />
+        </SettingWrapper>
+      );
+
+    case 'close':
+      return (
+        <CloseWrapper>
+          <CloseButton>
+            <img onClick={onClick} src={iconClose} alt="close" />
+          </CloseButton>
+        </CloseWrapper>
       );
 
     case 'page':
@@ -47,7 +64,7 @@ const TopBar = ({
               src={iconBack}
               alt="back"
             />
-            <Text>{title}</Text>
+            <TextP>{title}</TextP>
           </Left>
 
           <Right>{`${currentPage}/${lastPage}`}</Right>
@@ -65,7 +82,7 @@ const TopBar = ({
               src={iconBack}
               alt="back"
             />
-            <Text>{title}</Text>
+            <TextP>{title}</TextP>
           </Left>
 
           <Button>
@@ -78,23 +95,6 @@ const TopBar = ({
         </ButtonWrapper>
       );
 
-    case 'setting':
-      return (
-        <SettingWrapper>
-          <Text>{title}</Text>
-          <SettingButton onClick={onClick} src={iconSetting} alt="setting" />
-        </SettingWrapper>
-      );
-
-    case 'close':
-      return (
-        <CloseWrapper>
-          <CloseButton>
-            <img onClick={onClick} src={iconClose} alt="close" />
-          </CloseButton>
-        </CloseWrapper>
-      );
-
     default:
       return (
         <TopBarWrapper>
@@ -105,7 +105,7 @@ const TopBar = ({
             src={iconBack}
             alt="back"
           />
-          <Text>{title}</Text>
+          <TextP>{title}</TextP>
         </TopBarWrapper>
       );
   }
@@ -127,8 +127,13 @@ const BackButton = styled.img`
   cursor: pointer;
 `;
 
-const Text = styled.div`
+const TextP = styled.div`
   ${({ theme }) => theme.typography.pretendard.t3.sbd}
+`;
+
+const TextG = styled.div`
+  ${({ theme }) => theme.typography.gmarketSans.md[18]}
+  font-weight: bold;
 `;
 
 const SearchButton = styled.img`

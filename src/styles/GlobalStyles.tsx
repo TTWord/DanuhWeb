@@ -109,6 +109,7 @@ const CustomStyles = createGlobalStyle`
     background-color: transparent;
     padding: 0;
     font-size: inherit;
+    font-family: inherit;
   }
 
   button {
