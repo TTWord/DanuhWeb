@@ -195,4 +195,6 @@ const Footer = styled.footer`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 24px;
+  padding-bottom: 36px;
 `;

@@ -216,6 +216,8 @@ const RequestAuthCodeComment = styled.div`
 const BottomView = styled.div`
   width: 100%;
   flex-shrink: 0;
+  padding: 0 24px;
+  margin-bottom: 36px;
 `;
 
 const CodeError = styled.div<{ isError: boolean }>`

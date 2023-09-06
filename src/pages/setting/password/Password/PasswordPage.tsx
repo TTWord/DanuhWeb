@@ -144,32 +144,11 @@ const InputBox = styled.input`
 
 const Footer = styled.footer`
   width: 100%;
-  padding: 0 20px;
-  margin-bottom: 20px;
+  flex-shrink: 0;
+  padding: 0 24px;
+  padding-bottom: 36px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
-`;
-
-const SubmitButton = styled.button<{
-  isActive: boolean;
-}>`
-  width: 100%;
-  height: 48px;
-  border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.primary.disabled};
-  color: white;
-
-  ${({ theme }) => theme.typography.gmarketSans.md[16]};
-  font-size: 14px;
-
-  ${({ isActive }) => {
-    return (
-      isActive &&
-      css`
-        background-color: ${({ theme }) => theme.colors.primary.default};
-      `
-    );
-  }}
 `;

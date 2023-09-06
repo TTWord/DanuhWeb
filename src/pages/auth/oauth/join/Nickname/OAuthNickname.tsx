@@ -93,9 +93,11 @@ const OAuthNickname = () => {
         <Error isActive={isOk}>{error}</Error>
       </Content>
 
-      <WideButton isActive={isOk} onClick={onNext}>
-        다음
-      </WideButton>
+      <BottomView>
+        <WideButton isActive={isOk} onClick={onNext}>
+          다음
+        </WideButton>
+      </BottomView>
     </Layout>
   );
 };
@@ -146,4 +148,11 @@ const Error = styled.div<{
     css`
       color: #0ac54a;
     `}
+`;
+
+const BottomView = styled.div`
+  width: 100%;
+  flex-shrink: 0;
+  padding: 0 24px;
+  padding-bottom: 36px;
 `;

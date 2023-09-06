@@ -205,4 +205,6 @@ const BottomView = styled.div`
   width: 100%;
   height: 84px;
   flex-shrink: 0;
+  padding: 0 24px;
+  padding-bottom: 36px;
 `;
