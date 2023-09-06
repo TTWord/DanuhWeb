@@ -168,6 +168,7 @@ const InfoHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 16px;
 `;
 
 const BookCreator = styled.button`
@@ -246,7 +247,6 @@ const BookComment = styled.div`
   position: relative;
   overflow: visible;
   border-radius: 4px;
-  margin-top: 14px;
   margin-bottom: 16px;
   transition: all 0.5s;
 `;
