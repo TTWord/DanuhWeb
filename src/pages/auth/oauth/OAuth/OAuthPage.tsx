@@ -87,10 +87,23 @@ const OAuthPage = () => {
     }
   };
 
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    if (!message) {
+      timeout = setTimeout(() => {
+        navigate('/auth/login');
+      }, 2000);
+    }
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, []);
+
   switch (message) {
     // 에러 발생 시 출력 되는 화면
     default: {
-      return <MainWrapper>로그인으로 돌아갑니다.</MainWrapper>;
+      return <Error>로그인으로 돌아갑니다...</Error>;
     }
 
     // 소셜로그인 성공일때는 빈화면 출력
@@ -120,6 +133,15 @@ const OAuthPage = () => {
 };
 
 export default OAuthPage;
+
+const Error = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
+`;
 
 const MainWrapper = styled.div`
   width: 100%;
