@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { TailSpin } from 'react-loader-spinner';
 import arrowBackImg from './svg/icon-arrow-secondary.svg';
 import useGenerateBook from '@/pages/book/generate/GenerateBook/hooks/useGenerateBook';
-import TopBar from '@/components/common/header/TopBar';
+import TopAppBarStack from '@/components/common/header/TopAppBarStack';
 import WideButton from '@/components/common/button/WideButton';
 import Input from '@/components/common/input/Input';
 import TextField from '@/components/common/input/TextField';
@@ -15,7 +15,12 @@ const GenerateBookPage = () => {
 
   return (
     <MainWrapper>
-      <TopBar type={'default'} navigate={'/book'} title={'단어장 생성기'} />
+      <TopAppBarStack
+        type={'default'}
+        navigate={'/book'}
+        title={'단어장 생성기'}
+        backgroundColor="transparent"
+      />
 
       <Content>
         <BookNameWrapper>

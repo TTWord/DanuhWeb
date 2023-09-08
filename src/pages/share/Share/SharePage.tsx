@@ -7,7 +7,7 @@ import SharingBook from './components/SharingBook';
 import iconArrowUpRight from '@/assets/svg/icons/icon-arrow-up-right.svg';
 import iconArrowDown from '@/assets/svg/icons/icon-arrow-down.svg';
 import useNavigatePush from '@/hooks/useNavigatePush';
-import TopBar from '@/components/common/header/TopBar';
+import TopAppBar from '@/components/common/header/TopAppBar';
 
 const SharePage = () => {
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
@@ -69,7 +69,7 @@ const SharePage = () => {
   //// Components ////
   return (
     <WebWrapper>
-      <TopBar type="search" title="Share" onClick={goSearchPage} />
+      <TopAppBar type="search" title="Share" onClick={goSearchPage} />
 
       <MyShraingList onClick={goMySharingBooks}>
         <span>{'나의 공유 단어장'}</span>

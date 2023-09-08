@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import useNavigatePush from '@/hooks/useNavigatePush';
 import WideButton from '@/components/common/button/WideButton';
-import TopBar from '@/components/common/header/TopBar';
+import TopAppBarStack from '@/components/common/header/TopAppBarStack';
 
 const OAuthJoinPage = () => {
   const navigatePush = useNavigatePush();
@@ -12,7 +12,7 @@ const OAuthJoinPage = () => {
 
   return (
     <MainWrapper>
-      <TopBar type="default" navigate="/auth/login" />
+      <TopAppBarStack type="default" navigate="/auth/login" />
 
       <Content>
         <Title>소셜 회원가입</Title>

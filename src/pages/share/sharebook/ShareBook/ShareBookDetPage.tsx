@@ -4,7 +4,7 @@ import useGetSharedBookById from './hooks/useGetSharedBookById';
 import { useEffect, useMemo, useState } from 'react';
 import useNavigatePush from '@/hooks/useNavigatePush';
 import useDownloadSharedBook from './hooks/useDownloadSharedBook';
-import TopBar from '@/components/common/header/TopBar';
+import TopAppBarStack from '@/components/common/header/TopAppBarStack';
 import DownloadButton from '@/components/common/button/DownloadButton';
 import SharedWordBox from './components/SharedWordBox';
 import iconDown from '@/assets/svg/icons/icon-arrow-down.svg-small.svg';
@@ -67,7 +67,14 @@ const ShareBookDetPage = () => {
 
   return (
     <MainWrapper>
-      <TopBar type={'default'} navigate={'/share'} title={userinfo.bookName} />
+      <TopAppBarStack
+        type={'button'}
+        navigate={'/share'}
+        title={userinfo.bookName}
+        buttonComponent={<DownloadButton onClick={donwloadSharedBook} />}
+      >
+        <DownloadButton onClick={donwloadSharedBook} />
+      </TopAppBarStack>
 
       <Container>
         <BookInfo>
@@ -83,7 +90,6 @@ const ShareBookDetPage = () => {
               </ProFile>
               <Name>{userinfo.nickname}</Name>
             </BookCreator>
-            <DownloadButton onClick={donwloadSharedBook} />
           </InfoHeader>
 
           {userinfo.comment && (
