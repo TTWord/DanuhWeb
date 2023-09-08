@@ -86,6 +86,7 @@ const Input: React.FC<InputProps> = ({
               }
             }}
             value={value}
+            autoComplete="on"
           />
           <EyeButton
             isView={isFocused}
