@@ -6,7 +6,7 @@ import { useRecoilState } from 'recoil';
 import styled, { css } from 'styled-components';
 import { api } from '@/api';
 import WideButton from '@/components/common/button/WideButton';
-import TopBar from '@/components/common/header/TopBar';
+import TopAppBarStack from '@/components/common/header/TopAppBarStack';
 import Title from '@/components/common/header/Title';
 import InputAndCheck from '@/components/common/input/InputAndCheck';
 import { AxiosError } from 'axios';
@@ -71,7 +71,12 @@ const NicknameSubmitPage = () => {
 
   return (
     <Layout>
-      <TopBar type="page" navigate="/auth/login" currentPage={1} lastPage={3} />
+      <TopAppBarStack
+        type="page"
+        navigate="/auth/login"
+        currentPage={1}
+        lastPage={3}
+      />
       <Title title="사용하실 이름을 알려주세요" />
       <SubTitle>나중에 변경할 수 있어요</SubTitle>
 

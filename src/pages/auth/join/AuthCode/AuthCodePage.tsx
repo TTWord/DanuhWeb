@@ -7,7 +7,7 @@ import { TailSpin } from 'react-loader-spinner';
 import WideButton from '@/components/common/button/WideButton';
 import useSendmail from '@/pages/auth/join/Join/hooks/useSendmail';
 import Counter from './components/Counter';
-import TopBar from '@/components/common/header/TopBar';
+import TopAppBarStack from '@/components/common/header/TopAppBarStack';
 import Title from '@/components/common/header/Title';
 
 const AuthCodePage = () => {
@@ -47,7 +47,7 @@ const AuthCodePage = () => {
 
   return (
     <Layout>
-      <TopBar
+      <TopAppBarStack
         type={'page'}
         navigate="/auth/join/info"
         currentPage={3}

@@ -5,13 +5,12 @@ import { globalState } from '@/recoil';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { TailSpin } from 'react-loader-spinner';
 import WideButton from '@/components/common/button/WideButton';
-import TopBar from '@/components/common/header/TopBar';
+import TopAppBarStack from '@/components/common/header/TopAppBarStack';
 import Title from '@/components/common/header/Title';
 import InputLogin from '@/components/common/input/InputLogin';
 import Input from '@/components/common/input/Input';
 
 const JoinPage = () => {
-  const buttonRef = useRef(null);
   const [isOk, setIsOk] = useState(false);
   const { isLoading, sendmail, error, setError } = useSendmail();
 
@@ -77,7 +76,12 @@ const JoinPage = () => {
 
   return (
     <Layout>
-      <TopBar type="page" navigate="/auth/join" currentPage={2} lastPage={3} />
+      <TopAppBarStack
+        type="page"
+        navigate="/auth/join"
+        currentPage={2}
+        lastPage={3}
+      />
       <Title title="아이디와 비밀번호를 설정해주세요" />
 
       <Content onSubmit={onSubmit}>
@@ -121,7 +125,7 @@ const JoinPage = () => {
         </CenterView>
 
         <BottomView>
-          <WideButton ref={buttonRef} isActive={isOk} onClick={onJoin}>
+          <WideButton isActive={isOk} onClick={onJoin}>
             {isLoading ? (
               <TailSpin
                 height="30"

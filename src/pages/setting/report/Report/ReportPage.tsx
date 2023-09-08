@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import BottomSlideSelectPop from '@/components/common/popup/BottomSlideSelectPop';
-import TopBar from '@/components/common/header/TopBar';
+import TopAppBarStack from '@/components/common/header/TopAppBarStack';
 import useToast from '@/hooks/useToast';
 import WideButton from '@/components/common/button/WideButton';
 import { api } from '@/api';
@@ -70,7 +70,7 @@ const ReportPage = () => {
 
   return (
     <WebWrapper>
-      <TopBar
+      <TopAppBarStack
         type={'default'}
         navigate="/setting"
         title="건의하기 / 버그신고"

@@ -8,7 +8,7 @@ import kakaoIcon from '@/assets/svg/icons/icon-kakao.svg';
 import appleIcon from '@/assets/svg/icons/icon-apple.svg';
 import useLoginPageNavigate from './hooks/useLoginPageNavigate';
 
-import TopBar from '@/components/common/header/TopBar';
+import TopAppBarStack from '@/components/common/header/TopAppBarStack';
 import Title from '@/components/common/header/Title';
 import InputLogin from '@/components/common/input/InputLogin';
 import Input from '@/components/common/input/Input';
@@ -48,7 +48,7 @@ const LoginPage = () => {
           onLogin();
         }}
       >
-        <TopBar type="default" navigate="/auth" />
+        <TopAppBarStack type="default" navigate="/auth" />
         <Title title="이메일로 로그인" />
 
         <FormWrapper>

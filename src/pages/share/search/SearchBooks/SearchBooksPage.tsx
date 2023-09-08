@@ -3,7 +3,7 @@ import { useState } from 'react';
 import iconSearch from '@/assets/svg/icons/icon-search.svg';
 import SearchedBook from './components/SearchedBook';
 import useGetSharedBooks from '../../Share/hooks/useGetSharedBooks';
-import TopBar from '@/components/common/header/TopBar';
+import TopAppBarStack from '@/components/common/header/TopAppBarStack';
 
 const SearchBooksPage = () => {
   const { isLoading, getSharedBooks } = useGetSharedBooks();
@@ -38,7 +38,7 @@ const SearchBooksPage = () => {
 
   return (
     <MainWrapper>
-      <TopBar type={'default'} navigate="/share" title="단어장 검색" />
+      <TopAppBarStack type={'default'} navigate="/share" title="단어장 검색" />
 
       <Container>
         <SearchBox isFocused={isFocused}>

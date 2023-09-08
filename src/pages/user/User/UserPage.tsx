@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import TopBar from '@/components/common/header/TopBar';
+import TopAppBarStack from '@/components/common/header/TopAppBarStack';
 import defaultProfile from '@/assets/svg/logos/logo-profile-default.svg';
 import SharingBook from '@/pages/share/Share/components/SharingBook';
 import ShareInfoBox from '@/pages/common/components/ShareInfoBox';
@@ -23,7 +23,7 @@ const UserPage = () => {
   // API 에러 없음
   return (
     <WebWrapper>
-      <TopBar
+      <TopAppBarStack
         type={'default'}
         navigate={backURL}
         title={`${userinfo.nickname}님의 프로필`}

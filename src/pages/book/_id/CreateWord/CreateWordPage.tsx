@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import useAddWord from '@/pages/book/_id/CreateWord/hooks/useAddWord';
-import TopBar from '@/components/common/header/TopBar';
+import TopAppBarStack from '@/components/common/header/TopAppBarStack';
 import useToast from '@/hooks/useToast';
 
 const CreateWordPage = () => {
@@ -20,7 +20,12 @@ const CreateWordPage = () => {
 
   return (
     <MainWrapper>
-      <TopBar type={'default'} navigate={`/book/${bookId}`} title="단어 추가" />
+      <TopAppBarStack
+        type={'default'}
+        navigate={`/book/${bookId}`}
+        title="단어 추가"
+        backgroundColor="transparent"
+      />
 
       <Container>
         <WordBox>

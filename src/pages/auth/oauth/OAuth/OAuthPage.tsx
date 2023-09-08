@@ -7,8 +7,7 @@ import iconKakao from '@/assets/svg/icons/icon-kakao.svg';
 import iconApple from '@/assets/svg/icons/icon-apple-black.svg';
 import useSocialLogin from '../../login/Login/hooks/useSocialLogin';
 import useNavigatePop from '@/hooks/useNavigatePop';
-
-import TopBar from '@/components/common/header/TopBar';
+import TopAppBarClose from '@/components/common/header/TopAppBarClose';
 import Title from '@/components/common/header/Title';
 import LoginButton from '@/components/common/button/LoginButton';
 
@@ -114,7 +113,7 @@ const OAuthPage = () => {
     case 'USER_ALREADY_REGISTERED':
       return (
         <MainWrapper>
-          <TopBar type="close" onClick={goLocalLogin} />
+          <TopAppBarClose onClose={goLocalLogin} />
           <Title title="이미 만들어진 계정이 있어요" />
 
           <Center>
