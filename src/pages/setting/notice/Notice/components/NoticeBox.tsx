@@ -36,18 +36,17 @@ export default NoticeBox;
 
 const Content = styled.div`
   width: 100%;
-  height: 100px;
   flex-shrink: 0;
   box-sizing: border-box;
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray[200]};
-  padding: 0px 20px;
+  padding: 16px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  transition: 0.4s;
+  cursor: pointer;
 
-  :hover {
-    cursor: pointer;
+  &:active {
+    background-color: ${({ theme }) => theme.colors.gray[100]};
   }
 `;
 
@@ -59,18 +58,16 @@ const TextWrapper = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 24px;
   color: black;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+
+  ${({ theme }) => theme.typography.pretendard.t3.sbd};
 `;
 
 const Explain = styled.div`
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 20px;
   color: black;
+
+  ${({ theme }) => theme.typography.pretendard.c1.rg};
 `;
 
 const NextButton = styled.img`

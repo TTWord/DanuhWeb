@@ -1,29 +1,25 @@
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
-import backImg from '@/assets/svg/icons/icon-back-gray.svg';
 import useNavigatePop from '@/hooks/useNavigatePop';
+import StackLayout from '@/components/layout/StackLayout';
 
 const NoticeDetpage = () => {
-  const navigate = useNavigatePop();
+  const navigatePop = useNavigatePop();
   const location = useLocation();
   const title = location.state.title;
   const content = location.state.content;
 
-  const goBack = () => {
-    navigate('/setting/notice');
-  };
-
   return (
-    <MainWrapper>
-      <HeaderWrapper>
-        <BackButton onClick={goBack}>
-          <img src={backImg} alt="backImg" />
-        </BackButton>
-        {title}
-      </HeaderWrapper>
-
+    <StackLayout
+      topBar={{
+        title,
+        back: {
+          location: '/setting/notice',
+        },
+      }}
+    >
       <ContentWrapper>{content}</ContentWrapper>
-    </MainWrapper>
+    </StackLayout>
   );
 };
 
@@ -39,12 +35,11 @@ const HeaderWrapper = styled.div`
   height: 56px;
   flex-shrink: 0;
   padding: 0 16px;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 140%;
   display: flex;
   align-items: center;
   color: ${({ theme }) => theme.colors.gray[900]};
+
+  ${({ theme }) => theme.typography.pretendard.t3.sbd};
 `;
 
 const BackButton = styled.button`
@@ -55,8 +50,7 @@ const ContentWrapper = styled.div`
   width: 100%;
   height: 100%;
   padding: 16px 20px;
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 20px;
   color: ${({ theme }) => theme.colors.gray[600]};
+
+  ${({ theme }) => theme.typography.pretendard.b1.md};
 `;
