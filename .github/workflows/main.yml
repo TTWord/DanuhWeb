@@ -50,7 +50,7 @@ jobs:
         run: aws s3 sync dist/ s3://ttwordbucket
 
       - name: Upload to StoryBook S3
-        run: aws s3 sync dist/ s3://danuh-storybook
+        run: aws s3 sync storybook-static/ s3://danuh-storybook
 
       - name: Invalidate CloudFront cache
         run: |
