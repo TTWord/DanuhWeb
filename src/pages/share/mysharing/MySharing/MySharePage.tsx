@@ -103,13 +103,13 @@ const MySharingPage = () => {
                 isDownloadMode={mode === 'download'}
                 onClick={onClickTypeButton}
               >
-                {'최신순'}
+                최신순
               </TypeButton>
               <TypeButton
                 isDownloadMode={mode === 'download'}
                 onClick={onClickTypeButton}
               >
-                {'오래된순'}
+                오래된순
               </TypeButton>
               {/* 공유받은 단어장일때만 토글 버튼 활성화 */}
               {mode === 'download' && (
@@ -123,7 +123,7 @@ const MySharingPage = () => {
                   <ToggleBox isToggle={isToggle}>
                     <ToggleButton />
                   </ToggleBox>
-                  {'추천한 단어장만 보기'}
+                  추천한 단어장만 보기
                 </TypeButton>
               )}
             </TypeList>
@@ -298,7 +298,10 @@ const TypeButton = styled.button<{
   display: flex;
   align-items: center;
   background-color: white;
-  border-radius: 8px;
+
+  &:active {
+    background-color: ${({ theme }) => theme.colors.primary[100]};
+  }
 
   :nth-child(2) {
     border-radius: 0 0 8px 8px;

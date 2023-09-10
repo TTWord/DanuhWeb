@@ -84,11 +84,9 @@ const SharePage = () => {
             <CurrentType>{sortType}</CurrentType>
             <img src={iconArrowDown} alt="list" />
             <TypeList isActive={isTypeClicked}>
-              <TypeButton onClick={onClickTypeButton}>{'최신순'}</TypeButton>
-              <TypeButton onClick={onClickTypeButton}>{'인기순'}</TypeButton>
-              <TypeButton onClick={onClickTypeButton}>
-                {'다운로드순'}
-              </TypeButton>
+              <TypeButton onClick={onClickTypeButton}>최신순</TypeButton>
+              <TypeButton onClick={onClickTypeButton}>인기순</TypeButton>
+              <TypeButton onClick={onClickTypeButton}>다운로드순</TypeButton>
             </TypeList>
           </SortType>
         </SharingIndex>
@@ -227,9 +225,12 @@ const TypeButton = styled.button`
   display: flex;
   align-items: center;
   background-color: white;
-  border-radius: 8px;
 
-  :nth-child(2) {
+  &:active {
+    background-color: ${({ theme }) => theme.colors.primary[100]};
+  }
+
+  &:nth-child(2) {
     border-radius: 0px;
     border-top: 1px solid ${({ theme }) => theme.colors.primary[100]};
     border-bottom: 1px solid ${({ theme }) => theme.colors.primary[100]};

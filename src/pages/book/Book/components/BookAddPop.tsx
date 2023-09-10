@@ -1,9 +1,8 @@
 import BottomSlidePop from '@/components/common/popup/BottomSlidePop';
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import styled, { css } from 'styled-components';
-import iconCloseSVG from '@/assets/svg/icons/icon-close.svg';
+import iconCloseSvg from '../svg/close.svg';
 import { instance } from '@/instance';
-import { AxiosError } from 'axios';
 import useToast from '@/hooks/useToast';
 import { useQueryClient } from 'react-query';
 import Input from '@/components/common/input/Input';
@@ -46,7 +45,7 @@ const BookAddPop: React.FC<BookAddPopProps> = ({ isOpen, setIsOpen }) => {
         <Header>
           <Title>단어장 만들기</Title>
           <CloseButton onClick={() => setIsOpen(false)}>
-            <img src={iconCloseSVG} alt="close" />
+            <img src={iconCloseSvg} alt="close" />
           </CloseButton>
         </Header>
         <Content>

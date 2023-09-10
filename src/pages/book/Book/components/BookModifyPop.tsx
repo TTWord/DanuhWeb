@@ -1,7 +1,7 @@
 import BottomSlidePop from '@/components/common/popup/BottomSlidePop';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import iconCloseSVG from '@/assets/svg/icons/icon-close.svg';
+import iconCloseSvg from '../svg/close.svg';
 import Input from '@/components/common/input/Input';
 import useRenameBook from '../hooks/useRenameBook';
 
@@ -41,7 +41,7 @@ const BookModifyPop: React.FC<BookModifyPopProps> = ({
         <Header>
           <Title>단어장 만들기</Title>
           <CloseButton onClick={() => setIsOpen(false)}>
-            <img src={iconCloseSVG} alt="close" />
+            <img src={iconCloseSvg} alt="close" />
           </CloseButton>
         </Header>
         <Content>

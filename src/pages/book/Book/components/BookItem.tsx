@@ -98,25 +98,29 @@ const BookItem: React.FC<BookItemProps> = ({
         </BookOptionContent>
       </BottomSlidePop>
       <Item key={book.id} onClick={() => onItemClick(book.id)}>
-        <Top>
-          <Strong>{book.name}</Strong>
-          <Option
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsOptionOpen((current) => !current);
-            }}
-          >
-            <img src={iconOther} alt="other" />
-          </Option>
-        </Top>
+        <Clickable>
+          <Top>
+            <Strong>{book.name}</Strong>
+          </Top>
 
-        <Bottom>
-          <DataCreated>{generateDateText(book.created_at)}</DataCreated>
-          {book.is_sharing && <IsSharing src={sharingIcon} alt="sharingIcon" />}
-          {book.is_downloaded && (
-            <IsDownloaded src={donwloadedIcon} alt="donwloadedIcon" />
-          )}
-        </Bottom>
+          <Bottom>
+            <DataCreated>{generateDateText(book.created_at)}</DataCreated>
+            {book.is_sharing && (
+              <IsSharing src={sharingIcon} alt="sharingIcon" />
+            )}
+            {book.is_downloaded && (
+              <IsDownloaded src={donwloadedIcon} alt="donwloadedIcon" />
+            )}
+          </Bottom>
+        </Clickable>
+        <Option
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsOptionOpen((current) => !current);
+          }}
+        >
+          <img src={iconOther} alt="other" />
+        </Option>
       </Item>
     </>
   );
@@ -132,21 +136,27 @@ const Item = styled.div`
   box-shadow: 0 2px 10px 0 rgba(105, 74, 194, 0.08);
   border: 1px solid ${({ theme }) => theme.colors.primary[100]};
   border-radius: 4px;
-  padding: 13px 16px;
-  padding-top: 15px;
   line-height: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   cursor: pointer;
   user-select: none;
-
-  &:active {
-    background-color: ${({ theme }) => theme.colors.primary[100]};
-  }
+  position: relative;
 
   & + & {
     margin-top: 8px;
+  }
+`;
+
+const Clickable = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 13px 16px;
+  padding-top: 15px;
+
+  &:active {
+    background-color: ${({ theme }) => theme.colors.primary[100]};
   }
 `;
 
@@ -160,15 +170,25 @@ const Bottom = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: flex-end;
 `;
 
 const Option = styled.div`
-  width: 24px;
-  height: 24px;
+  width: 36px;
+  height: 36px;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
+  position: absolute;
+  z-index: 1;
+  right: 6px;
+  top: 6px;
+  cursor: pointer;
+  border-radius: 50%;
+
+  &:active {
+    background-color: #f5f5f5;
+  }
 `;
 
 const Strong = styled.strong`
@@ -185,9 +205,9 @@ const Strong = styled.strong`
 
 const DataCreated = styled.p`
   width: 100%;
-  font-size: 13px;
-  color: #999;
-  line-height: 18px;
+
+  ${({ theme }) => theme.typography.pretendard.c1.rg};
+  color: ${({ theme }) => theme.colors.gray[400]};
 `;
 
 const Img = styled.img``;

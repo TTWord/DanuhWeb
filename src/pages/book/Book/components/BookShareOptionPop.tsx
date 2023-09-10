@@ -6,6 +6,7 @@ import { useMutation } from 'react-query';
 import { api } from '@/api';
 import { useNavigate } from 'react-router-dom';
 import useToast from '@/hooks/useToast';
+import useNavigatePop from '@/hooks/useNavigatePop';
 
 interface BookShareOptionPopProps {
   isOpen: boolean;
@@ -27,7 +28,7 @@ const BookShareOptionPop: React.FC<BookShareOptionPopProps> = ({
   setIsOpen,
   book,
 }) => {
-  const navigate = useNavigate();
+  const navigatePop = useNavigatePop();
   const toast = useToast();
   const [isShared, setIsShared] = useState(false);
   const [comment, setComment] = useState('');
@@ -38,7 +39,7 @@ const BookShareOptionPop: React.FC<BookShareOptionPopProps> = ({
     if (response.status === 'OK') {
       toast.success('단어장이 공개되었습니다.');
       onPopClose();
-      navigate('/book');
+      navigatePop('/book');
     }
   });
 
@@ -48,7 +49,7 @@ const BookShareOptionPop: React.FC<BookShareOptionPopProps> = ({
     if (response.status === 'OK') {
       onPopClose();
       toast.success('단어장이 비공개되었습니다.');
-      navigate('/book');
+      navigatePop('/book');
     }
   });
 
@@ -200,6 +201,10 @@ const SaveButton = styled.button`
   color: ${({ theme }) => theme.colors.white};
 
   ${({ theme }) => theme.typography.gmarketSans.md[16]};
+
+  &:active {
+    background-color: ${({ theme }) => theme.colors.primary[600]};
+  }
 `;
 
 const BookCommentWrapper = styled.div<{
