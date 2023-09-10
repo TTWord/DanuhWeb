@@ -33,8 +33,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build
+      - name: Product Build
         run: npm run build
+
+      - name: StoryBook Build
+        run: yarn build-storybook
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -43,10 +46,14 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
-      - name: Upload to S3
+      - name: Upload to Main S3
         run: aws s3 sync dist/ s3://ttwordbucket
+
+      - name: Upload to StoryBook S3
+        run: aws s3 sync dist/ s3://danuh-storybook
 
       - name: Invalidate CloudFront cache
         run: |
           aws configure set preview.cloudfront true
           aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_ID }} --paths '/*'
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.STORYBOOK_CLOUDFRONT_ID }} --paths '/*'
