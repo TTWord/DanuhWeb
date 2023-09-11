@@ -114,6 +114,7 @@ const CustomStyles = createGlobalStyle`
 
   button {
     cursor: pointer;
+    color: inherit;
   }
 `;
 
