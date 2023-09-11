@@ -10,6 +10,7 @@ import iconInfo from '@/assets/svg/icons/icon-info.svg';
 import defaultProfile from '@/assets/svg/logos/logo-profile-default.svg';
 import useSettingPageLogic from './hooks/useSettingPageLogic';
 import AlertPop from '@/components/common/popup/AlertPop';
+import MeteorSVG from './components/MeteorSVG';
 
 const SettingPage = () => {
   const logout = useLogout();
@@ -51,8 +52,15 @@ const SettingPage = () => {
         isOpen={isAlertOpen}
         onClose={() => setIsAlertOpen(false)}
       >
+        <PictureArea>
+          <MeteorSVG />
+        </PictureArea>
         <AlertPopTitle>다운로드</AlertPopTitle>
         <AlertPopDesc>내 공유 단어장이 다운로드 된 횟수</AlertPopDesc>
+        <Spliter />
+        <PictureArea>
+          <MeteorSVG />
+        </PictureArea>
         <AlertPopTitle>추천</AlertPopTitle>
         <AlertPopDesc>내 공유 단어장이 추전받은 횟수</AlertPopDesc>
       </AlertPop>
@@ -98,7 +106,6 @@ const SettingPage = () => {
                   alt="download"
                   onClick={() => {
                     onClickHelp();
-                    // toast.comment('내 공유 단어장이 다운된 횟수');
                   }}
                 />
               </InfoName>
@@ -114,7 +121,6 @@ const SettingPage = () => {
                   alt="recommend"
                   onClick={() => {
                     onClickHelp();
-                    // toast.comment('내 공유 단어장이 추천받은 횟수');
                   }}
                 />
               </InfoName>
@@ -324,10 +330,22 @@ const ContentWrapper = styled.div`
   }
 `;
 
+const Spliter = styled.div`
+  width: 100%;
+  height: 24px;
+`;
+
+const PictureArea = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
 const AlertPopTitle = styled.div`
   ${({ theme }) => theme.typography.pretendard.t3.bd};
   color: ${({ theme }) => theme.colors.gray[900]};
   text-align: center;
+  margin-top: 4px;
 `;
 
 const AlertPopDesc = styled.div`
