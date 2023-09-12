@@ -8,6 +8,9 @@ import AuthCodePage from '@/pages/auth/join/AuthCode/AuthCodePage';
 import OAuthJoinPage from '@/pages/auth/oauth/join/Join/OAuthJoinPage';
 import OAuthNickname from '@/pages/auth/oauth/join/Nickname/OAuthNickname';
 import WelcomePage from '@/pages/auth/welcome/Welcome/WelcomePage';
+import PasswordPage from '@/pages/auth/password/Password/PasswordPage';
+import PasswordCode from '@/pages/auth/password/PasswordCode/PasswordCode';
+import PasswordInitial from '@/pages/auth/password/PasswordInitial/PasswordInitial';
 
 const AuthRouter = () => {
   const location = useLocation();
@@ -28,6 +31,15 @@ const AuthRouter = () => {
 
       {/* 소셜 로그인 페이지 */}
       <Route path={'/oauth/join/nickname'} element={<OAuthNickname />} />
+
+      {/* 비밀번호 찾기 페이지 */}
+      <Route path={'/password'} element={<PasswordPage />} />
+
+      {/* 비밀번호 찾기 페이지 */}
+      <Route path={'/password/code'} element={<PasswordCode />} />
+
+      {/* 비밀번호 찾기 페이지 */}
+      <Route path={'/password/initial'} element={<PasswordInitial />} />
 
       {/* 닉네임 입력 페이지 */}
       <Route path={'/join'} element={<NicknameSubmitPage />} />
