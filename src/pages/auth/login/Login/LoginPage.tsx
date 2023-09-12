@@ -16,7 +16,7 @@ import Input from '@/components/common/input/Input';
 const LoginPage = () => {
   const login = useLogin();
   const { kakaoLogin, googleLogin, appleLogin } = useSocialLogin();
-  const { runAuthPage, runJoinPage } = useLoginPageNavigate();
+  const { runAuthPage, runJoinPage, runFindPage } = useLoginPageNavigate();
 
   const [emailId, setEmailId] = useState('');
   const [emailDomain, setEmailDomain] = useState('');
@@ -41,6 +41,9 @@ const LoginPage = () => {
 
   return (
     <WebWrapper>
+      <TopAppBarStack type="default" navigate="/auth" />
+      <Title title="이메일로 로그인" />
+
       <Form
         onSubmit={(e) => {
           e.preventDefault();
@@ -48,9 +51,6 @@ const LoginPage = () => {
           onLogin();
         }}
       >
-        <TopAppBarStack type="default" navigate="/auth" />
-        <Title title="이메일로 로그인" />
-
         <FormWrapper>
           <FormBox>
             <Span>아이디</Span>
@@ -66,12 +66,16 @@ const LoginPage = () => {
             />
           </FormBox>
 
-          <Join>
-            아직 계정이 없으신가요?
-            <SignInButton onClick={runJoinPage} type="button">
-              회원가입
-            </SignInButton>
-          </Join>
+          <Extra>
+            <Join>
+              아직 계정이 없으신가요?
+              <SignInButton onClick={runJoinPage} type="button">
+                회원가입
+              </SignInButton>
+            </Join>
+            <Bar />
+            <FindPassword onClick={runFindPage}>비밀번호 찾기</FindPassword>
+          </Extra>
         </FormWrapper>
 
         <Footer>
@@ -139,18 +143,38 @@ const Span = styled.span`
   ${({ theme }) => theme.typography.pretendard.b1.md};
 `;
 
-const Join = styled.div`
-  width: auto;
+const Extra = styled.div`
+  width: 100%;
   height: auto;
-  font-size: 12px;
+  ${({ theme }) => theme.typography.pretendard.c1.rg};
+  color: ${({ theme }) => theme.colors.gray[900]};
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-top: 8px;
 `;
 
+const Join = styled.div`
+  width: auto;
+  height: auto;
+`;
+
 const SignInButton = styled.button`
-  line-height: 120%;
+  font-weight: 500;
+  line-height: 100%;
   border-bottom: 1px solid;
-  font-weight: 700;
   margin-left: 4px;
+`;
+
+const Bar = styled.div`
+  width: 1px;
+  height: calc(100% - 4px);
+  margin: 0px 19px;
+  background-color: ${({ theme }) => theme.colors.gray[400]};
+`;
+
+const FindPassword = styled.button`
+  font-weight: 500;
 `;
 
 const SocialWrapper = styled.div`
