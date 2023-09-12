@@ -62,8 +62,6 @@ const TopAppBarStack: React.FC<TopAppBarProps> = ({
       );
 
     case 'button':
-      console.log(buttonComponent);
-
       return (
         <ButtonWrapper backgroundColor={backgroundColor}>
           <Left>
@@ -153,7 +151,7 @@ const ButtonWrapper = styled(TopAppBarWrapper)`
   justify-content: space-between;
 `;
 
-const Button = styled.button`
+const Button = styled.div`
   width: auto;
   cursor: pointer;
 

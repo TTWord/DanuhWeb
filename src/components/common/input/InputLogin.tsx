@@ -211,6 +211,8 @@ const MailText = styled.div<{
 }>`
   width: 100%;
   color: ${({ theme }) => theme.colors.gray[400]};
+  user-select: none;
+
   ${({ isActive }) =>
     isActive &&
     css`
