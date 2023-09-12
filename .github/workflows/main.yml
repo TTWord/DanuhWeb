@@ -47,10 +47,10 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: Upload to Main S3
-        run: aws s3 sync dist/ s3://ttwordbucket
+        run: aws s3 sync dist/ s3://${{ secrets.MAIN_S3 }}
 
       - name: Upload to StoryBook S3
-        run: aws s3 sync storybook-static/ s3://danuh-storybook
+        run: aws s3 sync storybook-static/ s3://${{ secrets.STORYBOOK_S3 }}
 
       - name: Invalidate CloudFront cache
         run: |
