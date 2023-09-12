@@ -9,6 +9,7 @@ import useSendmail from '@/pages/auth/join/Join/hooks/useSendmail';
 import Counter from './components/Counter';
 import TopAppBarStack from '@/components/common/header/TopAppBarStack';
 import Title from '@/components/common/header/Title';
+import CodeResendButton from '../../components/CodeResendButton';
 
 const AuthCodePage = () => {
   const userEmail = useRecoilValue(globalState.auth.username);
@@ -71,13 +72,14 @@ const AuthCodePage = () => {
               maxLength={6}
             />
           </AuthInputBox>
-          <Counter />
+          <CounterBox>
+            <Counter />
+          </CounterBox>
           <RequestAuthCodeComment>
             메일을 받지 못하셨나요?
           </RequestAuthCodeComment>
-          <AuthCodeResendButton onClick={onClickRequestCode}>
-            인증코드 재발송
-          </AuthCodeResendButton>
+
+          <CodeResendButton onClick={onClickRequestCode} />
         </CenterView>
 
         <BottomView>
@@ -202,6 +204,12 @@ const AuthInput = styled.input`
   }
 `;
 
+const CounterBox = styled.div`
+  width: 206px;
+  height: auto;
+  padding: 0 8px;
+`;
+
 const RequestAuthCodeComment = styled.div`
   width: 100%;
   text-align: center;
@@ -245,22 +253,4 @@ const CodeError = styled.div<{ isError: boolean }>`
       `
     );
   }}
-`;
-
-const AuthCodeResendButton = styled.button`
-  width: 88px;
-  height: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-  font-family: ${({ theme }) => theme.fonts.pretendard};
-  font-size: 10px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  color: ${({ theme }) => theme.colors.primary.default};
-  background-color: ${({ theme }) => theme.colors.primary[100]};
-  border-radius: 20px;
-  border: 1px solid ${({ theme }) => theme.colors.primary[400]};
 `;
