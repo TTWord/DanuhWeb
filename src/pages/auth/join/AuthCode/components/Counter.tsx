@@ -17,7 +17,7 @@ const Counter = () => {
         clearTimeout(timeOutId);
         setCodeTimeOut(true);
       } else {
-        setTimer(current => current - 1);
+        setTimer((current) => current - 1);
       }
     }, 1000);
     return () => clearTimeout(timeOutId);
@@ -41,16 +41,12 @@ const Counter = () => {
 export default Counter;
 
 const CounterBox = styled.div`
-  width: 206px;
-  height: 10px;
-  font-weight: 400;
-  font-size: 10px;
-  line-height: 10px;
-  color: #666666;
+  width: 100%;
+  height: auto;
   display: flex;
   justify-content: flex-end;
-  color: #4ad0e2;
-  padding: 0 8px;
+  color: ${({ theme }) => theme.colors.secondary.default};
+  ${({ theme }) => theme.typography.pretendard.c1.md};
 `;
 
 const TimeOutMessage = styled.div`

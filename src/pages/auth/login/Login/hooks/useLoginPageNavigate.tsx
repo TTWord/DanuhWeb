@@ -14,7 +14,11 @@ const useLoginPageNavigate = () => {
     navigatePush('/auth/join');
   };
 
-  return { runAuthPage, runJoinPage };
+  const runFindPage = () => {
+    navigatePush('/auth/password');
+  };
+
+  return { runAuthPage, runJoinPage, runFindPage };
 };
 
 export default useLoginPageNavigate;
