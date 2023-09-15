@@ -49,4 +49,21 @@ export const authAPI = {
 
     return response;
   },
+
+  findPassword: async (username: string) => {
+    const response = await instance.post('/auth/findpassword', {
+      username,
+    });
+
+    return response;
+  },
+
+  checkCert: async (username: string, certification_id: number) => {
+    const response = await instance.post('/auth/checkcert', {
+      username,
+      certification_id,
+    });
+
+    return response;
+  },
 };

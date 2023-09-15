@@ -24,6 +24,8 @@ const WelcomePage = () => {
         setTimeout(() => {
           navigate('/book');
         }, 3000);
+
+        return;
       }
     } catch (e: unknown) {
       const err = e as AxiosError<{
@@ -83,12 +85,10 @@ const WebWrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  position: absolute;
   padding: 0 32px;
   justify-content: center;
   align-items: flex-start;
   position: relative;
-  font-family: ${({ theme }) => theme.fonts.gmarketSans};
 `;
 
 const UserNameText = styled.div`
@@ -107,35 +107,38 @@ const UserName = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  color: ${({ theme }) => theme.colors.gray[700]};
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  padding: 2px;
+  padding-top: 5px;
 `;
 
 const Span = styled.span`
   color: ${({ theme }) => theme.colors.gray[700]};
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
   line-height: 100%;
   display: flex;
   align-items: end;
 `;
 
 const Welcome = styled.div`
-  font-weight: 500;
-  font-size: 36px;
   line-height: 1;
-  color: #5c369a;
+  color: ${({ theme }) => theme.colors.gray[700]};
   font-weight: 700;
+  font-size: 36px;
   margin-top: 14px;
   font-family: ${({ theme }) => theme.fonts.gmarketSans};
   opacity: 0;
   animation: ${fadeIn} 2s linear forwards;
   animation-delay: 1s;
-`;
-
-const UserEmail = styled.div`
-  font-weight: 300;
-  color: #333333;
-  font-family: ${({ theme }) => theme.fonts.gmarketSans};
-  font-size: 14px;
-  margin-top: 8px;
-  margin-bottom: 200px;
 `;
 
 const IconWrapper = styled.div`

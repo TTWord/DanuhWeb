@@ -4,25 +4,39 @@ import Title from '@/components/common/header/Title';
 import Input from '@/components/common/input/Input';
 import { useEffect, useState } from 'react';
 import WideButton from '@/components/common/button/WideButton';
-import useNavigatePush from '@/hooks/useNavigatePush';
+import usePasswordPageLogic from '../hooks/usePasswordPageLogic';
+import { TailSpin } from 'react-loader-spinner';
 
 const PasswordInitial = () => {
-  const navigatePush = useNavigatePush();
-
-  const [code, setCode] = useState('');
+  const { initializePassword, initialLoading, pwError } =
+    usePasswordPageLogic();
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isActive, setIsActive] = useState(false);
+  const [pwConfirmError, setPwConfirmError] = useState('');
 
-  const goinitialPage = () => {
-    navigatePush('/auth/password/initial');
+  const initialPassword = () => {
+    if (isActive) {
+      if (password !== confirmPassword) {
+        setPwConfirmError('비밀번호가 일치하지 않습니다');
+      } else {
+        setPwConfirmError('');
+        console.log(password, confirmPassword);
+      }
+    }
   };
 
   useEffect(() => {
-    if (code !== '') {
+    if (
+      password !== '' &&
+      confirmPassword !== '' &&
+      password === confirmPassword
+    ) {
       setIsActive(true);
     } else {
       setIsActive(false);
     }
-  }, [code]);
+  }, [password, confirmPassword]);
 
   return (
     <WebWrapper>
@@ -34,30 +48,42 @@ const PasswordInitial = () => {
         <PasswordWrapper>
           <InputBox>
             <Type>
-              인증번호 <span>영문, 숫자, 특수문자 포함 8자 이상</span>
+              비밀번호 <span>영문, 숫자, 특수문자 포함 8자 이상</span>
             </Type>
             <Input
               type={'password'}
-              onChange={setCode}
+              onChange={setPassword}
               placeholder={'비밀번호 입력'}
-              value={code}
+              value={password}
             />
-            <ErrorMessage>{'테스트'}</ErrorMessage>
+            <ErrorMessage>{pwError}</ErrorMessage>
           </InputBox>
           <InputBox>
-            <Type>인증번호</Type>
+            <Type>비밀번호 확인</Type>
             <Input
               type={'password'}
-              onChange={setCode}
+              onChange={setConfirmPassword}
               placeholder={'비밀번호 재입력'}
-              value={code}
+              value={confirmPassword}
             />
-            <ErrorMessage>{'테스트'}</ErrorMessage>
+            <ErrorMessage>{pwConfirmError}</ErrorMessage>
           </InputBox>
         </PasswordWrapper>
 
-        <WideButton type="button" isActive={isActive} onClick={goinitialPage}>
-          다음
+        <WideButton type="button" isActive={isActive} onClick={initialPassword}>
+          {initialLoading ? (
+            <TailSpin
+              height="30"
+              width="30"
+              radius="1"
+              color="#ffffff"
+              ariaLabel="three-dots-loading"
+              wrapperStyle={{}}
+              visible={true}
+            />
+          ) : (
+            '완료'
+          )}
         </WideButton>
       </Content>
     </WebWrapper>
