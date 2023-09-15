@@ -4,26 +4,30 @@ import Title from '@/components/common/header/Title';
 import Input from '@/components/common/input/Input';
 import { useEffect, useState } from 'react';
 import WideButton from '@/components/common/button/WideButton';
-import useNavigatePush from '@/hooks/useNavigatePush';
 import CodeResendButton from '../../components/CodeResendButton';
 import Counter from '../../join/AuthCode/components/Counter';
+import usePasswordPageLogic from '../hooks/usePasswordPageLogic';
+import { useLocation } from 'react-router-dom';
+import { TailSpin } from 'react-loader-spinner';
 
 const PasswordCode = () => {
-  const navigatePush = useNavigatePush();
-
+  const { submitCertCode, certCodeLoading, resendCode } =
+    usePasswordPageLogic();
+  const location = useLocation();
+  const username = location?.state?.username;
   const [code, setCode] = useState('');
   const [isActive, setIsActive] = useState(false);
 
   const reSendCode = () => {
-    console.log(1);
+    if (username) resendCode(username);
   };
 
-  const goinitialPage = () => {
-    navigatePush('/auth/password/initial');
+  const submitCode = () => {
+    if (isActive) submitCertCode({ username, code });
   };
 
   useEffect(() => {
-    if (code !== '') {
+    if (code !== '' && code.length === 6) {
       setIsActive(true);
     } else {
       setIsActive(false);
@@ -43,6 +47,7 @@ const PasswordCode = () => {
             onChange={setCode}
             placeholder={'6자리 숫자 코드 입력'}
             value={code}
+            maxLength={6}
           />
         </InputBox>
         <Counter />
@@ -52,8 +57,20 @@ const PasswordCode = () => {
         </ResendBox>
       </Content>
       <Bottom>
-        <WideButton type="button" isActive={isActive} onClick={goinitialPage}>
-          다음
+        <WideButton type="button" isActive={isActive} onClick={submitCode}>
+          {certCodeLoading ? (
+            <TailSpin
+              height="30"
+              width="30"
+              radius="1"
+              color="#ffffff"
+              ariaLabel="three-dots-loading"
+              wrapperStyle={{}}
+              visible={true}
+            />
+          ) : (
+            '다음'
+          )}
         </WideButton>
       </Bottom>
     </WebWrapper>

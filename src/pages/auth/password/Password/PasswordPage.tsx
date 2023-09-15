@@ -4,10 +4,11 @@ import Title from '@/components/common/header/Title';
 import InputLogin from '@/components/common/input/InputLogin';
 import { FormEvent, useEffect, useState } from 'react';
 import WideButton from '@/components/common/button/WideButton';
-import useNavigatePush from '@/hooks/useNavigatePush';
+import usePasswordPageLogic from '../hooks/usePasswordPageLogic';
+import { TailSpin } from 'react-loader-spinner';
 
 const PasswordPage = () => {
-  const navigatePush = useNavigatePush();
+  const { submitUsername, userNameLoading } = usePasswordPageLogic();
 
   const [emailId, setEmailId] = useState('');
   const [domain, setDomain] = useState('');
@@ -15,8 +16,10 @@ const PasswordPage = () => {
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(emailId, domain);
-    navigatePush('/auth/password/code');
+
+    if (isActive) {
+      submitUsername(`${emailId}@${domain}`);
+    }
   };
 
   useEffect(() => {
@@ -42,7 +45,19 @@ const PasswordPage = () => {
           </EmailBox>
 
           <WideButton isActive={isActive} type="submit">
-            다음
+            {userNameLoading ? (
+              <TailSpin
+                height="30"
+                width="30"
+                radius="1"
+                color="#ffffff"
+                ariaLabel="three-dots-loading"
+                wrapperStyle={{}}
+                visible={true}
+              />
+            ) : (
+              '다음'
+            )}
           </WideButton>
         </EmailForm>
       </Content>
