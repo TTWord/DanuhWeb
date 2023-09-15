@@ -9,6 +9,7 @@ interface InputProps {
   placeholder?: string;
   onChange?: (text: string) => void;
   value?: string;
+  maxLength?: number;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -16,6 +17,7 @@ const Input: React.FC<InputProps> = ({
   type,
   onChange,
   value,
+  maxLength,
 }) => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isPasswordView, setIsPasswordView] = useState<boolean>(false);
@@ -53,6 +55,7 @@ const Input: React.FC<InputProps> = ({
               }
             }}
             value={value}
+            maxLength={maxLength}
           />
 
           <CloseButton
