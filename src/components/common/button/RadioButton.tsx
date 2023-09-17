@@ -1,17 +1,19 @@
 import styled from 'styled-components';
-import { useState } from 'react';
 import buttonDefault from '@/assets/svg/icons/icon-check-none.svg';
 import buttonSelected from '@/assets/svg/icons/icon-check-selected.svg';
 import buttonDisabled from '@/assets/svg/icons/icon-check-disabled.svg';
 
 interface ButtonProps {
   onClick: () => void;
+  isSelected?: boolean;
   isDisabled?: boolean;
 }
 
-const RadioButton: React.FC<ButtonProps> = ({ onClick, isDisabled }) => {
-  const [isSelected, setIsSelected] = useState(false);
-
+const RadioButton: React.FC<ButtonProps> = ({
+  onClick,
+  isSelected,
+  isDisabled,
+}) => {
   if (isDisabled) {
     return (
       <Button>
@@ -20,12 +22,7 @@ const RadioButton: React.FC<ButtonProps> = ({ onClick, isDisabled }) => {
     );
   } else {
     return (
-      <Button
-        onClick={() => {
-          setIsSelected((current) => !current);
-          onClick();
-        }}
-      >
+      <Button onClick={onClick}>
         {!isSelected && <img src={buttonDefault} alt="able" />}
         {isSelected && <img src={buttonSelected} alt="select" />}
       </Button>
