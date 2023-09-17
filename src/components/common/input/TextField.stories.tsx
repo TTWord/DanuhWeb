@@ -7,9 +7,6 @@ const meta = {
   component: TextField,
   tags: ['autodocs'],
   argTypes: {
-    width: {
-      type: 'number',
-    },
     height: {
       type: 'number',
     },
@@ -52,7 +49,6 @@ export const Default: Story = {
 
 export const Resize: Story = {
   args: {
-    width: 312,
     height: 320,
     value: '',
     placeholder: 'TextField 입니다.',

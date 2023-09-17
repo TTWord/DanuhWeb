@@ -2,7 +2,6 @@ import { ChangeEvent } from 'react';
 import styled, { css } from 'styled-components';
 
 interface TextFieldProps {
-  width?: number;
   height?: number;
   placeholder: string;
   value: string;
@@ -11,7 +10,6 @@ interface TextFieldProps {
 }
 
 const TextField = ({
-  width,
   height,
   placeholder,
   value,
@@ -30,7 +28,7 @@ const TextField = ({
   };
 
   return (
-    <TextBox width={width} height={height}>
+    <TextBox height={height}>
       <TextArea
         onChange={onChangeTextArea}
         placeholder={placeholder}
@@ -46,7 +44,7 @@ const TextField = ({
 
 export default TextField;
 
-const TextBox = styled.div<{ width?: number; height?: number }>`
+const TextBox = styled.div<{ height?: number }>`
   width: 100%;
   height: 100%;
   display: flex;
@@ -56,14 +54,12 @@ const TextBox = styled.div<{ width?: number; height?: number }>`
   border: 1px solid ${({ theme }) => theme.colors.gray[200]};
   border-radius: 8px;
 
-  ${({ width, height }) => {
+  ${({ height }) => {
     return (
+      height &&
       css`
-        width: ${width}px;
         height: ${height}px;
-      ` ||
-      width ||
-      height
+      `
     );
   }};
 `;
