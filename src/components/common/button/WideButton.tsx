@@ -46,7 +46,7 @@ const Button = styled.button<{
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
-  line-height: 140%;
+  line-height: 100%;
   color: white;
   border-radius: 8px;
   font-family: ${({ theme }) => theme.fonts.gmarketSans};
