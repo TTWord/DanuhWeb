@@ -1,15 +1,8 @@
 import styled from 'styled-components';
-import useNavigatePop from '@/hooks/useNavigatePop';
-import backImg from '@/assets/svg/icons/icon-back-gray.svg';
 import NoticeBox from '@/pages/setting/notice/Notice/components/NoticeBox';
+import TopAppBarStack from '@/components/common/header/TopAppBarStack';
 
 const NoticePage = () => {
-  const navigate = useNavigatePop();
-
-  const goBack = () => {
-    navigate('/setting');
-  };
-
   const noticeList = [
     {
       id: 1,
@@ -35,15 +28,10 @@ const NoticePage = () => {
 
   return (
     <MainWrapper>
-      <HeaderWrapper>
-        <BackButton onClick={goBack}>
-          <img src={backImg} alt="backImg" />
-        </BackButton>
-        공지사항
-      </HeaderWrapper>
+      <TopAppBarStack type="default" title="공지사항" navigate="/setting" />
 
-      <ContentWrapper>
-        {noticeList.map(item => {
+      <Content>
+        {noticeList.map((item) => {
           return (
             <NoticeBox
               key={item.id}
@@ -53,7 +41,7 @@ const NoticePage = () => {
             />
           );
         })}
-      </ContentWrapper>
+      </Content>
     </MainWrapper>
   );
 };
@@ -66,24 +54,7 @@ const MainWrapper = styled.div`
   font-style: normal;
 `;
 
-const HeaderWrapper = styled.div`
-  width: 100%;
-  height: 56px;
-  flex-shrink: 0;
-  padding: 0 16px;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 140%;
-  display: flex;
-  align-items: center;
-  color: ${({ theme }) => theme.colors.gray[900]};
-`;
-
-const BackButton = styled.button`
-  margin-right: 16px;
-`;
-
-const ContentWrapper = styled.div`
+const Content = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
