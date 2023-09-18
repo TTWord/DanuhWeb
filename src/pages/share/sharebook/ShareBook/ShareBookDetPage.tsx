@@ -72,9 +72,7 @@ const ShareBookDetPage = () => {
         navigate={'/share'}
         title={userinfo.bookName}
         buttonComponent={<DownloadButton onClick={donwloadSharedBook} />}
-      >
-        <DownloadButton onClick={donwloadSharedBook} />
-      </TopAppBarStack>
+      />
 
       <Container>
         <BookInfo>
