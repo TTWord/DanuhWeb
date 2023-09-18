@@ -1,5 +1,6 @@
 import useNavigatePush from '@/hooks/useNavigatePush';
 import styled, { css } from 'styled-components';
+import sampleIcon from '@/assets/svg/logos/logo-character.svg';
 
 interface ISelectButtonProps {
   naviURL: string;
@@ -32,8 +33,12 @@ const SelectButtonComponent = ({
 
   return (
     <SelectButton onClick={onClick} lineColor={lineColor}>
-      <Tag>{title}</Tag>
-      <Type>{type}</Type>
+      <Div>
+        <Tag>{title}</Tag>
+        <Type>{type}</Type>
+      </Div>
+
+      <Icon src={sampleIcon} alt="icon" />
     </SelectButton>
   );
 };
@@ -43,52 +48,51 @@ export default SelectButtonComponent;
 const SelectButton = styled.button<{
   lineColor?: string;
 }>`
-  width: calc(50% - 4px);
-  height: 93px;
-  box-sizing: border-box;
+  width: 134px;
+  height: 144px;
   background-color: #ffffff;
   box-shadow: 0px 2px 10px 0px rgba(105, 74, 194, 0.08);
-  border-right: 6px solid #71ccff;
-  border-radius: 4px;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
-  color: black;
-  padding: 12px 16px;
+  justify-content: space-between;
+  align-items: end;
+  padding: 16px;
+  padding-bottom: 24px;
   position: relative; // 아이콘 위치 조절
-  transition: transform 0.3s ease-in-out;
 
-  ${({ theme, lineColor }) =>
-    lineColor === 'purple' &&
-    css`
-      border-right: 6px solid ${theme.colors.primary[600]};
-    `}
+  transition: transform 0.3s ease-in-out;
+  flex-shrink: 0;
 
   &:active {
     transform: scale(0.9);
     background-color: ${({ theme }) => theme.colors.gray[100]};
   }
 
-  :nth-child(2n) {
+  & + & {
     margin-left: 8px;
   }
+`;
 
-  &:nth-of-type(n + 3) {
-    margin-top: 8px;
-  }
+const Div = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
 `;
 
 const Tag = styled.div`
-  padding: 2px 6px;
-  border-radius: 4px;
-  background-color: ${({ theme }) => theme.colors.gray[300]};
   ${({ theme }) => theme.typography.pretendard.c2.rg};
-  color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.gray[400]};
 `;
 
 const Type = styled.span`
-  font-weight: 400;
-  margin-top: 6px;
+  margin-top: 10px;
   text-transform: capitalize;
   color: #000000;
   ${({ theme }) => theme.typography.gmarketSans.md[16]};
+`;
+
+const Icon = styled.img`
+  width: 40px;
 `;
