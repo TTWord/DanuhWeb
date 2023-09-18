@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useSetRecoilState } from 'recoil';
 import { globalState } from '@/recoil';
 import SelectButtonComponent from './components/SelectButtonComponent';
+import TopAppBar from '@/components/common/header/TopAppBar';
 
 const LearnPage = () => {
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
@@ -20,6 +21,10 @@ const LearnPage = () => {
       title: '단어암기',
       type: 'blind',
     },
+    {
+      title: '단어암기',
+      type: 'blind',
+    },
   ];
 
   const quizList = [
@@ -30,18 +35,15 @@ const LearnPage = () => {
     {
       title: '객관식',
       type: 'blind',
-      typeDetail: 'choice',
     },
     {
       title: '주관식',
       type: 'typing',
-      lineColor: 'purple',
     },
     {
       title: '주관식',
       type: 'blind',
       typeDetail: 'shortanswer',
-      lineColor: 'purple',
     },
   ];
 
@@ -53,12 +55,12 @@ const LearnPage = () => {
 
   return (
     <Wrapper>
-      <Header>Quiz</Header>
+      <TopAppBar type="default" title="Quiz" />
 
-      <ContainerWrapper>
+      <Content>
         <Container>
           <QuizTitle>암기하기</QuizTitle>
-          <SelectWrapper>
+          <ButtonWrapper>
             {memoList.map((item: IButtonItem, idx) => {
               return (
                 <SelectButtonComponent
@@ -68,11 +70,12 @@ const LearnPage = () => {
                 />
               );
             })}
-          </SelectWrapper>
+          </ButtonWrapper>
         </Container>
+
         <Container>
           <QuizTitle>문제 풀기</QuizTitle>
-          <SelectWrapper>
+          <ButtonWrapper>
             {quizList.map((item: IButtonItem, idx) => {
               return (
                 <SelectButtonComponent
@@ -82,9 +85,9 @@ const LearnPage = () => {
                 />
               );
             })}
-          </SelectWrapper>
+          </ButtonWrapper>
         </Container>
-      </ContainerWrapper>
+      </Content>
     </Wrapper>
   );
 };
@@ -95,57 +98,34 @@ export default LearnPage;
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
 `;
 
-//-- 헤더 --//
-const Header = styled.header`
-  width: 100%;
-  height: 56px;
-  padding: 0 16px;
-
-  display: flex;
-  align-items: center;
-  font-family: ${({ theme }) => theme.fonts.gmarketSans};
-  font-style: normal;
-  font-weight: 400;
-  font-size: 18px;
-  font-weight: 700;
-
-  color: #171717;
-`;
-
 //-- 컨테이너 --//
-const ContainerWrapper = styled.div`
+const Content = styled.div`
   width: 100%;
   height: 100%;
   margin-top: 4px;
   padding: 0 16px;
   flex: 1;
-  overflow: auto;
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 const Container = styled.div`
   width: 100%;
 
   & + & {
-    margin-top: 40px;
+    margin-top: 32px;
   }
 `;
 
 const QuizTitle = styled.div`
   ${({ theme }) => theme.typography.pretendard.t1.sbd};
+  margin-bottom: 16px;
 `;
 
-const SelectWrapper = styled.div`
+const ButtonWrapper = styled.div`
   width: 100%;
+  overflow-x: scroll;
   display: flex;
-  flex-wrap: wrap;
-  margin-top: 16px;
 `;
