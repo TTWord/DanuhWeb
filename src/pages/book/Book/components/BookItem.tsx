@@ -181,7 +181,7 @@ const Option = styled.div`
   align-items: center;
   position: absolute;
   z-index: 1;
-  right: 6px;
+  right: 9px;
   top: 6px;
   cursor: pointer;
   border-radius: 50%;
