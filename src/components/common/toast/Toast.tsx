@@ -27,7 +27,7 @@ const Toast = () => {
   useEffect(() => {
     if (isOpen && timer > 0) {
       setTimeout(() => {
-        setToastStatus(current => ({ ...current, isOpen: false, timer: 0 }));
+        setToastStatus((current) => ({ ...current, isOpen: false, timer: 0 }));
       }, timer);
     }
   }, [isOpen, timer, setToastStatus]);
@@ -36,7 +36,7 @@ const Toast = () => {
     <Box isOpen={isOpen} toastType={toastType}>
       {toastType === 'SUCCESS' && <img src={iconSuccess} alt="success" />}
       {toastType === 'ERROR' && <img src={iconError} alt="error" />}
-      <Text>{message}</Text>
+      <Text toastType={toastType}>{message}</Text>
     </Box>
   );
 };
@@ -60,7 +60,7 @@ const Box = styled.div<{
   bottom: -100px;
   transition: bottom 0.3s cubic-bezier(1, -0.01, 0.61, 0.74);
 
-  padding: 10px 16px;
+  padding: 8px 16px;
   box-sizing: border-box;
   opacity: 0.86;
 
@@ -80,6 +80,14 @@ const Box = styled.div<{
         return css`
           background-color: #fc4b4b;
         `;
+      case 'WARNING':
+        return css`
+          width: auto;
+          border-radius: 8px;
+          border: 1px solid ${({ theme }) => theme.colors.secondary.default};
+          background-color: rgba(74, 208, 226, 0.06);
+          color: ${({ theme }) => theme.colors.secondary.default};
+        `;
       default:
         return css`
           background-color: #734ae8;
@@ -88,8 +96,26 @@ const Box = styled.div<{
   }};
 `;
 
-const Text = styled.div`
+const Text = styled.div<{
+  toastType: string;
+}>`
   width: 100%;
   color: white;
-  margin-left: 10px;
+
+  ${({ toastType }) => {
+    switch (toastType) {
+      case 'COMMENT':
+        return css`
+          margin-left: 0px;
+        `;
+      case 'WARNING':
+        return css`
+          color: ${({ theme }) => theme.colors.secondary.default};
+        `;
+      default:
+        return css`
+          margin-left: 10px;
+        `;
+    }
+  }};
 `;

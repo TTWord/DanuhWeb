@@ -1,8 +1,8 @@
 import { toastStatus } from '@/components/common/toast/Toast';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 
 const useToast = () => {
-  const [, setStatus] = useRecoilState(toastStatus);
+  const setStatus = useSetRecoilState(toastStatus);
 
   const toast = {
     success: (message: string) => {
@@ -27,6 +27,14 @@ const useToast = () => {
         timer: 1500,
         message,
         type: 'COMMENT',
+      });
+    },
+    warning: (message: string) => {
+      setStatus({
+        isOpen: true,
+        timer: 1500,
+        message,
+        type: 'WARNING',
       });
     },
   };
