@@ -17,7 +17,7 @@ const AuthCodePage = () => {
   const userPw = useRecoilValue(globalState.auth.password);
   const userNickname = useRecoilValue(globalState.auth.nickname);
 
-  const { signup, isError } = useSignup();
+  const signup = useSignup();
   const { isLoading, sendmail, error, setError } = useSendmail();
 
   //const [timer, setTimer] = useState(1);
@@ -39,6 +39,7 @@ const AuthCodePage = () => {
   };
 
   const onClickRequestCode = async () => {
+    // 실행 조건 정해야함
     if (codeTimeOut) {
       await sendmail(userEmail + '@' + userDomain, userPw, userNickname);
       setCodeTimeOut(false);
@@ -83,7 +84,6 @@ const AuthCodePage = () => {
         </CenterView>
 
         <BottomView>
-          <CodeError isError={isError}>인증코드를 다시 확인해주세요</CodeError>
           <WideButton
             isActive={isOk}
             onClick={() => {
@@ -226,31 +226,4 @@ const BottomView = styled.div`
   flex-shrink: 0;
   padding: 0 24px;
   margin-bottom: 36px;
-`;
-
-const CodeError = styled.div<{ isError: boolean }>`
-  width: 50%;
-  height: 34px;
-  background-color: rgba(74, 208, 226, 0.06);
-  border: 1px solid ${({ theme }) => theme.colors.secondary.default};
-  border-radius: 8px;
-  color: ${({ theme }) => theme.colors.secondary.default};
-  font-size: 12px;
-  font-family: ${({ theme }) => theme.fonts.gmarketSans};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto 16px;
-  font-weight: 400;
-  opacity: 0;
-  transition: all 0.5s;
-
-  ${({ isError }) => {
-    return (
-      isError &&
-      css`
-        opacity: 1;
-      `
-    );
-  }}
 `;

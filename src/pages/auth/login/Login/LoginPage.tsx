@@ -14,9 +14,13 @@ import InputLogin from '@/components/common/input/InputLogin';
 import Input from '@/components/common/input/Input';
 
 const LoginPage = () => {
+  // 기존 로그인 이력 제거
+  localStorage.removeItem('access_Token');
+  localStorage.removeItem('refresh_Token');
+
   const login = useLogin();
   const { kakaoLogin, googleLogin, appleLogin } = useSocialLogin();
-  const { runAuthPage, runJoinPage, runFindPage } = useLoginPageNavigate();
+  const { runJoinPage, runFindPage } = useLoginPageNavigate();
 
   const [emailId, setEmailId] = useState('');
   const [emailDomain, setEmailDomain] = useState('');
