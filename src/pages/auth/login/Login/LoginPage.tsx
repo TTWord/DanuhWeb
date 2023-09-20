@@ -14,10 +14,6 @@ import InputLogin from '@/components/common/input/InputLogin';
 import Input from '@/components/common/input/Input';
 
 const LoginPage = () => {
-  // 기존 로그인 이력 제거
-  localStorage.removeItem('access_Token');
-  localStorage.removeItem('refresh_Token');
-
   const login = useLogin();
   const { kakaoLogin, googleLogin, appleLogin } = useSocialLogin();
   const { runJoinPage, runFindPage } = useLoginPageNavigate();
@@ -28,6 +24,12 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
 
   const [isOk, setIsOk] = useState(false);
+
+  useEffect(() => {
+    // 기존 로그인 이력 제거
+    localStorage.removeItem('access_Token');
+    localStorage.removeItem('refresh_Token');
+  }, []);
 
   useEffect(() => {
     if (emailId.length > 0 && emailDomain.length > 0 && password.length > 0) {
