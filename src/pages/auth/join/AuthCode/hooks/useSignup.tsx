@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 const useSignup = () => {
   const navigate = useNavigate();
   const toast = useToast();
-  const [isError, setIsError] = useState(false);
 
   const signup = async (
     username: string,
@@ -36,13 +35,17 @@ const useSignup = () => {
           break;
 
         case 'AUTH_INCORRECT_CODE':
-          setIsError(true);
+          toast.warning('인증코드를 다시 확인해주세요');
+          break;
+
+        default:
+          toast.error('에러가 발생하였습니다');
           break;
       }
     }
   };
 
-  return { signup, isError };
+  return signup;
 };
 
 export default useSignup;
