@@ -1,11 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-
 import logoImg from '@/assets/svg/logos/logo-danuh.svg';
-import hatIcon from '@/assets/svg/icons/icon-hat.svg';
-import pencilIcon from '@/assets/svg/icons/icon-pencil.svg';
-import dogIcon from '@/assets/svg/icons/icon-dog.svg';
-import bookIcon from '@/assets/svg/icons/icon-book.svg';
-import medalIcon from '@/assets/svg/icons/icon-medal.svg';
 import useNavigatePush from '@/hooks/useNavigatePush';
 import WideButton from '@/components/common/button/WideButton';
 
@@ -18,23 +12,6 @@ const AuthPage = () => {
 
   return (
     <WebWrapper>
-      {/* <IconWrapper>
-        <IconBanner>
-          <img src={hatIcon} alt="hatIcon" />
-          <img src={pencilIcon} alt="pencilIcon" />
-          <img src={dogIcon} alt="dogIcon" />
-          <img src={bookIcon} alt="bookIcon" />
-          <img src={medalIcon} alt="medalIcon" />
-        </IconBanner>
-        <IconBanner>
-          <img src={hatIcon} alt="hatIcon" />
-          <img src={pencilIcon} alt="pencilIcon" />
-          <img src={dogIcon} alt="dogIcon" />
-          <img src={bookIcon} alt="bookIcon" />
-          <img src={medalIcon} alt="medalIcon" />
-        </IconBanner>
-      </IconWrapper> */}
-
       <Content>
         <IntroduceWrapper>
           <MainLogo src={logoImg} alt="logoImg" />
@@ -58,31 +35,6 @@ const WebWrapper = styled.div`
   overflow: hidden;
   padding: 0 24px;
   padding-bottom: 36px;
-`;
-
-// 무한 롤링 배너
-const rolling = keyframes`
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-`;
-
-const IconWrapper = styled.header`
-  width: 200vw;
-  margin-top: 27px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  animation: ${rolling} 10s linear infinite;
-`;
-
-const IconBanner = styled.div`
-  width: 100vw;
-  display: flex;
-  justify-content: space-around;
 `;
 
 const Content = styled.div`
