@@ -58,7 +58,7 @@ export const authAPI = {
     return response;
   },
 
-  checkCert: async (username: string, certification_id: number) => {
+  checkCert: async (username: string, certification_id: string) => {
     const response = await instance.post('/auth/checkcert', {
       username,
       certification_id,

@@ -92,10 +92,7 @@ const usePasswordPageLogic = () => {
     useMutation(
       async ({ username, code }: Logicprops) => {
         try {
-          const { data: response } = await api.auth.checkCert(
-            username,
-            Number(code),
-          );
+          const { data: response } = await api.auth.checkCert(username, code);
 
           navigatePush('/auth/password/initial');
           return response.data;
@@ -116,7 +113,7 @@ const usePasswordPageLogic = () => {
               break;
 
             case 'AUTH_INCORRECT_CODE':
-              toast.error('코드가 올바르지 않습니다.');
+              toast.warning('인증코드를 다시 확인해주세요');
               break;
 
             default:
@@ -134,15 +131,12 @@ const usePasswordPageLogic = () => {
     setTimer(180);
   };
 
-  // API가 아직 없는 관계로 임의로 생성
+  // API가 아직 없는 관계로 임의로 생성 //
   const { mutateAsync: initializePassword, isLoading: initialLoading } =
     useMutation(
       async ({ username, code }: Logicprops) => {
         try {
-          const { data: response } = await api.auth.checkCert(
-            username,
-            Number(code),
-          );
+          const { data: response } = await api.auth.checkCert(username, code);
 
           navigatePush('/auth/password/initial');
           return response.data;
