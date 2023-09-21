@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import iconBack from '@/assets/svg/icons/icon-back-gray.svg';
 import { useEffect, useState, MouseEvent } from 'react';
 import { api } from '@/api';
 import { useSetRecoilState } from 'recoil';
@@ -8,6 +7,8 @@ import MyShareBookList from './components/MyShareBookList';
 import emptyIcon from '@/assets/svg/icons/icon-book-empty.svg';
 import useNavigatePop from '@/hooks/useNavigatePop';
 import iconChevronDownSmall from '@/assets/svg/icons/icon-chevron-down-small.svg';
+import Toggle from '@/components/common/switch/Toggle';
+import TopAppBarStack from '@/components/common/header/TopAppBarStack';
 
 const MySharingPage = () => {
   const navigatePop = useNavigatePop();
@@ -30,10 +31,6 @@ const MySharingPage = () => {
     } catch (e: unknown) {
       console.log(e);
     }
-  };
-
-  const goBack = () => {
-    navigatePop('/share');
   };
 
   const onClickType = () => {
@@ -75,10 +72,12 @@ const MySharingPage = () => {
   /* 컴포넌트 */
   return (
     <MainWrapper>
-      <Header>
-        <img onClick={goBack} src={iconBack} alt="iconBack" />
-        <div>내 공유 단어장 목록</div>
-      </Header>
+      <TopAppBarStack
+        type="default"
+        title="내 공유 단어장 목록"
+        navigate="/share"
+        backgroundColor="#faf8ff"
+      />
 
       <Container>
         <ModeWrapper>
@@ -120,9 +119,7 @@ const MySharingPage = () => {
                     setIsToggle((current) => !current);
                   }}
                 >
-                  <ToggleBox isToggle={isToggle}>
-                    <ToggleButton />
-                  </ToggleBox>
+                  <Toggle isToggle={isToggle} />
                   추천한 단어장만 보기
                 </TypeButton>
               )}
@@ -162,27 +159,6 @@ const MainWrapper = styled.div`
   background-color: #faf8ff;
 `;
 
-const Header = styled.header`
-  width: 100%;
-  height: 56px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-
-  img {
-    height: 24px;
-    :hover {
-      cursor: pointer;
-    }
-  }
-
-  div {
-    margin-left: 16px;
-    ${({ theme }) => theme.typography.pretendard.t3.sbd};
-  }
-`;
-
 const Container = styled.header`
   width: 100%;
   height: 100%;
@@ -203,9 +179,9 @@ const Mode = styled.div<{ isSelected?: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
   padding: 0 4px;
   box-sizing: border-box;
+  cursor: pointer;
 
   ${({ isSelected }) =>
     isSelected &&
@@ -298,6 +274,7 @@ const TypeButton = styled.button<{
   display: flex;
   align-items: center;
   background-color: white;
+  border-radius: 8px;
 
   &:active {
     background-color: ${({ theme }) => theme.colors.primary[100]};
@@ -321,36 +298,6 @@ const TypeButton = styled.button<{
     border-radius: 0 0 8px 8px;
     background-color: ${({ theme }) => theme.colors.primary[100]};
   }
-`;
-
-const ToggleBox = styled.div<{ isToggle: boolean }>`
-  width: 32px;
-  height: 20px;
-  flex-shrink: 0;
-  border-radius: 100px;
-  background-color: ${({ theme }) => theme.colors.gray[300]};
-  display: flex;
-  align-items: center;
-  transition: all 0.3s;
-  padding: 2px;
-  margin-right: 6px;
-
-  ${({ isToggle }) => {
-    return (
-      isToggle &&
-      css`
-        padding-left: 14px;
-        background-color: ${({ theme }) => theme.colors.primary.default};
-      `
-    );
-  }}
-`;
-
-const ToggleButton = styled.div`
-  width: 16px;
-  height: 16px;
-  border-radius: 100px;
-  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const EmptyBook = styled.div`
@@ -382,77 +329,4 @@ const BookWrapper = styled.div`
   align-items: center;
   padding-bottom: 80px;
   overflow: auto;
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-const Book = styled.button`
-  width: 100%;
-  height: 72px;
-  flex-shrink: 0;
-  background: #ffffff;
-  border: 1px solid #bebebe;
-  border-radius: 5px;
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 12px;
-  //flex: 1;
-  & + & {
-    margin-top: 15px;
-  }
-`;
-
-const BookInfo = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: baseline;
-  justify-content: space-between;
-`;
-
-const BookName = styled.span`
-  font-style: normal;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 19px;
-  color: #6c6c6c;
-`;
-
-const Username = styled.span`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 10px;
-  line-height: 12px;
-  color: #666666;
-`;
-
-const BookUpdateinfo = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: end;
-  justify-content: space-between;
-`;
-
-const UpdateDate = styled.span`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 10px;
-  line-height: 10px;
-  color: black;
-`;
-
-const SharingInfo = styled.span`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 10px;
-  line-height: 12px;
-  color: black;
-`;
-
-const Footer = styled.footer`
-  width: 100%;
-  height: 48px;
 `;
