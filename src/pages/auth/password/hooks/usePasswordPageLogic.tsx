@@ -11,6 +11,7 @@ import { useState } from 'react';
 interface Logicprops {
   username: string;
   code: string;
+  password?: string;
 }
 
 // 비밀번호를 변경하는 로직 추가 필요(백엔드의  대기 중)
@@ -94,7 +95,12 @@ const usePasswordPageLogic = () => {
         try {
           const { data: response } = await api.auth.checkCert(username, code);
 
-          navigatePush('/auth/password/initial');
+          navigatePush('/auth/password/initial', {
+            state: {
+              username,
+              code,
+            },
+          });
           return response.data;
         } catch (error) {
           throw error;
@@ -134,11 +140,16 @@ const usePasswordPageLogic = () => {
   // API가 아직 없는 관계로 임의로 생성 //
   const { mutateAsync: initializePassword, isLoading: initialLoading } =
     useMutation(
-      async ({ username, code }: Logicprops) => {
+      async ({ username, code, password }: Logicprops) => {
         try {
-          const { data: response } = await api.auth.checkCert(username, code);
+          const { data: response } = await api.auth.initialPassword({
+            username,
+            code,
+            password,
+          });
 
-          navigatePush('/auth/password/initial');
+          toast.success('비밀번호 초기화가 완료되었습니다.');
+          navigatePush('/auth/login');
           return response.data;
         } catch (error) {
           throw error;
@@ -152,12 +163,16 @@ const usePasswordPageLogic = () => {
           const errorMessage = error?.response?.data.message;
 
           switch (errorMessage) {
-            case 'AUTH_EXPIRED_CODE':
+            case 'USER_INVALID_ACESSSS':
               setPwError('코드가 만료되었습니다.');
               break;
 
-            case 'AUTH_INCORRECT_CODE':
-              setPwError('코드가 올바르지 않습니다.');
+            case 'USER_INVALID_FORMAT_PASSWORD':
+              setPwError('비밀번호 양식이 올바르지 않습니다.');
+              break;
+
+            case 'USER_SAME_PASSWORD':
+              setPwError('비밀번호가 기존과 동일합니다.');
               break;
 
             default:
