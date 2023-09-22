@@ -39,17 +39,21 @@ export default TopAppBar;
 
 const TopAppBarWrapper = styled.div`
   width: 100%;
-  height: 56px;
+  height: 60px;
   padding: 0 16px;
   display: flex;
   align-items: center;
   flex-shrink: 0;
   background-color: ${({ theme }) => theme.colors.white};
-  ${({ theme }) => theme.typography.gmarketSans.md[18]};
+  //${({ theme }) => theme.typography.gmarketSans.md[18]};
+  font-family: ${({ theme }) => theme.fonts.gmarketSans};
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%;
 `;
 
 const Text = styled.div`
-  ${({ theme }) => theme.typography.gmarketSans.md[18]}
   font-weight: bold;
 `;
 
