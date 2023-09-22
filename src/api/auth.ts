@@ -1,5 +1,13 @@
 import { instance } from '@/instance';
 
+interface AuthProps {
+  username?: string;
+  password?: string;
+  nickname?: string;
+  code?: string;
+  certification_id?: string;
+}
+
 export const authAPI = {
   signup: async (
     username: string,
@@ -62,6 +70,16 @@ export const authAPI = {
     const response = await instance.post('/auth/checkcert', {
       username,
       certification_id,
+    });
+
+    return response;
+  },
+
+  initialPassword: async ({ username, code, password }: AuthProps) => {
+    const response = await instance.patch('/auth/findpassword/notlogin', {
+      username,
+      certification_id: code,
+      to_password: password,
     });
 
     return response;

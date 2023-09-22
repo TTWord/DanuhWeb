@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import WideButton from '@/components/common/button/WideButton';
 import usePasswordPageLogic from '../hooks/usePasswordPageLogic';
 import { TailSpin } from 'react-loader-spinner';
+import { useLocation } from 'react-router-dom';
 
 const PasswordInitial = () => {
   const { initializePassword, initialLoading, pwError } =
@@ -15,23 +16,23 @@ const PasswordInitial = () => {
   const [isActive, setIsActive] = useState(false);
   const [pwConfirmError, setPwConfirmError] = useState('');
 
+  const location = useLocation();
+  const username = location?.state?.username;
+  const code = location?.state?.code;
+
   const initialPassword = () => {
     if (isActive) {
       if (password !== confirmPassword) {
         setPwConfirmError('비밀번호가 일치하지 않습니다');
       } else {
         setPwConfirmError('');
-        console.log(password, confirmPassword);
+        initializePassword({ username, password, code });
       }
     }
   };
 
   useEffect(() => {
-    if (
-      password !== '' &&
-      confirmPassword !== '' &&
-      password === confirmPassword
-    ) {
+    if (password !== '' && confirmPassword !== '') {
       setIsActive(true);
     } else {
       setIsActive(false);
