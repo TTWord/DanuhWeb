@@ -1,14 +1,11 @@
-import { useEffect, useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import TopAppBarStack from '@/components/common/header/TopAppBarStack';
-import useToast from '@/hooks/useToast';
 import WideButton from '@/components/common/button/WideButton';
 import TextField from '@/components/common/input/TextField';
 import RadioButton from '@/components/common/button/RadioButton';
 import useReportpageLogics from './hooks/useReportpageLogics';
 
 const ReportPage = () => {
-  const toast = useToast();
   const {
     reportType,
     setTypeSuggetion,
@@ -42,7 +39,7 @@ const ReportPage = () => {
               onClick={setTypeBugreport}
               isSelected={reportType === '버그신고'}
             />
-            <Span>건의하기</Span>
+            <Span>버그신고</Span>
           </ReportType>
         </ReportWrapper>
 

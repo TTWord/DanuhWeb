@@ -1,16 +1,14 @@
 import styled from 'styled-components';
-import { globalState } from '@/recoil';
-import { useSetRecoilState } from 'recoil';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import useLogout from '@/pages/setting/Setting/hooks/useLogout';
 import ContentBox from './components/ContentBox';
 import ConfirmPop from '@/components/common/popup/ConfirmPop';
-import iconSetting from '@/assets/svg/icons/icon-setting.svg';
 import iconInfo from '@/assets/svg/icons/icon-info.svg';
 import defaultProfile from '@/assets/svg/logos/logo-profile-default.svg';
 import useSettingPageLogic from './hooks/useSettingPageLogic';
 import AlertPop from '@/components/common/popup/AlertPop';
 import MeteorSVG from './components/MeteorSVG';
+import TopAppBar from '@/components/common/header/TopAppBar';
 
 const SettingPage = () => {
   const logout = useLogout();
@@ -26,22 +24,17 @@ const SettingPage = () => {
 
   const maxWords = 200;
 
-  const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
-  const [isConfirmPopOpen, setIsConfirmPopOpen] = useState(false);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
 
   const onClickHelp = useCallback(() => {
     setIsAlertOpen(true);
   }, []);
 
-  useEffect(() => {
-    setActiveMenu(3);
-  }, []);
+  const [isConfirmPopOpen, setIsConfirmPopOpen] = useState(false);
 
   const onClickLogout = () => {
     setIsConfirmPopOpen(true);
   };
-
-  const [isAlertOpen, setIsAlertOpen] = useState(false);
 
   if (!about) return null;
 
@@ -64,15 +57,9 @@ const SettingPage = () => {
         <AlertPopTitle>추천</AlertPopTitle>
         <AlertPopDesc>내 공유 단어장이 추전받은 횟수</AlertPopDesc>
       </AlertPop>
+
       <Container>
-        <Header>
-          <Title>My Page</Title>
-          <UserChangeButton
-            onClick={moveProfilePage}
-            src={iconSetting}
-            alt="ProfileChange"
-          />
-        </Header>
+        <TopAppBar type="setting" title="My Page" onClick={moveProfilePage} />
 
         <UserInfoWrapper>
           <ProfileWrapper>
@@ -170,26 +157,6 @@ const Container = styled.div`
   overflow: hidden;
 `;
 
-// 상단 부분
-const Header = styled.div`
-  width: 100%;
-  height: 56px;
-  padding: 0 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const Title = styled.div`
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 1.4;
-`;
-
-const UserChangeButton = styled.img`
-  cursor: pointer;
-`;
-
 const UserInfoWrapper = styled.header`
   width: 100%;
   display: flex;
@@ -199,8 +166,7 @@ const UserInfoWrapper = styled.header`
 const ProfileWrapper = styled.div`
   width: 100%;
   display: flex;
-  padding: 0 16px;
-  padding-bottom: 16px;
+  padding: 24px 16px;
   justify-content: space-between;
   overflow-wrap: anywhere;
 `;
