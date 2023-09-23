@@ -10,6 +10,7 @@ import UserRouter from './UserRouter';
 import Test from '@/pages/test/Test';
 import RouteTransition from './RouteTransition';
 import RouteTransitionWrapper from './RouteTransitionWrapper';
+import OptionSelectPage from '@/pages/test/OptionSelectPage';
 
 const Router = () => {
   return (
@@ -51,6 +52,7 @@ const RouterContainer = () => {
 
           {/* 테스트용 임시 페이지  */}
           <Route path={'/test'} element={<Test />} />
+          <Route path={'/test/option'} element={<OptionSelectPage />} />
 
           {/* 404 */}
           <Route path={'*'} element={<div>404</div>} />

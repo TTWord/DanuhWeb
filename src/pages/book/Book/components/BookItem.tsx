@@ -31,6 +31,8 @@ interface BookItemProps {
   onClickRemove: (bookId: number) => void;
 }
 
+let openFlag = false;
+
 const BookItem: React.FC<BookItemProps> = ({
   book,
   onItemClick,
@@ -116,7 +118,7 @@ const BookItem: React.FC<BookItemProps> = ({
         <Option
           onClick={(e) => {
             e.stopPropagation();
-            setIsOptionOpen((current) => !current);
+            setIsOptionOpen(true);
           }}
         >
           <img src={iconOther} alt="other" />
