@@ -28,7 +28,6 @@ const BottomSlidePop: React.FC<BottomSlidePopProps> = ({
 
   const onClose = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    console.log('onClose');
     setClose(true);
   };
 
