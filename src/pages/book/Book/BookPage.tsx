@@ -38,7 +38,7 @@ const BookPage = () => {
         )}
 
         <Items>
-          {books.map(book => (
+          {books.map((book) => (
             <BookItem
               key={book.id}
               book={book}

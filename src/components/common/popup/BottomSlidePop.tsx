@@ -28,6 +28,7 @@ const BottomSlidePop: React.FC<BottomSlidePopProps> = ({
 
   const onClose = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
+    console.log('onClose');
     setClose(true);
   };
 
@@ -81,22 +82,19 @@ const Background = styled.div<{ isClose: boolean }>`
   height: 100%;
   position: absolute;
   background: rgba(0, 0, 0, 0);
-  animation: ${BackgroundFadeIn} 0.3s ease-in-out forwards;
+  animation: ${BackgroundFadeIn} 150ms ease-in-out forwards;
 
   ${({ isClose }) => {
     return (
       isClose &&
       css`
-        animation: ${BackgroundFadeOut} 0.3s ease-in-out forwards;
+        animation: ${BackgroundFadeOut} 150ms ease-in-out forwards;
       `
     );
   }}
 `;
 
-const SliderSlideIn = (height: number) => keyframes`
-	0% {
-		bottom: -${height}px;
-	}
+const SliderSlideIn = () => keyframes`
 	100% {
 		bottom: 0px;
 	}
@@ -121,15 +119,15 @@ const Slider = styled.div<{
   position: absolute;
   z-index: 10;
   bottom: -${({ height }) => height}px;
-  animation: ${({ height }) => SliderSlideIn(height)} 0.3s ease-in-out forwards;
+  animation: ${SliderSlideIn()} 150ms ease-in-out forwards;
   border-radius: 12px 12px 0px 0px;
-  transition: height 0.3s ease-in-out;
+  transition: height 150ms ease-in-out;
 
   ${({ isClose, height }) => {
     return (
       isClose &&
       css`
-        animation: ${SliderSlideOut(height)} 0.3s ease-in-out forwards;
+        animation: ${SliderSlideOut(height)} 150ms ease-in-out forwards;
       `
     );
   }}
