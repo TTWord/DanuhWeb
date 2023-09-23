@@ -30,6 +30,7 @@
     "react-modal": "^3.16.1",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.8.1",
+    "react-scrollbars-custom": "^4.1.1",
     "react-transition-group": "^4.4.5",
     "recoil": "^0.7.6",
     "snd-lib": "^1.1.2",

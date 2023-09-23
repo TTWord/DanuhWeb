@@ -6,6 +6,9 @@ const meta = {
   component: TopAppBarClose,
   tags: ['autodocs'],
   argTypes: {
+    title: {
+      type: 'string',
+    },
     onClose: {
       type: 'function',
     },
@@ -17,6 +20,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
+    title: '',
     onClose: () => {
       alert('클릭됨');
     },
