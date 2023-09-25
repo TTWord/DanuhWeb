@@ -6,22 +6,24 @@ import Toggle from '@/components/common/switch/Toggle';
 interface SelectPopProps {
   selectList: {
     text: string;
-    onclick: () => void;
+    onClick: () => void;
     hasToggle?: boolean;
   }[];
+  title?: string;
   sortType: string;
-  onToggle: () => void;
-  isToggle: boolean;
+  isToggle?: boolean;
+  onToggle?: () => void;
 }
 
 interface selectListProps {
   text: string;
-  onclick: () => void;
+  onClick: () => void;
   hasToggle?: boolean;
 }
 
 const SelectPop = ({
   selectList,
+  title,
   sortType,
   onToggle,
   isToggle,
@@ -35,7 +37,9 @@ const SelectPop = ({
   };
 
   return (
-    <SortWrapper>
+    <SortWrapper hasTitle={title}>
+      <Title>{title}</Title>
+
       <SortType onClick={onClickType}>
         <CurrentType>
           {isToggle && toggleText}
@@ -51,14 +55,16 @@ const SelectPop = ({
                 key={idx}
                 hasToggle={item.hasToggle}
                 onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                  if (item.hasToggle) {
+                  if (item.hasToggle && onToggle) {
                     e.stopPropagation();
                     onToggle();
                   }
-                  item.onclick();
+                  item.onClick();
                 }}
               >
-                {item.hasToggle && <Toggle isToggle={isToggle} />}
+                {item.hasToggle && isToggle !== undefined && (
+                  <Toggle isToggle={isToggle} />
+                )}
                 {item.text}
               </TypeButton>
             );
@@ -71,14 +77,27 @@ const SelectPop = ({
 
 export default SelectPop;
 
-const SortWrapper = styled.div`
+const SortWrapper = styled.div<{ hasTitle?: string }>`
   width: 100%;
   height: 24px;
-  padding: 0 16px;
   margin: 8px 0;
   display: flex;
   justify-content: end;
   align-items: center;
+
+  ${({ hasTitle }) => {
+    return (
+      hasTitle &&
+      css`
+        justify-content: space-between;
+      `
+    );
+  }}
+`;
+
+const Title = styled.div`
+  ${({ theme }) => theme.typography.pretendard.t2.sbd}
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const SortType = styled.div`
@@ -136,6 +155,7 @@ const TypeButton = styled.button<{
   display: flex;
   align-items: center;
   background-color: white;
+  box-sizing: border-box;
   border-left: 1px solid ${({ theme }) => theme.colors.primary[100]};
   border-right: 1px solid ${({ theme }) => theme.colors.primary[100]};
 
@@ -155,7 +175,7 @@ const TypeButton = styled.button<{
 
   :last-child {
     border-radius: 0 0 8px 8px;
-    border-top: 0px;
+    border: 1px solid ${({ theme }) => theme.colors.primary[100]};
   }
 
   ${({ hasToggle }) => {
