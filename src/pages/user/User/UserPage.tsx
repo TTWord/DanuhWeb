@@ -1,20 +1,33 @@
 import React from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import TopAppBarStack from '@/components/common/header/TopAppBarStack';
 import defaultProfile from '@/assets/svg/logos/logo-profile-default.svg';
 import SharingBook from '@/pages/share/Share/components/SharingBook';
 import ShareInfoBox from '@/pages/common/components/ShareInfoBox';
 import useUserPageLogics from './hooks/useUserPageLogics';
-import SortTypeSelectBox from './components/SortTypeSelectBox';
+import SelectPop from '@/pages/test/SelectPop';
 
 const UserPage = () => {
   const location = useLocation();
   const backURL = location.state.from;
-
-  const userId = Number(useParams().id);
   const wordLimit = 200;
-  const { userinfo, userBooks } = useUserPageLogics(userId);
+  const { sortType, setSortType, userinfo, userBooks } = useUserPageLogics();
+
+  const selectList = [
+    {
+      text: '최신순',
+      onClick: () => setSortType('최신순'),
+    },
+    {
+      text: '인기순',
+      onClick: () => setSortType('인기순'),
+    },
+    {
+      text: '다운로드순',
+      onClick: () => setSortType('다운로드순'),
+    },
+  ];
 
   // API 에러 있음
   // => 토스트 메세지와 함께 이전페이지로 복귀 navigate(-1)
@@ -47,7 +60,7 @@ const UserPage = () => {
       />
 
       <BookWrapper>
-        <SortTypeSelectBox />
+        <SelectPop selectList={selectList} sortType={sortType} />
 
         {userBooks?.map((book, idx) => {
           return <SharingBook key={idx} book={book} />;

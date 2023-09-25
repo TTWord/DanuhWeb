@@ -1,14 +1,17 @@
 import { api } from '@/api';
 import { useQuery, useQueryClient } from 'react-query';
-import { useRecoilValue } from 'recoil';
-import { globalState } from '@/recoil';
 import useToast from '@/hooks/useToast';
 import { AxiosError } from 'axios';
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-const useUserPageLogics = (userId: number) => {
+const useUserPageLogics = () => {
   const toast = useToast();
   const queryClient = useQueryClient();
-  const sortType = useRecoilValue(globalState.user.sortType);
+  const userId = Number(useParams().id);
+  const [sortType, setSortType] = useState('최신순');
+
+  //const sortType = useRecoilValue(globalState.user.sortType);
 
   const { data: userinfo } = useQuery(
     'UserPage/Userinfo',
@@ -18,7 +21,7 @@ const useUserPageLogics = (userId: number) => {
       return response.data;
     },
     {
-      onError: e => {
+      onError: (e) => {
         const error = e as AxiosError<{
           message: string;
         }>;
@@ -64,7 +67,7 @@ const useUserPageLogics = (userId: number) => {
       return response.data;
     },
     {
-      onError: e => {
+      onError: (e) => {
         const error = e as AxiosError<{
           message: string;
         }>;
@@ -78,7 +81,7 @@ const useUserPageLogics = (userId: number) => {
     },
   );
 
-  return { userinfo, userBooks };
+  return { sortType, setSortType, userinfo, userBooks };
 };
 
 export default useUserPageLogics;

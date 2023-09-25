@@ -1,73 +1,25 @@
 import styled, { css } from 'styled-components';
-import { useEffect, useState, MouseEvent } from 'react';
+import { useEffect, useState } from 'react';
 import { api } from '@/api';
-import { useSetRecoilState } from 'recoil';
-import { globalState } from '@/recoil';
 import MyShareBookList from './components/MyShareBookList';
 import emptyIcon from '@/assets/svg/icons/icon-book-empty.svg';
-import useNavigatePop from '@/hooks/useNavigatePop';
-import iconChevronDownSmall from '@/assets/svg/icons/icon-chevron-down-small.svg';
-import Toggle from '@/components/common/switch/Toggle';
 import TopAppBarStack from '@/components/common/header/TopAppBarStack';
+import SelectPop from '@/pages/test/SelectPop';
+import useMySharePageLogics from './hooks/useMySharePageLogics';
 
 const MySharingPage = () => {
-  const navigatePop = useNavigatePop();
-  const [currentBooks, setCurrentBooks] = useState([]); // API로 받아온 공유 단어장
-  const [mode, setMode] = useState('share'); // 화면 출력 단어장 리스트 선택
-  const [order, setOrder] = useState('DESC'); // 단어장 order 선택
-  const [sortType, setSortType] = useState('최신순'); // 정렬 필터
-  const [isTypeClicked, setIsTypeclicked] = useState(false); // 정렬 팝업
-  const [isToggle, setIsToggle] = useState(false); // 정렬 팝업 속 토글
+  //리팩토링 중//
 
-  const getUserShareBooksAPI = async () => {
-    try {
-      const { data: response } = await api.share.getUserShareBooks({
-        mode,
-        order,
-        filter: isToggle,
-      });
-
-      setCurrentBooks(response);
-    } catch (e: unknown) {
-      console.log(e);
-    }
-  };
-
-  const onClickType = () => {
-    setIsTypeclicked((current) => !current);
-  };
-
-  const onClickTypeButton = (e: MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    if (e.currentTarget.innerText === '최신순') {
-      setOrder('DESC');
-    } else {
-      setOrder('ASC');
-    }
-    setSortType(e.currentTarget.innerText);
-    setIsTypeclicked(false);
-  };
-
-  const onClickShareMode = () => {
-    setIsToggle(false);
-    setIsTypeclicked(false);
-    setMode('share');
-  };
-
-  const onClickDownloadMode = () => {
-    setIsTypeclicked(false);
-    setMode('download');
-  };
-
-  /* UseEffect */
-  useEffect(() => {
-    getUserShareBooksAPI();
-  }, [mode, order, isToggle]);
-
-  const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
-  useEffect(() => {
-    setActiveMenu(2);
-  }, []);
+  const {
+    sortType,
+    mode,
+    onClickDownloadMode,
+    onClickShareMode,
+    selectList,
+    onToggle,
+    currentBooks,
+    isToggle,
+  } = useMySharePageLogics();
 
   /* 컴포넌트 */
   return (
@@ -90,42 +42,12 @@ const MySharingPage = () => {
           <Mode>단어장</Mode>
         </ModeWrapper>
 
-        <SortWrapper>
-          <SortType onClick={onClickType}>
-            <CurrentType>{sortType}</CurrentType>
-            <img src={iconChevronDownSmall} alt="list" />
-            <TypeList
-              isActive={isTypeClicked}
-              isDownloadMode={mode === 'download'}
-            >
-              <TypeButton
-                isDownloadMode={mode === 'download'}
-                onClick={onClickTypeButton}
-              >
-                최신순
-              </TypeButton>
-              <TypeButton
-                isDownloadMode={mode === 'download'}
-                onClick={onClickTypeButton}
-              >
-                오래된순
-              </TypeButton>
-              {/* 공유받은 단어장일때만 토글 버튼 활성화 */}
-              {mode === 'download' && (
-                <TypeButton
-                  isDownloadMode={mode === 'download'}
-                  onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                    e.stopPropagation();
-                    setIsToggle((current) => !current);
-                  }}
-                >
-                  <Toggle isToggle={isToggle} />
-                  추천한 단어장만 보기
-                </TypeButton>
-              )}
-            </TypeList>
-          </SortType>
-        </SortWrapper>
+        <SelectPop
+          selectList={selectList}
+          sortType={sortType}
+          isToggle={isToggle}
+          onToggle={onToggle}
+        />
 
         {/* 빈 화면 */}
         {currentBooks.length === 0 && (
@@ -163,12 +85,12 @@ const Container = styled.header`
   width: 100%;
   height: 100%;
   overflow: hidden;
+  padding: 0 16px;
 `;
 
 const ModeWrapper = styled.div`
   width: 100%;
   height: 32px;
-  padding: 0 16px;
   display: flex;
   ${({ theme }) => theme.typography.pretendard.t1.sbd};
 `;
@@ -188,115 +110,13 @@ const Mode = styled.div<{ isSelected?: boolean }>`
     css`
       color: ${({ theme }) => theme.colors.primary.default};
       padding-bottom: 0px;
-      border-bottom: 2px solid var(--primary-primary, #6e5fed);
+      border-bottom: 2px solid ${({ theme }) => theme.colors.primary.default};
     `}
 
   :nth-child(3) {
     cursor: default;
     padding: 0 2px;
     color: ${({ theme }) => theme.colors.primary.default};
-  }
-`;
-
-const SortWrapper = styled.div`
-  width: 100%;
-  height: 24px;
-  padding: 0 16px;
-  margin: 8px 0;
-  display: flex;
-  justify-content: end;
-  align-items: center;
-`;
-
-const SortType = styled.div`
-  height: 24px;
-  display: flex;
-  align-items: center;
-  position: relative;
-  cursor: pointer;
-
-  img {
-    width: 24px;
-    margin-left: 2px;
-  }
-`;
-
-const CurrentType = styled.span`
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 140%;
-  color: ${({ theme }) => theme.colors.gray[500]};
-`;
-
-const TypeList = styled.div<{ isActive: boolean; isDownloadMode: boolean }>`
-  position: absolute;
-  top: 24px;
-  right: 0;
-  width: 188px;
-  height: 112px;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid ${({ theme }) => theme.colors.primary[100]};
-  border-radius: 8px;
-  box-shadow: 0px 2px 10px 0px rgba(105, 74, 194, 0.08);
-  z-index: 1;
-
-  ${({ isActive }) => {
-    return isActive
-      ? css`
-          display: flex;
-        `
-      : css`
-          display: none;
-        `;
-  }}
-
-  ${({ isDownloadMode }) => {
-    return (
-      isDownloadMode &&
-      css`
-        height: 168px;
-      `
-    );
-  }}
-`;
-
-const TypeButton = styled.button<{
-  isDownloadMode: boolean;
-}>`
-  height: 56px;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 140%;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  background-color: white;
-  border-radius: 8px;
-
-  &:active {
-    background-color: ${({ theme }) => theme.colors.primary[100]};
-  }
-
-  :nth-child(2) {
-    border-radius: 0 0 8px 8px;
-    border-top: 1px solid ${({ theme }) => theme.colors.primary[100]};
-    border-bottom: 1px solid ${({ theme }) => theme.colors.primary[100]};
-    ${({ isDownloadMode }) => {
-      return (
-        isDownloadMode &&
-        css`
-          border-radius: 0px;
-        `
-      );
-    }}
-  }
-
-  :nth-child(3) {
-    border-radius: 0 0 8px 8px;
-    background-color: ${({ theme }) => theme.colors.primary[100]};
   }
 `;
 
@@ -323,7 +143,6 @@ const EmptyBook = styled.div`
 const BookWrapper = styled.div`
   width: 100%;
   height: 100%;
-  padding: 0 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
