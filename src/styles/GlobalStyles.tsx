@@ -73,17 +73,20 @@ const CustomStyles = createGlobalStyle`
     position: fixed;
   }
 
-  div::-webkit-scrollbar {
-    display: none;
+  div {
+    ::-webkit-scrollbar {
+      display: none;
+    }   
   }
-
-  textarea::-webkit-scrollbar {
-    display: none;
-  }
+  
 
   textarea {
     resize: none;
     outline: none;
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   input {
