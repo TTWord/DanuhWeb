@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import SharingBook from './components/SharingBook';
 import iconArrowUpRight from '@/assets/svg/icons/icon-arrow-up-right.svg';
 import TopAppBar from '@/components/common/header/TopAppBar';
-import SelectPop from '@/pages/test/SelectPop';
+import SelectPop from '@/pages/share/components/SelectPop';
 import useSharePageLogics from './hooks/useSharePageLogics';
 
 const SharePage = () => {
