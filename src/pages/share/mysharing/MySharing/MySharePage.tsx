@@ -4,7 +4,7 @@ import { api } from '@/api';
 import MyShareBookList from './components/MyShareBookList';
 import emptyIcon from '@/assets/svg/icons/icon-book-empty.svg';
 import TopAppBarStack from '@/components/common/header/TopAppBarStack';
-import SelectPop from '@/pages/test/SelectPop';
+import SelectPop from '@/pages/share/components/SelectPop';
 import useMySharePageLogics from './hooks/useMySharePageLogics';
 
 const MySharingPage = () => {

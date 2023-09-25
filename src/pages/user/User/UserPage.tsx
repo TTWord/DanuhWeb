@@ -6,7 +6,7 @@ import defaultProfile from '@/assets/svg/logos/logo-profile-default.svg';
 import SharingBook from '@/pages/share/Share/components/SharingBook';
 import ShareInfoBox from '@/pages/common/components/ShareInfoBox';
 import useUserPageLogics from './hooks/useUserPageLogics';
-import SelectPop from '@/pages/test/SelectPop';
+import SelectPop from '@/pages/share/components/SelectPop';
 
 const UserPage = () => {
   const location = useLocation();
