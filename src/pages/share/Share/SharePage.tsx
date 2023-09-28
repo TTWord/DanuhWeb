@@ -122,5 +122,5 @@ const SharingBookWrapper = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  padding-bottom: 108px;
+  padding-bottom: calc(108px + 72px);
 `;

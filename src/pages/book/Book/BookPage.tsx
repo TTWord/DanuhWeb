@@ -105,7 +105,7 @@ const Items = styled.div`
   width: 100%;
   height: 100%;
   padding: 120px 16px;
-  padding: 20px 16px 150px 16px;
+  padding: 20px 16px 222px 16px;
   display: flex;
   flex-direction: column;
   overflow-y: scroll;

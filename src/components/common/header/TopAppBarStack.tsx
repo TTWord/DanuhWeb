@@ -95,7 +95,7 @@ export default TopAppBarStack;
 
 const TopAppBarWrapper = styled.div<{ backgroundColor: string | undefined }>`
   width: 100%;
-  height: 56px;
+  height: 60px;
   padding: 0 16px;
   display: flex;
   align-items: center;
