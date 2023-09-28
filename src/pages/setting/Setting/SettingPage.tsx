@@ -290,6 +290,7 @@ const ContentWrapper = styled.div`
   -ms-overflow-style: none;
   flex: 1;
   padding: 0 16px;
+  padding-bottom: 72px;
 
   ::-webkit-scrollbar {
     display: none;
