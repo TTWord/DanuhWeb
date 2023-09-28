@@ -10,8 +10,8 @@ const TopAppBarClose = ({ title, onClose }: TopAppBarProps) => {
   return (
     <CloseWrapper>
       {title && <Center>{title}</Center>}
-      <CloseButton>
-        <img onClick={onClose} src={iconClose} alt="close" />
+      <CloseButton onClick={onClose}>
+        <img src={iconClose} alt="close" />
       </CloseButton>
     </CloseWrapper>
   );
@@ -21,7 +21,7 @@ export default TopAppBarClose;
 
 const TopAppBarWrapper = styled.div`
   width: 100%;
-  height: 56px;
+  height: 60px;
   padding: 0 16px;
   display: flex;
   align-items: center;
