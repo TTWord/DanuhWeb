@@ -37,6 +37,14 @@ const useToast = () => {
         type: 'WARNING',
       });
     },
+    quiz: (message: string) => {
+      setStatus({
+        isOpen: true,
+        timer: 1500,
+        message,
+        type: 'QUIZ',
+      });
+    },
   };
 
   return toast;

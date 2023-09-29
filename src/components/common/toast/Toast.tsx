@@ -32,6 +32,13 @@ const Toast = () => {
     }
   }, [isOpen, timer, setToastStatus]);
 
+  if (toastType === 'QUIZ') {
+    return (
+      <QuizBox isOpen={isOpen}>
+        <Text toastType={toastType}>{`test: ${message}`}</Text>
+      </QuizBox>
+    );
+  }
   return (
     <Box isOpen={isOpen} toastType={toastType}>
       {toastType === 'SUCCESS' && <img src={iconSuccess} alt="success" />}
@@ -96,6 +103,36 @@ const Box = styled.div<{
   }};
 `;
 
+const QuizBox = styled.div<{
+  isOpen: boolean;
+}>`
+  position: fixed;
+  z-index: 99;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: top 0.3s cubic-bezier(1, -0.01, 0.61, 0.74);
+  padding: 8px 16px;
+  box-sizing: border-box;
+  opacity: 0.86;
+  width: auto;
+  border-radius: 8px;
+  border: 1px solid ${({ theme }) => theme.colors.secondary.default};
+  background-color: rgba(74, 208, 226, 0.06);
+  color: ${({ theme }) => theme.colors.secondary.default};
+  color: red;
+
+  top: -68px;
+
+  ${({ isOpen }) =>
+    isOpen &&
+    css`
+      top: 68px;
+    `};
+`;
+
 const Text = styled.div<{
   toastType: string;
 }>`
@@ -109,6 +146,10 @@ const Text = styled.div<{
           margin-left: 0px;
         `;
       case 'WARNING':
+        return css`
+          color: ${({ theme }) => theme.colors.secondary.default};
+        `;
+      case 'QUIZ':
         return css`
           color: ${({ theme }) => theme.colors.secondary.default};
         `;
