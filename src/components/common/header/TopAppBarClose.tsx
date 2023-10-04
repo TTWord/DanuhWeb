@@ -4,19 +4,34 @@ import iconClose from '@/assets/svg/icons/icon-close.svg';
 interface TopAppBarProps {
   title?: string;
   onClose: () => void;
+  type?: 'default' | 'quiz';
 }
 
-const TopAppBarClose = ({ title, onClose }: TopAppBarProps) => {
-  return (
-    <CloseWrapper>
-      {title && <Center>{title}</Center>}
-      <CloseButton onClick={onClose}>
-        <img src={iconClose} alt="close" />
-      </CloseButton>
-    </CloseWrapper>
-  );
-};
+const TopAppBarClose = ({ title, onClose, type }: TopAppBarProps) => {
+  switch (type) {
+    case 'quiz':
+      return (
+        <QuizWrapper>
+          <QuizTitle>
+            퀴즈 완료! <span>학습 결과</span>
+          </QuizTitle>
+          <CloseButton onClick={onClose}>
+            <img src={iconClose} alt="close" />
+          </CloseButton>
+        </QuizWrapper>
+      );
 
+    default:
+      return (
+        <CloseWrapper>
+          {title && <Center>{title}</Center>}
+          <CloseButton onClick={onClose}>
+            <img src={iconClose} alt="close" />
+          </CloseButton>
+        </CloseWrapper>
+      );
+  }
+};
 export default TopAppBarClose;
 
 const TopAppBarWrapper = styled.div`
@@ -32,6 +47,25 @@ const TopAppBarWrapper = styled.div`
 
 const CloseWrapper = styled(TopAppBarWrapper)`
   justify-content: end;
+`;
+
+const QuizWrapper = styled(TopAppBarWrapper)`
+  justify-content: space-between;
+`;
+
+const QuizTitle = styled.div`
+  padding-left: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  ${({ theme }) => theme.typography.gmarketSans.md[18]};
+  color: ${({ theme }) => theme.colors.primary.default};
+
+  span {
+    ${({ theme }) => theme.typography.pretendard.b1.md};
+    color: ${({ theme }) => theme.colors.gray[500]};
+    margin-left: 4px;
+  }
 `;
 
 const Center = styled.div`
