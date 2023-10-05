@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import styled, { css } from 'styled-components';
-import { useEffect, ChangeEvent } from 'react';
+import styled from 'styled-components';
+import { useEffect } from 'react';
 import useChangePassword from './hooks/useChangePassword';
 import StackLayout from '@/components/layout/StackLayout';
 import WideButton from '@/components/common/button/WideButton';
@@ -15,16 +15,16 @@ const PasswordPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isOk, setIsOk] = useState(false);
 
-  const onClickOldPW = (e: ChangeEvent<HTMLInputElement>) => {
-    setOldPassword(e.target.value);
+  const onClickOldPW = (input: string) => {
+    setOldPassword(input);
   };
 
-  const onClickNewPW = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewPassword(e.target.value);
+  const onClickNewPW = (input: string) => {
+    setNewPassword(input);
   };
 
-  const onClickConfirmPW = (e: ChangeEvent<HTMLInputElement>) => {
-    setConfirmPassword(e.target.value);
+  const onClickConfirmPW = (input: string) => {
+    setConfirmPassword(input);
   };
 
   const onClickSubmit = async () => {
@@ -58,30 +58,29 @@ const PasswordPage = () => {
     >
       <Container>
         <Content>
-          <Line>
-            <Title>기존 비밀번호</Title>
-            <InputBox
-              onChange={onClickOldPW}
-              type="password"
-              placeholder="기존 비밀번호를 입력해 주세요"
-            />
-          </Line>
-          <Line>
-            <Title>신규 비밀번호</Title>
-            <InputBox
-              onChange={onClickNewPW}
-              type="password"
-              placeholder="신규 비밀번호를 입력해 주세요"
-            />
-          </Line>
-          <Line>
-            <Title>신규 비밀번호 확인</Title>
-            <InputBox
-              onChange={onClickConfirmPW}
-              type="password"
-              placeholder="신규 비밀번호를 입력해 주세요"
-            />
-          </Line>
+          <Title>기존 비밀번호</Title>
+          <Input
+            type="password"
+            placeholder="기존 비밀번호를 입력해 주세요"
+            value={oldPassword}
+            onChange={onClickOldPW}
+          />
+
+          <Title>신규 비밀번호</Title>
+          <Input
+            type="password"
+            placeholder="신규 비밀번호를 입력해 주세요"
+            value={newPassword}
+            onChange={onClickNewPW}
+          />
+
+          <Title>신규 비밀번호 확인</Title>
+          <Input
+            type="password"
+            placeholder="신규 비밀번호를 입력해 주세요"
+            value={confirmPassword}
+            onChange={onClickConfirmPW}
+          />
         </Content>
         <Footer>
           <WideButton onClick={onClickSubmit} isActive={isOk}>
@@ -108,37 +107,14 @@ const Content = styled.div`
   padding: 24px;
 `;
 
-const Line = styled.div`
-  width: 100%;
-  font-size: 16px;
-
-  & + & {
-    margin-top: 44px;
-  }
-`;
-
 const Title = styled.div`
   ${({ theme }) => theme.typography.pretendard.b1.rg};
   color: ${({ theme }) => theme.colors.gray[900]};
   margin-bottom: 8px;
-`;
+  margin-top: 32px;
 
-const InputBox = styled.input`
-  width: 100%;
-  height: 44px;
-  outline: none;
-  padding: 0 8px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[200]};
-
-  &:focus {
-    border-bottom: 1px solid ${({ theme }) => theme.colors.primary.default};
-  }
-
-  ${({ theme }) => theme.typography.pretendard.t3.md};
-  color: ${({ theme }) => theme.colors.gray[900]};
-
-  &::placeholder {
-    color: ${({ theme }) => theme.colors.gray[400]};
+  :first-child {
+    margin-top: 0px;
   }
 `;
 
@@ -147,8 +123,4 @@ const Footer = styled.footer`
   flex-shrink: 0;
   padding: 0 24px;
   padding-bottom: 36px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
 `;
