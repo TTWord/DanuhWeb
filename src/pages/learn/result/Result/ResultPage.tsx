@@ -1,7 +1,11 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { api } from '@/api';
 import { useEffect, useState } from 'react';
+import TopAppBarClose from '@/components/common/header/TopAppBarClose';
+import WideButton from '@/components/common/button/WideButton';
+import chevronDown from '@/assets/svg/icons/icon-chevron-down-small.svg';
+import MemorizeToggle from './MemorizeToggle';
 
 const ResultPage = () => {
   const navigate = useNavigate();
@@ -56,48 +60,114 @@ const ResultPage = () => {
     }
   };
 
+  const [isNoteClicked, setNoteClicked] = useState(false);
+
+  const extendNote = () => {
+    setNoteClicked((current) => !current);
+  };
+
   useEffect(() => {
     getResult();
   }, []);
 
+  const a = [1, 2, 3, 4, 5];
+  const sampleData = [
+    {
+      word: 'only',
+      mean: '단지',
+      isMemo: false,
+    },
+    {
+      word: 'only',
+      mean: '단지',
+      isMemo: true,
+    },
+    {
+      word: 'only',
+      mean: '단지',
+      isMemo: false,
+    },
+    {
+      word: 'only',
+      mean: '단지',
+      isMemo: true,
+    },
+    {
+      word: 'only',
+      mean: '단지',
+      isMemo: false,
+    },
+    {
+      word: 'only',
+      mean: '단지',
+      isMemo: true,
+    },
+  ];
+
   return (
     <MainWrapper>
-      <Header>RESULT</Header>
+      <TopAppBarClose type="quiz" onClose={goQuiz} />
 
       <Container>
+        <QuizWords>
+          <QuizWordBox>
+            <QuizTag>정답수</QuizTag>
+            <QuizCount>
+              <span>{30}</span>개
+            </QuizCount>
+          </QuizWordBox>
+          <Slash>/</Slash>
+          <QuizWordBox>
+            <QuizTag>문제수</QuizTag>
+            <QuizCount>
+              <span>{30}</span>개
+            </QuizCount>
+          </QuizWordBox>
+        </QuizWords>
+
+        <BookWords>
+          <BookWordBox>
+            <BookTag>암기 단어</BookTag>
+            <BookCount>{20}개</BookCount>
+          </BookWordBox>
+
+          <BookWordBox>
+            <BookTag>전체 단어</BookTag>
+            <BookCount>{150}개</BookCount>
+          </BookWordBox>
+        </BookWords>
+
         <TargetBook>
           대상 단어장
           <span>{resultInfo.targetBook}</span>
         </TargetBook>
 
-        <TotalWord>
-          단어
-          <span>{resultInfo.totalWords}개</span>
-        </TotalWord>
-
-        <QuizWords>
-          암기 단어
-          <span>{resultInfo.length}개</span>
-        </QuizWords>
-
-        <AnswerWords>
-          정답 단어
-          <span>{resultInfo.answer}개</span>
-        </AnswerWords>
-
-        <AnswerRates>
-          정답률
-          <span>{resultInfo.percentage}</span>
-        </AnswerRates>
-
-        <MemoryRates>
-          암기률
-          <span>{resultInfo.memoryRates}%</span>
-        </MemoryRates>
+        <ReviewNote isNoteClicked={isNoteClicked}>
+          <NoteTop>
+            <NoteTag>오답노트</NoteTag>
+            <ExtendButton onClick={extendNote} src={chevronDown} alt="down" />
+          </NoteTop>
+          <NoteBot isNoteClicked={isNoteClicked}>
+            {sampleData.map((item, idx) => {
+              return (
+                <ReviewBox key={idx}>
+                  <ReviewWord>{item.word}</ReviewWord>
+                  <ReviewMean>{item.mean}</ReviewMean>
+                  <MemoCheck>
+                    <MemorizeToggle
+                      isMemo={item.isMemo}
+                      onClick={() => console.log(idx)}
+                    />
+                  </MemoCheck>
+                </ReviewBox>
+              );
+            })}
+          </NoteBot>
+        </ReviewNote>
       </Container>
 
       <Footer>
-        <CompleteButton onClick={goQuiz}>완료</CompleteButton>
+        <WideButton onClick={goQuiz}>완료</WideButton>
       </Footer>
     </MainWrapper>
   );
@@ -113,95 +183,221 @@ const MainWrapper = styled.div`
   flex-direction: column;
 `;
 
-const Header = styled.header`
-  width: 100%;
-  height: 50px;
-  font-weight: 700;
-  font-size: 36px;
-  line-height: 36px;
-  color: ${({ theme }) => theme.colors.black};
-  display: flex;
-  align-items: center;
-  margin-top: 32px;
-  padding-left: 36px;
-`;
-
 const Container = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
-  flex: 1;
   flex-direction: column;
-  //justify-content: center;
-  //align-items: center;
-  padding: 36px 0 0 24px;
+  padding: 16px 24px;
+  padding-bottom: 0px;
+  background-color: ${({ theme }) => theme.colors.gray[100]};
+  overflow-y: hidden;
 `;
 
-const ResultSection = styled.div`
-  width: 168px;
+const CommonWrapper = styled.div`
+  width: 100%;
+  height: auto;
   display: flex;
-  font-family: ${({ theme }) => theme.fonts.pretendard};
-  color: black;
-  font-weight: 700;
-  font-size: 24px;
+  padding: 24px 16px;
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.colors.white};
 
-  span {
-    font-weight: 400;
-    font-size: 16px;
+  & + & {
+    margin-top: 16px;
   }
 `;
 
-const TargetBook = styled(ResultSection)`
+// 퀴즈 진행한 문제수/정답수 정보
+const QuizWords = styled(CommonWrapper)`
+  padding: 24px 16px;
+`;
+
+const QuizWordBox = styled.div`
+  width: 50%;
+  display: flex;
   flex-direction: column;
-  margin-bottom: 36px;
+  justify-content: center;
+  align-items: center;
 `;
 
-const TotalWord = styled(ResultSection)`
+const QuizTag = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 4px;
+
+  ${({ theme }) => theme.typography.pretendard.b1.sbd};
+  color: ${({ theme }) => theme.colors.black};
+`;
+
+const QuizCount = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: ${({ theme }) => theme.colors.black};
+  font-family: ${({ theme }) => theme.fonts.pretendard};
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 140%; /* 33.6px */
+
+  span {
+    color: ${({ theme }) => theme.colors.primary.default};
+  }
+`;
+
+const Slash = styled.div`
+  height: 100%;
+  display: flex;
   flex-direction: column;
-  margin-bottom: 36px;
+  justify-content: end;
+  align-items: center;
+
+  color: ${({ theme }) => theme.colors.gray[300]};
+  font-family: ${({ theme }) => theme.fonts.pretendard};
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%; /* 33.6px */
 `;
 
-const QuizWords = styled(ResultSection)`
-  margin-bottom: 18px;
+// 퀴즈 실시한 단어장들에 대한 원본 정보
+const BookWords = styled(CommonWrapper)`
+  padding: 24px 36px;
   justify-content: space-between;
-  align-items: center;
-`;
-const AnswerWords = styled(ResultSection)`
-  margin-bottom: 18px;
-  justify-content: space-between;
-  align-items: center;
 `;
 
-const AnswerRates = styled(ResultSection)`
-  margin-bottom: 18px;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const MemoryRates = styled(ResultSection)`
-  margin-bottom: 18px;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const Footer = styled.footer`
-  width: 100%;
-  padding: 0 32px 32px 32px;
+const BookWordBox = styled.div`
+  width: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-const CompleteButton = styled.button`
-  width: 100%;
-  height: 72px;
-  background: #724fab;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 7px;
+const BookTag = styled.div`
+  padding: 4px 6px;
+  border-radius: 4px;
+  background-color: ${({ theme }) => theme.colors.gray[200]};
+  ${({ theme }) => theme.typography.pretendard.c1.sbd};
+  color: ${({ theme }) => theme.colors.gray[600]};
+`;
+
+const BookCount = styled.span`
+  margin-left: 8px;
   font-family: ${({ theme }) => theme.fonts.pretendard};
-  font-weight: 400;
-  font-size: 24px;
-  line-height: 35px;
-  text-align: center;
-  color: #ffffff;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%;
+  color: ${({ theme }) => theme.colors.black};
+`;
+
+// 대상 단어장 리스트
+const TargetBook = styled(CommonWrapper)`
+  flex-direction: column;
+  padding: 16px;
+  ${({ theme }) => theme.typography.pretendard.t3.sbd};
+  color: ${({ theme }) => theme.colors.black};
+
+  span {
+    margin-top: 8px;
+    ${({ theme }) => theme.typography.pretendard.b1.md};
+  }
+`;
+
+// 오답노트
+// 해야함
+const ReviewNote = styled(CommonWrapper)<{ isNoteClicked: boolean }>`
+  padding: 12px 16px;
+  flex-direction: column;
+  overflow-y: hidden;
+
+  ${({ isNoteClicked }) => {
+    return (
+      isNoteClicked &&
+      css`
+        height: 100%;
+      `
+    );
+  }}
+`;
+
+const NoteTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const NoteTag = styled.div`
+  ${({ theme }) => theme.typography.pretendard.t3.sbd};
+  color: ${({ theme }) => theme.colors.black};
+`;
+
+const ExtendButton = styled.img`
+  width: 24px;
+  cursor: pointer;
+`;
+
+const NoteBot = styled.div<{ isNoteClicked: boolean }>`
+  width: 100%;
+  display: none;
+
+  ${({ isNoteClicked }) => {
+    return (
+      isNoteClicked &&
+      css`
+        display: flex;
+        flex-direction: column;
+        margin-top: 8px;
+        padding: 16px 0px;
+        overflow-y: scroll;
+      `
+    );
+  }}
+`;
+
+const ReviewBox = styled.div`
+  width: 100%;
+  height: 20px;
+  display: flex;
+  align-items: center;
+
+  ${({ theme }) => theme.typography.pretendard.c1.md};
+  color: ${({ theme }) => theme.colors.gray[700]};
+
+  & + & {
+    margin-top: 20px;
+  }
+`;
+
+const ReviewWord = styled.div`
+  width: 40%;
+  display: flex;
+  align-items: center;
+`;
+
+const ReviewMean = styled.div`
+  width: 40%;
+  display: flex;
+  align-items: center;
+`;
+
+const MemoCheck = styled.div`
+  width: 20%;
+  height: auto;
+  display: flex;
+  justify-content: end;
+`;
+
+// 하단 확인
+const Footer = styled.footer`
+  width: 100%;
+  padding: 0 24px;
+  margin-bottom: 32px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${({ theme }) => theme.colors.gray[100]};
 `;
