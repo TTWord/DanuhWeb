@@ -80,7 +80,9 @@ const LoginPage = () => {
               </SignInButton>
             </Join>
             <Bar />
-            <FindPassword onClick={runFindPage}>비밀번호 찾기</FindPassword>
+            <FindPassword type="button" onClick={runFindPage}>
+              비밀번호 찾기
+            </FindPassword>
           </Extra>
         </FormWrapper>
 

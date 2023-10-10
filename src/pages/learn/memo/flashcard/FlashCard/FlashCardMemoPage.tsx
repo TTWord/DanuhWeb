@@ -9,12 +9,15 @@ const FlashCardMemoPage = () => {
   const navigate = useNavigate();
   const getMemo = useGetFlashcardMemo();
   const location = useLocation();
-  const count = 10; // 옵션으로 빼야함
 
-  const { bookIds, mode } = location.state as {
+  const { bookIds, mode, quizCount } = location.state as {
     bookIds: number[];
     mode: 'word' | 'mean';
+    quizCount: number;
+    timerOption: number;
   };
+
+  const count = quizCount; // 옵션으로 빼야함
 
   const [memoList, setMemoList] = useState([
     { is_memorized: 0, mean: '', word: '' },

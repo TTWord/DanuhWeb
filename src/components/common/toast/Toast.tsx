@@ -49,7 +49,8 @@ const Box = styled.div<{
 }>`
   position: fixed;
   width: 320px;
-  z-index: 99;
+  height: 44px;
+  z-index: 101;
   background-color: black;
   left: 50%;
   transform: translateX(-50%);
@@ -60,7 +61,7 @@ const Box = styled.div<{
   bottom: -100px;
   transition: bottom 0.3s cubic-bezier(1, -0.01, 0.61, 0.74);
 
-  padding: 8px 16px;
+  padding: 10px 16px;
   box-sizing: border-box;
   opacity: 0.86;
 
@@ -101,6 +102,8 @@ const Text = styled.div<{
 }>`
   width: 100%;
   color: white;
+  font-size: 14px;
+  line-height: 140%;
 
   ${({ toastType }) => {
     switch (toastType) {

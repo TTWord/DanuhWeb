@@ -4,9 +4,12 @@ import { useSetRecoilState } from 'recoil';
 import { globalState } from '@/recoil';
 import SelectButtonComponent from './components/SelectButtonComponent';
 import TopAppBar from '@/components/common/header/TopAppBar';
+import { useNavigate } from 'react-router-dom';
+import useNavigatePush from '@/hooks/useNavigatePush';
 
 const LearnPage = () => {
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
+  const navigatePush = useNavigatePush();
 
   useEffect(() => {
     setActiveMenu(1);
@@ -87,6 +90,24 @@ const LearnPage = () => {
             })}
           </ButtonWrapper>
         </Container>
+
+        <CustomContainer>
+          <QuizTitle>임시</QuizTitle>
+          <CustomWrapper>
+            <Box
+              onClick={() => {
+                navigatePush('/learn/option/memo/flashcard');
+              }}
+            >
+              FlashCard
+            </Box>
+            <Box>Blind</Box>
+            <Box>(Quiz) Select</Box>
+            <Box>(Quiz) Select Blind</Box>
+            <Box>(Quiz) Typing</Box>
+            <Box>(Quiz) Typing Blind</Box>
+          </CustomWrapper>
+        </CustomContainer>
       </Content>
     </Wrapper>
   );
@@ -127,5 +148,28 @@ const QuizTitle = styled.div`
 const ButtonWrapper = styled.div`
   width: 100%;
   overflow-x: scroll;
+  display: flex;
+`;
+
+const CustomContainer = styled.div`
+  width: 100%;
+  flex-wrap: wrap;
+  display: flex;
+  flex-direction: column;
+  padding-top: 50px;
+`;
+
+const Box = styled.div`
+  width: 100px;
+  height: 100px;
+  background-color: ${({ theme }) => theme.colors.primary.default};
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+`;
+
+const CustomWrapper = styled.div`
+  gap: 10px;
+  flex-wrap: wrap;
   display: flex;
 `;
