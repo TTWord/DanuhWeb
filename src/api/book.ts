@@ -10,6 +10,8 @@ interface getBookResponse extends BackendResponse {
     share_id: number;
     comment?: string;
     is_sharing?: boolean;
+    word_count: number;
+    word_memorized_count: number;
   }[];
 }
 

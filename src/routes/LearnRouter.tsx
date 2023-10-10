@@ -10,6 +10,7 @@ import ShortBlindPage from '@/pages/learn/quiz/blind/shortanswer/ShortBlindPage'
 import ResultPage from '@/pages/learn/result/Result/ResultPage';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import RootLayout from '@/components/layout/RootLayout';
+import OptionSelectPage from '@/pages/learn/option/OptionSelect/OptionSelectPage';
 
 const QuizRouter = () => {
   const location = useLocation();
@@ -20,6 +21,8 @@ const QuizRouter = () => {
       <Route element={<RootLayout />}>
         <Route path={'/'} element={<LearnPage />} />
       </Route>
+
+      <Route path={'/option/:type/:kind'} element={<OptionSelectPage />} />
 
       {/* 암기 */}
       <Route

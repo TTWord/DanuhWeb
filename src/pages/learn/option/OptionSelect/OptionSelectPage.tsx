@@ -1,24 +1,95 @@
 import CheckBox from '@/components/common/switch/CheckBox';
 import StackLayout from '@/components/layout/StackLayout';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import BookSelectPop from './BookSelectPop';
-import CustomScrollLayout from './BookCustomScrollLayout';
+import BookSelectPop from './components/BookSelectPop';
+import { useNavigate, useParams } from 'react-router-dom';
+
+const getTopBarText = (type: string, kind: string) => {
+  if (type === 'memo') {
+    switch (kind) {
+      case 'flashcard':
+        return 'Flashcard';
+      case 'blind':
+        return 'Blind';
+    }
+  }
+
+  if (type === 'quiz') {
+    switch (kind) {
+      case 'select':
+        return 'Select';
+      case 'typing':
+        return 'Typing';
+      case 'blind_select':
+        return 'Blind Select';
+      case 'blind_typing':
+        return 'Blind Typing';
+    }
+  }
+
+  return '';
+};
 
 const OptionSelectPage = () => {
+  const params = useParams();
+
+  const navigate = useNavigate();
+
+  const kind = params.kind; // flashcard
+  const type = params.type; // quiz, memo
+
   const [checked, setChecked] = useState(false);
-  const [langOption, setLangOption] = useState<'word' | 'mean'>('word');
+  const [langOption, setLangOption] = useState<'word' | 'mean' | 'all'>('word');
   const [timerOption, setTimerOption] = useState<'quiz' | 'book'>('quiz');
   const [haveMemoWord, setHaveMemoWord] = useState(false);
   const [isOpenBookSelectPop, setIsOpenBookSelectPop] = useState(false);
-  const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
+  const [selectedBooks, setSelectedBooks] = useState<
+    {
+      id: number;
+      word_count: number;
+      memorized_count: number;
+    }[]
+  >([]);
   const [viewSelectedBooksText, setViewSelectedBooksText] = useState<
     string | null
   >(null);
 
-  const [quizCount, setQuizCount] = useState(10);
+  const [quizCount, setQuizCount] = useState(5);
   const [quizTime, setQuizTime] = useState(10);
   const [quizAllTime, setQuizAllTime] = useState(60);
+
+  const [reduceCount, setReduceCount] = useState({
+    word: 0,
+    memorized: 0,
+  });
+
+  // 단어장 단어 카운트 계산
+  useEffect(() => {
+    let count = selectedBooks.reduce((result, book) => {
+      return result + book.word_count;
+    }, 0);
+
+    let memorizedCount = selectedBooks.reduce((result, book) => {
+      return result + book.memorized_count;
+    }, 0);
+
+    setReduceCount({
+      word: count,
+      memorized: memorizedCount,
+    });
+
+    // 기존에 선택되어 있던 카운트 개수가 부족할 경우 카운트 초기화
+    if (haveMemoWord) {
+      if (quizCount > memorizedCount) {
+        setQuizCount(5);
+      }
+    } else {
+      if (quizCount > count) {
+        setQuizCount(5);
+      }
+    }
+  }, [selectedBooks]);
 
   const onClickCheck = () => {
     setChecked((current) => !current);
@@ -27,6 +98,24 @@ const OptionSelectPage = () => {
   const onClickSelectBook = () => {
     setIsOpenBookSelectPop(true);
   };
+
+  const onClickConfirm = () => {
+    navigate(`/learn/${type}/${kind}`, {
+      state: {
+        bookIds: selectedBooks.map((book) => book.id),
+        mode: langOption,
+        quizType: type,
+        quizCount,
+        quizTime,
+        timerOption,
+      },
+    });
+  };
+
+  if (!type || !kind) {
+    alert('type, kind 값이 없습니다');
+    return null;
+  }
 
   return (
     <>
@@ -37,10 +126,14 @@ const OptionSelectPage = () => {
         setSelectedBooks={setSelectedBooks}
         setViewSelectedBooksText={setViewSelectedBooksText}
         viewSelectedBooksText={viewSelectedBooksText}
+        haveMemoWord={haveMemoWord}
       />
       <StackLayout
         topBar={{
-          title: '객관식 Select',
+          title: getTopBarText(type, kind),
+          back: {
+            location: '/learn',
+          },
         }}
       >
         <Container>
@@ -107,7 +200,7 @@ const OptionSelectPage = () => {
                           fill="none"
                           onClick={() => {
                             setQuizCount((current) => {
-                              if (current <= 10) {
+                              if (current <= 5) {
                                 return current;
                               } else {
                                 return current - 5;
@@ -149,102 +242,104 @@ const OptionSelectPage = () => {
                       </OptionContentNumberBox>
                     </OptionContent>
                   </LanguageOption>
-                  <TimerOption>
-                    <OptionHeader>
-                      <OptionHeaderItem
-                        isActive={timerOption === 'quiz'}
-                        onClick={() => {
-                          setTimerOption('quiz');
-                        }}
-                      >
-                        문제당 시간제한
-                      </OptionHeaderItem>
-                      <OptionHeaderItem
-                        isActive={timerOption === 'book'}
-                        onClick={() => {
-                          setTimerOption('book');
-                        }}
-                      >
-                        전체 시간제한
-                      </OptionHeaderItem>
-                    </OptionHeader>
-                    <OptionContent>
-                      <OptionContentText>시간 지정</OptionContentText>
-                      <OptionContentNumberBox>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="13"
-                          height="12"
-                          viewBox="0 0 13 12"
-                          fill="none"
+                  {type !== 'memo' && (
+                    <TimerOption>
+                      <OptionHeader>
+                        <OptionHeaderItem
+                          isActive={timerOption === 'quiz'}
                           onClick={() => {
-                            if (timerOption === 'quiz') {
-                              setQuizTime((current) => {
-                                if (current <= 10) {
-                                  return current;
-                                } else {
-                                  return current - 5;
-                                }
-                              });
-                            }
-
-                            if (timerOption === 'book') {
-                              setQuizAllTime((current) => {
-                                if (current <= 30) {
-                                  return current;
-                                }
-                                return current - 30;
-                              });
-                            }
+                            setTimerOption('quiz');
                           }}
                         >
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M7.20655 10.5192C6.82067 11.1807 5.86487 11.1807 5.47899 10.5192L0.220031 1.50387C-0.168852 0.837214 0.312019 0 1.08381 0H11.6017C12.3735 0 12.8544 0.837214 12.4655 1.50387L7.20655 10.5192Z"
-                            fill="#6E5FED"
-                          />
-                        </svg>
-                        <OptionCount>
-                          {timerOption === 'quiz' && quizTime + '초'}
-                          {timerOption === 'book' && quizAllTime + '초'}
-                        </OptionCount>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="13"
-                          height="12"
-                          viewBox="0 0 13 12"
-                          fill="none"
+                          문제당 시간제한
+                        </OptionHeaderItem>
+                        <OptionHeaderItem
+                          isActive={timerOption === 'book'}
                           onClick={() => {
-                            if (timerOption === 'quiz') {
-                              setQuizTime((current) => {
-                                if (current >= 60) {
-                                  return current;
-                                }
-                                return current + 5;
-                              });
-                            }
-
-                            if (timerOption === 'book') {
-                              setQuizAllTime((current) => {
-                                if (current >= 300) {
-                                  return current;
-                                }
-                                return current + 30;
-                              });
-                            }
+                            setTimerOption('book');
                           }}
                         >
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M5.79345 0.980762C6.17933 0.319257 7.13513 0.319259 7.52101 0.980764L12.78 9.99613C13.1689 10.6628 12.688 11.5 11.9162 11.5H1.39826C0.626473 11.5 0.145602 10.6628 0.534485 9.99613L5.79345 0.980762Z"
-                            fill="#6E5FED"
-                          />
-                        </svg>
-                      </OptionContentNumberBox>
-                    </OptionContent>
-                  </TimerOption>
+                          전체 시간제한
+                        </OptionHeaderItem>
+                      </OptionHeader>
+                      <OptionContent>
+                        <OptionContentText>시간 지정</OptionContentText>
+                        <OptionContentNumberBox>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="13"
+                            height="12"
+                            viewBox="0 0 13 12"
+                            fill="none"
+                            onClick={() => {
+                              if (timerOption === 'quiz') {
+                                setQuizTime((current) => {
+                                  if (current <= 10) {
+                                    return current;
+                                  } else {
+                                    return current - 5;
+                                  }
+                                });
+                              }
+
+                              if (timerOption === 'book') {
+                                setQuizAllTime((current) => {
+                                  if (current <= 30) {
+                                    return current;
+                                  }
+                                  return current - 30;
+                                });
+                              }
+                            }}
+                          >
+                            <path
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M7.20655 10.5192C6.82067 11.1807 5.86487 11.1807 5.47899 10.5192L0.220031 1.50387C-0.168852 0.837214 0.312019 0 1.08381 0H11.6017C12.3735 0 12.8544 0.837214 12.4655 1.50387L7.20655 10.5192Z"
+                              fill="#6E5FED"
+                            />
+                          </svg>
+                          <OptionCount>
+                            {timerOption === 'quiz' && quizTime + '초'}
+                            {timerOption === 'book' && quizAllTime + '초'}
+                          </OptionCount>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="13"
+                            height="12"
+                            viewBox="0 0 13 12"
+                            fill="none"
+                            onClick={() => {
+                              if (timerOption === 'quiz') {
+                                setQuizTime((current) => {
+                                  if (current >= 60) {
+                                    return current;
+                                  }
+                                  return current + 5;
+                                });
+                              }
+
+                              if (timerOption === 'book') {
+                                setQuizAllTime((current) => {
+                                  if (current >= 300) {
+                                    return current;
+                                  }
+                                  return current + 30;
+                                });
+                              }
+                            }}
+                          >
+                            <path
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M5.79345 0.980762C6.17933 0.319257 7.13513 0.319259 7.52101 0.980764L12.78 9.99613C13.1689 10.6628 12.688 11.5 11.9162 11.5H1.39826C0.626473 11.5 0.145602 10.6628 0.534485 9.99613L5.79345 0.980762Z"
+                              fill="#6E5FED"
+                            />
+                          </svg>
+                        </OptionContentNumberBox>
+                      </OptionContent>
+                    </TimerOption>
+                  )}
                 </OptionBox>
               </OptionGroup>
             </TopView>
@@ -262,7 +357,7 @@ const OptionSelectPage = () => {
               </ToggleSwitchGroup>
             </BottomView>
           </Content>
-          <BottomButton>확인</BottomButton>
+          <BottomButton onClick={onClickConfirm}>확인</BottomButton>
         </Container>
       </StackLayout>
     </>
@@ -414,7 +509,7 @@ const OptionContentNumberBox = styled.div`
   svg {
     cursor: pointer;
 
-    &:hover {
+    &:active {
       path {
         fill: ${({ theme }) => theme.colors.primary[400]};
       }

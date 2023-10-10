@@ -7,6 +7,8 @@ interface IBookResponse {
   user_id?: number;
   created_at: string;
   updated_at: string;
+  word_count: number;
+  word_memorized_count: number;
 }
 
 interface BookSelectItemProps {
@@ -26,7 +28,10 @@ const BookSelectItem: React.FC<BookSelectItemProps> = ({
         setSelected(book);
       }}
     >
-      <BookName>{book.name}</BookName>
+      <BookName>
+        {book.name} (단어수: {book.word_count}, 암기한 단어수:{' '}
+        {book.word_memorized_count})
+      </BookName>
       {selected && <img src={iconCheck} alt="check" />}
     </Book>
   );
