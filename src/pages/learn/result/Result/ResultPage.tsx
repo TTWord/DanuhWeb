@@ -191,7 +191,7 @@ const Container = styled.div`
   padding: 16px 24px;
   padding-bottom: 0px;
   background-color: ${({ theme }) => theme.colors.gray[100]};
-  overflow-y: hidden;
+  overflow-y: scroll;
 `;
 
 const CommonWrapper = styled.div`
@@ -311,7 +311,6 @@ const TargetBook = styled(CommonWrapper)`
 const ReviewNote = styled(CommonWrapper)<{ isNoteClicked: boolean }>`
   padding: 12px 16px;
   flex-direction: column;
-  overflow-y: hidden;
 
   ${({ isNoteClicked }) => {
     return (
@@ -351,7 +350,6 @@ const NoteBot = styled.div<{ isNoteClicked: boolean }>`
         flex-direction: column;
         margin-top: 8px;
         padding: 16px 0px;
-        overflow-y: scroll;
       `
     );
   }}
