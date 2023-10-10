@@ -102,6 +102,11 @@ const QuizMainPage = () => {
     }
   };
 
+  if (quizType === undefined) {
+    navigate('/learn');
+    return;
+  }
+
   return (
     <StackLayout
       topBar={{

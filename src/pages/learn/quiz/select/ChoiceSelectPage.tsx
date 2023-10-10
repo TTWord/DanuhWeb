@@ -6,6 +6,7 @@ import useGetSelectQuiz from './hooks/useGetSelectQuiz';
 import useToast from '@/hooks/useToast';
 import CheckSVG from '../common/svg/CheckSVG';
 import QuizHeader from '../common/components/QuizHeader';
+import WideButton from '@/components/common/button/WideButton';
 
 interface IAnswerData {
   mean: string;
@@ -27,8 +28,9 @@ const ChoiceSelectPage = () => {
   const toast = useToast();
   //// Varaiables ////
   // Timer Vars
-  const timeMax = 10000;
-  const [timer, setTimer] = useState(0);
+  const userTimer = 72;
+  const [timerEnd, setTimerEnd] = useState(false);
+  const [timer, setTimer] = useState(userTimer); // 초
 
   // Quiz Api Vars
   const [isLoading, setIsLoading] = useState(true);
@@ -86,19 +88,37 @@ const ChoiceSelectPage = () => {
 
   // 문항 선택 버튼에서 사용할 함수
   const selectAnswer = (select: string) => {
-    if (mode === 'word' && select === currentAnswer?.mean) {
-      setResult(current => current + 1);
-      setIsCorrect(true);
+    if (mode === 'word') {
+      if (select === currentAnswer?.mean) {
+        setResult((current) => current + 1);
+        setIsCorrect(true);
+
+        toast.quiz('정답을 맞췄어요 👏');
+      } else {
+        toast.quiz('최악이에요...');
+      }
     }
-    if (mode === 'mean' && select === currentAnswer?.word) {
-      setResult(current => current + 1);
-      setIsCorrect(true);
+    if (mode === 'mean') {
+      if (select === currentAnswer?.word) {
+        setResult((current) => current + 1);
+        setIsCorrect(true);
+        toast.quiz('정답을 맞췄어요 👏');
+      } else {
+        toast.quiz('최악이에요...');
+      }
     }
   };
 
+  // 암기 가이드 메세지
+  const showMessage = localStorage.getItem('showMessage');
+
   // 체크버튼 함수 // 여기도 훅 뺄거임
   const onClickCheckButton = async () => {
-    setCurrentMemorize(current => !current);
+    if (showMessage !== '1') {
+      localStorage.setItem('showMessage', '1');
+    }
+
+    setCurrentMemorize((current) => !current);
 
     try {
       const { data: response } = await api.memo.patchMemoStatus({
@@ -119,9 +139,11 @@ const ChoiceSelectPage = () => {
   // 다음 버튼 함수
   const onClickNextButton = () => {
     setNumber(number + 1);
-    setIsAnswered(current => !current);
+    setIsAnswered(false);
     setIsCorrect(false);
-    setTimer(0);
+    setTimer(userTimer);
+    setTimerEnd(false);
+
     if (number + 1 === length) {
       navigate('/learn/result', {
         state: {
@@ -149,16 +171,17 @@ const ChoiceSelectPage = () => {
   useEffect(() => {
     if (!isAnswered && problems) {
       const timeOutId = setTimeout(() => {
-        if (timer !== 10000) {
-          setTimer(current => current + 500);
+        if (timer !== 0) {
+          setTimer((current) => current - 1);
         }
-        if (timer === 10000) {
+        if (timer === 0) {
           setIsAnswered(true);
+          setTimerEnd(true);
           clearTimeout(timeOutId);
         }
 
         return () => clearTimeout(timeOutId);
-      }, 500);
+      }, 1000);
     }
   }, [timer, isAnswered]);
 
@@ -167,8 +190,10 @@ const ChoiceSelectPage = () => {
     return (
       <ChoiceButton
         onClick={() => {
-          selectAnswer(props.example);
-          setIsAnswered(current => !current);
+          if (!isAnswered) {
+            selectAnswer(props.example);
+            setIsAnswered(true);
+          }
         }}
       >
         {props.example}
@@ -187,7 +212,7 @@ const ChoiceSelectPage = () => {
             number={number}
             total={length}
             timer={timer}
-            timeMax={timeMax}
+            timerEnd={timerEnd}
           />
 
           <Content>
@@ -202,7 +227,6 @@ const ChoiceSelectPage = () => {
             {/* 정답 컴포넌트 */}
             {isAnswered && (
               <Answer>
-                <Correct>{isCorrect ? '정답!' : '오답!'}</Correct>
                 {/* 아래 부분 컴포넌트 이름 수정 필요 */}
                 {mode === 'word' && (
                   <>
@@ -217,38 +241,54 @@ const ChoiceSelectPage = () => {
                   </>
                 )}
 
+                {!showMessage && (
+                  <GuideMessage>
+                    <TopMessage>다 외우셨나요?</TopMessage>
+                    <BotMessage>암기상태 활성화하기</BotMessage>
+                    <Triangle />
+                  </GuideMessage>
+                )}
+
                 <CheckButton onClick={onClickCheckButton}>
-                  <CheckSVG fill={currentMemorize ? '#4ABC56' : '#FFFFFF'} />
+                  <CheckSVG fill={currentMemorize ? '#6E5FED' : '#DDDDE4'} />
                 </CheckButton>
               </Answer>
             )}
           </Content>
 
-          <Footer>
+          <ButtonWrapper>
             {/* 문제 컴포넌트 */}
-            {!isAnswered &&
-              currentQuiz.map((items: any, index) => {
-                return (
-                  <div key={index}>
-                    {mode === 'word' && (
-                      <CreateChoiceButtons example={items?.mean} />
-                    )}
-                    {mode === 'mean' && (
-                      <CreateChoiceButtons example={items?.word} />
-                    )}
-                  </div>
-                );
-              })}
-
-            {/* 정답 컴포넌트 */}
-            {isAnswered && (
-              <NextButton onClick={onClickNextButton}>
-                {number + 1 === length ? '결과보기' : '다음'}
-              </NextButton>
-            )}
-          </Footer>
+            {
+              /* !isAnswered */ true &&
+                currentQuiz.map(
+                  (items: { mean: string; word: string }, index) => {
+                    if (mode === 'word')
+                      return (
+                        <CreateChoiceButtons
+                          key={index}
+                          example={items?.mean}
+                        />
+                      );
+                    /*  (mode === 'mean') */ else
+                      return (
+                        <CreateChoiceButtons
+                          key={index}
+                          example={items?.word}
+                        />
+                      );
+                  },
+                )
+            }
+          </ButtonWrapper>
         </>
       )}
+      <BottomView>
+        {isAnswered && (
+          <WideButton onClick={onClickNextButton}>
+            {number + 1 === length ? '결과보기' : '다음'}
+          </WideButton>
+        )}
+      </BottomView>
     </MainWrapper>
   );
 };
@@ -278,15 +318,25 @@ const Content = styled.div`
   align-items: center;
   justify-content: center;
   flex: 1;
+  position: relative;
 `;
 
 const Word = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 700;
-  font-size: 64px;
-  color: #0d0d0d;
+  font-family: ${({ theme }) => theme.fonts.pretendard};
+  color: ${({ theme }) => theme.colors.black};
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+`;
+
+const Mean = styled.div`
+  font-family: ${({ theme }) => theme.fonts.pretendard};
+  color: ${({ theme }) => theme.colors.black};
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
 `;
 
 const Answer = styled.div`
@@ -296,23 +346,60 @@ const Answer = styled.div`
   align-items: center;
 `;
 
-const Mean = styled.div`
-  font-size: 36px;
+//
+
+const GuideMessage = styled.div`
+  position: absolute;
+  bottom: 65px;
+  right: 36px;
+  //width: 126px;
+  //height: 45px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 4px;
+  background-color: ${({ theme }) => theme.colors.gray[900]};
 `;
 
-const Correct = styled.div`
-  font-size: 36px;
+const TopMessage = styled.span`
+  ${({ theme }) => theme.typography.pretendard.c2.rg};
+  color: ${({ theme }) => theme.colors.white};
 `;
 
-const CheckButton = styled.button``;
+const BotMessage = styled.span`
+  ${({ theme }) => theme.typography.pretendard.c1.sbd};
+  color: ${({ theme }) => theme.colors.primary[200]};
+`;
 
-const Footer = styled.footer`
+const Triangle = styled.div`
+  position: absolute;
+  bottom: -8px;
+  right: 14px;
+  width: 0px;
+  height: 0px;
+  border-top: 8px solid ${({ theme }) => theme.colors.gray[900]};
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+`;
+
+const CheckButton = styled.button`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 16px;
+  right: 36px;
+`;
+
+const ButtonWrapper = styled.footer`
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 52px;
-  margin-bottom: 32px;
+  padding: 0 24px;
+  //margin-bottom: 32px;
 
   div {
     :nth-child(n + 2) {
@@ -322,20 +409,26 @@ const Footer = styled.footer`
 `;
 
 const ChoiceButton = styled.button`
-  width: 278px;
-  height: 70px;
-  background: #ffffff;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 30px;
-  text-align: center;
-  color: #0d0d0d;
+  width: 100%;
+  height: 44px;
+  padding: 15px 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  ${({ theme }) => theme.typography.pretendard.b1.sbd}
+  background-color: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.gray[200]};
+  border-radius: 16px;
+  color: ${({ theme }) => theme.colors.black};
+
+  & + & {
+    margin-top: 8px;
+  }
 `;
 
-const NextButton = styled.button`
+const BottomView = styled.div`
   width: 100%;
-  height: 48px;
-  background-color: ${({ theme }) => theme.colors.primary.default};
-  color: white;
+  height: 109px;
+  padding: 32px 24px;
+  padding-top: 25px;
 `;

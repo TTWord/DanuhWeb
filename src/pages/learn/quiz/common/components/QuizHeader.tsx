@@ -1,13 +1,15 @@
-import styled from 'styled-components';
-import xButton from '@/assets/svg/icons/icon-x-button.svg';
+import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import TopAppBarClose from '@/components/common/header/TopAppBarClose';
+import ConfirmPop from '@/components/common/popup/ConfirmPop';
+import { useState } from 'react';
 
 interface QuizHeaderParams {
   type: string;
   number: number;
   total: number;
   timer: number;
-  timeMax: number;
+  timerEnd: boolean;
 }
 
 const QuizHeader = ({
@@ -15,34 +17,51 @@ const QuizHeader = ({
   number,
   total,
   timer,
-  timeMax,
+  timerEnd,
 }: QuizHeaderParams) => {
   const navigate = useNavigate();
-  const goChoice = () => {
-    navigate('/learn/quiz', {
-      state: {
-        type,
-      },
-    });
+
+  const minutes = Math.floor(timer / 60);
+  const seconds = timer % 60;
+  const formatMinutes = String(minutes).padStart(2, '0');
+  const formatSeconds = String(seconds).padStart(2, '0');
+
+  const [isConfirmPopOpen, setIsConfirmPopOpen] = useState(false);
+
+  const onClose = () => {
+    setIsConfirmPopOpen(true);
   };
 
   return (
     <Header>
-      <TitleWrapper>
-        <button onClick={goChoice}>
-          <img src={xButton} alt="xButton" />
-        </button>
-        <Title>문제풀기</Title>
-      </TitleWrapper>
+      <ConfirmPop
+        isOpen={isConfirmPopOpen}
+        cancelText="뒤로가기"
+        confirmText="그만하기"
+        height="180px"
+        onCancel={() => setIsConfirmPopOpen(false)}
+        onConfirm={() => {
+          setIsConfirmPopOpen(false);
+          navigate('/learn/quiz', {
+            state: {
+              type,
+            },
+          });
+        }}
+        type="title"
+        title="암기를 중단할까요?"
+      />
+
+      <TopAppBarClose title={`${number + 1}/${total}`} onClose={onClose} />
 
       <ProgressWrapper>
-        <ProgressBar value={(number + 1) * (100 / total)} max={100} />
+        <ProgressBar
+          isEnd={number + 1 === total}
+          value={(number + 1) * (100 / total)}
+          max={100}
+        />
 
-        <ProgressIndex>
-          {number + 1}/{total}
-        </ProgressIndex>
-
-        <ProgressTime value={(timer / timeMax) * 100} max={100} />
+        {!timerEnd && <Timer>{`${formatMinutes}:${formatSeconds}`}</Timer>}
       </ProgressWrapper>
     </Header>
   );
@@ -58,27 +77,6 @@ const Header = styled.div`
   align-items: center;
 `;
 
-const TitleWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  height: 56px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  button {
-    position: absolute;
-    left: 12px;
-  }
-`;
-
-const Title = styled.div`
-  font-weight: 300;
-  font-size: 20px;
-  line-height: 20px;
-  text-align: center;
-  color: #0d0d0d;
-`;
-
 const ProgressWrapper = styled.div`
   position: relative;
   width: 100%;
@@ -88,37 +86,39 @@ const ProgressWrapper = styled.div`
   align-items: center;
 `;
 
-const ProgressBar = styled.progress`
+const ProgressBar = styled.progress<{ isEnd: boolean }>`
   width: 100%;
-  height: 2px;
+  height: 4px;
+  background-color: inherit;
+
   ::-webkit-progress-bar {
-    background: #d9d9d9;
+    background-color: #d9d9d9;
   }
+
   ::-webkit-progress-value {
-    background: #e67979;
+    border-radius: 0 4px 4px 0;
+    background-color: ${({ theme }) => theme.colors.primary.default};
+
+    ${({ isEnd }) => {
+      return (
+        isEnd &&
+        css`
+          border-radius: 0;
+        `
+      );
+    }};
   }
-  margin-bottom: 9px;
+  margin-bottom: 8px;
 `;
 
-const ProgressIndex = styled.div`
+const Timer = styled.div`
   width: 100%;
+  font-family: ${({ theme }) => theme.fonts.pretendard};
+  font-size: 14px;
+  font-style: normal;
   font-weight: 400;
-  font-size: 12px;
-  line-height: 10px;
-  text-align: center;
-  color: #0d0d0d;
-`;
-
-const ProgressTime = styled.progress`
-  position: absolute;
-  right: 9px;
-  width: 54px;
-  height: 2px;
-  ::-webkit-progress-bar {
-    background: #d9d9d9;
-  }
-  ::-webkit-progress-value {
-    transition: 0.5s linear;
-    background: #e67979;
-  }
+  line-height: normal;
+  color: ${({ theme }) => theme.colors.gray[600]};
+  text-align: end;
+  padding: 0 14px;
 `;
