@@ -109,8 +109,15 @@ const ChoiceSelectPage = () => {
     }
   };
 
+  // 암기 가이드 메세지
+  const showMessage = localStorage.getItem('showMessage');
+
   // 체크버튼 함수 // 여기도 훅 뺄거임
   const onClickCheckButton = async () => {
+    if (showMessage !== '1') {
+      localStorage.setItem('showMessage', '1');
+    }
+
     setCurrentMemorize((current) => !current);
 
     try {
@@ -234,14 +241,16 @@ const ChoiceSelectPage = () => {
                   </>
                 )}
 
-                <GuideMessage>
-                  <TopMessage>다 외우셨나요?</TopMessage>
-                  <BotMessage>암기상태 활성화하기</BotMessage>
-                  <Triangle />
-                </GuideMessage>
+                {!showMessage && (
+                  <GuideMessage>
+                    <TopMessage>다 외우셨나요?</TopMessage>
+                    <BotMessage>암기상태 활성화하기</BotMessage>
+                    <Triangle />
+                  </GuideMessage>
+                )}
 
                 <CheckButton onClick={onClickCheckButton}>
-                  <CheckSVG fill={currentMemorize ? '#4ABC56' : '#FFFFFF'} />
+                  <CheckSVG fill={currentMemorize ? '#6E5FED' : '#DDDDE4'} />
                 </CheckButton>
               </Answer>
             )}
