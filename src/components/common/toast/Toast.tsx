@@ -35,7 +35,7 @@ const Toast = () => {
   if (toastType === 'QUIZ') {
     return (
       <QuizBox isOpen={isOpen}>
-        <Text toastType={toastType}>{`test: ${message}`}</Text>
+        <Text toastType={toastType}>{message}</Text>
       </QuizBox>
     );
   }
