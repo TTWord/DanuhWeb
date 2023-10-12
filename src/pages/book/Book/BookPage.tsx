@@ -18,7 +18,7 @@ const BookPage = () => {
     setActiveMenu(0);
   }, []);
 
-  if (!books) return null;
+  //if (!books) return null;
 
   return (
     <WebWrapper>
@@ -28,28 +28,30 @@ const BookPage = () => {
         </div>
       </Header>
 
-      <Container>
-        {books.length === 0 && (
-          <EmptyBook>
-            <img src={emptyIcon} alt="empty" />
-            <span>아직 등록된 단어장이 없어요</span>
-            <span>단어장을 추가해주세요</span>
-          </EmptyBook>
-        )}
+      {books && (
+        <Container>
+          {books.length === 0 && (
+            <EmptyBook>
+              <img src={emptyIcon} alt="empty" />
+              <span>아직 등록된 단어장이 없어요</span>
+              <span>단어장을 추가해주세요</span>
+            </EmptyBook>
+          )}
 
-        <Items>
-          {books.map((book) => (
-            <BookItem
-              key={book.id}
-              book={book}
-              onItemClick={onItemClick}
-              onClickUpdate={onClickUpdate}
-              onClickRemove={onClickRemove}
-            />
-          ))}
-        </Items>
-        <Additional />
-      </Container>
+          <Items>
+            {books.map((book) => (
+              <BookItem
+                key={book.id}
+                book={book}
+                onItemClick={onItemClick}
+                onClickUpdate={onClickUpdate}
+                onClickRemove={onClickRemove}
+              />
+            ))}
+          </Items>
+          <Additional />
+        </Container>
+      )}
     </WebWrapper>
   );
 };

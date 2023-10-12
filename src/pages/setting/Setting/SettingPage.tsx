@@ -36,10 +36,10 @@ const SettingPage = () => {
     setIsConfirmPopOpen(true);
   };
 
-  if (!about) return null;
+  //if (!about) return null;
 
   return (
-    <>
+    <WebWrapper>
       <AlertPop
         type="custom"
         isOpen={isAlertOpen}
@@ -58,96 +58,103 @@ const SettingPage = () => {
         <AlertPopDesc>내 공유 단어장이 추전받은 횟수</AlertPopDesc>
       </AlertPop>
 
-      <Container>
-        <TopAppBar type="setting" title="My Page" onClick={moveProfilePage} />
+      <TopAppBar type="setting" title="My Page" onClick={moveProfilePage} />
 
-        <UserInfoWrapper>
-          <ProfileWrapper>
-            <Picture>
-              <img src={about.url ?? defaultProfile} alt="profile" />
-            </Picture>
+      {about && (
+        <Container>
+          <UserInfoWrapper>
+            <ProfileWrapper>
+              <Picture>
+                <img src={about.url ?? defaultProfile} alt="profile" />
+              </Picture>
 
-            <ProfileContent>
-              <ProfileNickname>{about.nickname}</ProfileNickname>
-              <ProfileUsername>{about.username}</ProfileUsername>
+              <ProfileContent>
+                <ProfileNickname>{about.nickname}</ProfileNickname>
+                <ProfileUsername>{about.username}</ProfileUsername>
 
-              <WordNumTitle>단어개수</WordNumTitle>
-              <WordNumText>
-                {about.word_count}/{maxWords}
-              </WordNumText>
-            </ProfileContent>
-          </ProfileWrapper>
+                <WordNumTitle>단어개수</WordNumTitle>
+                <WordNumText>
+                  {about.word_count}/{maxWords}
+                </WordNumText>
+              </ProfileContent>
+            </ProfileWrapper>
 
-          <ShareInfoWrapper>
-            <ShareInfo>
-              <InfoName>공유단어장</InfoName>
-              <InfoNumber>
-                {Number(about.share_count).toLocaleString()}
-              </InfoNumber>
-            </ShareInfo>
-            <ShareInfo>
-              <InfoName>
-                다운로드
-                <img
-                  src={iconInfo}
-                  alt="download"
-                  onClick={() => {
-                    onClickHelp();
-                  }}
-                />
-              </InfoName>
-              <InfoNumber>
-                {Number(about.download_count).toLocaleString()}
-              </InfoNumber>
-            </ShareInfo>
-            <ShareInfo>
-              <InfoName>
-                추천
-                <img
-                  src={iconInfo}
-                  alt="recommend"
-                  onClick={() => {
-                    onClickHelp();
-                  }}
-                />
-              </InfoName>
-              <InfoNumber>
-                {Number(about.recommend_count).toLocaleString()}
-              </InfoNumber>
-            </ShareInfo>
-          </ShareInfoWrapper>
-        </UserInfoWrapper>
+            <ShareInfoWrapper>
+              <ShareInfo>
+                <InfoName>공유단어장</InfoName>
+                <InfoNumber>
+                  {Number(about.share_count).toLocaleString()}
+                </InfoNumber>
+              </ShareInfo>
+              <ShareInfo>
+                <InfoName>
+                  다운로드
+                  <img
+                    src={iconInfo}
+                    alt="download"
+                    onClick={() => {
+                      onClickHelp();
+                    }}
+                  />
+                </InfoName>
+                <InfoNumber>
+                  {Number(about.download_count).toLocaleString()}
+                </InfoNumber>
+              </ShareInfo>
+              <ShareInfo>
+                <InfoName>
+                  추천
+                  <img
+                    src={iconInfo}
+                    alt="recommend"
+                    onClick={() => {
+                      onClickHelp();
+                    }}
+                  />
+                </InfoName>
+                <InfoNumber>
+                  {Number(about.recommend_count).toLocaleString()}
+                </InfoNumber>
+              </ShareInfo>
+            </ShareInfoWrapper>
+          </UserInfoWrapper>
 
-        <ContentWrapper>
-          <ConfirmPop
-            isOpen={isConfirmPopOpen}
-            cancelText="뒤로가기"
-            confirmText="로그아웃"
-            height="180px"
-            onCancel={() => setIsConfirmPopOpen(false)}
-            onConfirm={() => {
-              setIsConfirmPopOpen(false);
-              logout();
-            }}
-            type="title"
-            title="정말 로그아웃 하시겠습니까?"
-          />
-          <ContentBox title="공지사항" onClick={moveNoticePage} />
-          <ContentBox title="패치노트" onClick={movePatchNotePage} />
-          <ContentBox title="건의하기 / 버그신고" onClick={moveReportPage} />
-          {/* Local 가입 계정이 아니면 비밀번호 변경 미표시 */}
-          {about.login_type === 'local' && (
-            <ContentBox title="비밀번호 변경" onClick={movePasswordPage} />
-          )}
-          <ContentBox title="로그아웃" onClick={onClickLogout} />
-          <ContentBox title="탈퇴하기" onClick={moveAccountDeletePage} />
-        </ContentWrapper>
-      </Container>
-    </>
+          <ContentWrapper>
+            <ConfirmPop
+              isOpen={isConfirmPopOpen}
+              cancelText="뒤로가기"
+              confirmText="로그아웃"
+              height="180px"
+              onCancel={() => setIsConfirmPopOpen(false)}
+              onConfirm={() => {
+                setIsConfirmPopOpen(false);
+                logout();
+              }}
+              type="title"
+              title="정말 로그아웃 하시겠습니까?"
+            />
+            <ContentBox title="공지사항" onClick={moveNoticePage} />
+            <ContentBox title="패치노트" onClick={movePatchNotePage} />
+            <ContentBox title="건의하기 / 버그신고" onClick={moveReportPage} />
+            {/* Local 가입 계정이 아니면 비밀번호 변경 미표시 */}
+            {about.login_type === 'local' && (
+              <ContentBox title="비밀번호 변경" onClick={movePasswordPage} />
+            )}
+            <ContentBox title="로그아웃" onClick={onClickLogout} />
+            <ContentBox title="탈퇴하기" onClick={moveAccountDeletePage} />
+          </ContentWrapper>
+        </Container>
+      )}
+    </WebWrapper>
   );
 };
 
 export default SettingPage;
+
+const WebWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+`;
 
 const Container = styled.div`
   width: 100%;
