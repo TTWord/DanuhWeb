@@ -2,11 +2,13 @@ import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { MouseEvent, ChangeEvent, useEffect, useRef, useState } from 'react';
 import useGetTypingQuiz from './hooks/useGetTypingQuiz';
-import xButton from '@/assets/svg/icons/icon-x-button.svg';
 import QuizHeader from '../common/components/QuizHeader';
 import useToast from '@/hooks/useToast';
+import WideButton from '@/components/common/button/WideButton';
 
 const ShortTypingPage = () => {
+  const [timerEnd, setTimerEnd] = useState(false);
+
   const toast = useToast();
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,19 +34,29 @@ const ShortTypingPage = () => {
   // 문제 진행도
   const [number, setNumber] = useState(0);
 
-  const next = (e: MouseEvent<HTMLButtonElement>) => {
-    const innerText = e.currentTarget.innerText;
+  // Timer Vars
+  const userTimer = 72;
+  const [isAnswered, setIsAnswered] = useState(false);
+  const [timer, setTimer] = useState(userTimer);
 
-    if (innerText === '다음') {
+  const next = () => {
+    if (number + 1 !== length) {
+      // 다음
       if (myAnswer === rightAnswer) {
-        setResult(current => current + 1);
-        toast.success('정답!');
+        setResult((current) => current + 1);
+        toast.quiz('정답!');
       } else {
-        toast.error('오답!');
+        toast.quiz('오답!');
       }
       setNumber(number + 1);
+      setIsAnswered(false);
+      //setIsCorrect(false);
+      setTimer(userTimer);
+      setTimerEnd(false);
+
       if (answerRef.current) answerRef.current.value = '';
-    } else if (innerText === '제출') {
+    } else if (number + 1 === length) {
+      // 제출
       navigate('/learn/result', {
         state: {
           bookIds,
@@ -101,14 +113,32 @@ const ShortTypingPage = () => {
     extractQuiz(problems);
   }, [number]);
 
+  // 타이머
+  useEffect(() => {
+    if (!isAnswered && problems) {
+      const timeOutId = setTimeout(() => {
+        if (timer !== 0) {
+          setTimer((current) => current - 1);
+        }
+        if (timer === 0) {
+          setIsAnswered(true);
+          setTimerEnd(true);
+          clearTimeout(timeOutId);
+        }
+
+        return () => clearTimeout(timeOutId);
+      }, 1000);
+    }
+  }, [timer, isAnswered]);
+
   return (
     <MainWrapper>
       <QuizHeader
         type={'typing'}
         number={number}
         total={length}
-        timer={1}
-        timeMax={1}
+        timer={timer}
+        timerEnd={timerEnd}
       />
 
       <Content>
@@ -117,9 +147,9 @@ const ShortTypingPage = () => {
       </Content>
 
       <Footer>
-        <NextButton onClick={next}>
-          {number + 1 === length ? '제출' : '다음'}
-        </NextButton>
+        <WideButton onClick={next}>
+          {number + 1 === length ? '결과보기' : '다음'}
+        </WideButton>
       </Footer>
     </MainWrapper>
   );
@@ -140,23 +170,25 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 0 24px;
+  padding-top: 20vh;
+  color: ${({ theme }) => theme.colors.black};
 `;
 
 const Quiz = styled.div`
-  font-weight: 700;
-  font-size: 64px;
-  line-height: 64px;
+  font-family: ${({ theme }) => theme.fonts.pretendard};
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
   text-align: center;
-  color: #0d0d0d;
-  margin-bottom: 48px;
+  margin-bottom: 24px;
 `;
 
 const Answer = styled.input`
-  width: 80%;
+  width: 40%;
+  ${({ theme }) => theme.typography.pretendard.t1.sbd};
+  padding: 8px 0;
   border-bottom: 1px solid #000000;
-  outline: none;
   text-align: center;
 `;
 
@@ -165,16 +197,4 @@ const Footer = styled.footer`
   height: 72px;
   padding: 20px;
   margin-bottom: 36px;
-`;
-
-const NextButton = styled.button`
-  width: 100%;
-  height: 48px;
-  font-size: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #724fab;
-  color: #ffffff;
-  border-radius: 8px;
 `;
