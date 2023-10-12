@@ -30,7 +30,7 @@ const ChoiceSelectPage = () => {
   // Timer Vars
   const userTimer = 72;
   const [timerEnd, setTimerEnd] = useState(false);
-  const [timer, setTimer] = useState(userTimer); // 초
+  const [timer, setTimer] = useState(userTimer);
 
   // Quiz Api Vars
   const [isLoading, setIsLoading] = useState(true);
