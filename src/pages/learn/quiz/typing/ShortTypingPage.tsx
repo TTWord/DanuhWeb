@@ -12,6 +12,7 @@ const ShortTypingPage = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const location = useLocation();
+  console.log(location);
   const { bookIds, mode, count, memorizedFilter } = location.state as {
     bookIds: number[];
     mode: 'word' | 'mean';
@@ -66,6 +67,28 @@ const ShortTypingPage = () => {
         },
       });
     }
+
+    // 로직 리팩중
+    if (number + 1 === length) {
+      // 제출
+      navigate('/learn/result', {
+        state: {
+          bookIds,
+          count,
+          correct: result,
+          quizType: 'typing',
+        },
+      });
+    } else {
+      if (!isAnswered) {
+        // 정답보기 버튼일때
+        console.log('정답보기');
+        setIsAnswered(true);
+      } else {
+        console.log('다음');
+        setIsAnswered(false);
+      }
+    }
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -74,16 +97,16 @@ const ShortTypingPage = () => {
 
   // 문제 가져오기
   const extractQuiz = (value: any) => {
-    const result = value[number];
+    const currentQuiz = value[number];
 
-    if (result) {
+    if (currentQuiz) {
       if (mode === 'word') {
-        setCurrentQuiz(result.word);
-        setRightAnswer(result.mean);
+        setCurrentQuiz(currentQuiz.word);
+        setRightAnswer(currentQuiz.mean);
       }
       if (mode === 'mean') {
-        setCurrentQuiz(result.mean);
-        setRightAnswer(result.word);
+        setCurrentQuiz(currentQuiz.mean);
+        setRightAnswer(currentQuiz.word);
       }
     }
   };
@@ -143,12 +166,21 @@ const ShortTypingPage = () => {
 
       <Content>
         <Quiz>{currentQuiz}</Quiz>
-        <Answer onChange={onChange} type="text" ref={answerRef} />
+        {!isAnswered && (
+          <Answer onChange={onChange} type="text" ref={answerRef} />
+        )}
+
+        {isAnswered && <div>정답 또는 오답</div>}
       </Content>
 
       <Footer>
         <WideButton onClick={next}>
-          {number + 1 === length ? '결과보기' : '다음'}
+          {number + 1 === length
+            ? '결과보기'
+            : isAnswered
+            ? '다음'
+            : '정답보기'}
+          {}
         </WideButton>
       </Footer>
     </MainWrapper>
