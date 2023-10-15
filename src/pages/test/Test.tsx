@@ -12,7 +12,7 @@ const Test = () => {
 
   console.log(process.env.SERVER_NAME);
 
-  return <Container>Test Page 1</Container>;
+  return <Container>Test Page 5</Container>;
 };
 
 export default Test;
