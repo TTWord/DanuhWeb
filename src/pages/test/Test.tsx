@@ -10,7 +10,9 @@ snd.load(Snd.KITS.SND01);
 const Test = () => {
   const toast = useToast();
 
-  return <Container>Test Page</Container>;
+  console.log(process.env.SERVER_NAME);
+
+  return <Container>Test Page 1</Container>;
 };
 
 export default Test;
