@@ -16,8 +16,8 @@
     "build": "webpack --mode=production",
     "serve": "npx serve public",
     "json-server": "json-server --watch db.json --port 3001",
-    "deploy": "aws s3 sync ./dist s3://ttwordbucket --profile=veta",
-    "distribute": "aws cloudfront create-invalidation --distribution-id E15RDS8WJ25TWK --paths '/*' --profile=veta",
+    "deploy": "aws s3 sync ./dist s3://danuh-main --profile=veta",
+    "distribute": "aws cloudfront create-invalidation --distribution-id E3OFMPMXEBO4V8 --paths '/*' --profile=veta",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
