@@ -20,14 +20,6 @@ const LearnPage = () => {
       title: '단어암기',
       type: 'flashcard',
     },
-    {
-      title: '단어암기',
-      type: 'blind',
-    },
-    {
-      title: '단어암기',
-      type: 'blind',
-    },
   ];
 
   const quizList = [
@@ -36,17 +28,8 @@ const LearnPage = () => {
       type: 'select',
     },
     {
-      title: '객관식',
-      type: 'blind',
-    },
-    {
       title: '주관식',
       type: 'typing',
-    },
-    {
-      title: '주관식',
-      type: 'blind',
-      typeDetail: 'shortanswer',
     },
   ];
 
@@ -142,13 +125,13 @@ const Container = styled.div`
 
 const QuizTitle = styled.div`
   ${({ theme }) => theme.typography.pretendard.t1.sbd};
-  margin-bottom: 16px;
 `;
 
 const ButtonWrapper = styled.div`
   width: 100%;
   overflow-x: scroll;
   display: flex;
+  padding: 16px 0;
 `;
 
 const CustomContainer = styled.div`
