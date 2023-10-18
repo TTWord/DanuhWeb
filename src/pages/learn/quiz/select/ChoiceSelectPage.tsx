@@ -7,6 +7,8 @@ import useToast from '@/hooks/useToast';
 import CheckSVG from '../common/svg/CheckSVG';
 import QuizHeader from '../common/components/QuizHeader';
 import WideButton from '@/components/common/button/WideButton';
+import { useSetRecoilState, useRecoilState } from 'recoil';
+import { globalState } from '@/recoil';
 
 interface IAnswerData {
   mean: string;
@@ -28,9 +30,13 @@ const ChoiceSelectPage = () => {
   const toast = useToast();
   //// Varaiables ////
   // Timer Vars
-  const userTimer = 72;
-  const [timerEnd, setTimerEnd] = useState(false);
-  const [timer, setTimer] = useState(userTimer);
+  const userTimer = 1; // 이전 페이지에서 받아오기
+  const [isAnswered, setIsAnswered] = useRecoilState(
+    globalState.quiz.isAnswered,
+  );
+  const setTimer = useSetRecoilState(globalState.quiz.quizTimer);
+  setTimer(userTimer);
+  const [timerEnd, setTimerEnd] = useRecoilState(globalState.quiz.quizTimerEnd);
 
   // Quiz Api Vars
   const [isLoading, setIsLoading] = useState(true);
@@ -54,7 +60,6 @@ const ChoiceSelectPage = () => {
 
   // Components Vars
   const [number, setNumber] = useState(0); // 문제 진행도
-  const [isAnswered, setIsAnswered] = useState(false); // 정답 화면 표기용
   const [isCorrect, setIsCorrect] = useState(false); // 위 변수 통합용(체크 or 타임 아웃)
 
   //// Functions ////
@@ -78,6 +83,7 @@ const ChoiceSelectPage = () => {
       count,
       memorizedFilter,
     });
+    console.log(response);
     const getData = response.problem;
 
     setProblems(getData);
@@ -85,6 +91,16 @@ const ChoiceSelectPage = () => {
     extractQuiz(getData, number);
     setIsLoading(false);
   };
+
+  interface IReviewNote {
+    word: string;
+    mean: string;
+    isMemo: Boolean;
+  }
+
+  const [reviewNote, setReviewNote] = useState<IReviewNote[]>([]);
+
+  console.log('test', currentAnswer);
 
   // 문항 선택 버튼에서 사용할 함수
   const selectAnswer = (select: string) => {
@@ -96,6 +112,17 @@ const ChoiceSelectPage = () => {
         toast.quiz('정답을 맞췄어요 👏');
       } else {
         toast.quiz('최악이에요...');
+
+        if (currentAnswer) {
+          setReviewNote((prevItem) => [
+            ...prevItem,
+            {
+              word: currentAnswer.word,
+              mean: currentAnswer.mean,
+              isMemo: false, // API 데이터로 요청할 것
+            },
+          ]);
+        }
       }
     }
     if (mode === 'mean') {
@@ -105,6 +132,17 @@ const ChoiceSelectPage = () => {
         toast.quiz('정답을 맞췄어요 👏');
       } else {
         toast.quiz('최악이에요...');
+
+        if (currentAnswer) {
+          setReviewNote((prevItem) => [
+            ...prevItem,
+            {
+              word: currentAnswer.word,
+              mean: currentAnswer.mean,
+              isMemo: false, // API 데이터로 요청할 것
+            },
+          ]);
+        }
       }
     }
   };
@@ -145,6 +183,8 @@ const ChoiceSelectPage = () => {
     setTimerEnd(false);
 
     if (number + 1 === length) {
+      localStorage.setItem('reviewNote', JSON.stringify(reviewNote));
+
       navigate('/learn/result', {
         state: {
           bookIds,
@@ -166,24 +206,6 @@ const ChoiceSelectPage = () => {
   useEffect(() => {
     extractQuiz(problems, number);
   }, [number]);
-
-  // 타이머
-  useEffect(() => {
-    if (!isAnswered && problems) {
-      const timeOutId = setTimeout(() => {
-        if (timer !== 0) {
-          setTimer((current) => current - 1);
-        }
-        if (timer === 0) {
-          setIsAnswered(true);
-          setTimerEnd(true);
-          clearTimeout(timeOutId);
-        }
-
-        return () => clearTimeout(timeOutId);
-      }, 1000);
-    }
-  }, [timer, isAnswered]);
 
   //// Components ////
   const CreateChoiceButtons = (props: any) => {
@@ -211,7 +233,7 @@ const ChoiceSelectPage = () => {
             type={'select'}
             number={number}
             total={length}
-            timer={timer}
+            hasQuiz={Boolean(problems)}
             timerEnd={timerEnd}
           />
 

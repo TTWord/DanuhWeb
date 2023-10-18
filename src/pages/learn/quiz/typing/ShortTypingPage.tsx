@@ -1,24 +1,25 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { MouseEvent, ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import useGetTypingQuiz from './hooks/useGetTypingQuiz';
 import QuizHeader from '../common/components/QuizHeader';
 import useToast from '@/hooks/useToast';
 import WideButton from '@/components/common/button/WideButton';
+import { useSetRecoilState, useRecoilState } from 'recoil';
+import { globalState } from '@/recoil';
 
 const ShortTypingPage = () => {
-  const [timerEnd, setTimerEnd] = useState(false);
-
   const toast = useToast();
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location);
+
   const { bookIds, mode, count, memorizedFilter } = location.state as {
     bookIds: number[];
     mode: 'word' | 'mean';
     count: number;
     memorizedFilter: boolean;
   };
+
   // 주관식 퀴즈 API
   const getTypingQuiz = useGetTypingQuiz();
   const answerRef = useRef<HTMLInputElement>(null);
@@ -37,44 +38,32 @@ const ShortTypingPage = () => {
 
   // Timer Vars
   const userTimer = 72;
-  const [isAnswered, setIsAnswered] = useState(false);
-  const [timer, setTimer] = useState(userTimer);
+
+  const [isAnswered, setIsAnswered] = useRecoilState(
+    globalState.quiz.isAnswered,
+  );
+  const setTimer = useSetRecoilState(globalState.quiz.quizTimer);
+  setTimer(1);
+  const [timerEnd, setTimerEnd] = useRecoilState(globalState.quiz.quizTimerEnd);
+
+  interface IReviewNote {
+    word: string;
+    mean: string;
+    isMemo: Boolean;
+  }
+
+  const [reviewNote, setReviewNote] = useState<IReviewNote[]>([]);
 
   const next = () => {
-    if (number + 1 !== length) {
-      // 다음
-      if (myAnswer === rightAnswer) {
-        setResult((current) => current + 1);
-        toast.quiz('정답!');
-      } else {
-        toast.quiz('오답!');
-      }
-      setNumber(number + 1);
-      setIsAnswered(false);
-      //setIsCorrect(false);
-      setTimer(userTimer);
-      setTimerEnd(false);
-
-      if (answerRef.current) answerRef.current.value = '';
-    } else if (number + 1 === length) {
-      // 제출
-      navigate('/learn/result', {
-        state: {
-          bookIds,
-          count,
-          correct: result,
-          quizType: 'typing',
-        },
-      });
-    }
-
     // 로직 리팩중
-    if (number + 1 === length) {
+    if (number + 1 === length && isAnswered) {
+      console.log(reviewNote);
+      localStorage.setItem('reviewNote', JSON.stringify(reviewNote));
       // 제출
       navigate('/learn/result', {
         state: {
           bookIds,
-          count,
+          count: length,
           correct: result,
           quizType: 'typing',
         },
@@ -82,11 +71,43 @@ const ShortTypingPage = () => {
     } else {
       if (!isAnswered) {
         // 정답보기 버튼일때
-        console.log('정답보기');
+        setTimerEnd(true);
         setIsAnswered(true);
+
+        if (myAnswer === rightAnswer) {
+          setResult((current) => current + 1);
+          toast.quiz('정답!');
+        } else {
+          toast.quiz('오답!');
+
+          // 오답노트 저장 => localstorage에 저장해야함
+          if (mode === 'word') {
+            setReviewNote((prevItem) => [
+              ...prevItem,
+              {
+                word: currentQuiz,
+                mean: rightAnswer,
+                isMemo: false, // API 데이터로 요청할 것
+              },
+            ]);
+          }
+          if (mode === 'mean') {
+            setReviewNote((prevItem) => [
+              ...prevItem,
+              {
+                word: rightAnswer,
+                mean: currentQuiz,
+                isMemo: false, //
+              },
+            ]);
+          }
+        }
       } else {
-        console.log('다음');
+        // 다음 버튼일때
         setIsAnswered(false);
+        setTimer(userTimer);
+        setTimerEnd(false);
+        setNumber(number + 1);
       }
     }
   };
@@ -117,6 +138,7 @@ const ShortTypingPage = () => {
       count,
       memorizedFilter,
     });
+    //console.log(response);
     const data = response.problem;
     const tempArray: any = [];
     data.map((item: { answer: { word: string; mean: string } }) => {
@@ -136,23 +158,20 @@ const ShortTypingPage = () => {
     extractQuiz(problems);
   }, [number]);
 
-  // 타이머
-  useEffect(() => {
-    if (!isAnswered && problems) {
-      const timeOutId = setTimeout(() => {
-        if (timer !== 0) {
-          setTimer((current) => current - 1);
-        }
-        if (timer === 0) {
-          setIsAnswered(true);
-          setTimerEnd(true);
-          clearTimeout(timeOutId);
-        }
+  // 하단 버튼 텍스트용
+  const [buttonText, setButtonText] = useState('정답보기');
 
-        return () => clearTimeout(timeOutId);
-      }, 1000);
+  useEffect(() => {
+    if (isAnswered) {
+      if (number + 1 === length) {
+        setButtonText('결과 보기');
+      } else {
+        setButtonText('다음');
+      }
+    } else {
+      setButtonText('정답 보기');
     }
-  }, [timer, isAnswered]);
+  }, [number, length, isAnswered]);
 
   return (
     <MainWrapper>
@@ -160,28 +179,26 @@ const ShortTypingPage = () => {
         type={'typing'}
         number={number}
         total={length}
-        timer={timer}
+        hasQuiz={Boolean(problems)}
         timerEnd={timerEnd}
       />
 
       <Content>
         <Quiz>{currentQuiz}</Quiz>
         {!isAnswered && (
-          <Answer onChange={onChange} type="text" ref={answerRef} />
+          <MyAnswer onChange={onChange} type="text" ref={answerRef} />
         )}
 
-        {isAnswered && <div>정답 또는 오답</div>}
+        {/* 정답보기 버튼 클릭 시 보여줄 컴포넌트 */}
+        {isAnswered && (
+          <ShowAnswer isCorrent={myAnswer === rightAnswer}>
+            {rightAnswer}
+          </ShowAnswer>
+        )}
       </Content>
 
       <Footer>
-        <WideButton onClick={next}>
-          {number + 1 === length
-            ? '결과보기'
-            : isAnswered
-            ? '다음'
-            : '정답보기'}
-          {}
-        </WideButton>
+        <WideButton onClick={next}>{buttonText}</WideButton>
       </Footer>
     </MainWrapper>
   );
@@ -216,12 +233,28 @@ const Quiz = styled.div`
   margin-bottom: 24px;
 `;
 
-const Answer = styled.input`
+const MyAnswer = styled.input`
   width: 40%;
   ${({ theme }) => theme.typography.pretendard.t1.sbd};
   padding: 8px 0;
   border-bottom: 1px solid #000000;
   text-align: center;
+`;
+
+const ShowAnswer = styled.div<{ isCorrent: boolean }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: red;
+  font-size: 24px;
+  ${({ isCorrent }) => {
+    return (
+      isCorrent &&
+      css`
+        color: green;
+      `
+    );
+  }}
 `;
 
 const Footer = styled.footer`
