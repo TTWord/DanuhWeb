@@ -7,9 +7,32 @@ import WideButton from '@/components/common/button/WideButton';
 import chevronDown from '@/assets/svg/icons/icon-chevron-down-small.svg';
 import MemorizeToggle from './MemorizeToggle';
 
+interface IResultInfo {
+  books: string;
+  count: number;
+  memorized_count: number;
+  total_count: number;
+}
+
+interface IReviewNote {
+  word: string;
+  mean: string;
+  isMemo: boolean;
+}
+
 const ResultPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [reviewNotes, setReviewNotes] = useState<IReviewNote[]>([]);
+  const reviewData = localStorage.getItem('reviewNote');
+
+  useEffect(() => {
+    if (reviewData) {
+      const reviewNotes = JSON.parse(reviewData);
+      setReviewNotes(reviewNotes);
+    }
+  }, []);
 
   const { bookIds, correct, count, quizType } = location.state as {
     bookIds: number[];
@@ -18,16 +41,11 @@ const ResultPage = () => {
     quizType: string;
   };
 
-  const [resultInfo, setResultInfo] = useState({
-    targetBook: '없음',
-    totalWords: 0,
-    answer: 0,
-    length: 0,
-    percentage: '0',
-    memoryRates: 0,
-  });
+  const [resultInfo, setResultInfo] = useState<IResultInfo>();
 
   const goQuiz = () => {
+    localStorage.removeItem('reviewNote');
+
     if (quizType === undefined) {
       navigate(`/learn`);
     } else {
@@ -47,14 +65,7 @@ const ResultPage = () => {
         count,
       });
 
-      setResultInfo({
-        targetBook: response.books,
-        totalWords: response.total_count,
-        answer: correct,
-        length: response.count,
-        percentage: response.correct_prob,
-        memoryRates: response.memorized_count / response.total_count,
-      });
+      setResultInfo(response);
     } catch (e: unknown) {
       console.log(e);
     }
@@ -70,40 +81,6 @@ const ResultPage = () => {
     getResult();
   }, []);
 
-  const a = [1, 2, 3, 4, 5];
-  const sampleData = [
-    {
-      word: 'only',
-      mean: '단지',
-      isMemo: false,
-    },
-    {
-      word: 'only',
-      mean: '단지',
-      isMemo: true,
-    },
-    {
-      word: 'only',
-      mean: '단지',
-      isMemo: false,
-    },
-    {
-      word: 'only',
-      mean: '단지',
-      isMemo: true,
-    },
-    {
-      word: 'only',
-      mean: '단지',
-      isMemo: false,
-    },
-    {
-      word: 'only',
-      mean: '단지',
-      isMemo: true,
-    },
-  ];
-
   return (
     <MainWrapper>
       <TopAppBarClose type="quiz" onClose={goQuiz} />
@@ -113,14 +90,14 @@ const ResultPage = () => {
           <QuizWordBox>
             <QuizTag>정답수</QuizTag>
             <QuizCount>
-              <span>{30}</span>개
+              <span>{correct}</span>개
             </QuizCount>
           </QuizWordBox>
           <Slash>/</Slash>
           <QuizWordBox>
             <QuizTag>문제수</QuizTag>
             <QuizCount>
-              <span>{30}</span>개
+              <span>{count}</span>개
             </QuizCount>
           </QuizWordBox>
         </QuizWords>
@@ -128,18 +105,18 @@ const ResultPage = () => {
         <BookWords>
           <BookWordBox>
             <BookTag>암기 단어</BookTag>
-            <BookCount>{20}개</BookCount>
+            <BookCount>{resultInfo?.memorized_count}개</BookCount>
           </BookWordBox>
 
           <BookWordBox>
             <BookTag>전체 단어</BookTag>
-            <BookCount>{150}개</BookCount>
+            <BookCount>{resultInfo?.total_count}개</BookCount>
           </BookWordBox>
         </BookWords>
 
         <TargetBook>
           대상 단어장
-          <span>{resultInfo.targetBook}</span>
+          <span>{resultInfo?.books}</span>
         </TargetBook>
 
         <ReviewNote isNoteClicked={isNoteClicked}>
@@ -148,7 +125,7 @@ const ResultPage = () => {
             <ExtendButton onClick={extendNote} src={chevronDown} alt="down" />
           </NoteTop>
           <NoteBot isNoteClicked={isNoteClicked}>
-            {sampleData.map((item, idx) => {
+            {reviewNotes?.map((item, idx) => {
               return (
                 <ReviewBox key={idx}>
                   <ReviewWord>{item.word}</ReviewWord>
@@ -316,7 +293,7 @@ const ReviewNote = styled(CommonWrapper)<{ isNoteClicked: boolean }>`
     return (
       isNoteClicked &&
       css`
-        height: 100%;
+        height: auto;
       `
     );
   }}

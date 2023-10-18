@@ -4,7 +4,6 @@ import { useSetRecoilState } from 'recoil';
 import { globalState } from '@/recoil';
 import SelectButtonComponent from './components/SelectButtonComponent';
 import TopAppBar from '@/components/common/header/TopAppBar';
-import { useNavigate } from 'react-router-dom';
 import useNavigatePush from '@/hooks/useNavigatePush';
 
 const LearnPage = () => {
@@ -112,7 +111,9 @@ const Content = styled.div`
   height: 100%;
   margin-top: 4px;
   padding: 0 16px;
+  padding-bottom: calc(16px + 72px);
   flex: 1;
+  overflow-y: scroll;
 `;
 
 const Container = styled.div`

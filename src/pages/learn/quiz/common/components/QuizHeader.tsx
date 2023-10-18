@@ -2,13 +2,15 @@ import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import TopAppBarClose from '@/components/common/header/TopAppBarClose';
 import ConfirmPop from '@/components/common/popup/ConfirmPop';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSetRecoilState, useRecoilState } from 'recoil';
+import { globalState } from '@/recoil';
 
 interface QuizHeaderParams {
   type: string;
   number: number;
   total: number;
-  timer: number;
+  hasQuiz: boolean;
   timerEnd: boolean;
 }
 
@@ -16,10 +18,16 @@ const QuizHeader = ({
   type,
   number,
   total,
-  timer,
+  hasQuiz,
   timerEnd,
 }: QuizHeaderParams) => {
   const navigate = useNavigate();
+
+  const [isAnswered, setIsAnswered] = useRecoilState(
+    globalState.quiz.isAnswered,
+  );
+  const setTimerEnd = useSetRecoilState(globalState.quiz.quizTimerEnd);
+  const [timer, setTimer] = useRecoilState(globalState.quiz.quizTimer);
 
   const minutes = Math.floor(timer / 60);
   const seconds = timer % 60;
@@ -31,6 +39,24 @@ const QuizHeader = ({
   const onClose = () => {
     setIsConfirmPopOpen(true);
   };
+
+  // 타이머
+  useEffect(() => {
+    if (!isAnswered && hasQuiz) {
+      const timeOutId = setTimeout(() => {
+        if (timer !== 0) {
+          setTimer((current) => current - 1);
+        }
+        if (timer === 0) {
+          setIsAnswered(true);
+          setTimerEnd(true);
+          clearTimeout(timeOutId);
+        }
+
+        return () => clearTimeout(timeOutId);
+      }, 1000);
+    }
+  }, [timer, isAnswered]);
 
   return (
     <Header>

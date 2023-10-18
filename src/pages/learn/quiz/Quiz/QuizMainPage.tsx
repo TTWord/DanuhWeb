@@ -104,7 +104,7 @@ const QuizMainPage = () => {
 
   if (quizType === undefined) {
     navigate('/learn');
-    return;
+    return <></>;
   }
 
   return (
