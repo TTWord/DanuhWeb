@@ -25,4 +25,19 @@ export const quiz = {
     key: 'memorize',
     default: 0,
   }),
+
+  quizTimer: atom({
+    key: 'quizTimer',
+    default: 61,
+  }),
+
+  quizTimerEnd: atom({
+    key: 'quizTimerEnd',
+    default: false,
+  }),
+
+  isAnswered: atom({
+    key: 'isAnswered',
+    default: false,
+  }),
 };
