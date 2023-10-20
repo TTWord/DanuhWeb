@@ -29,8 +29,6 @@ const QuizRouter = () => {
         path={'/memo/*'}
         element={
           <Routes>
-            {/* 암기 단어장 선택 페이지 */}
-            <Route path={'/'} element={<MemoMainPage />} />
             {/* 플래쉬카드 암기 페이지 */}
             <Route path={'/flashcard'} element={<FlashCardMemoPage />} />
             {/* 블라인드 암기 페이지 */}
@@ -44,8 +42,6 @@ const QuizRouter = () => {
         path={'/quiz/*'}
         element={
           <Routes>
-            {/* 퀴즈 단어장 선택 페이지 */}
-            <Route path={'/'} element={<QuizMainPage />} />
             {/* 객관식 Select 문제 페이지 */}
             <Route path={'/select'} element={<ChoiceSelectPage />} />
             {/* 객관식 Blind 문제 페이지 */}
