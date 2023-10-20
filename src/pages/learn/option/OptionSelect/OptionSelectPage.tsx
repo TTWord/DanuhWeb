@@ -33,13 +33,12 @@ const getTopBarText = (type: string, kind: string) => {
 
 const OptionSelectPage = () => {
   const params = useParams();
-
   const navigate = useNavigate();
 
   const kind = params.kind; // flashcard
   const type = params.type; // quiz, memo
 
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(false); // 암기 랜덤모드 선택 변수
   const [langOption, setLangOption] = useState<'word' | 'mean' | 'all'>('word');
   const [timerOption, setTimerOption] = useState<'quiz' | 'book'>('quiz');
   const [haveMemoWord, setHaveMemoWord] = useState(false);
@@ -100,16 +99,36 @@ const OptionSelectPage = () => {
   };
 
   const onClickConfirm = () => {
-    navigate(`/learn/${type}/${kind}`, {
-      state: {
-        bookIds: selectedBooks.map((book) => book.id),
-        mode: langOption,
-        quizType: type,
-        quizCount,
-        quizTime,
-        timerOption,
-      },
-    });
+    /* console.log(
+      `
+      type: ${type}
+      kind: ${kind}
+
+      bookIds: ${selectedBooks.map((book) => book.id)} 
+      mode: ${langOption} 
+      quizType: ${type} 
+      quizCount: ${quizCount}
+      quizTime: ${quizTime}
+      timerOption: ${timerOption}
+      memorizedFilter: ${haveMemoWord}
+      `,
+    ); */
+
+    if (selectedBooks.length) {
+      navigate(`/learn/${type}/${kind}`, {
+        state: {
+          bookIds: selectedBooks.map((book) => book.id),
+          mode: langOption,
+          quizType: type,
+          quizCount,
+          quizTime,
+          timerOption,
+          memorizedFilter: haveMemoWord,
+        },
+      });
+    } else {
+      alert('단어장을 선택해주세요!!!');
+    }
   };
 
   if (!type || !kind) {

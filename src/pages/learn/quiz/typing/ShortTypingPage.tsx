@@ -13,12 +13,14 @@ const ShortTypingPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { bookIds, mode, count, memorizedFilter } = location.state as {
-    bookIds: number[];
-    mode: 'word' | 'mean';
-    count: number;
-    memorizedFilter: boolean;
-  };
+  const { bookIds, mode, quizCount, quizTime, memorizedFilter } =
+    location.state as {
+      bookIds: number[];
+      mode: 'word' | 'mean';
+      quizCount: number;
+      quizTime: number;
+      memorizedFilter: boolean;
+    };
 
   // 주관식 퀴즈 API
   const getTypingQuiz = useGetTypingQuiz();
@@ -37,14 +39,15 @@ const ShortTypingPage = () => {
   const [number, setNumber] = useState(0);
 
   // Timer Vars
-  const userTimer = 72;
-
   const [isAnswered, setIsAnswered] = useRecoilState(
     globalState.quiz.isAnswered,
   );
   const setTimer = useSetRecoilState(globalState.quiz.quizTimer);
-  setTimer(1);
   const [timerEnd, setTimerEnd] = useRecoilState(globalState.quiz.quizTimerEnd);
+
+  useEffect(() => {
+    setTimer(quizTime);
+  }, []);
 
   interface IReviewNote {
     word: string;
@@ -105,7 +108,7 @@ const ShortTypingPage = () => {
       } else {
         // 다음 버튼일때
         setIsAnswered(false);
-        setTimer(userTimer);
+        setTimer(quizTime);
         setTimerEnd(false);
         setNumber(number + 1);
       }
@@ -135,7 +138,7 @@ const ShortTypingPage = () => {
   const getQuiz = async () => {
     const { data: response } = await getTypingQuiz({
       bookIds,
-      count,
+      count: quizCount,
       memorizedFilter,
     });
     //console.log(response);
@@ -176,7 +179,6 @@ const ShortTypingPage = () => {
   return (
     <MainWrapper>
       <QuizHeader
-        type={'typing'}
         number={number}
         total={length}
         hasQuiz={Boolean(problems)}

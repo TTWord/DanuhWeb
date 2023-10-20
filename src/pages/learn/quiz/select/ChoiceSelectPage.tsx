@@ -19,24 +19,30 @@ const ChoiceSelectPage = () => {
   //// hooks ////
   const navigate = useNavigate();
   const location = useLocation();
-  const { bookIds, mode, count, memorizedFilter } = location.state as {
-    bookIds: number[];
-    mode: 'word' | 'mean';
-    count: number;
-    memorizedFilter: boolean;
-  };
+  const { bookIds, mode, quizCount, quizTime, memorizedFilter } =
+    location.state as {
+      bookIds: number[];
+      mode: 'word' | 'mean';
+      quizCount: number;
+      quizTime: number;
+      memorizedFilter: boolean;
+    };
+
+  //console.log(bookIds, mode, quizCount, quizTime, memorizedFilter);
 
   const getQuiz = useGetSelectQuiz();
   const toast = useToast();
   //// Varaiables ////
   // Timer Vars
-  const userTimer = 1; // 이전 페이지에서 받아오기
   const [isAnswered, setIsAnswered] = useRecoilState(
     globalState.quiz.isAnswered,
   );
   const setTimer = useSetRecoilState(globalState.quiz.quizTimer);
-  setTimer(userTimer);
   const [timerEnd, setTimerEnd] = useRecoilState(globalState.quiz.quizTimerEnd);
+
+  useEffect(() => {
+    setTimer(quizTime);
+  }, []);
 
   // Quiz Api Vars
   const [isLoading, setIsLoading] = useState(true);
@@ -80,10 +86,10 @@ const ChoiceSelectPage = () => {
   const getQuizAPI = async () => {
     const { data: response } = await getQuiz({
       bookIds,
-      count,
+      count: quizCount,
       memorizedFilter,
     });
-    console.log(response);
+    console.log('a,', response);
     const getData = response.problem;
 
     setProblems(getData);
@@ -99,8 +105,6 @@ const ChoiceSelectPage = () => {
   }
 
   const [reviewNote, setReviewNote] = useState<IReviewNote[]>([]);
-
-  console.log('test', currentAnswer);
 
   // 문항 선택 버튼에서 사용할 함수
   const selectAnswer = (select: string) => {
@@ -179,7 +183,7 @@ const ChoiceSelectPage = () => {
     setNumber(number + 1);
     setIsAnswered(false);
     setIsCorrect(false);
-    setTimer(userTimer);
+    setTimer(quizTime);
     setTimerEnd(false);
 
     if (number + 1 === length) {
@@ -188,7 +192,7 @@ const ChoiceSelectPage = () => {
       navigate('/learn/result', {
         state: {
           bookIds,
-          count,
+          count: quizCount,
           correct: result,
           quizType: 'select',
         },
@@ -230,7 +234,6 @@ const ChoiceSelectPage = () => {
       {!isLoading && (
         <>
           <QuizHeader
-            type={'select'}
             number={number}
             total={length}
             hasQuiz={Boolean(problems)}
