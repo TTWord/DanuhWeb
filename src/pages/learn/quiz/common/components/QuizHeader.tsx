@@ -7,20 +7,13 @@ import { useSetRecoilState, useRecoilState } from 'recoil';
 import { globalState } from '@/recoil';
 
 interface QuizHeaderParams {
-  type: string;
   number: number;
   total: number;
   hasQuiz: boolean;
   timerEnd: boolean;
 }
 
-const QuizHeader = ({
-  type,
-  number,
-  total,
-  hasQuiz,
-  timerEnd,
-}: QuizHeaderParams) => {
+const QuizHeader = ({ number, total, hasQuiz, timerEnd }: QuizHeaderParams) => {
   const navigate = useNavigate();
 
   const [isAnswered, setIsAnswered] = useRecoilState(
@@ -68,11 +61,7 @@ const QuizHeader = ({
         onCancel={() => setIsConfirmPopOpen(false)}
         onConfirm={() => {
           setIsConfirmPopOpen(false);
-          navigate('/learn/quiz', {
-            state: {
-              type,
-            },
-          });
+          navigate('/learn');
         }}
         type="title"
         title="암기를 중단할까요?"

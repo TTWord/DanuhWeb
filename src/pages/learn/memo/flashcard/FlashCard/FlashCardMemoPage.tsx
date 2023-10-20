@@ -14,7 +14,6 @@ const FlashCardMemoPage = () => {
     bookIds: number[];
     mode: 'word' | 'mean';
     quizCount: number;
-    timerOption: number;
   };
 
   const count = quizCount; // 옵션으로 빼야함
@@ -76,11 +75,7 @@ const FlashCardMemoPage = () => {
         onCancel={() => setIsConfirmPopOpen(false)}
         onConfirm={() => {
           setIsConfirmPopOpen(false);
-          navigate('/learn/memo', {
-            state: {
-              type: 'flashcard',
-            },
-          });
+          navigate('/learn');
         }}
         type="title"
         title="암기를 중단할까요?"

@@ -4,11 +4,10 @@ import { useSetRecoilState } from 'recoil';
 import { globalState } from '@/recoil';
 import SelectButtonComponent from './components/SelectButtonComponent';
 import TopAppBar from '@/components/common/header/TopAppBar';
-import useNavigatePush from '@/hooks/useNavigatePush';
+import sampleIcon from '@/assets/svg/logos/logo-character.svg';
 
 const LearnPage = () => {
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
-  const navigatePush = useNavigatePush();
 
   useEffect(() => {
     setActiveMenu(1);
@@ -18,6 +17,7 @@ const LearnPage = () => {
     {
       title: '단어암기',
       type: 'flashcard',
+      icon: sampleIcon,
     },
   ];
 
@@ -25,16 +25,19 @@ const LearnPage = () => {
     {
       title: '객관식',
       type: 'select',
+      icon: sampleIcon,
     },
     {
       title: '주관식',
       type: 'typing',
+      icon: sampleIcon,
     },
   ];
 
   interface IButtonItem {
     title: string;
     type: string;
+    icon: string;
     typeDetail?: string;
   }
 
@@ -50,7 +53,8 @@ const LearnPage = () => {
               return (
                 <SelectButtonComponent
                   key={idx}
-                  naviURL={'/learn/memo'}
+                  buttonIcon={item.icon}
+                  naviURL={`memo/${item.type}`}
                   {...item}
                 />
               );
@@ -65,31 +69,14 @@ const LearnPage = () => {
               return (
                 <SelectButtonComponent
                   key={idx}
-                  naviURL={'/learn/quiz'}
+                  buttonIcon={item.icon}
+                  naviURL={`quiz/${item.type}`}
                   {...item}
                 />
               );
             })}
           </ButtonWrapper>
         </Container>
-
-        <CustomContainer>
-          <QuizTitle>임시</QuizTitle>
-          <CustomWrapper>
-            <Box
-              onClick={() => {
-                navigatePush('/learn/option/memo/flashcard');
-              }}
-            >
-              FlashCard
-            </Box>
-            <Box>Blind</Box>
-            <Box>(Quiz) Select</Box>
-            <Box>(Quiz) Select Blind</Box>
-            <Box>(Quiz) Typing</Box>
-            <Box>(Quiz) Typing Blind</Box>
-          </CustomWrapper>
-        </CustomContainer>
       </Content>
     </Wrapper>
   );
@@ -133,27 +120,4 @@ const ButtonWrapper = styled.div`
   overflow-x: scroll;
   display: flex;
   padding: 16px 0;
-`;
-
-const CustomContainer = styled.div`
-  width: 100%;
-  flex-wrap: wrap;
-  display: flex;
-  flex-direction: column;
-  padding-top: 50px;
-`;
-
-const Box = styled.div`
-  width: 100px;
-  height: 100px;
-  background-color: ${({ theme }) => theme.colors.primary.default};
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-`;
-
-const CustomWrapper = styled.div`
-  gap: 10px;
-  flex-wrap: wrap;
-  display: flex;
 `;

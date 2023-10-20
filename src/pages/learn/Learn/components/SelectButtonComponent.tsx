@@ -6,48 +6,36 @@ interface ISelectButtonProps {
   naviURL: string;
   title: string;
   type: string;
-  typeDetail?: string;
-  lineColor?: string;
+  buttonIcon: string;
 }
 
 const SelectButtonComponent = ({
   naviURL,
   title,
   type,
-  typeDetail,
-  lineColor,
+  buttonIcon,
 }: ISelectButtonProps) => {
-  const navigate = useNavigatePush();
+  const navigatePush = useNavigatePush();
 
   const onClick = () => {
-    if (typeDetail) {
-      navigate(naviURL, {
-        state: { type: `${type}/${typeDetail}` },
-      });
-    } else {
-      navigate(naviURL, {
-        state: { type: `${type}` },
-      });
-    }
+    navigatePush(`/learn/option/${naviURL}`);
   };
 
   return (
-    <SelectButton onClick={onClick} lineColor={lineColor}>
+    <SelectButton onClick={onClick}>
       <Div>
         <Tag>{title}</Tag>
         <Type>{type}</Type>
       </Div>
 
-      <Icon src={sampleIcon} alt="icon" />
+      <Icon src={buttonIcon} alt="icon" />
     </SelectButton>
   );
 };
 
 export default SelectButtonComponent;
 
-const SelectButton = styled.button<{
-  lineColor?: string;
-}>`
+const SelectButton = styled.button`
   width: 134px;
   height: 144px;
   background-color: #ffffff;
