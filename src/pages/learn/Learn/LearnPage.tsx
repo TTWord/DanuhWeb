@@ -4,7 +4,10 @@ import { useSetRecoilState } from 'recoil';
 import { globalState } from '@/recoil';
 import SelectButtonComponent from './components/SelectButtonComponent';
 import TopAppBar from '@/components/common/header/TopAppBar';
-import sampleIcon from '@/assets/svg/logos/logo-character.svg';
+
+import picFlashCard from './images/flashcard.png';
+import picSelect from './images/select.png';
+import picTyping from './images/typing.png';
 
 const LearnPage = () => {
   const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
@@ -17,7 +20,8 @@ const LearnPage = () => {
     {
       title: '단어암기',
       type: 'flashcard',
-      icon: sampleIcon,
+      icon: picFlashCard,
+      iconWidth: '78px',
     },
   ];
 
@@ -25,12 +29,14 @@ const LearnPage = () => {
     {
       title: '객관식',
       type: 'select',
-      icon: sampleIcon,
+      icon: picSelect,
+      iconWidth: '81px',
     },
     {
       title: '주관식',
       type: 'typing',
-      icon: sampleIcon,
+      icon: picTyping,
+      iconWidth: '81px',
     },
   ];
 
@@ -97,7 +103,6 @@ const Content = styled.div`
   width: 100%;
   height: 100%;
   margin-top: 4px;
-  padding: 0 16px;
   padding-bottom: calc(16px + 72px);
   flex: 1;
   overflow-y: scroll;
@@ -113,11 +118,12 @@ const Container = styled.div`
 
 const QuizTitle = styled.div`
   ${({ theme }) => theme.typography.pretendard.t1.sbd};
+  padding: 0 16px;
 `;
 
 const ButtonWrapper = styled.div`
   width: 100%;
   overflow-x: scroll;
   display: flex;
-  padding: 16px 0;
+  padding: 16px;
 `;

@@ -7,6 +7,7 @@ interface ISelectButtonProps {
   title: string;
   type: string;
   buttonIcon: string;
+  iconWidth: string;
 }
 
 const SelectButtonComponent = ({
@@ -14,6 +15,7 @@ const SelectButtonComponent = ({
   title,
   type,
   buttonIcon,
+  iconWidth,
 }: ISelectButtonProps) => {
   const navigatePush = useNavigatePush();
 
@@ -28,7 +30,7 @@ const SelectButtonComponent = ({
         <Type>{type}</Type>
       </Div>
 
-      <Icon src={buttonIcon} alt="icon" />
+      <Icon sizeWidth={iconWidth} src={buttonIcon} alt="icon" />
     </SelectButton>
   );
 };
@@ -81,6 +83,12 @@ const Type = styled.span`
   ${({ theme }) => theme.typography.gmarketSans.md[16]};
 `;
 
-const Icon = styled.img`
-  width: 40px;
+const Icon = styled.img<{
+  sizeWidth: string;
+}>`
+  width: ${({ sizeWidth }) => sizeWidth};
+  height: auto;
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
 `;
