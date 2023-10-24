@@ -45,6 +45,7 @@ const LearnPage = () => {
     type: string;
     icon: string;
     typeDetail?: string;
+    iconWidth: string;
   }
 
   return (

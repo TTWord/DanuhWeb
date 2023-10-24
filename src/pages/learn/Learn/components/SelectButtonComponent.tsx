@@ -91,4 +91,7 @@ const Icon = styled.img<{
   position: absolute;
   bottom: 8px;
   right: 8px;
+
+  user-select: none;
+  pointer-events: none;
 `;
