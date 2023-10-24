@@ -32,6 +32,14 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
+    type: 'default',
+    isToggle: false,
+  },
+};
+
+export const Quiz: Story = {
+  args: {
+    type: 'quiz',
     isToggle: false,
   },
 };
