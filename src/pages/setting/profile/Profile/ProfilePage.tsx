@@ -126,7 +126,9 @@ const ProfilePage = () => {
           }
         }}
       >
-        <WideButton isActive={error === null || isOk}>저장하기</WideButton>
+        <WideButton type="submit" isActive={error === null || isOk}>
+          저장하기
+        </WideButton>
       </ProfileForm>
     </StackLayout>
   );
