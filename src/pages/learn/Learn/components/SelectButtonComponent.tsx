@@ -38,8 +38,8 @@ const SelectButtonComponent = ({
 export default SelectButtonComponent;
 
 const SelectButton = styled.button`
-  width: 134px;
-  height: 144px;
+  width: 160px;
+  height: 180px;
   background-color: #ffffff;
   box-shadow: 0px 2px 10px 0px rgba(105, 74, 194, 0.08);
   border-radius: 8px;
@@ -47,7 +47,7 @@ const SelectButton = styled.button`
   flex-direction: column;
   justify-content: space-between;
   align-items: end;
-  padding: 16px;
+  padding: 16px 8px 8px 16px;
   padding-bottom: 24px;
   position: relative; // 아이콘 위치 조절
 

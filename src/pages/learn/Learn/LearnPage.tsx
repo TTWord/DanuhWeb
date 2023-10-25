@@ -21,7 +21,7 @@ const LearnPage = () => {
       title: '단어암기',
       type: 'flashcard',
       icon: picFlashCard,
-      iconWidth: '78px',
+      iconWidth: '102px',
     },
   ];
 
@@ -30,13 +30,13 @@ const LearnPage = () => {
       title: '객관식',
       type: 'select',
       icon: picSelect,
-      iconWidth: '81px',
+      iconWidth: '102px',
     },
     {
       title: '주관식',
       type: 'typing',
       icon: picTyping,
-      iconWidth: '81px',
+      iconWidth: '102px',
     },
   ];
 

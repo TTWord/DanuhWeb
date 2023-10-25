@@ -57,8 +57,9 @@ const SettingPage = () => {
         <AlertPopTitle>추천</AlertPopTitle>
         <AlertPopDesc>내 공유 단어장이 추전받은 횟수</AlertPopDesc>
       </AlertPop>
-
-      <TopAppBar type="setting" title="My Page" onClick={moveProfilePage} />
+      <TopView>
+        <TopAppBar type="setting" title="My Page" onClick={moveProfilePage} />
+      </TopView>
 
       {about && (
         <Container>
@@ -151,9 +152,15 @@ const SettingPage = () => {
 
 export default SettingPage;
 
+const TopView = styled.div`
+  flex-shrink: 0;
+`;
+
 const WebWrapper = styled.div`
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Container = styled.div`
@@ -161,7 +168,7 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-y: scroll;
 `;
 
 const UserInfoWrapper = styled.header`
@@ -244,7 +251,7 @@ const ShareInfoWrapper = styled.div`
 `;
 
 const ShareInfo = styled.div`
-  width: 100px;
+  width: calc(100% / 3);
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -252,10 +259,10 @@ const ShareInfo = styled.div`
   align-items: center;
   border-radius: 8px;
   box-shadow: 0px 2px 10px 0px rgba(105, 74, 194, 0.08);
-  padding: 12px;
+  padding: 16px 0;
 
   & + & {
-    margin-left: 8px;
+    margin-left: 12px;
   }
 `;
 
@@ -273,7 +280,7 @@ const InfoName = styled.div`
 `;
 
 const InfoNumber = styled.div`
-  width: 90%;
+  width: 72px;
   border-radius: 4px;
   color: ${({ theme }) => theme.colors.primary.default};
   border: 1px solid ${({ theme }) => theme.colors.primary[200]};
@@ -292,7 +299,6 @@ const ContentWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
   flex: 1;

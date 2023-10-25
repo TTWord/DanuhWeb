@@ -29,8 +29,10 @@ const BookSelectItem: React.FC<BookSelectItemProps> = ({
       }}
     >
       <BookName>
-        {book.name} (단어수: {book.word_count}, 암기한 단어수:{' '}
-        {book.word_memorized_count})
+        {book.name}{' '}
+        <SubText>
+          (단어수: {book.word_count}, 암기완료: {book.word_memorized_count})
+        </SubText>
       </BookName>
       {selected && <img src={iconCheck} alt="check" />}
     </Book>
@@ -55,3 +57,7 @@ const Book = styled.button`
 `;
 
 const BookName = styled.div``;
+
+const SubText = styled.span`
+  color: ${({ theme }) => theme.colors.gray[500]};
+`;

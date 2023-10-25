@@ -32,13 +32,15 @@ const TopAppBarStack: React.FC<TopAppBarProps> = ({
     default:
       return (
         <TopAppBarWrapper backgroundColor={backgroundColor}>
-          <BackButton
-            onClick={() => {
-              if (navigate) navigatePop(navigate);
-            }}
-            src={iconBack}
-            alt="back"
-          />
+          <BackButtonWrapper>
+            <BackButton
+              onClick={() => {
+                if (navigate) navigatePop(navigate);
+              }}
+              src={iconBack}
+              alt="back"
+            />
+          </BackButtonWrapper>
           <TextP>{title}</TextP>
         </TopAppBarWrapper>
       );
@@ -47,13 +49,15 @@ const TopAppBarStack: React.FC<TopAppBarProps> = ({
       return (
         <PageWrapper backgroundColor={backgroundColor}>
           <Left>
-            <BackButton
-              onClick={() => {
-                if (navigate) navigatePop(navigate);
-              }}
-              src={iconBack}
-              alt="back"
-            />
+            <BackButtonWrapper>
+              <BackButton
+                onClick={() => {
+                  if (navigate) navigatePop(navigate);
+                }}
+                src={iconBack}
+                alt="back"
+              />
+            </BackButtonWrapper>
             <TextP>{title}</TextP>
           </Left>
 
@@ -65,13 +69,15 @@ const TopAppBarStack: React.FC<TopAppBarProps> = ({
       return (
         <ButtonWrapper backgroundColor={backgroundColor}>
           <Left>
-            <BackButton
-              onClick={() => {
-                if (navigate) navigatePop(navigate);
-              }}
-              src={iconBack}
-              alt="back"
-            />
+            <BackButtonWrapper>
+              <BackButton
+                onClick={() => {
+                  if (navigate) navigatePop(navigate);
+                }}
+                src={iconBack}
+                alt="back"
+              />
+            </BackButtonWrapper>
             <TextP>{title}</TextP>
           </Left>
 
@@ -93,9 +99,15 @@ const TopAppBarStack: React.FC<TopAppBarProps> = ({
 
 export default TopAppBarStack;
 
+const BackButtonWrapper = styled.button`
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+`;
+
 const TopAppBarWrapper = styled.div<{ backgroundColor: string | undefined }>`
   width: 100%;
-  height: 60px;
+  height: 56px;
   padding: 0 16px;
   display: flex;
   align-items: center;
@@ -113,7 +125,6 @@ const TopAppBarWrapper = styled.div<{ backgroundColor: string | undefined }>`
 `;
 
 const BackButton = styled.img`
-  margin-right: 16px;
   cursor: pointer;
 `;
 
