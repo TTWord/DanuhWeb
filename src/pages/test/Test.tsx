@@ -21,7 +21,7 @@ const Test = () => {
 
   return (
     <Container>
-      <div>Test Page 6</div>
+      <div>Test Page 7</div>
       <Toggle type="default" isToggle={toggle} onClick={toggling} />
       <Toggle type="quiz" isToggle={toggle} onClick={toggling} />
     </Container>

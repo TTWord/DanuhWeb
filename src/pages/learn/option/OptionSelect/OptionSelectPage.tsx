@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import BookSelectPop from './components/BookSelectPop';
 import { useNavigate, useParams } from 'react-router-dom';
+import Toggle from '@/components/common/switch/Toggle';
 
 const getTopBarText = (type: string, kind: string) => {
   if (type === 'memo') {
@@ -99,21 +100,6 @@ const OptionSelectPage = () => {
   };
 
   const onClickConfirm = () => {
-    /* console.log(
-      `
-      type: ${type}
-      kind: ${kind}
-
-      bookIds: ${selectedBooks.map((book) => book.id)} 
-      mode: ${langOption} 
-      quizType: ${type} 
-      quizCount: ${quizCount}
-      quizTime: ${quizTime}
-      timerOption: ${timerOption}
-      memorizedFilter: ${haveMemoWord}
-      `,
-    ); */
-
     if (selectedBooks.length) {
       navigate(`/learn/${type}/${kind}`, {
         state: {
@@ -364,14 +350,13 @@ const OptionSelectPage = () => {
             </TopView>
             <BottomView>
               <ToggleSwitchGroup>
-                <ToggleSwitch
+                <Toggle
+                  type="default"
+                  isToggle={haveMemoWord}
                   onClick={() => {
                     setHaveMemoWord((current) => !current);
                   }}
-                  isActive={haveMemoWord}
-                >
-                  <ToggleCircle isActive={haveMemoWord} />
-                </ToggleSwitch>
+                />
                 <ToggleSwitchText>암기된 단어 미포함</ToggleSwitchText>
               </ToggleSwitchGroup>
             </BottomView>
@@ -557,42 +542,3 @@ const ToggleSwitchGroup = styled.div`
 `;
 
 const ToggleSwitchText = styled.div``;
-
-const ToggleSwitch = styled.div<{
-  isActive: boolean;
-}>`
-  width: 32px;
-  height: 20px;
-  background-color: ${({ theme }) => theme.colors.gray[300]};
-  margin-right: 8px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  padding: 0 2px;
-  position: relative;
-  transition: background-color 150ms;
-
-  ${({ isActive }) =>
-    isActive &&
-    css`
-      background-color: ${({ theme }) => theme.colors.primary.default};
-    `};
-`;
-
-const ToggleCircle = styled.div<{
-  isActive: boolean;
-}>`
-  width: 16px;
-  height: 16px;
-  background-color: ${({ theme }) => theme.colors.white};
-  border-radius: 50%;
-  position: absolute;
-  left: 2px;
-  transition: left 150ms;
-
-  ${({ isActive }) =>
-    isActive &&
-    css`
-      left: calc(100% - 18px);
-    `};
-`;
