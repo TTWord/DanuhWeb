@@ -1,44 +1,46 @@
-import HomeMenu from '@/components/layout/RootLayout/Footer/HomeMenu';
-import StudyMenu from '@/components/layout/RootLayout/Footer/StudyMenu';
-import SharingMenu from '@/components/layout/RootLayout/Footer/SharingMenu';
-import MyPagemenu from '@/components/layout/RootLayout/Footer/MyPageMenu';
-
 import { globalState } from '@/recoil';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import tw from 'twin.macro';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+import { ReactComponent as HomeSVG } from './svg/home.svg';
+import { ReactComponent as HomeActiveSVG } from './svg/home-active.svg';
+import { ReactComponent as StudySVG } from './svg/study.svg';
+import { ReactComponent as StudyActiveSVG } from './svg/study-active.svg';
+import { ReactComponent as ShareSVG } from './svg/share.svg';
+import { ReactComponent as ShareActiveSVG } from './svg/share-active.svg';
+import { ReactComponent as MyPageSVG } from './svg/mypage.svg';
+import { ReactComponent as MyPageActiveSVG } from './svg/mypage-active.svg';
 
 const menuList = [
   {
     id: 0,
-    component: <HomeMenu fill="#ffffff" stroke="#CBBDF3" selected={false} />,
-    activeComponent: (
-      <HomeMenu fill="#694AC2" stroke="#ffffff" selected={true} />
-    ),
+    component: <HomeSVG />,
+    activeComponent: <HomeActiveSVG />,
     navigate: '/book',
+    text: '홈',
   },
   {
     id: 1,
-    component: <StudyMenu fill="#ffffff" stroke="#CBBDF3" selected={false} />,
-    activeComponent: (
-      <StudyMenu fill="#694AC2" stroke="#694AC2" selected={true} />
-    ),
+    component: <StudySVG />,
+    activeComponent: <StudyActiveSVG />,
     navigate: '/learn',
+    text: '학습',
   },
   {
     id: 2,
-    component: <SharingMenu stroke="#CBBDF3" selected={false} />,
-    activeComponent: (
-      <SharingMenu fill="#694AC2" stroke="#694AC2" selected={true} />
-    ),
+    component: <ShareSVG />,
+    activeComponent: <ShareActiveSVG />,
     navigate: '/share',
+    text: '공유',
   },
   {
     id: 3,
-    component: <MyPagemenu selected={false} />,
-    activeComponent: <MyPagemenu selected={true} />,
+    component: <MyPageSVG />,
+    activeComponent: <MyPageActiveSVG />,
     navigate: '/setting',
+    text: '마이페이지',
   },
 ];
 
@@ -51,7 +53,7 @@ const Footer = () => {
 
   return (
     <NewContainer>
-      {menuList.map(menu => {
+      {menuList.map((menu) => {
         return (
           <Menu
             key={menu.id}
@@ -60,7 +62,10 @@ const Footer = () => {
               navigate(menu.navigate);
             }}
           >
-            {activeMenu === menu.id ? menu.activeComponent : menu.component}
+            <MenuWrapper>
+              {activeMenu === menu.id ? menu.activeComponent : menu.component}
+              <MenuName selected={activeMenu === menu.id}>{menu.text}</MenuName>
+            </MenuWrapper>
           </Menu>
         );
       })}
@@ -70,8 +75,44 @@ const Footer = () => {
 
 export default Footer;
 
-const Container = tw.div`flex w-full h-full justify-around items-center`;
+const Container = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: space-around;
+  align-items: center;
+`;
+
 const NewContainer = styled(Container)`
   border-top: 0.5px solid ${({ theme }) => theme.colors.gray[200]};
 `;
-const Menu = tw.div`w-[25%] h-full flex justify-center items-center cursor-pointer`;
+const Menu = styled.div`
+  width: 25%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`;
+
+const MenuWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const MenuName = styled.div<{ selected?: boolean }>`
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 132%;
+  color: ${({ theme }) => theme.colors.primary[200]};
+  font-weight: normal;
+
+  ${({ selected, theme }) =>
+    selected &&
+    css`
+      color: ${theme.colors.primary.default};
+      font-weight: bold;
+    `}
+`;
