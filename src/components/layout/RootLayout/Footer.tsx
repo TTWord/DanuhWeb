@@ -1,44 +1,46 @@
 import { globalState } from '@/recoil';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import tw from 'twin.macro';
 import styled, { css } from 'styled-components';
 
-import { ReactComponent as HomeSVG } from './svg/home.svg';
-import { ReactComponent as HomeActiveSVG } from './svg/home-active.svg';
-import { ReactComponent as StudySVG } from './svg/study.svg';
-import { ReactComponent as StudyActiveSVG } from './svg/study-active.svg';
-import { ReactComponent as ShareSVG } from './svg/share.svg';
-import { ReactComponent as ShareActiveSVG } from './svg/share-active.svg';
-import { ReactComponent as MyPageSVG } from './svg/mypage.svg';
-import { ReactComponent as MyPageActiveSVG } from './svg/mypage-active.svg';
+import homePic from './images/home.png';
+import homeActivePic from './images/home-active.png';
+
+import studyPic from './images/study.png';
+import studyActivePic from './images/study-active.png';
+
+import sharePic from './images/share.png';
+import shareActivePic from './images/share-active.png';
+
+import myPagePic from './images/mypage.png';
+import myPageActivePic from './images/mypage-active.png';
 
 const menuList = [
   {
     id: 0,
-    component: <HomeSVG />,
-    activeComponent: <HomeActiveSVG />,
+    component: <img src={homePic} alt="home" />,
+    activeComponent: <img src={homeActivePic} alt="home" />,
     navigate: '/book',
     text: '홈',
   },
   {
     id: 1,
-    component: <StudySVG />,
-    activeComponent: <StudyActiveSVG />,
+    component: <img src={studyPic} alt="study" />,
+    activeComponent: <img src={studyActivePic} alt="study" />,
     navigate: '/learn',
     text: '학습',
   },
   {
     id: 2,
-    component: <ShareSVG />,
-    activeComponent: <ShareActiveSVG />,
+    component: <img src={sharePic} alt="share" />,
+    activeComponent: <img src={shareActivePic} alt="share" />,
     navigate: '/share',
     text: '공유',
   },
   {
     id: 3,
-    component: <MyPageSVG />,
-    activeComponent: <MyPageActiveSVG />,
+    component: <img src={myPagePic} alt="mypage" />,
+    activeComponent: <img src={myPageActivePic} alt="mypage" />,
     navigate: '/setting',
     text: '마이페이지',
   },
@@ -100,6 +102,13 @@ const MenuWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  img {
+    width: 30px;
+    height: 30px;
+    user-select: none;
+    pointer-events: none;
+  }
 `;
 
 const MenuName = styled.div<{ selected?: boolean }>`
