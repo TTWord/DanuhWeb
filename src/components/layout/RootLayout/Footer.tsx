@@ -3,44 +3,44 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import styled, { css } from 'styled-components';
 
-import homePic from './images/home.png';
-import homeActivePic from './images/home-active.png';
+import { ReactComponent as HomeSVG } from './svg/home.svg';
+import { ReactComponent as HomeActiveSVG } from './svg/home-active.svg';
 
-import studyPic from './images/study.png';
-import studyActivePic from './images/study-active.png';
+import { ReactComponent as StudySVG } from './svg/study.svg';
+import { ReactComponent as StudyActiveSVG } from './svg/study-active.svg';
 
-import sharePic from './images/share.png';
-import shareActivePic from './images/share-active.png';
+import { ReactComponent as ShareSVG } from './svg/share.svg';
+import { ReactComponent as ShareActiveSVG } from './svg/share-active.svg';
 
-import myPagePic from './images/mypage.png';
-import myPageActivePic from './images/mypage-active.png';
+import { ReactComponent as MyPageSVG } from './svg/mypage.svg';
+import { ReactComponent as MyPageActiveSVG } from './svg/mypage-active.svg';
 
 const menuList = [
   {
     id: 0,
-    component: <img src={homePic} alt="home" />,
-    activeComponent: <img src={homeActivePic} alt="home" />,
+    component: <HomeSVG />,
+    activeComponent: <HomeActiveSVG />,
     navigate: '/book',
     text: '홈',
   },
   {
     id: 1,
-    component: <img src={studyPic} alt="study" />,
-    activeComponent: <img src={studyActivePic} alt="study" />,
+    component: <StudySVG />,
+    activeComponent: <StudyActiveSVG />,
     navigate: '/learn',
     text: '학습',
   },
   {
     id: 2,
-    component: <img src={sharePic} alt="share" />,
-    activeComponent: <img src={shareActivePic} alt="share" />,
+    component: <ShareSVG />,
+    activeComponent: <ShareActiveSVG />,
     navigate: '/share',
     text: '공유',
   },
   {
     id: 3,
-    component: <img src={myPagePic} alt="mypage" />,
-    activeComponent: <img src={myPageActivePic} alt="mypage" />,
+    component: <MyPageSVG />,
+    activeComponent: <MyPageActiveSVG />,
     navigate: '/setting',
     text: '마이페이지',
   },
@@ -64,7 +64,7 @@ const Footer = () => {
               navigate(menu.navigate);
             }}
           >
-            <MenuWrapper>
+            <MenuWrapper selected={activeMenu === menu.id}>
               {activeMenu === menu.id ? menu.activeComponent : menu.component}
               <MenuName selected={activeMenu === menu.id}>{menu.text}</MenuName>
             </MenuWrapper>
@@ -97,7 +97,9 @@ const Menu = styled.div`
   cursor: pointer;
 `;
 
-const MenuWrapper = styled.div`
+const MenuWrapper = styled.div<{
+  selected?: boolean;
+}>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -108,7 +110,23 @@ const MenuWrapper = styled.div`
     height: 30px;
     user-select: none;
     pointer-events: none;
+
+    &.menu-active {
+      display: none;
+    }
   }
+
+  ${({ selected }) =>
+    selected &&
+    css`
+      img.menu-active {
+        display: block;
+      }
+
+      img.menu-normal {
+        display: none;
+      }
+    `}
 `;
 
 const MenuName = styled.div<{ selected?: boolean }>`
