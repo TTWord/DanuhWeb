@@ -39,7 +39,7 @@ export default TopAppBar;
 
 const TopAppBarWrapper = styled.div`
   width: 100%;
-  height: 60px;
+  height: 56px;
   padding: 0 16px;
   display: flex;
   align-items: center;

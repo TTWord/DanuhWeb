@@ -68,7 +68,7 @@ const Header = styled.div`
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  padding: 12px 16px;
+  padding: 8px 16px;
 `;
 
 const Content = styled.div`
@@ -80,8 +80,8 @@ const Content = styled.div`
 `;
 
 const Back = styled.button`
-  width: 24px;
-  height: 24px;
+  width: 40px;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -96,7 +96,7 @@ const Back = styled.button`
 
 const Title = styled.div`
   font-size: 16px;
-  margin-left: 16px;
+  margin-left: 8px;
   font-weight: 600;
   padding-top: 2px;
 `;
