@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import iconBack from '@/assets/svg/icons/icon-back-gray.svg';
+import { ReactComponent as IconBack } from '@/assets/svg/icons/icon-back-gray.svg';
 import iconDefaultButton from '@/assets/svg/icons/icon-default-button.svg';
 import useNavigatePop from '@/hooks/useNavigatePop';
 
@@ -32,14 +32,12 @@ const TopAppBarStack: React.FC<TopAppBarProps> = ({
     default:
       return (
         <TopAppBarWrapper backgroundColor={backgroundColor}>
-          <BackButtonWrapper>
-            <BackButton
-              onClick={() => {
-                if (navigate) navigatePop(navigate);
-              }}
-              src={iconBack}
-              alt="back"
-            />
+          <BackButtonWrapper
+            onClick={() => {
+              if (navigate) navigatePop(navigate);
+            }}
+          >
+            <IconBack />
           </BackButtonWrapper>
           <TextP>{title}</TextP>
         </TopAppBarWrapper>
@@ -49,14 +47,12 @@ const TopAppBarStack: React.FC<TopAppBarProps> = ({
       return (
         <PageWrapper backgroundColor={backgroundColor}>
           <Left>
-            <BackButtonWrapper>
-              <BackButton
-                onClick={() => {
-                  if (navigate) navigatePop(navigate);
-                }}
-                src={iconBack}
-                alt="back"
-              />
+            <BackButtonWrapper
+              onClick={() => {
+                if (navigate) navigatePop(navigate);
+              }}
+            >
+              <IconBack />
             </BackButtonWrapper>
             <TextP>{title}</TextP>
           </Left>
@@ -69,14 +65,12 @@ const TopAppBarStack: React.FC<TopAppBarProps> = ({
       return (
         <ButtonWrapper backgroundColor={backgroundColor}>
           <Left>
-            <BackButtonWrapper>
-              <BackButton
-                onClick={() => {
-                  if (navigate) navigatePop(navigate);
-                }}
-                src={iconBack}
-                alt="back"
-              />
+            <BackButtonWrapper
+              onClick={() => {
+                if (navigate) navigatePop(navigate);
+              }}
+            >
+              <IconBack />
             </BackButtonWrapper>
             <TextP>{title}</TextP>
           </Left>

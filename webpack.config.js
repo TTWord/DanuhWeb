@@ -37,7 +37,7 @@ module.exports = function webpackConfig(env, args) {
           // See .babelrc for further babel config
         },
         {
-          test: /\.(jpeg|jpg|png|svg)$/,
+          test: /\.(jpeg|jpg|png)$/,
           use: [
             {
               loader: 'file-loader',
@@ -46,6 +46,10 @@ module.exports = function webpackConfig(env, args) {
               },
             },
           ],
+        },
+        {
+          test: /\.svg$/,
+          use: ['@svgr/webpack', 'url-loader'],
         },
         {
           test: [/\.js$/, /\.ts?$/, /\.jsx?$/, /\.tsx?$/],
