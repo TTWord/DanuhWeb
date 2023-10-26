@@ -1,6 +1,6 @@
 import Snd from 'snd-lib';
 import styled, { css, keyframes } from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useToast from '@/hooks/useToast';
 import Toggle from '@/components/common/switch/Toggle';
 
@@ -21,7 +21,7 @@ const Test = () => {
 
   return (
     <Container>
-      <div>Test Page 7</div>
+      <div>Test Page 8</div>
       <Toggle type="default" isToggle={toggle} onClick={toggling} />
       <Toggle type="quiz" isToggle={toggle} onClick={toggling} />
     </Container>

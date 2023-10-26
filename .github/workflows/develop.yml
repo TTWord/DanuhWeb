@@ -1,10 +1,10 @@
-name: Danuh Deploy CI/CD
+name: Danuh Develop CI/CD
 
 on:
   push:
-    branches: ['main']
+    branches: ['develop']
   pull_request:
-    branches: ['main']
+    branches: ['develop']
 
 jobs:
   build:
@@ -36,6 +36,9 @@ jobs:
       - name: Product Build
         run: npm run build
 
+      - name: StoryBook Build
+        run: yarn build-storybook
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -44,9 +47,7 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: Upload to Main S3
-        run: aws s3 sync dist/ s3://${{ secrets.MAIN_S3 }}
+        run: aws s3 sync dist/ s3://${{ vars.DEVELOP_S3 }}
 
-      - name: Invalidate CloudFront cache
-        run: |
-          aws configure set preview.cloudfront true
-          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_ID }} --paths '/*'
+      - name: Upload to StoryBook S3
+        run: aws s3 sync storybook-static/ s3://${{ vars.STORYBOOK_S3 }}
