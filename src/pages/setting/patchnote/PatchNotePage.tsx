@@ -4,12 +4,8 @@ import TopAppBarStack from '@/components/common/header/TopAppBarStack';
 const PatchNotePage = () => {
   const patchData = [
     {
-      version: 'V0.1',
-      data: ['Danuh로 명명', '편의성 개선'],
-    },
-    {
-      version: 'V0.2',
-      data: ['공유페이지 단어 검색 기능 개선', '사용성 개선'],
+      version: 'V0.9',
+      data: ['앱 런칭'],
     },
   ];
 
@@ -66,14 +62,16 @@ const Box = styled.div`
   padding: 16px 20px;
   display: flex;
   flex-direction: column;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[200]};
 `;
 
 const Version = styled.div`
   ${({ theme }) => theme.typography.pretendard.t3.sbd};
   color: black;
+  padding-bottom: 16px;
 `;
 
 const Text = styled.div`
-  ${({ theme }) => theme.typography.pretendard.c1.rg};
+  ${({ theme }) => theme.typography.pretendard.b1.rg};
   color: ${({ theme }) => theme.colors.gray[600]};
 `;
