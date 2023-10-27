@@ -10,6 +10,7 @@ import UserRouter from './UserRouter';
 import Test from '@/pages/test/Test';
 import RouteTransition from './RouteTransition';
 import RouteTransitionWrapper from './RouteTransitionWrapper';
+import ErrorPage from '@/pages/error/Error/ErrorPage';
 
 const Router = () => {
   return (
@@ -48,6 +49,9 @@ const RouterContainer = () => {
 
           {/* 유저 */}
           <Route path={'/user/*'} element={<UserRouter />} />
+
+          {/* 스크립트 에러 페이지 */}
+          <Route path={'/error'} element={<ErrorPage />} />
 
           {/* 테스트용 임시 페이지  */}
           <Route path={'/test'} element={<Test />} />

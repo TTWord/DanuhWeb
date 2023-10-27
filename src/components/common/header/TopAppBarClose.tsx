@@ -76,9 +76,9 @@ const Center = styled.div`
 `;
 
 const CloseButton = styled.button`
-  width: 24px;
-  height: 24px;
-  display: felx;
+  width: 40px;
+  height: 40px;
+  display: flex;
   justify-content: center;
   align-items: center;
 `;
