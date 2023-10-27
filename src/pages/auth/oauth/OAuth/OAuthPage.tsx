@@ -31,8 +31,8 @@ const OAuthPage = () => {
 
   useEffect(() => {
     if (accessToken && refreshToken) {
-      localStorage.setItem('access_Token', accessToken);
-      localStorage.setItem('refresh_Token', refreshToken);
+      localStorage.setItem('access_token', accessToken);
+      localStorage.setItem('refresh_token', refreshToken);
     }
 
     if (isMember === '1' && isNicknameSet === '1') {

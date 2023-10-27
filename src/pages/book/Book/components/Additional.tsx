@@ -21,9 +21,17 @@ const Additional: React.FC<AdditionalProps> = () => {
         <PlusIcon isActive={isActive} />
       </PlusBox>
       <AdditionalItems isActive={isActive}>
-        <AdditionalItem
+        {/* <AdditionalItem
           isActive={isActive}
           targetPos={'140px'}
+          onClick={() => navigatePush('/book/generate')}
+        >
+          <Icon src={iconCreateBook} alt="icon" />
+          <Text>단어장 생성기</Text>
+        </AdditionalItem> */}
+        <AdditionalItem
+          isActive={isActive}
+          targetPos={'80px'}
           onClick={() => {
             setActive(false);
             setIsBookAddPopOpen(true);
@@ -31,14 +39,6 @@ const Additional: React.FC<AdditionalProps> = () => {
         >
           <Icon src={iconCreateBook} alt="icon" />
           <Text>단어장 만들기</Text>
-        </AdditionalItem>
-        <AdditionalItem
-          isActive={isActive}
-          targetPos={'80px'}
-          onClick={() => navigatePush('/book/generate')}
-        >
-          <Icon src={iconCreateBook} alt="icon" />
-          <Text>단어장 생성기</Text>
         </AdditionalItem>
       </AdditionalItems>
     </Container>
@@ -52,6 +52,7 @@ const Container = styled.div`
   bottom: 100px;
   right: 20px;
   cursor: pointer;
+  z-index: 99;
 `;
 
 const PlusBox = styled.div`

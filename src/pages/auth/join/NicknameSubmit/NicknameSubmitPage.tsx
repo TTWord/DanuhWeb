@@ -1,8 +1,6 @@
 import useNavigatePush from '@/hooks/useNavigatePush';
-import { globalState } from '@/recoil';
 import { useState } from 'react';
 import { useMutation } from 'react-query';
-import { useRecoilState } from 'recoil';
 import styled, { css } from 'styled-components';
 import { api } from '@/api';
 import WideButton from '@/components/common/button/WideButton';
@@ -16,7 +14,7 @@ const NicknameSubmitPage = () => {
   const navigatePush = useNavigatePush();
   const toast = useToast();
   const [error, setError] = useState('');
-  const [nickname, setNickname] = useRecoilState(globalState.auth.nickname);
+  const [nickname, setNickname] = useState('');
   const [isOk, setIsOk] = useState(false);
 
   const { mutateAsync: checkNickname } = useMutation(
@@ -65,7 +63,11 @@ const NicknameSubmitPage = () => {
   const onNext = () => {
     if (isOk) {
       // 다음 페이지로 이동
-      navigatePush('/auth/join/info');
+      navigatePush('/auth/join/info', {
+        state: {
+          nickname,
+        },
+      });
     }
   };
 

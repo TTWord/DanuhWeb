@@ -27,8 +27,8 @@ const LoginPage = () => {
 
   useEffect(() => {
     // 기존 로그인 이력 제거
-    localStorage.removeItem('access_Token');
-    localStorage.removeItem('refresh_Token');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
   }, []);
 
   useEffect(() => {

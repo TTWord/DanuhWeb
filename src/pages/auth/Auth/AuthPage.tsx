@@ -15,16 +15,36 @@ const AuthPage = () => {
       <Content>
         <IntroduceWrapper>
           <MainLogo src={logoImg} alt="logoImg" />
-          <Introduce>이미지, PDF, 글을 단어장으로 만들자!</Introduce>
+          {/* <Introduce>이미지, PDF, 글을 단어장으로 만들자!</Introduce> */}
         </IntroduceWrapper>
       </Content>
-
-      <WideButton onClick={goLogin}>시작하기</WideButton>
+      <ButtonWrapper>
+        <WideButton onClick={goLogin}>시작하기</WideButton>
+      </ButtonWrapper>
     </WebWrapper>
   );
 };
 
 export default AuthPage;
+
+const fadeIn = keyframes`
+  from {
+    bottom: -100px;
+  }
+  to {
+    bottom: 0;
+  }
+`;
+
+const ButtonWrapper = styled.div`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+  padding: 0 24px 36px;
+
+  animation: ${fadeIn} 300ms ease-in-out;
+`;
 
 const WebWrapper = styled.div`
   width: 100%;
@@ -33,8 +53,6 @@ const WebWrapper = styled.div`
   flex-direction: column;
   background-color: white;
   overflow: hidden;
-  padding: 0 24px;
-  padding-bottom: 36px;
 `;
 
 const Content = styled.div`

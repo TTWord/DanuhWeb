@@ -13,7 +13,7 @@ const useDownloadSharedBook = () => {
 
       if (response.message === 'SUCCESS') {
         toast.comment('단어장을 다운로드 하였습니다.');
-        navigate('/share');
+        //navigate('/share');
       }
     } catch (e: unknown) {
       const err = e as AxiosError<{

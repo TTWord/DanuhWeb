@@ -12,8 +12,8 @@ export const instance = axios.create({
 });
 
 instance.interceptors.request.use((config) => {
-  const accessToken = localStorage.getItem('access_Token');
-  const refreshToken = localStorage.getItem('refresh_Token');
+  const accessToken = localStorage.getItem('access_token');
+  const refreshToken = localStorage.getItem('refresh_token');
   const requestUrl = '/auth/refreshtoken';
 
   if (config.url === requestUrl) {
@@ -34,7 +34,7 @@ instance.interceptors.response.use(
     if (errorMessage === 'EXPIRED_ACCESS_TOKEN') {
       const getToken = async () => {
         const response = await instance.post('/auth/refreshtoken');
-        localStorage.setItem('access_Token', response.data.data.access_token);
+        localStorage.setItem('access_token', response.data.data.access_token);
         location.reload(); // 새로고침
       };
       getToken();
@@ -45,12 +45,11 @@ instance.interceptors.response.use(
       errorMessage === 'EXPIRED_REFRESH_TOKEN' ||
       errorMessage === 'INVALID_REFRESH_TOKEN'
     ) {
-      localStorage.removeItem('access_Token');
-      localStorage.removeItem('refresh_Token');
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
 
       // 임시 알림 창
-      alert('로그인 시간이 만료되었습니다.');
-      window.location.href = '/auth';
+      window.location.href = '/error?code=LOGIN_REQUIRED';
     }
 
     return Promise.reject(error);

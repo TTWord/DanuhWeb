@@ -83,6 +83,7 @@ const CustomStyles = createGlobalStyle`
   textarea {
     resize: none;
     outline: none;
+    border-radius: 0;
 
     ::-webkit-scrollbar {
       display: none;
@@ -91,6 +92,7 @@ const CustomStyles = createGlobalStyle`
 
   input {
     outline: none;
+    border-radius: 0;
   }
 
 

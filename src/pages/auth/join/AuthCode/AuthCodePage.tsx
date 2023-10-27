@@ -10,12 +10,16 @@ import Counter from './components/Counter';
 import TopAppBarStack from '@/components/common/header/TopAppBarStack';
 import Title from '@/components/common/header/Title';
 import CodeResendButton from '../../components/CodeResendButton';
+import { useLocation } from 'react-router-dom';
 
 const AuthCodePage = () => {
-  const userEmail = useRecoilValue(globalState.auth.username);
-  const userDomain = useRecoilValue(globalState.auth.emailDomain);
-  const userPw = useRecoilValue(globalState.auth.password);
-  const userNickname = useRecoilValue(globalState.auth.nickname);
+  const location = useLocation();
+  const username: string = location.state.username;
+
+  const userEmail = username.split('@')[0];
+  const userDomain = username.split('@')[1];
+  const userPw = location.state.password;
+  const userNickname = location.state.nickname;
 
   const signup = useSignup();
   const { isLoading, sendmail, error, setError } = useSendmail();
@@ -88,12 +92,7 @@ const AuthCodePage = () => {
             isActive={isOk}
             onClick={() => {
               if (isOk) {
-                signup(
-                  userEmail + '@' + userDomain,
-                  userPw,
-                  userNickname,
-                  authCode,
-                );
+                signup(username, userPw, userNickname, authCode);
               }
             }}
           >

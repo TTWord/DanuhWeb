@@ -34,9 +34,16 @@ const useSendmail = () => {
   ) => {
     try {
       setLoading(true);
+
       const response = await certification({ username, password, nickname });
       setLoading(false);
-      navigatePush('/auth/join/code');
+      navigatePush('/auth/join/code', {
+        state: {
+          username,
+          password,
+          nickname,
+        },
+      });
     } catch (e: unknown) {
       const err = e as AxiosError<{
         message: string;
