@@ -21,7 +21,9 @@ const TopAppBar = ({ type, title, onClick }: TopAppBarProps) => {
       return (
         <SearchWrapper>
           <Text>{title}</Text>
-          <SearchButton onClick={onClick} src={iconSearch} alt="search" />
+          <ButtonWrapper>
+            <SearchButton onClick={onClick} src={iconSearch} alt="search" />
+          </ButtonWrapper>
         </SearchWrapper>
       );
 
@@ -29,13 +31,24 @@ const TopAppBar = ({ type, title, onClick }: TopAppBarProps) => {
       return (
         <SettingWrapper>
           <Text>{title}</Text>
-          <SettingButton onClick={onClick} src={iconSetting} alt="setting" />
+          <ButtonWrapper onClick={onClick}>
+            <SettingButton src={iconSetting} alt="setting" />
+          </ButtonWrapper>
         </SettingWrapper>
       );
   }
 };
 
 export default TopAppBar;
+
+const ButtonWrapper = styled.div`
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const TopAppBarWrapper = styled.div`
   width: 100%;

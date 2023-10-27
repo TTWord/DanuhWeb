@@ -49,8 +49,7 @@ instance.interceptors.response.use(
       localStorage.removeItem('refresh_Token');
 
       // 임시 알림 창
-      alert('로그인 시간이 만료되었습니다.');
-      window.location.href = '/auth';
+      window.location.href = '/error?code=LOGIN_REQUIRED';
     }
 
     return Promise.reject(error);
