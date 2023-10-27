@@ -9,25 +9,24 @@ import TopAppBarStack from '@/components/common/header/TopAppBarStack';
 import Title from '@/components/common/header/Title';
 import InputLogin from '@/components/common/input/InputLogin';
 import Input from '@/components/common/input/Input';
+import { useLocation } from 'react-router-dom';
 
 const JoinPage = () => {
+  const location = useLocation();
+
   const [isOk, setIsOk] = useState(false);
   const { isLoading, sendmail, error, setError } = useSendmail();
 
-  const [userEmailStart, setUserEmailStart] = useRecoilState(
-    globalState.auth.emailId,
-  );
-  const [userEmailEnd, setUserEmailEnd] = useRecoilState(
-    globalState.auth.emailDomain,
-  );
+  const [userEmailStart, setUserEmailStart] = useState('');
+  const [userEmailEnd, setUserEmailEnd] = useState('');
   const [emailError, setEmailError] = useState('');
 
-  const [userPw, setUserPW] = useRecoilState(globalState.auth.password);
+  const [userPw, setUserPW] = useState('');
   const [pwError, setPwError] = useState('');
   const [userPwConfirm, setUserPWConfirm] = useState('');
   const [pwConfirmError, setPwConfirmError] = useState('');
 
-  const nickname = useRecoilValue(globalState.auth.nickname);
+  const nickname = location.state.nickname;
 
   useEffect(() => {
     setError('');
@@ -125,7 +124,7 @@ const JoinPage = () => {
         </CenterView>
 
         <BottomView>
-          <WideButton isActive={isOk} onClick={onJoin}>
+          <WideButton type="button" isActive={isOk} onClick={onJoin}>
             {isLoading ? (
               <TailSpin
                 height="30"
