@@ -10,8 +10,8 @@ const useLogout = () => {
   const logout = async () => {
     setNickname('');
     setUsername('');
-    localStorage.removeItem('access_Token');
-    localStorage.removeItem('refresh_Token');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
     navigate('/auth');
   };
 
