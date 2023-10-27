@@ -58,14 +58,14 @@ const TextWrapper = styled.div`
 `;
 
 const Title = styled.div`
-  color: black;
+  color: ${({ theme }) => theme.colors.black};
   margin-bottom: 6px;
 
   ${({ theme }) => theme.typography.pretendard.t3.sbd};
 `;
 
 const Explain = styled.div`
-  color: black;
+  color: ${({ theme }) => theme.colors.gray[600]};
 
   ${({ theme }) => theme.typography.pretendard.c1.rg};
 `;

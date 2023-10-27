@@ -21,8 +21,8 @@ const useDeleteAccount = () => {
 
       const { data: response } = await api.user.deleteAccount();
 
-      localStorage.removeItem('access_Token');
-      localStorage.removeItem('refresh_Token');
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
       navigate('/auth');
       toast.success('회원탈퇴가 완료되었습니다.');
     } catch (e) {

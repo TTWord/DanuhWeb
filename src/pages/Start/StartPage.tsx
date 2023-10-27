@@ -8,7 +8,7 @@ const StartPage = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      const refreshToken = localStorage.getItem('refresh_Token');
+      const refreshToken = localStorage.getItem('refresh_token');
       if (refreshToken) {
         navigate('/book');
       } else {
@@ -34,12 +34,6 @@ const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.1) 0%,
-      rgba(137, 109, 217, 0.1) 100%
-    ),
-    #fff;
 `;
 
 const LogoImg = styled.img`
