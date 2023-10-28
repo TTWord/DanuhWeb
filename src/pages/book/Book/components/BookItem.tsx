@@ -55,6 +55,7 @@ const BookItem: React.FC<BookItemProps> = ({
         setIsOpen={setIsBookAddPopOpen}
         bookId={book.id}
         bookName={book.name}
+        isRenameMode={true}
         onClickUpdate={onClickUpdate}
       />
       <BookShareOptionPop
