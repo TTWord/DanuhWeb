@@ -10,6 +10,7 @@ interface BookModifyPopProps {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   bookId: number;
   bookName: string;
+  isRenameMode?: boolean;
   onClickUpdate: (bookId: number) => void;
 }
 
@@ -18,6 +19,7 @@ const BookModifyPop: React.FC<BookModifyPopProps> = ({
   setIsOpen,
   bookId,
   bookName,
+  isRenameMode,
 }) => {
   const [inputText, setInputText] = useState('');
   const renameBook = useRenameBook();
@@ -39,7 +41,7 @@ const BookModifyPop: React.FC<BookModifyPopProps> = ({
     >
       <Container>
         <Header>
-          <Title>단어장 만들기</Title>
+          <Title>{isRenameMode ? '수정하기' : '단어장 만들기'}</Title>
           <CloseButton onClick={() => setIsOpen(false)}>
             <img src={iconCloseSvg} alt="close" />
           </CloseButton>
