@@ -7,8 +7,10 @@ import iconInfo from '@/assets/svg/icons/icon-info.svg';
 import defaultProfile from '@/assets/svg/logos/logo-profile-default.svg';
 import useSettingPageLogic from './hooks/useSettingPageLogic';
 import AlertPop from '@/components/common/popup/AlertPop';
-import MeteorSVG from './components/MeteorSVG';
 import TopAppBar from '@/components/common/header/TopAppBar';
+
+import { ReactComponent as DownloadSVG } from './svg/download.svg';
+import { ReactComponent as ThumbsUp } from './svg/thumbs-up.svg';
 
 const SettingPage = () => {
   const logout = useLogout();
@@ -45,17 +47,19 @@ const SettingPage = () => {
         isOpen={isAlertOpen}
         onClose={() => setIsAlertOpen(false)}
       >
-        <PictureArea>
-          <MeteorSVG />
-        </PictureArea>
-        <AlertPopTitle>다운로드</AlertPopTitle>
-        <AlertPopDesc>내 공유 단어장이 다운로드 된 횟수</AlertPopDesc>
-        <Spliter />
-        <PictureArea>
-          <MeteorSVG />
-        </PictureArea>
-        <AlertPopTitle>추천</AlertPopTitle>
-        <AlertPopDesc>내 공유 단어장이 추전받은 횟수</AlertPopDesc>
+        <AlertContainer>
+          <PictureArea>
+            <DownloadSVG />
+          </PictureArea>
+          <AlertPopTitle>다운로드</AlertPopTitle>
+          <AlertPopDesc>내 공유 단어장이 다운로드 된 횟수</AlertPopDesc>
+          <Spliter />
+          <PictureArea>
+            <ThumbsUp />
+          </PictureArea>
+          <AlertPopTitle>추천</AlertPopTitle>
+          <AlertPopDesc>내 공유 단어장이 추전받은 횟수</AlertPopDesc>
+        </AlertContainer>
       </AlertPop>
       <TopView>
         <TopAppBar type="setting" title="My Page" onClick={moveProfilePage} />
@@ -151,6 +155,10 @@ const SettingPage = () => {
 };
 
 export default SettingPage;
+
+const AlertContainer = styled.div`
+  padding: 32px 0;
+`;
 
 const TopView = styled.div`
   flex-shrink: 0;
@@ -325,14 +333,14 @@ const AlertPopTitle = styled.div`
   ${({ theme }) => theme.typography.pretendard.t3.bd};
   color: ${({ theme }) => theme.colors.gray[900]};
   text-align: center;
-  margin-top: 4px;
+  margin-top: 8px;
 `;
 
 const AlertPopDesc = styled.div`
   ${({ theme }) => theme.typography.pretendard.b1.rg};
   color: ${({ theme }) => theme.colors.gray[600]};
   text-align: center;
-  margin-top: 4px;
+  margin-top: 8px;
 
   & + ${AlertPopTitle} {
     margin-top: 24px;

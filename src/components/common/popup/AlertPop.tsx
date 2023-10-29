@@ -10,6 +10,7 @@ interface AlertPopProps {
   children?: React.ReactNode;
   title?: string;
   description?: string;
+  width?: string;
 }
 
 const AlertPop: React.FC<AlertPopProps> = ({
@@ -20,6 +21,7 @@ const AlertPop: React.FC<AlertPopProps> = ({
   type = 'custom',
   title,
   description,
+  width = '264px',
 }) => {
   const [closeState, setCloseState] = useState(false);
 
@@ -40,8 +42,8 @@ const AlertPop: React.FC<AlertPopProps> = ({
     <ReactModal isOpen={isOpen}>
       <Background closeState={closeState} />
       <Transparent>
-        <Box closeState={closeState}>
-          <Content>
+        <Box closeState={closeState} width={width}>
+          <Content isCustom={type === 'custom'}>
             {type === 'custom' && children}
             {type === 'title' && <Title>{title}</Title>}
             {type === 'desc' && (
@@ -122,8 +124,9 @@ const BoxAnimationReverse = keyframes`
 
 const Box = styled.div<{
   closeState: boolean;
+  width: string;
 }>`
-  width: 264px;
+  width: ${({ width }) => width};
   min-height: 180px;
   background-color: white;
   display: flex;
@@ -160,13 +163,22 @@ const Button = styled.button`
   }
 `;
 
-const Content = styled.div`
+const Content = styled.div<{
+  isCustom: boolean;
+}>`
+  width: 100%;
   padding: 32px 0;
   height: 100%;
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  ${({ isCustom }) =>
+    isCustom &&
+    css`
+      padding: 0;
+    `}
 `;
 
 const Title = styled.div`
