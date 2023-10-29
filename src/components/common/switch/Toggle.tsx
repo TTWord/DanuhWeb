@@ -1,12 +1,12 @@
 import styled, { css } from 'styled-components';
 
 interface ToggleProps {
-  type: 'default' | 'quiz';
+  type?: 'default' | 'quiz';
   isToggle: boolean;
   onClick?: () => void;
 }
 
-const Toggle = ({ type, isToggle, onClick }: ToggleProps) => {
+const Toggle = ({ type = 'default', isToggle, onClick }: ToggleProps) => {
   return (
     <ToggleBox isToggle={isToggle} onClick={onClick}>
       <ToggleButton>

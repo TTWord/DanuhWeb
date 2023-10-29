@@ -126,7 +126,6 @@ const TypeList = styled.div<{ isActive: boolean }>`
   top: 24px;
   right: 0;
   width: 188px;
-  height: 112px;
   display: flex;
   flex-direction: column;
   box-shadow: 0px 2px 10px 0px rgba(105, 74, 194, 0.08);
@@ -156,26 +155,21 @@ const TypeButton = styled.button<{
   align-items: center;
   background-color: white;
   box-sizing: border-box;
-  border-left: 1px solid ${({ theme }) => theme.colors.primary[100]};
-  border-right: 1px solid ${({ theme }) => theme.colors.primary[100]};
 
   &:active {
     background-color: ${({ theme }) => theme.colors.primary[100]};
   }
 
   & + & {
-    border-top: 1px solid ${({ theme }) => theme.colors.primary[100]};
+    border-top: 1px solid ${({ theme }) => theme.colors.gray[100]};
   }
 
   :first-child {
     border-radius: 8px 8px 0 0;
-    border: 1px solid ${({ theme }) => theme.colors.primary[100]};
-    border-bottom: 0px;
   }
 
   :last-child {
     border-radius: 0 0 8px 8px;
-    border: 1px solid ${({ theme }) => theme.colors.primary[100]};
   }
 
   ${({ hasToggle }) => {
