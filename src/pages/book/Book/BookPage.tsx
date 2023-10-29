@@ -69,7 +69,7 @@ const WebWrapper = styled.div`
 const Header = styled.header`
   width: 100%;
   height: 52px;
-  background-color: ${({ theme }) => theme.colors.primary[200]};
+  background-color: ${({ theme }) => theme.colors.gray[100]};
   padding-top: 14px;
   padding-left: 8px;
   div {
