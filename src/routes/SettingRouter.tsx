@@ -1,4 +1,3 @@
-import NoticeDetpage from '@/pages/setting/notice/NoticeDet/NoticeDetPage';
 import NoticePage from '@/pages/setting/notice/Notice/NoticePage';
 import NotificationPage from '@/pages/setting/notification/Notification/NotificationPage';
 import ProfilePage from '@/pages/setting/profile/Profile/ProfilePage';
@@ -9,6 +8,7 @@ import PasswordPage from '@/pages/setting/password/Password/PasswordPage';
 import DeleteAccountPage from '@/pages/setting/delete/DeleteAccount/DeleteAccountPage';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import RootLayout from '@/components/layout/RootLayout';
+import NoticeDetPage from '@/pages/setting/notice/NoticeDet/NoticeDetPage';
 
 const SettingRouter = () => {
   const location = useLocation();
@@ -29,7 +29,7 @@ const SettingRouter = () => {
       <Route path={'/notice'} element={<NoticePage />} />
 
       {/* 공지사항 세부 페이지 */}
-      <Route path={'/notice/:id'} element={<NoticeDetpage />} />
+      <Route path={'/notice/:id'} element={<NoticeDetPage />} />
 
       {/* 패치노트 페이지 */}
       <Route path={'/patchnote'} element={<PatchNotePage />} />

@@ -1,18 +1,24 @@
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
-import useNavigatePop from '@/hooks/useNavigatePop';
+import { useParams } from 'react-router-dom';
 import StackLayout from '@/components/layout/StackLayout';
+import useNoticePageOne from '../hooks/useNoticePageOne';
 
-const NoticeDetpage = () => {
-  const navigatePop = useNavigatePop();
-  const location = useLocation();
-  const title = location.state.title;
-  const content = location.state.content;
+const NoticeDetPage = () => {
+  let title = '';
+  let content: React.ReactNode = null;
+
+  const params = useParams();
+  const noticePageOne = useNoticePageOne();
+
+  if (params.id === '1') {
+    title = noticePageOne.title;
+    content = noticePageOne.content;
+  }
 
   return (
     <StackLayout
       topBar={{
-        title,
+        title: 'Danuh 런칭',
         back: {
           location: '/setting/notice',
         },
@@ -23,7 +29,7 @@ const NoticeDetpage = () => {
   );
 };
 
-export default NoticeDetpage;
+export default NoticeDetPage;
 
 const ContentWrapper = styled.div`
   width: 100%;
