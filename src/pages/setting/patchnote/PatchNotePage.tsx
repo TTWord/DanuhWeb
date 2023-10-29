@@ -4,7 +4,7 @@ import TopAppBarStack from '@/components/common/header/TopAppBarStack';
 const PatchNotePage = () => {
   const patchData = [
     {
-      version: 'V0.9',
+      version: 'V0.1',
       data: ['앱 런칭'],
     },
   ];
