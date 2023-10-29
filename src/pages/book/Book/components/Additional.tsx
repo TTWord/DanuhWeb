@@ -1,7 +1,6 @@
-import { Dispatch, SetStateAction, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled, { css, keyframes } from 'styled-components';
-import iconCreateBook from '@/assets/svg/icons/icon-create-book.svg';
+import { useState } from 'react';
+import styled, { css } from 'styled-components';
+import iconFolder from '@/assets/svg/icons/icon-folder.svg';
 import useNavigatePush from '@/hooks/useNavigatePush';
 import BookAddPop from './BookAddPop';
 
@@ -37,7 +36,7 @@ const Additional: React.FC<AdditionalProps> = () => {
             setIsBookAddPopOpen(true);
           }}
         >
-          <Icon src={iconCreateBook} alt="icon" />
+          <Icon src={iconFolder} alt="icon" />
           <Text>단어장 만들기</Text>
         </AdditionalItem>
       </AdditionalItems>
