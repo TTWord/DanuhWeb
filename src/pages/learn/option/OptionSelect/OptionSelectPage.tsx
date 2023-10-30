@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import BookSelectPop from './components/BookSelectPop';
 import { useNavigate, useParams } from 'react-router-dom';
-import Toggle from '@/components/common/switch/Toggle';
 
 const getTopBarText = (type: string, kind: string) => {
   if (type === 'memo') {
@@ -100,14 +99,21 @@ const OptionSelectPage = () => {
   };
 
   const onClickConfirm = () => {
+    let internalQuizTime;
+
+    if (timerOption === 'book') {
+      internalQuizTime = quizAllTime;
+    } else {
+      internalQuizTime = quizTime;
+    }
+
     if (selectedBooks.length) {
       navigate(`/learn/${type}/${kind}`, {
         state: {
           bookIds: selectedBooks.map((book) => book.id),
           mode: langOption,
-          quizType: type,
           quizCount,
-          quizTime,
+          quizTime: internalQuizTime,
           timerOption,
           memorizedFilter: haveMemoWord,
         },
@@ -132,6 +138,7 @@ const OptionSelectPage = () => {
         setViewSelectedBooksText={setViewSelectedBooksText}
         viewSelectedBooksText={viewSelectedBooksText}
         haveMemoWord={haveMemoWord}
+        setHaveMemoWord={setHaveMemoWord}
       />
       <StackLayout
         topBar={{
@@ -348,18 +355,6 @@ const OptionSelectPage = () => {
                 </OptionBox>
               </OptionGroup>
             </TopView>
-            <BottomView>
-              <ToggleSwitchGroup>
-                <Toggle
-                  type="default"
-                  isToggle={haveMemoWord}
-                  onClick={() => {
-                    setHaveMemoWord((current) => !current);
-                  }}
-                />
-                <ToggleSwitchText>암기된 단어 미포함</ToggleSwitchText>
-              </ToggleSwitchGroup>
-            </BottomView>
           </Content>
           <BottomButton onClick={onClickConfirm}>확인</BottomButton>
         </Container>
@@ -526,19 +521,3 @@ const OptionCount = styled.div``;
 const TopView = styled.div`
   overflow-y: scroll;
 `;
-
-const BottomView = styled.div`
-  width: 100%;
-  height: 70px;
-  flex-shrink: 0;
-  padding-bottom: 16px;
-  display: flex;
-  justify-content: center;
-`;
-
-const ToggleSwitchGroup = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const ToggleSwitchText = styled.div``;
