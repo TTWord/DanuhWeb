@@ -13,6 +13,7 @@ import BookSelectItem from './BookSelectItem';
 import TopAppBarClose from '@/components/common/header/TopAppBarClose';
 import CustomScrollLayout from './BookCustomScrollLayout';
 import useToast from '@/hooks/useToast';
+import Toggle from '@/components/common/switch/Toggle';
 
 interface BookSelectPopProps {
   isOpen: boolean;
@@ -34,6 +35,7 @@ interface BookSelectPopProps {
   setViewSelectedBooksText: Dispatch<SetStateAction<string | null>>;
   viewSelectedBooksText: string | null;
   haveMemoWord: boolean;
+  setHaveMemoWord: Dispatch<SetStateAction<boolean>>;
 }
 
 interface IBookResponse {
@@ -59,6 +61,7 @@ const BookSelectPop: React.FC<BookSelectPopProps> = ({
   setSelectedBooks,
   setViewSelectedBooksText,
   haveMemoWord,
+  setHaveMemoWord,
 }) => {
   const [allSelect, setAllSelect] = useState(false);
   const toast = useToast();
@@ -181,29 +184,37 @@ const BookSelectPop: React.FC<BookSelectPopProps> = ({
             </CustomScrollLayout>
           </BooksWrapper>
           <AllSelectArea>
-            <ClickableAllSelect>
-              <ToggleSwitchGroup>
-                <ToggleSwitch
-                  onClick={() => {
-                    setAllSelect((current) => {
-                      setBooks((currentBooks) => {
-                        return currentBooks.map((item) => {
-                          return {
-                            ...item,
-                            isSelected: !current,
-                          };
-                        });
+            <ToggleSwitchGroup>
+              <Toggle
+                type="default"
+                isToggle={allSelect}
+                onClick={() => {
+                  setAllSelect((current) => {
+                    setBooks((currentBooks) => {
+                      return currentBooks.map((item) => {
+                        return {
+                          ...item,
+                          isSelected: !current,
+                        };
                       });
-                      return !current;
                     });
-                  }}
-                  isActive={allSelect}
-                >
-                  <ToggleCircle isActive={allSelect} />
-                </ToggleSwitch>
-                <ToggleSwitchText>전체선택</ToggleSwitchText>
-              </ToggleSwitchGroup>
-            </ClickableAllSelect>
+                    return !current;
+                  });
+                }}
+              />
+              <ToggleSwitchText>전체선택</ToggleSwitchText>
+            </ToggleSwitchGroup>
+
+            <ToggleSwitchGroup>
+              <Toggle
+                type="default"
+                isToggle={haveMemoWord}
+                onClick={() => {
+                  setHaveMemoWord((current) => !current);
+                }}
+              />
+              <ToggleSwitchText>암기된 단어 미포함</ToggleSwitchText>
+            </ToggleSwitchGroup>
           </AllSelectArea>
         </Content>
         <Footer>
@@ -265,65 +276,27 @@ const Content = styled.div`
 const AllSelectArea = styled.div`
   width: 100%;
   height: 70px;
+  padding: 0 16px;
   flex-shrink: 0;
+  display: flex;
+  //justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   background-color: ${({ theme }) => theme.colors.gray[100]};
-  position: relative;
-`;
-
-const ClickableAllSelect = styled.div`
-  cursor: pointer;
-  margin-top: 8px;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
 `;
 
 const ToggleSwitchGroup = styled.div`
   display: flex;
   align-items: center;
+
+  :first-child {
+    margin-right: 40px;
+  }
 `;
 
 const ToggleSwitchText = styled.div`
   ${({ theme }) => theme.typography.pretendard.t3.sbd};
-`;
-
-const ToggleSwitch = styled.div<{
-  isActive: boolean;
-}>`
-  width: 32px;
-  height: 20px;
-  background-color: ${({ theme }) => theme.colors.gray[300]};
-  margin-right: 8px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  padding: 0 2px;
-  position: relative;
-  transition: background-color 150ms;
-
-  ${({ isActive }) =>
-    isActive &&
-    css`
-      background-color: ${({ theme }) => theme.colors.primary.default};
-    `};
-`;
-
-const ToggleCircle = styled.div<{
-  isActive: boolean;
-}>`
-  width: 16px;
-  height: 16px;
-  background-color: ${({ theme }) => theme.colors.white};
-  border-radius: 50%;
-  position: absolute;
-  left: 2px;
-  transition: left 150ms;
-
-  ${({ isActive }) =>
-    isActive &&
-    css`
-      left: calc(100% - 18px);
-    `};
+  margin-left: 8px;
 `;
 
 const Footer = styled.div`

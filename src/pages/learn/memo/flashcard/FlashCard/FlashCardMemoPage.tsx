@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
-import iconClose from '@/assets/svg/icons/icon-close.svg';
 import { useEffect, useState } from 'react';
 import ConfirmPop from '@/components/common/popup/ConfirmPop';
 import useGetFlashcardMemo from './hooks/useGetFlashcardMemo';
+import TopAppBarClose from '@/components/common/header/TopAppBarClose';
 
 const FlashCardMemoPage = () => {
   const navigate = useNavigate();
@@ -42,7 +42,13 @@ const FlashCardMemoPage = () => {
     setIsConfirmPopOpen(true);
   };
 
+  const showMessage = localStorage.getItem('showMemoMessage');
+
   const onNext = () => {
+    if (showMessage !== '1') {
+      localStorage.setItem('showMemoMessage', '1');
+    }
+
     if (!showWord) {
       setShowWord(true);
       return;
@@ -50,11 +56,7 @@ const FlashCardMemoPage = () => {
 
     if (showWord) {
       if (pageNum === memoList.length - 1) {
-        navigate('/learn/memo', {
-          state: {
-            type: 'flashcard',
-          },
-        });
+        navigate('/learn');
         return;
       }
 
@@ -80,11 +82,8 @@ const FlashCardMemoPage = () => {
         type="title"
         title="암기를 중단할까요?"
       />
-      <Header>
-        <ExitButton onClick={onExitQuiz}>
-          <img src={iconClose} alt="close-button" />
-        </ExitButton>
-      </Header>
+
+      <TopAppBarClose onClose={onExitQuiz} />
 
       <Content>
         {mode === 'word' && (
@@ -102,6 +101,12 @@ const FlashCardMemoPage = () => {
       </Content>
 
       <Footer>
+        {showMessage !== `1` && (
+          <GuideMessage>
+            <Message>정답을 살짝 확인할 수 있어요</Message>
+            <Triangle />
+          </GuideMessage>
+        )}
         <NextButton onClick={onNext}>
           {showWord && pageNum === memoList.length - 1 && '돌아가기'}
           {showWord && pageNum !== memoList.length - 1 && '다음'}
@@ -120,26 +125,6 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-`;
-
-const Header = styled.div`
-  width: 100%;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-`;
-
-const ExitButton = styled.button`
-  width: 24px;
-  height: 24px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  img {
-    width: 13px;
-  }
 `;
 
 const Content = styled.div`
@@ -164,6 +149,7 @@ const Card = styled.div`
 const BigText = styled.div`
   font-weight: 600;
   font-size: 36px;
+  margin-bottom: 8px;
 `;
 
 const SmallText = styled.div<{
@@ -172,6 +158,7 @@ const SmallText = styled.div<{
   font-weight: 600;
   color: ${({ theme }) => theme.colors.secondary.default};
   display: none;
+  justify-content: center;
 
   ${({ isShow }) => isShow && `display: block`}
 `;
@@ -183,6 +170,43 @@ const Footer = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0 16px;
+  position: relative;
+`;
+
+const GuideMessage = styled.div`
+  position: absolute;
+  bottom: 112px;
+  right: 50%;
+  transform: translateX(50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 8px;
+  border-radius: 4px;
+  background-color: ${({ theme }) => theme.colors.gray[900]};
+`;
+
+const Message = styled.span`
+  color: ${({ theme }) => theme.colors.white};
+  text-align: center;
+  font-family: ${({ theme }) => theme.fonts.pretendard};
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%; /* 15.84px */
+  letter-spacing: -0.6px;
+`;
+
+const Triangle = styled.div`
+  position: absolute;
+  bottom: -8px;
+  right: 36%;
+  width: 0px;
+  height: 0px;
+  border-top: 8px solid ${({ theme }) => theme.colors.gray[900]};
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
 `;
 
 const NextButton = styled.button`

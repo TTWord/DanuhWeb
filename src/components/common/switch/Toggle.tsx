@@ -43,7 +43,6 @@ const ToggleBox = styled.div<{ isToggle: boolean }>`
   align-items: center;
   transition: all 0.2s;
   padding: 2px;
-  margin-right: 6px;
   cursor: pointer;
 
   svg {

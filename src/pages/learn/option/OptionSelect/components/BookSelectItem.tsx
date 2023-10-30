@@ -29,7 +29,7 @@ const BookSelectItem: React.FC<BookSelectItemProps> = ({
       }}
     >
       <BookName>
-        {book.name}{' '}
+        <MainText>{book.name}</MainText>
         <SubText>
           (단어수: {book.word_count}, 암기완료: {book.word_memorized_count})
         </SubText>
@@ -56,8 +56,16 @@ const Book = styled.button`
   justify-content: space-between;
 `;
 
-const BookName = styled.div``;
+const BookName = styled.div`
+  width: calc(100% - 24px);
+  display: flex;
+  flex-wrap: wrap;
+`;
 
-const SubText = styled.span`
+const MainText = styled.div`
+  margin-right: 8px;
+`;
+
+const SubText = styled.div`
   color: ${({ theme }) => theme.colors.gray[500]};
 `;
