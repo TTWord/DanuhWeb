@@ -65,7 +65,7 @@ const SelectPop = ({
                 {item.hasToggle && isToggle !== undefined && (
                   <Toggle isToggle={isToggle} />
                 )}
-                {item.text}
+                <span>{item.text}</span>
               </TypeButton>
             );
           })}
@@ -158,6 +158,10 @@ const TypeButton = styled.button<{
   box-sizing: border-box;
   border-left: 1px solid ${({ theme }) => theme.colors.primary[100]};
   border-right: 1px solid ${({ theme }) => theme.colors.primary[100]};
+
+  span {
+    margin-left: 6px;
+  }
 
   &:active {
     background-color: ${({ theme }) => theme.colors.primary[100]};
