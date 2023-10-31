@@ -42,11 +42,12 @@ const Input: React.FC<InputProps> = ({
         <Container
           isFocused={isFocused}
           isFit={type === 'fit'}
-          tabIndex={0}
+          tabIndex={-1}
           onFocus={onFocus}
           onBlur={onBlur}
         >
           <InputBox
+            tabIndex={0}
             placeholder={placeholder}
             type={'text'}
             onChange={(e) => {
@@ -76,11 +77,12 @@ const Input: React.FC<InputProps> = ({
         <Container
           isFocused={isFocused}
           isFit={false}
-          tabIndex={0}
+          tabIndex={-1}
           onFocus={onFocus}
           onBlur={onBlur}
         >
           <InputBox
+            tabIndex={0}
             placeholder={placeholder}
             type={!isPasswordView ? 'password' : 'text'}
             onChange={(e) => {
