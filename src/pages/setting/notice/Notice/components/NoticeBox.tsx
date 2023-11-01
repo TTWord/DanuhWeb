@@ -25,7 +25,7 @@ const NoticeBox: React.FC<INoticeBox> = (props: INoticeBox) => {
     <Content onClick={onClick}>
       <TextWrapper>
         <Title>{props.title}</Title>
-        <Explain>{`${props.content.split('.')[0]}.`}</Explain>
+        <Explain>{`${props.content}`}</Explain>
       </TextWrapper>
       <NextButton src={nextIcon} alt="next" />
     </Content>
