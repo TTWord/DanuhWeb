@@ -22,6 +22,7 @@ const SettingPage = () => {
     movePatchNotePage,
     moveReportPage,
     moveAccountDeletePage,
+    movePrivacyPolicyPage,
   } = useSettingPageLogic();
 
   const maxWords = 200;
@@ -145,6 +146,10 @@ const SettingPage = () => {
             {about.login_type === 'local' && (
               <ContentBox title="비밀번호 변경" onClick={movePasswordPage} />
             )}
+            <ContentBox
+              title="개인정보 처리방침"
+              onClick={movePrivacyPolicyPage}
+            />
             <ContentBox title="로그아웃" onClick={onClickLogout} />
             <ContentBox title="탈퇴하기" onClick={moveAccountDeletePage} />
           </ContentWrapper>

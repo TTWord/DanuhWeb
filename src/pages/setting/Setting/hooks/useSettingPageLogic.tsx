@@ -43,6 +43,10 @@ const useSettingPageLogic = () => {
     navigatePush('/setting/delete');
   };
 
+  const movePrivacyPolicyPage = () => {
+    navigatePush('/setting/privacy');
+  };
+
   return {
     about,
     moveProfilePage,
@@ -51,6 +55,7 @@ const useSettingPageLogic = () => {
     movePasswordPage,
     movePatchNotePage,
     moveAccountDeletePage,
+    movePrivacyPolicyPage,
   };
 };
 

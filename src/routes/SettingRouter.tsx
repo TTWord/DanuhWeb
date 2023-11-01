@@ -9,6 +9,8 @@ import DeleteAccountPage from '@/pages/setting/delete/DeleteAccount/DeleteAccoun
 import { Route, Routes, useLocation } from 'react-router-dom';
 import RootLayout from '@/components/layout/RootLayout';
 import NoticeDetPage from '@/pages/setting/notice/NoticeDet/NoticeDetPage';
+import PrivacyPolicyPage from '@/pages/setting/privacy/PrivacyPolicyPage';
+import PrivacyPolicySinglePage from '@/pages/setting/privacy/PrivacyPolicySinglePage';
 
 const SettingRouter = () => {
   const location = useLocation();
@@ -42,6 +44,10 @@ const SettingRouter = () => {
 
       {/* 탈퇴하기 페이지 */}
       <Route path={'/delete'} element={<DeleteAccountPage />} />
+
+      {/* 개인정보 처리방침 페이지 */}
+      <Route path={'/privacy'} element={<PrivacyPolicyPage />} />
+      <Route path={'/privacy/single'} element={<PrivacyPolicySinglePage />} />
     </Routes>
   );
 };
