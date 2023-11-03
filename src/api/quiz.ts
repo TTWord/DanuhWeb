@@ -27,6 +27,14 @@ export const quizAPI = {
     return response;
   },
 
+  getRecommendedBookList: async (books: number[]) => {
+    const { data: response } = await instance.get(
+      `/quiz/recommend?books=[${books}]`,
+    );
+
+    return response;
+  },
+
   getSelectQuiz: async ({ bookIds, count, memorizedFilter }: quizParams) => {
     const response = await instance.post('/quiz/multiple', {
       book_ids: bookIds.join('&'),
