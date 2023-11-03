@@ -5,6 +5,7 @@ import ConfirmPop from '@/components/common/popup/ConfirmPop';
 import { useEffect, useState } from 'react';
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import { globalState } from '@/recoil';
+import useToast from '@/hooks/useToast';
 
 interface QuizHeaderParams {
   number: number;
@@ -15,10 +16,12 @@ interface QuizHeaderParams {
 
 const QuizHeader = ({ number, total, hasQuiz, timerEnd }: QuizHeaderParams) => {
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [isAnswered, setIsAnswered] = useRecoilState(
     globalState.quiz.isAnswered,
   );
+  const setIsWrong = useSetRecoilState(globalState.quiz.isWrong);
   const setTimerEnd = useSetRecoilState(globalState.quiz.quizTimerEnd);
   const [timer, setTimer] = useRecoilState(globalState.quiz.quizTimer);
 
@@ -42,6 +45,8 @@ const QuizHeader = ({ number, total, hasQuiz, timerEnd }: QuizHeaderParams) => {
         }
         if (timer === 0) {
           setIsAnswered(true);
+          toast.quiz('최악이에요...');
+          setIsWrong(true);
           setTimerEnd(true);
           clearTimeout(timeOutId);
         }

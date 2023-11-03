@@ -1,42 +1,37 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { api } from '@/api';
 import useGetSelectQuiz from './hooks/useGetSelectQuiz';
 import useToast from '@/hooks/useToast';
-import CheckSVG from '../common/svg/CheckSVG';
 import QuizHeader from '../common/components/QuizHeader';
 import WideButton from '@/components/common/button/WideButton';
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import { globalState } from '@/recoil';
-
-interface IAnswerData {
-  mean: string;
-  word: string;
-}
+import QuizButton from './components/QuizButton';
+import Toggle from '@/components/common/switch/Toggle';
 
 const ChoiceSelectPage = () => {
   //// hooks ////
   const navigate = useNavigate();
   const location = useLocation();
-  const { bookIds, mode, quizCount, quizTime, memorizedFilter } =
+  const { bookIds, mode, quizCount, quizTime, timerOption, memorizedFilter } =
     location.state as {
       bookIds: number[];
       mode: 'word' | 'mean';
       quizCount: number;
       quizTime: number;
+      timerOption: 'quiz' | 'book';
       memorizedFilter: boolean;
     };
-
-  //console.log(bookIds, mode, quizCount, quizTime, memorizedFilter);
 
   const getQuiz = useGetSelectQuiz();
   const toast = useToast();
   //// Varaiables ////
-  // Timer Vars
   const [isAnswered, setIsAnswered] = useRecoilState(
     globalState.quiz.isAnswered,
   );
+  const [isWrong, setIsWrong] = useRecoilState(globalState.quiz.isWrong);
   const setTimer = useSetRecoilState(globalState.quiz.quizTimer);
   const [timerEnd, setTimerEnd] = useRecoilState(globalState.quiz.quizTimerEnd);
 
@@ -89,7 +84,7 @@ const ChoiceSelectPage = () => {
       count: quizCount,
       memorizedFilter,
     });
-    console.log('a,', response);
+
     const getData = response.problem;
 
     setProblems(getData);
@@ -98,55 +93,30 @@ const ChoiceSelectPage = () => {
     setIsLoading(false);
   };
 
-  interface IReviewNote {
-    word: string;
-    mean: string;
-    isMemo: Boolean;
-  }
-
   const [reviewNote, setReviewNote] = useState<IReviewNote[]>([]);
 
   // 문항 선택 버튼에서 사용할 함수
   const selectAnswer = (select: string) => {
     if (mode === 'word') {
       if (select === currentAnswer?.mean) {
-        setResult((current) => current + 1);
+        /* setResult((current) => current + 1); */
         setIsCorrect(true);
-
+        setIsWrong(false);
         toast.quiz('정답을 맞췄어요 👏');
       } else {
+        setIsWrong(true);
         toast.quiz('최악이에요...');
-
-        if (currentAnswer) {
-          setReviewNote((prevItem) => [
-            ...prevItem,
-            {
-              word: currentAnswer.word,
-              mean: currentAnswer.mean,
-              isMemo: false, // API 데이터로 요청할 것
-            },
-          ]);
-        }
       }
     }
     if (mode === 'mean') {
       if (select === currentAnswer?.word) {
-        setResult((current) => current + 1);
+        /* setResult((current) => current + 1); */
         setIsCorrect(true);
+        setIsWrong(false);
         toast.quiz('정답을 맞췄어요 👏');
       } else {
+        setIsWrong(true);
         toast.quiz('최악이에요...');
-
-        if (currentAnswer) {
-          setReviewNote((prevItem) => [
-            ...prevItem,
-            {
-              word: currentAnswer.word,
-              mean: currentAnswer.mean,
-              isMemo: false, // API 데이터로 요청할 것
-            },
-          ]);
-        }
       }
     }
   };
@@ -167,12 +137,11 @@ const ChoiceSelectPage = () => {
         wordId: currentWordId,
         isMemorized: !currentMemorize,
       });
-      if (response.status === 'OK') {
-        const memorizedStatus = response.data.is_memorized;
-        const toastMessage =
-          memorizedStatus === true ? '암기 완료' : '암기 미완료';
-        toast.comment(toastMessage);
-      }
+
+      const memorizedStatus = response.is_memorized;
+      const toastMessage =
+        memorizedStatus === true ? '암기 완료' : '암기 미완료';
+      toast.comment(toastMessage);
     } catch (e: unknown) {
       console.log(e);
     }
@@ -183,8 +152,10 @@ const ChoiceSelectPage = () => {
     setNumber(number + 1);
     setIsAnswered(false);
     setIsCorrect(false);
-    setTimer(quizTime);
     setTimerEnd(false);
+    setIsWrong(false);
+
+    if (timerOption === 'quiz') setTimer(quizTime);
 
     if (number + 1 === length) {
       localStorage.setItem('reviewNote', JSON.stringify(reviewNote));
@@ -203,7 +174,9 @@ const ChoiceSelectPage = () => {
   //// useEffects ////
   // 객관식 퀴즈 가져옴
   useEffect(() => {
-    getQuizAPI();
+    if (problems.length === 0) {
+      getQuizAPI();
+    }
   }, []);
 
   // 가져온 퀴즈를 화면에 뿌려줌
@@ -211,21 +184,28 @@ const ChoiceSelectPage = () => {
     extractQuiz(problems, number);
   }, [number]);
 
+  useEffect(() => {
+    if (isWrong && currentAnswer) {
+      setReviewNote((prevItem) => [
+        ...prevItem,
+        {
+          word: currentAnswer.word,
+          mean: currentAnswer.mean,
+          isMemo: currentMemorize, // API 데이터로 요청할 것
+          wordId: currentWordId, // 숫자 변경 요망
+        },
+      ]);
+    } else if (!isWrong && isCorrect) {
+      setResult((current) => current + 1);
+    }
+  }, [isWrong, isCorrect]);
+
+  useEffect(() => {
+    if (isAnswered) setTimerEnd(true);
+    else setTimerEnd(false);
+  }, [isAnswered]);
+
   //// Components ////
-  const CreateChoiceButtons = (props: any) => {
-    return (
-      <ChoiceButton
-        onClick={() => {
-          if (!isAnswered) {
-            selectAnswer(props.example);
-            setIsAnswered(true);
-          }
-        }}
-      >
-        {props.example}
-      </ChoiceButton>
-    );
-  };
 
   return (
     <MainWrapper>
@@ -243,26 +223,26 @@ const ChoiceSelectPage = () => {
           <Content>
             {/* 문제 컴포넌트 */}
             {!isAnswered && mode === 'word' && (
-              <Word>{currentAnswer?.word}</Word>
+              <QuestionText>{currentAnswer?.word}</QuestionText>
             )}
             {!isAnswered && mode === 'mean' && (
-              <Word>{currentAnswer?.mean}</Word>
+              <QuestionText>{currentAnswer?.mean}</QuestionText>
             )}
 
             {/* 정답 컴포넌트 */}
             {isAnswered && (
-              <Answer>
+              <Center>
                 {/* 아래 부분 컴포넌트 이름 수정 필요 */}
                 {mode === 'word' && (
                   <>
-                    <Word>{currentAnswer?.word}</Word>
-                    <Mean>{currentAnswer?.mean}</Mean>
+                    <QuestionText>{currentAnswer?.word}</QuestionText>
+                    <AnswerText>{currentAnswer?.mean}</AnswerText>
                   </>
                 )}
                 {mode === 'mean' && (
                   <>
-                    <Word>{currentAnswer?.mean}</Word>
-                    <Mean>{currentAnswer?.word}</Mean>
+                    <QuestionText>{currentAnswer?.mean}</QuestionText>
+                    <AnswerText>{currentAnswer?.word}</AnswerText>
                   </>
                 )}
 
@@ -274,36 +254,43 @@ const ChoiceSelectPage = () => {
                   </GuideMessage>
                 )}
 
-                <CheckButton onClick={onClickCheckButton}>
-                  <CheckSVG fill={currentMemorize ? '#6E5FED' : '#DDDDE4'} />
+                <CheckButton>
+                  <Toggle
+                    type="quiz"
+                    isToggle={currentMemorize}
+                    onClick={onClickCheckButton}
+                  />
                 </CheckButton>
-              </Answer>
+              </Center>
             )}
           </Content>
 
           <ButtonWrapper>
             {/* 문제 컴포넌트 */}
-            {
-              /* !isAnswered */ true &&
-                currentQuiz.map(
-                  (items: { mean: string; word: string }, index) => {
-                    if (mode === 'word')
-                      return (
-                        <CreateChoiceButtons
-                          key={index}
-                          example={items?.mean}
-                        />
-                      );
-                    /*  (mode === 'mean') */ else
-                      return (
-                        <CreateChoiceButtons
-                          key={index}
-                          example={items?.word}
-                        />
-                      );
-                  },
-                )
-            }
+            {currentQuiz.map((items: { mean: string; word: string }, index) => {
+              if (mode === 'word') {
+                return (
+                  <QuizButton
+                    key={index}
+                    number={index}
+                    currentAnswerIndex={currentAnswerIndex}
+                    example={items?.mean}
+                    selectAnswer={selectAnswer}
+                  />
+                );
+              } else {
+                /*  (mode === 'mean') */
+                return (
+                  <QuizButton
+                    key={index}
+                    number={index}
+                    currentAnswerIndex={currentAnswerIndex}
+                    example={items?.word}
+                    selectAnswer={selectAnswer}
+                  />
+                );
+              }
+            })}
           </ButtonWrapper>
         </>
       )}
@@ -346,7 +333,7 @@ const Content = styled.div`
   position: relative;
 `;
 
-const Word = styled.div`
+const QuestionText = styled.div`
   font-family: ${({ theme }) => theme.fonts.pretendard};
   color: ${({ theme }) => theme.colors.black};
   font-size: 40px;
@@ -355,16 +342,17 @@ const Word = styled.div`
   line-height: normal;
 `;
 
-const Mean = styled.div`
+const AnswerText = styled.div`
   font-family: ${({ theme }) => theme.fonts.pretendard};
   color: ${({ theme }) => theme.colors.black};
   font-size: 20px;
   font-style: normal;
   font-weight: 300;
   line-height: normal;
+  margin-top: 24px;
 `;
 
-const Answer = styled.div`
+const Center = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -377,8 +365,6 @@ const GuideMessage = styled.div`
   position: absolute;
   bottom: 65px;
   right: 36px;
-  //width: 126px;
-  //height: 45px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -409,7 +395,7 @@ const Triangle = styled.div`
   border-right: 5px solid transparent;
 `;
 
-const CheckButton = styled.button`
+const CheckButton = styled.div`
   position: absolute;
   display: flex;
   justify-content: center;
@@ -424,30 +410,11 @@ const ButtonWrapper = styled.footer`
   flex-direction: column;
   align-items: center;
   padding: 0 24px;
-  //margin-bottom: 32px;
 
   div {
     :nth-child(n + 2) {
       margin-top: 16px;
     }
-  }
-`;
-
-const ChoiceButton = styled.button`
-  width: 100%;
-  height: 44px;
-  padding: 15px 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  ${({ theme }) => theme.typography.pretendard.b1.sbd}
-  background-color: ${({ theme }) => theme.colors.white};
-  border: 1px solid ${({ theme }) => theme.colors.gray[200]};
-  border-radius: 16px;
-  color: ${({ theme }) => theme.colors.black};
-
-  & + & {
-    margin-top: 8px;
   }
 `;
 
