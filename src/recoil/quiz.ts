@@ -40,4 +40,19 @@ export const quiz = {
     key: 'isAnswered',
     default: false,
   }),
+
+  isWrong: atom({
+    key: 'isWrong',
+    default: false,
+  }),
+
+  selectedButton: atom({
+    key: 'selectedButton',
+    default: 4,
+  }),
+
+  answerIndex: atom({
+    key: 'answerIndex',
+    default: 4,
+  }),
 };
