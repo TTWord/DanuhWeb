@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import NewWord from './components/BookWord';
+import BookWord from './components/BookWord';
 import useGetWord from './hooks/useGetWord';
 import useGetBookById from '@/pages/book/_id/hooks/useGetBookById';
 import useDeleteWord from '@/pages/book/_id/BookDet/hooks/useDeleteWord';
@@ -77,18 +77,19 @@ const BookDetPage = () => {
 
         {words.map((items: WordParams) => {
           return (
-            <NewWord
+            <BookWord
               key={items.id}
               wordId={items.id}
               word={items.word}
               mean={items.mean}
               onClick={onClickDeleteWord}
+              isDownloadedBook={book.is_downloaded}
             />
           );
         })}
       </BookContainer>
-      <DetShare book={book} />
-      <DetPlus />
+      {!book.is_downloaded && <DetShare book={book} />}
+      {!book.is_downloaded && <DetPlus />}
     </StackLayout>
   );
 };

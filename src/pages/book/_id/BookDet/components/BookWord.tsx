@@ -10,9 +10,16 @@ interface IBookWord {
   word: string;
   mean: string;
   onClick: any;
+  isDownloadedBook: boolean;
 }
 
-const BookWord = ({ wordId, word, mean, onClick }: IBookWord) => {
+const BookWord = ({
+  wordId,
+  word,
+  mean,
+  onClick,
+  isDownloadedBook,
+}: IBookWord) => {
   const [isOptionOpen, setIsOptionOpen] = useState(false);
   const navigatePush = useNavigatePush();
 
@@ -47,6 +54,8 @@ const BookWord = ({ wordId, word, mean, onClick }: IBookWord) => {
     };
   }, []);
 
+  console.log();
+
   return (
     <WordWrapper>
       <BottomSlidePop
@@ -73,9 +82,11 @@ const BookWord = ({ wordId, word, mean, onClick }: IBookWord) => {
       </BottomSlidePop>
       <WordBox>
         <Word>{word}</Word>
-        <Option onClick={onClickToggleOption}>
-          <img src={iconOther} alt="deleteIcon" />
-        </Option>
+        {!isDownloadedBook && (
+          <Option onClick={onClickToggleOption}>
+            <img src={iconOther} alt="deleteIcon" />
+          </Option>
+        )}
       </WordBox>
       <Mean>{mean}</Mean>
     </WordWrapper>
