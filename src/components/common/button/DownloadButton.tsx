@@ -6,8 +6,6 @@ interface ButtonProps {
 }
 
 const DownloadButton: React.FC<ButtonProps> = ({ onClick, status }) => {
-  console.log(1, status);
-
   switch (status) {
     case 'OWNER':
       return <Button isActive={false}>다운로드</Button>;
