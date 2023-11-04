@@ -101,6 +101,7 @@ const ShortTypingPage = () => {
         setTimer(quizTime);
         setTimerEnd(false);
         setNumber(number + 1);
+        setMyAnswer('');
       }
     }
   };
@@ -232,6 +233,8 @@ const Content = styled.div`
 `;
 
 const Quiz = styled.div`
+  display: flex;
+  justify-content: center;
   font-family: ${({ theme }) => theme.fonts.pretendard};
   font-size: 40px;
   font-style: normal;
@@ -282,6 +285,7 @@ const MyAnswer = styled.div<{ isDisplay: boolean }>`
   text-decoration: line-through;
   display: none;
   justify-content: end;
+  margin-right: 8px;
 
   ${({ isDisplay }) => {
     return (
@@ -298,7 +302,7 @@ const ShowAnswer = styled.div`
   display: flex;
   justify-content: start;
   align-items: center;
-  margin-left: 8px;
+
   color: ${({ theme }) => theme.colors.primary.default};
   font-size: 24px;
 `;
