@@ -80,15 +80,19 @@ const BookItem: React.FC<BookItemProps> = ({
           </BookOptionCloseButton>
         </BookOptionHeader>
         <BookOptionContent>
-          <BookOptionItem onClick={onClickShare}>공유 설정</BookOptionItem>
-          <BookOptionItem
-            onClick={() => {
-              setIsOptionOpen(false);
-              setIsBookAddPopOpen(true);
-            }}
-          >
-            수정하기
-          </BookOptionItem>
+          {!book.is_downloaded && (
+            <>
+              <BookOptionItem onClick={onClickShare}>공유 설정</BookOptionItem>
+              <BookOptionItem
+                onClick={() => {
+                  setIsOptionOpen(false);
+                  setIsBookAddPopOpen(true);
+                }}
+              >
+                수정하기
+              </BookOptionItem>
+            </>
+          )}
           <BookOptionItem
             onClick={() => {
               setIsOptionOpen(false);
