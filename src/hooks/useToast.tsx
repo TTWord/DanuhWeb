@@ -8,7 +8,7 @@ const useToast = () => {
     success: (message: string) => {
       setStatus({
         isOpen: true,
-        timer: 1500,
+        timer: 2000,
         message,
         type: 'SUCCESS',
       });
@@ -16,7 +16,7 @@ const useToast = () => {
     error: (message: string) => {
       setStatus({
         isOpen: true,
-        timer: 1500,
+        timer: 2000,
         message,
         type: 'ERROR',
       });
@@ -24,7 +24,7 @@ const useToast = () => {
     comment: (message: string) => {
       setStatus({
         isOpen: true,
-        timer: 1500,
+        timer: 2000,
         message,
         type: 'COMMENT',
       });
@@ -32,7 +32,7 @@ const useToast = () => {
     warning: (message: string) => {
       setStatus({
         isOpen: true,
-        timer: 1500,
+        timer: 2000,
         message,
         type: 'WARNING',
       });
@@ -40,7 +40,7 @@ const useToast = () => {
     quiz: (message: string) => {
       setStatus({
         isOpen: true,
-        timer: 1500,
+        timer: 2000,
         message,
         type: 'QUIZ',
       });
