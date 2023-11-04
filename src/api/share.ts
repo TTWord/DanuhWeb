@@ -60,6 +60,12 @@ export const shareAPI = {
     return response;
   },
 
+  updateSharedBook: async (id: number) => {
+    const response = await instance.post(`/share/update/${id}`);
+
+    return response;
+  },
+
   getUserShareBooks: async ({ mode, order, filter }: ISharedBooks) => {
     const { data: response } = await instance.get(`/share/user/${mode}`, {
       params: {

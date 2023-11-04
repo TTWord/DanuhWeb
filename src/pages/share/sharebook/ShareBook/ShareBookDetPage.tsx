@@ -9,11 +9,13 @@ import DownloadButton from '@/components/common/button/DownloadButton';
 import SharedWordBox from './components/SharedWordBox';
 import iconDown from '@/assets/svg/icons/icon-arrow-down.svg-small.svg';
 import profileDefault from '@/assets/svg/logos/logo-profile-default.svg';
+import useUpdateSharedBook from './hooks/useUpdateSharedBook';
 
 const ShareBookDetPage = () => {
   const navigatePush = useNavigatePush();
   const getSharedBookByIdAPI = useGetSharedBookById();
   const downloadSharedBookAPI = useDownloadSharedBook();
+  const updateSharedBook = useUpdateSharedBook();
 
   const shareId = Number(useParams().id);
   const [userinfo, setuserInfo] = useState({
@@ -32,8 +34,16 @@ const ShareBookDetPage = () => {
   }, [userinfo.comment]);
   const [showMore, setShowMore] = useState(false);
 
+  const [status, setStatus] = useState<
+    'OWNER' | 'NONE' | 'UPDATE' | 'DOWNLOADED' | ''
+  >(''); // 해당 단어장과의 나의 상관관계
+
   const getSharedBookById = async () => {
     const { data: response } = await getSharedBookByIdAPI(shareId);
+
+    //단어장 조작 상태
+    setStatus(response.status);
+
     // 유저 정보
     setuserInfo({
       bookName: response.book_name,
@@ -54,7 +64,17 @@ const ShareBookDetPage = () => {
   }, []);
 
   const donwloadSharedBook = async () => {
-    const response = await downloadSharedBookAPI(shareId);
+    if (status === 'NONE') {
+      const response = await downloadSharedBookAPI(shareId);
+
+      if (response === 'OK') setStatus('DOWNLOADED');
+    }
+
+    if (status === 'UPDATE') {
+      const response = await updateSharedBook(shareId);
+
+      if (response === 'OK') setStatus('DOWNLOADED');
+    }
   };
 
   const goUserProfile = () => {
@@ -71,7 +91,9 @@ const ShareBookDetPage = () => {
         type={'button'}
         navigate={'/share'}
         title={userinfo.bookName}
-        buttonComponent={<DownloadButton onClick={donwloadSharedBook} />}
+        buttonComponent={
+          <DownloadButton status={status} onClick={donwloadSharedBook} />
+        }
       />
 
       <Container>
