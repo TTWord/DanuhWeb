@@ -90,4 +90,10 @@ export const shareAPI = {
 
     return response;
   },
+
+  recommendBook: async (id: number) => {
+    const { data: response } = await instance.post(`/share/${id}`);
+
+    return response;
+  },
 };
