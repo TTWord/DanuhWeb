@@ -217,7 +217,6 @@ const MainWrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 0 24px;
 `;
 
 const Content = styled.div`
@@ -226,7 +225,9 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding-top: 20vh;
+  padding: 0 24px;
   color: ${({ theme }) => theme.colors.black};
 `;
 
