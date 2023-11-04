@@ -1,19 +1,25 @@
 import styled, { css } from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { api } from '@/api';
-import { MouseEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import TopAppBarClose from '@/components/common/header/TopAppBarClose';
 import WideButton from '@/components/common/button/WideButton';
 import chevronDown from '@/assets/svg/icons/icon-chevron-down-small.svg';
 import AlertPop from '@/components/common/popup/AlertPop';
-import thumbsUp from './thumbs-up.svg';
 import ReviewBox from './ReviewBox';
+import AlertBookBox from './AlertBookBox';
 
 interface IResultInfo {
   books: string;
   count: number;
   memorized_count: number;
   total_count: number;
+}
+
+interface IRecommendBook {
+  id: number;
+  name: string;
+  share_id: number;
 }
 
 const ResultPage = () => {
@@ -37,8 +43,6 @@ const ResultPage = () => {
     quizType: string;
   };
 
-  //console.log(bookIds, correct, count, quizType);
-
   const [resultInfo, setResultInfo] = useState<IResultInfo>();
 
   const goQuiz = () => {
@@ -61,7 +65,9 @@ const ResultPage = () => {
     }
   };
 
-  const [recommendedBookList, setRecommendedBookList] = useState([]);
+  const [recommendedBookList, setRecommendedBookList] = useState<
+    IRecommendBook[]
+  >([]);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -89,10 +95,6 @@ const ResultPage = () => {
     getRecommendedBookList();
   }, []);
 
-  const testFunc = () => {
-    console.log('clicked');
-  };
-
   return (
     <MainWrapper>
       <AlertPop
@@ -106,11 +108,12 @@ const ResultPage = () => {
         <AlertBox needScroll={recommendedBookList.length > 4}>
           <AlertTitle>단어장을 추천해주세요</AlertTitle>
 
-          {recommendedBookList.map((item: BookResponse, idx) => (
-            <AlertBookBox key={idx}>
-              <div>{item.name}</div>
-              <img onClick={testFunc} src={thumbsUp} alt="thumbsUp" />
-            </AlertBookBox>
+          {recommendedBookList.map((item: IRecommendBook) => (
+            <AlertBookBox
+              key={item.id}
+              name={item.name}
+              share_id={item.share_id}
+            />
           ))}
         </AlertBox>
       </AlertPop>
@@ -209,18 +212,6 @@ const AlertTitle = styled.div`
   color: ${({ theme }) => theme.colors.gray[900]};
 
   margin-bottom: 24px;
-`;
-
-const AlertBookBox = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  ${({ theme }) => theme.typography.pretendard.t4.md};
-  color: ${({ theme }) => theme.colors.gray[900]};
-
-  & + & {
-    margin-top: 24px;
-  }
 `;
 
 const Container = styled.div`
@@ -394,39 +385,6 @@ const NoteBot = styled.div<{ isNoteClicked: boolean }>`
     );
   }}
 `;
-/* 
-const ReviewBox = styled.div`
-  width: 100%;
-  height: 20px;
-  display: flex;
-  align-items: center;
-
-  ${({ theme }) => theme.typography.pretendard.c1.md};
-  color: ${({ theme }) => theme.colors.gray[700]};
-
-  & + & {
-    margin-top: 20px;
-  }
-`;
-
-const ReviewWord = styled.div`
-  width: 40%;
-  display: flex;
-  align-items: center;
-`;
-
-const ReviewMean = styled.div`
-  width: 40%;
-  display: flex;
-  align-items: center;
-`;
-
-const MemoCheck = styled.div`
-  width: 20%;
-  height: auto;
-  display: flex;
-  justify-content: end;
-`; */
 
 // 하단 확인
 const Footer = styled.footer`
