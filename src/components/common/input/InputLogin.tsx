@@ -1,8 +1,8 @@
 import { useState, ChangeEvent, useEffect } from 'react';
 import styled, { css } from 'styled-components';
-import BottomSlideSelectPop from '@/components/common/popup/BottomSlideSelectPop';
 import { useRecoilState } from 'recoil';
 import { globalState } from '@/recoil';
+import EmailDomainSelectPop from './EmailDomainSelectPop';
 
 interface InputProps {
   setEmailId: (text: string) => void;
@@ -34,7 +34,7 @@ const InputLogin: React.FC<InputProps> = ({ setEmailId, setDomain }) => {
     {
       text: 'daum.net',
       onClick: () => {
-        setEmailDomain('daum.com');
+        setEmailDomain('daum.net');
         setDirectInput(false);
       },
     },
@@ -145,7 +145,7 @@ const InputLogin: React.FC<InputProps> = ({ setEmailId, setDomain }) => {
           <SelectButton />
         </MailButton>
 
-        <BottomSlideSelectPop
+        <EmailDomainSelectPop
           isOpen={isPopOpen}
           onPopClose={onPopClose}
           data={domainList}
@@ -166,6 +166,7 @@ const EmailBox = styled.div<{ isFocus: boolean }>`
   display: flex;
   flex-shrink: 0;
   ${({ theme }) => theme.typography.pretendard.t3.md};
+  color: ${({ theme }) => theme.colors.gray[900]};
 
   ${({ isFocus }) => {
     return (
@@ -210,8 +211,10 @@ const MailText = styled.div<{
   isActive: boolean;
 }>`
   width: 100%;
-  color: ${({ theme }) => theme.colors.gray[400]};
+
   user-select: none;
+  ${({ theme }) => theme.typography.pretendard.t3.md};
+  color: ${({ theme }) => theme.colors.gray[400]};
 
   ${({ isActive }) =>
     isActive &&
