@@ -3,12 +3,12 @@ import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import useToast from '@/hooks/useToast';
 
-const useDownloadSharedBook = () => {
+const useUpdateSharedBook = () => {
   const toast = useToast();
 
-  const downloadSharedBook = async (id: number) => {
+  const updateSharedBook = async (id: number) => {
     try {
-      const { data: response } = await api.share.downloadSharedBook(id);
+      const { data: response } = await api.share.updateSharedBook(id);
 
       if (response.message === 'SUCCESS') {
         toast.comment('단어장을 다운로드 하였습니다.');
@@ -24,21 +24,25 @@ const useDownloadSharedBook = () => {
       const errorMessage = err?.response?.data.message;
 
       switch (errorMessage) {
+        case 'BOOK_ALREAY_UPDATED': {
+          toast.error('이미 업데이트 되었습니다.');
+          return;
+        }
+        case 'SHARE_NOT_SHARED': {
+          toast.error('공유되지 않은 단어장입니다.');
+          return;
+        }
+        case 'BOOK_NOT_DOWNLOADED': {
+          toast.error('다운로드 된 단어장이 아닙니다.');
+          return;
+        }
+
+        case 'BOOKSHARE_NOT_FOUND': {
+          toast.error('해당 단어장을 찾을 수 없습니다.');
+          return;
+        }
         case 'SHARE_NOT_FOUND': {
-          toast.error('공유 단어장이 존재하지 않습니다.');
-          return;
-        }
-        case 'SHARE_BOOK_OWNER': {
-          toast.error('소유중인 단어장은 다운받을 수 없습니다.');
-          return;
-        }
-        case 'SHARE_ALREADY_EXIST': {
-          toast.error('이미 다운로드한 단어장입니다.');
-          return;
-        }
-        case 'BOOK_NOT_SHARED': {
-          // 버그인지 아닌지는 아직 모르는 부분
-          toast.error('공유중인 단어장이 아닙니다.');
+          toast.error('해당 단어장을 찾을 수 없습니다.');
           return;
         }
         default: {
@@ -49,7 +53,7 @@ const useDownloadSharedBook = () => {
     }
   };
 
-  return downloadSharedBook;
+  return updateSharedBook;
 };
 
-export default useDownloadSharedBook;
+export default useUpdateSharedBook;

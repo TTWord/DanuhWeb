@@ -1,9 +1,10 @@
 import styled, { css } from 'styled-components';
+import { MouseEvent } from 'react';
 
 interface ToggleProps {
   type?: 'default' | 'quiz';
   isToggle: boolean;
-  onClick?: () => void;
+  onClick?: (e?: MouseEvent) => void;
 }
 
 const Toggle = ({ type = 'default', isToggle, onClick }: ToggleProps) => {

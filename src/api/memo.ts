@@ -30,7 +30,7 @@ export const memoAPI = {
   },
 
   patchMemoStatus: async ({ wordId, isMemorized }: patchParamas) => {
-    const response = await instance.patch(`/memo`, {
+    const { data: response } = await instance.patch(`/memo`, {
       word_id: wordId,
       is_memorized: isMemorized,
     });

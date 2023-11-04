@@ -1,23 +1,19 @@
 import styled, { css } from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { api } from '@/api';
-import { useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import TopAppBarClose from '@/components/common/header/TopAppBarClose';
 import WideButton from '@/components/common/button/WideButton';
 import chevronDown from '@/assets/svg/icons/icon-chevron-down-small.svg';
-import MemorizeToggle from './MemorizeToggle';
+import AlertPop from '@/components/common/popup/AlertPop';
+import thumbsUp from './thumbs-up.svg';
+import ReviewBox from './ReviewBox';
 
 interface IResultInfo {
   books: string;
   count: number;
   memorized_count: number;
   total_count: number;
-}
-
-interface IReviewNote {
-  word: string;
-  mean: string;
-  isMemo: boolean;
 }
 
 const ResultPage = () => {
@@ -41,20 +37,14 @@ const ResultPage = () => {
     quizType: string;
   };
 
+  //console.log(bookIds, correct, count, quizType);
+
   const [resultInfo, setResultInfo] = useState<IResultInfo>();
 
   const goQuiz = () => {
     localStorage.removeItem('reviewNote');
 
-    if (quizType === undefined) {
-      navigate(`/learn`);
-    } else {
-      navigate(`/learn/quiz`, {
-        state: {
-          type: quizType,
-        },
-      });
-    }
+    navigate(`/learn`);
   };
 
   const getResult = async () => {
@@ -71,18 +61,60 @@ const ResultPage = () => {
     }
   };
 
+  const [recommendedBookList, setRecommendedBookList] = useState([]);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  // 다운로드 한 단어장 중 내가 처음 퀴즈 푼 단어장 체크
+  const getRecommendedBookList = async () => {
+    try {
+      const { data: response } = await api.quiz.getRecommendedBookList(bookIds);
+
+      setRecommendedBookList(response);
+
+      if (response.length !== 0) setIsOpen(true);
+    } catch (e: unknown) {
+      console.log(e);
+    }
+  };
+
   const [isNoteClicked, setNoteClicked] = useState(false);
 
   const extendNote = () => {
-    setNoteClicked((current) => !current);
+    if (reviewNotes.length !== 0) setNoteClicked((current) => !current);
   };
 
   useEffect(() => {
     getResult();
+    getRecommendedBookList();
   }, []);
+
+  const testFunc = () => {
+    console.log('clicked');
+  };
 
   return (
     <MainWrapper>
+      <AlertPop
+        type="custom"
+        isOpen={isOpen}
+        onClose={() => {
+          setIsOpen(false);
+        }}
+        width={'282px'}
+      >
+        <AlertBox needScroll={recommendedBookList.length > 4}>
+          <AlertTitle>단어장을 추천해주세요</AlertTitle>
+
+          {recommendedBookList.map((item: BookResponse, idx) => (
+            <AlertBookBox key={idx}>
+              <div>{item.name}</div>
+              <img onClick={testFunc} src={thumbsUp} alt="thumbsUp" />
+            </AlertBookBox>
+          ))}
+        </AlertBox>
+      </AlertPop>
+
       <TopAppBarClose type="quiz" onClose={goQuiz} />
 
       <Container>
@@ -119,25 +151,14 @@ const ResultPage = () => {
           <span>{resultInfo?.books}</span>
         </TargetBook>
 
-        <ReviewNote isNoteClicked={isNoteClicked}>
+        <ReviewNote onClick={extendNote} isNoteClicked={isNoteClicked}>
           <NoteTop>
             <NoteTag>오답노트</NoteTag>
-            <ExtendButton onClick={extendNote} src={chevronDown} alt="down" />
+            <ExtendButton src={chevronDown} alt="down" />
           </NoteTop>
           <NoteBot isNoteClicked={isNoteClicked}>
-            {reviewNotes?.map((item, idx) => {
-              return (
-                <ReviewBox key={idx}>
-                  <ReviewWord>{item.word}</ReviewWord>
-                  <ReviewMean>{item.mean}</ReviewMean>
-                  <MemoCheck>
-                    <MemorizeToggle
-                      isMemo={item.isMemo}
-                      onClick={() => console.log(idx)}
-                    />
-                  </MemoCheck>
-                </ReviewBox>
-              );
+            {reviewNotes?.map((item) => {
+              return <ReviewBox key={item.wordId} info={item} />;
             })}
           </NoteBot>
         </ReviewNote>
@@ -158,6 +179,48 @@ const MainWrapper = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
+`;
+
+const AlertBox = styled.div<{ needScroll: boolean }>`
+  width: 100%;
+  height: auto;
+  padding: 32px 16px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+
+  ${({ needScroll }) => {
+    return (
+      needScroll &&
+      css`
+        height: 282px;
+      `
+    );
+  }}
+`;
+
+const AlertTitle = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  ${({ theme }) => theme.typography.pretendard.t3.bd};
+  color: ${({ theme }) => theme.colors.gray[900]};
+
+  margin-bottom: 24px;
+`;
+
+const AlertBookBox = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  ${({ theme }) => theme.typography.pretendard.t4.md};
+  color: ${({ theme }) => theme.colors.gray[900]};
+
+  & + & {
+    margin-top: 24px;
+  }
 `;
 
 const Container = styled.div`
@@ -331,7 +394,7 @@ const NoteBot = styled.div<{ isNoteClicked: boolean }>`
     );
   }}
 `;
-
+/* 
 const ReviewBox = styled.div`
   width: 100%;
   height: 20px;
@@ -363,7 +426,7 @@ const MemoCheck = styled.div`
   height: auto;
   display: flex;
   justify-content: end;
-`;
+`; */
 
 // 하단 확인
 const Footer = styled.footer`

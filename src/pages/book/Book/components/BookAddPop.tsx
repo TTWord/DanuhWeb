@@ -26,7 +26,7 @@ const BookAddPop: React.FC<BookAddPopProps> = ({ isOpen, setIsOpen }) => {
       toast.success('단어장이 생성되었습니다');
       queryClient.invalidateQueries('BookPage/GetBooks');
     } catch (e: unknown) {
-      toast.success('단어장 생성에 실패했습니다');
+      toast.error('단어장 생성에 실패했습니다');
     }
   }, []);
 

@@ -31,6 +31,12 @@ const useAddWord = () => {
         case 'WORD_MORE_THAN_LIMIT':
           toast.error('단어 개수가 한도에 도달하였습니다.');
           break;
+        case 'WORD_INVALID_INPUT':
+          toast.error('잘못된 값이 입력되었습니다.');
+          break;
+        case 'WORD_COUNT_MORE_THAN_LIMIT':
+          toast.error('최대 글자수는 15자입니다.');
+          break;
         case 'BOOK_NOT_FOUND':
           toast.error('에러가 발생하였습니다.');
           break;
