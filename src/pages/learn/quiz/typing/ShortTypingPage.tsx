@@ -8,6 +8,12 @@ import WideButton from '@/components/common/button/WideButton';
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import { globalState } from '@/recoil';
 
+interface IProblems {
+  answer: { mean: string; word: string };
+  is_memorized: boolean;
+  word_id: number;
+}
+
 const ShortTypingPage = () => {
   const toast = useToast();
   const navigate = useNavigate();
@@ -25,13 +31,17 @@ const ShortTypingPage = () => {
   // 주관식 퀴즈 API
   const getTypingQuiz = useGetTypingQuiz();
   const answerRef = useRef<HTMLInputElement>(null);
-  const [problems, setProblems] = useState([]);
+  const [problems, setProblems] = useState<IProblems[]>([]);
   const length = problems.length; // 문제 길이
 
   // Extract Quiz Vars
   // 현재 문제 목록
   const [currentQuiz, setCurrentQuiz] = useState('');
   const [rightAnswer, setRightAnswer] = useState('');
+
+  const [currentWordMemo, setCurrentWordMemo] = useState(false);
+  const [currentWordid, setCurrentWordid] = useState(0);
+
   const [myAnswer, setMyAnswer] = useState('');
   // 맞춘 정답수
   const [result, setResult] = useState(0);
@@ -42,6 +52,7 @@ const ShortTypingPage = () => {
   const [isAnswered, setIsAnswered] = useRecoilState(
     globalState.quiz.isAnswered,
   );
+  const [isWrong, setIsWrong] = useRecoilState(globalState.quiz.isAnswered);
   const setTimer = useSetRecoilState(globalState.quiz.quizTimer);
   const [timerEnd, setTimerEnd] = useRecoilState(globalState.quiz.quizTimerEnd);
 
@@ -60,7 +71,6 @@ const ShortTypingPage = () => {
   const next = () => {
     // 로직 리팩중
     if (number + 1 === length && isAnswered) {
-      console.log(reviewNote);
       localStorage.setItem('reviewNote', JSON.stringify(reviewNote));
       // 제출
       navigate('/learn/result', {
@@ -79,31 +89,11 @@ const ShortTypingPage = () => {
 
         if (myAnswer === rightAnswer) {
           setResult((current) => current + 1);
+          setIsWrong(false);
           toast.quiz('정답!');
         } else {
+          setIsWrong(true);
           toast.quiz('오답!');
-
-          // 오답노트 저장 => localstorage에 저장해야함
-          if (mode === 'word') {
-            setReviewNote((prevItem) => [
-              ...prevItem,
-              {
-                word: currentQuiz,
-                mean: rightAnswer,
-                isMemo: false, // API 데이터로 요청할 것
-              },
-            ]);
-          }
-          if (mode === 'mean') {
-            setReviewNote((prevItem) => [
-              ...prevItem,
-              {
-                word: rightAnswer,
-                mean: currentQuiz,
-                isMemo: false, //
-              },
-            ]);
-          }
         }
       } else {
         // 다음 버튼일때
@@ -120,17 +110,20 @@ const ShortTypingPage = () => {
   };
 
   // 문제 가져오기
-  const extractQuiz = (value: any) => {
+  const extractQuiz = (value: IProblems[]) => {
     const currentQuiz = value[number];
+
+    setCurrentWordMemo(currentQuiz?.is_memorized);
+    setCurrentWordid(currentQuiz?.word_id);
 
     if (currentQuiz) {
       if (mode === 'word') {
-        setCurrentQuiz(currentQuiz.word);
-        setRightAnswer(currentQuiz.mean);
+        setCurrentQuiz(currentQuiz.answer.word);
+        setRightAnswer(currentQuiz.answer.mean);
       }
       if (mode === 'mean') {
-        setCurrentQuiz(currentQuiz.mean);
-        setRightAnswer(currentQuiz.word);
+        setCurrentQuiz(currentQuiz.answer.mean);
+        setRightAnswer(currentQuiz.answer.word);
       }
     }
   };
@@ -141,14 +134,11 @@ const ShortTypingPage = () => {
       count: quizCount,
       memorizedFilter,
     });
-    //console.log(response);
+
     const data = response.problem;
-    const tempArray: any = [];
-    data.map((item: { answer: { word: string; mean: string } }) => {
-      tempArray.push(item.answer);
-    });
-    setProblems(tempArray);
-    extractQuiz(tempArray);
+
+    setProblems(data);
+    extractQuiz(data);
   };
 
   // 퀴즈 가져오기
@@ -160,6 +150,19 @@ const ShortTypingPage = () => {
   useEffect(() => {
     extractQuiz(problems);
   }, [number]);
+
+  useEffect(() => {
+    if (isWrong)
+      setReviewNote((prevItem) => [
+        ...prevItem,
+        {
+          word: currentQuiz,
+          mean: rightAnswer,
+          isMemo: currentWordMemo, // API 데이터로 요청할 것
+          wordId: currentWordid, // 숫자 변경 요망
+        },
+      ]);
+  }, [isWrong]);
 
   // 하단 버튼 텍스트용
   const [buttonText, setButtonText] = useState('정답보기');
@@ -188,14 +191,15 @@ const ShortTypingPage = () => {
       <Content>
         <Quiz>{currentQuiz}</Quiz>
         {!isAnswered && (
-          <MyAnswer onChange={onChange} type="text" ref={answerRef} />
+          <AnswerInput onChange={onChange} type="text" ref={answerRef} />
         )}
 
         {/* 정답보기 버튼 클릭 시 보여줄 컴포넌트 */}
         {isAnswered && (
-          <ShowAnswer isCorrent={myAnswer === rightAnswer}>
-            {rightAnswer}
-          </ShowAnswer>
+          <AnswerResultBox isCorrect={myAnswer === rightAnswer}>
+            <MyAnswer isDisplay={myAnswer !== rightAnswer}>{myAnswer}</MyAnswer>
+            <ShowAnswer>{rightAnswer}</ShowAnswer>
+          </AnswerResultBox>
         )}
       </Content>
 
@@ -213,6 +217,7 @@ const MainWrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  padding: 0 24px;
 `;
 
 const Content = styled.div`
@@ -235,28 +240,66 @@ const Quiz = styled.div`
   margin-bottom: 24px;
 `;
 
-const MyAnswer = styled.input`
-  width: 40%;
+const AnswerInput = styled.input`
+  min-width: 40%;
+  max-width: 100%;
   ${({ theme }) => theme.typography.pretendard.t1.sbd};
   padding: 8px 0;
-  border-bottom: 1px solid #000000;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[400]};
   text-align: center;
 `;
 
-const ShowAnswer = styled.div<{ isCorrent: boolean }>`
+const AnswerResultBox = styled.div<{ isCorrect: boolean }>`
+  min-width: 40%;
+  max-width: 100%;
+
+  ${({ theme }) => theme.typography.pretendard.t1.sbd};
+  padding: 8px 0;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[400]};
+  text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: red;
-  font-size: 24px;
-  ${({ isCorrent }) => {
+  flex-wrap: wrap;
+
+  ${({ isCorrect }) => {
     return (
-      isCorrent &&
+      isCorrect &&
       css`
-        color: green;
+        justify-content: center;
       `
     );
   }}
+`;
+
+const MyAnswer = styled.div<{ isDisplay: boolean }>`
+  width: auto;
+  ${({ theme }) => theme.typography.pretendard.t1.sbd};
+
+  text-align: center;
+  color: red;
+  text-decoration: line-through;
+  display: none;
+  justify-content: end;
+
+  ${({ isDisplay }) => {
+    return (
+      isDisplay &&
+      css`
+        display: flex;
+      `
+    );
+  }}
+`;
+
+const ShowAnswer = styled.div`
+  width: auto;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  margin-left: 8px;
+  color: ${({ theme }) => theme.colors.primary.default};
+  font-size: 24px;
 `;
 
 const Footer = styled.footer`
