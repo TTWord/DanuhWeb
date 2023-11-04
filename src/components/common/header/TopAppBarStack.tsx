@@ -96,7 +96,9 @@ export default TopAppBarStack;
 const BackButtonWrapper = styled.button`
   width: 40px;
   height: 40px;
-  margin-right: 8px;
+  margin-right: 4px;
+  display: flex;
+  align-items: center;
 `;
 
 const TopAppBarWrapper = styled.div<{ backgroundColor: string | undefined }>`
