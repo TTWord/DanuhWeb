@@ -60,7 +60,7 @@ const CreateWordPage = () => {
       <Footer>
         <CreateButton
           onClick={() => {
-            if (word === '' && mean === '') {
+            if (word === '' || mean === '') {
               toast.error('미입력칸이 있습니다.');
             } else {
               addWord({ bookId, word, mean, resetInput });
