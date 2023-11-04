@@ -10,9 +10,16 @@ import iconPencil from './svg/icon-pencil.svg';
 import { instance } from '@/instance';
 import StackLayout from '@/components/layout/StackLayout';
 import WideButton from '@/components/common/button/WideButton';
+import useToast from '@/hooks/useToast';
+
+interface IFile extends File {
+  size: number;
+}
 
 const ProfilePage = () => {
   const changeNewNickname = useChangeNickname();
+  const toast = useToast();
+
   const [error, setError] = useState<string | null>(null);
   const [isOk, setIsOk] = useState(false);
 
@@ -37,11 +44,20 @@ const ProfilePage = () => {
   const changeProfilePic = useChangeProfilePic();
   const profilePicRef = useRef<any>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [file, setFile] = useState<string | Blob>();
+  const [file, setFile] = useState<string | File | IFile>();
+
+  const [isLarge, setIsLarge] = useState(false);
 
   const uploadImage = () => {
     // 파일 업로드
-    const file: Blob = profilePicRef.current.files[0];
+    const file: File = profilePicRef.current.files[0];
+
+    if (file.size > 2097152) {
+      setIsLarge(true);
+      toast.error('프로필 사진은 2MB이하로만 가능합니다.');
+      return;
+    }
+
     setFile(file);
     // 업로드한 파일 미리보기
     const reader = new FileReader();
@@ -116,7 +132,7 @@ const ProfilePage = () => {
       <ProfileForm
         onSubmit={(e) => {
           e.preventDefault();
-          if (file) {
+          if (file && !isLarge) {
             const formData = new FormData();
             formData.append('file', file);
             changeProfilePic(formData);
