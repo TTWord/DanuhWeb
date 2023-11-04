@@ -83,7 +83,7 @@ const Back = styled.button`
   width: 40px;
   height: 40px;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   cursor: pointer;
 
