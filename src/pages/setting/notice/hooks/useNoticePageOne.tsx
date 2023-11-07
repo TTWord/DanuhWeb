@@ -45,4 +45,8 @@ Danuh를 사용해 단어를 더욱 쉽게 외워보세요!
 const Box = styled.div`
   width: 100%;
   height: auto;
+
+  pre {
+    white-space: pre-wrap;
+  }
 `;
