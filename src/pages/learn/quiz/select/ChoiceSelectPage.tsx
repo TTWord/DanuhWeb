@@ -105,7 +105,7 @@ const ChoiceSelectPage = () => {
         toast.quiz('정답을 맞췄어요 👏');
       } else {
         setIsWrong(true);
-        toast.quiz('최악이에요...');
+        toast.quiz('틀렸어요...😥');
       }
     }
     if (mode === 'mean') {
@@ -116,7 +116,7 @@ const ChoiceSelectPage = () => {
         toast.quiz('정답을 맞췄어요 👏');
       } else {
         setIsWrong(true);
-        toast.quiz('최악이에요...');
+        toast.quiz('틀렸어요...😥');
       }
     }
   };

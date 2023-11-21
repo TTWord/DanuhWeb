@@ -90,10 +90,10 @@ const ShortTypingPage = () => {
         if (myAnswer === rightAnswer) {
           setResult((current) => current + 1);
           setIsWrong(false);
-          toast.quiz('정답!');
+          toast.quiz('정답을 맞췄어요 👏');
         } else {
           setIsWrong(true);
-          toast.quiz('오답!');
+          toast.quiz('틀렸어요...😥');
         }
       } else {
         // 다음 버튼일때

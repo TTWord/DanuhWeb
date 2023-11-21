@@ -45,7 +45,7 @@ const QuizHeader = ({ number, total, hasQuiz, timerEnd }: QuizHeaderParams) => {
         }
         if (timer === 0) {
           setIsAnswered(true);
-          toast.quiz('최악이에요...');
+          toast.quiz('틀렸어요...😥');
           setIsWrong(true);
           setTimerEnd(true);
           clearTimeout(timeOutId);
