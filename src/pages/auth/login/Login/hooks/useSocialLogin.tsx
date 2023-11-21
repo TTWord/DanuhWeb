@@ -6,8 +6,8 @@ const useSocialLogin = () => {
 
   const socialLogin = async (social: string) => {
     try {
-      const response = await api.auth.socialLogin(social);
-      window.location.href = response.data.data.url;
+      const { data: response } = await api.auth.socialLogin(social);
+      window.location.href = response.data.url;
     } catch (e: unknown) {
       toast.error('아직 지원하지 않는 기능입니다.');
     }
