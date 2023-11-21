@@ -28,7 +28,7 @@ jobs:
           echo "SERVER_NAME = $SERVER_NAME" >> .env.production
         env:
           ENV_MODE: ${{ secrets.ENV_MODE }}
-          SERVER_NAME: ${{ secrets.ENV_SERVER_NAME }}
+          SERVER_NAME: ${{ secrets.ENV_DEVELOP_SERVER_NAME }}
 
       - name: Install dependencies
         run: npm install
