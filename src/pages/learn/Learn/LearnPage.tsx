@@ -1,89 +1,50 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useSetRecoilState } from 'recoil';
-import { globalState } from '@/recoil';
-import SelectButtonComponent from './components/SelectButtonComponent';
 import TopAppBar from '@/components/common/header/TopAppBar';
 
-import picFlashCard from './images/flashcard.png';
-import picSelect from './images/select.png';
-import picTyping from './images/typing.png';
+import useLearnPageLogics from './hooks/useLearnPageLogics';
+import { memoList, quizList } from './data/LearnData';
+import LearnTypeContainer from './components/LearnTypeContainer';
+import AlertPop from '@/components/common/popup/AlertPop';
+import { useRecoilState } from 'recoil';
+import { globalState } from '@/recoil';
 
 const LearnPage = () => {
-  const setActiveMenu = useSetRecoilState(globalState.layout.activeMenuNumber);
+  const { haveBooks } = useLearnPageLogics();
 
-  useEffect(() => {
-    setActiveMenu(1);
-  }, []);
-
-  const memoList = [
-    {
-      title: '단어암기',
-      type: 'flashcard',
-      icon: picFlashCard,
-      iconWidth: '102px',
-    },
-  ];
-
-  const quizList = [
-    {
-      title: '객관식',
-      type: 'select',
-      icon: picSelect,
-      iconWidth: '102px',
-    },
-    {
-      title: '주관식',
-      type: 'typing',
-      icon: picTyping,
-      iconWidth: '102px',
-    },
-  ];
-
-  interface IButtonItem {
-    title: string;
-    type: string;
-    icon: string;
-    typeDetail?: string;
-    iconWidth: string;
-  }
+  const [isLearnPopOpen, setIsLearnPopOpen] = useRecoilState(
+    globalState.learn.isLearnPopOpen,
+  );
 
   return (
     <Wrapper>
       <TopAppBar type="default" title="Quiz" />
 
-      <Content>
-        <Container>
-          <QuizTitle>암기하기</QuizTitle>
-          <ButtonWrapper>
-            {memoList.map((item: IButtonItem, idx) => {
-              return (
-                <SelectButtonComponent
-                  key={idx}
-                  buttonIcon={item.icon}
-                  naviURL={`memo/${item.type}`}
-                  {...item}
-                />
-              );
-            })}
-          </ButtonWrapper>
-        </Container>
+      <AlertPop
+        type="custom"
+        isOpen={isLearnPopOpen}
+        onClose={() => {
+          setIsLearnPopOpen(false);
+        }}
+        width={'280px'}
+      >
+        <PopBox>
+          <div>단어장이 없습니다.</div>
+          <div>단어장을 추가해주세요.</div>
+        </PopBox>
+      </AlertPop>
 
-        <Container>
-          <QuizTitle>문제 풀기</QuizTitle>
-          <ButtonWrapper>
-            {quizList.map((item: IButtonItem, idx) => {
-              return (
-                <SelectButtonComponent
-                  key={idx}
-                  buttonIcon={item.icon}
-                  naviURL={`quiz/${item.type}`}
-                  {...item}
-                />
-              );
-            })}
-          </ButtonWrapper>
-        </Container>
+      <Content>
+        <LearnTypeContainer
+          haveBook={haveBooks}
+          title={'memo'}
+          ButtonList={memoList}
+        />
+        <LearnTypeContainer
+          haveBook={haveBooks}
+          title={'quiz'}
+          ButtonList={quizList}
+        />
       </Content>
     </Wrapper>
   );
@@ -109,22 +70,18 @@ const Content = styled.div`
   overflow-y: scroll;
 `;
 
-const Container = styled.div`
+const PopBox = styled.div`
   width: 100%;
-
-  & + & {
-    margin-top: 32px;
-  }
-`;
-
-const QuizTitle = styled.div`
-  ${({ theme }) => theme.typography.pretendard.t1.sbd};
-  padding: 0 16px;
-`;
-
-const ButtonWrapper = styled.div`
-  width: 100%;
-  overflow-x: scroll;
+  height: 100%;
   display: flex;
-  padding: 16px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: ${({ theme }) => theme.colors.black};
+
+  div {
+    :last-child {
+      margin-top: 32px;
+    }
+  }
 `;
