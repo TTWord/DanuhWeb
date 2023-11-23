@@ -4,6 +4,7 @@ import { setting } from './setting';
 import { quiz } from './quiz';
 import { memo } from './memo';
 import { user } from './user';
+import { learn } from './learn';
 
 export const globalState = {
   layout,
@@ -12,4 +13,5 @@ export const globalState = {
   quiz,
   memo,
   user,
+  learn,
 };
