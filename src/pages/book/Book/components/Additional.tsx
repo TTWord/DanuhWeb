@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import iconFolder from '@/assets/svg/icons/icon-folder.svg';
+import iconAuto from '@/assets/svg/icons/icon-auto.svg';
 import useNavigatePush from '@/hooks/useNavigatePush';
 import BookAddPop from './BookAddPop';
 
@@ -20,14 +21,14 @@ const Additional: React.FC<AdditionalProps> = () => {
         <PlusIcon isActive={isActive} />
       </PlusBox>
       <AdditionalItems isActive={isActive}>
-        {/* <AdditionalItem
+        <AdditionalItem
           isActive={isActive}
           targetPos={'140px'}
           onClick={() => navigatePush('/book/generate')}
         >
-          <Icon src={iconCreateBook} alt="icon" />
+          <Icon src={iconAuto} alt="icon" />
           <Text>단어장 생성기</Text>
-        </AdditionalItem> */}
+        </AdditionalItem>
         <AdditionalItem
           isActive={isActive}
           targetPos={'80px'}

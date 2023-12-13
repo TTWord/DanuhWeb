@@ -1,8 +1,8 @@
 import { api } from '@/api';
-import { useNavigate } from 'react-router-dom';
 import useToast from '@/hooks/useToast';
 import { AxiosError } from 'axios';
 import { useState } from 'react';
+import useNavigatePop from '@/hooks/useNavigatePop';
 
 interface IGenerateBook {
   bookName: string;
@@ -10,7 +10,7 @@ interface IGenerateBook {
 }
 
 const useGenerateBook = () => {
-  const navigate = useNavigate();
+  const navigatePop = useNavigatePop();
   const toast = useToast();
   const [loading, setLoading] = useState(false);
 
@@ -22,9 +22,9 @@ const useGenerateBook = () => {
         data.sentense,
       );
 
-      if (response.message === '데이터 추가 성공') {
+      if (response.message === 'SUCCESS') {
         setLoading(false);
-        navigate('/book');
+        navigatePop('/book');
       }
     } catch (e: unknown) {
       const err = e as AxiosError<{
