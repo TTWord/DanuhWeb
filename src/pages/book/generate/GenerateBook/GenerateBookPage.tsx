@@ -53,7 +53,7 @@ const GenerateBookPage = () => {
 
       <Footer>
         <WideButton
-          isActive={false}
+          isActive={bookName !== '' && sentense !== ''}
           onClick={() => {
             if (!isLoading) {
               generateBook({ bookName, sentense });
