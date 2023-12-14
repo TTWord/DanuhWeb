@@ -11,7 +11,7 @@ Webpack을 사용하여 만든 웹프로젝트입니다.
 
 ## Service Architecture
 
-<img align=center width="60%" alt="Architecture" src="https://github.com/TTWord/DanuhWeb/assets/87410294/0a886066-e95c-4366-b1a5-52e3f7ef1af0">
+<img width="100%" alt="Architecture" src="https://github.com/TTWord/DanuhWeb/assets/87410294/0a886066-e95c-4366-b1a5-52e3f7ef1af0">
 
 ## Member
 
