@@ -1,456 +1,350 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { AxiosError } from 'axios';
-import { api } from '@/api';
+import { ChangeEvent, useEffect, KeyboardEvent, useState } from 'react';
+import ConfirmPop from '@/components/common/popup/ConfirmPop';
+import TopAppBarClose from '@/components/common/header/TopAppBarClose';
+import WideButton from '@/components/common/button/WideButton';
+import useBlindTypingLogics from './hooks/useBlindTypingLogics';
 import useToast from '@/hooks/useToast';
-import xButton from '@/assets/svg/icons/icon-x-button.svg';
-import CheckSVG from '../../common/svg/CheckSVG';
+import QuizBox from './components/QuizBox';
+import AnswerBox from './components/AnswerBox';
 
-interface IAnswerData {
-  mean: string;
-  word: string;
-}
+const ENDPOINT = 5;
 
 const ShortBlindPage = () => {
-  console.log('주관식 블라인드 페이지 파일만 생성');
-  //// hooks ////
+  // hooks
   const navigate = useNavigate();
   const location = useLocation();
   const toast = useToast();
-  //// Varaiables ////
-  // Timer Vars
-  const timeMax = 10000;
-  const [timer, setTimer] = useState(0);
 
-  // Quiz Api Vars
-  const { bookIds, mode, count, memorizedFilter } = location.state as {
-    bookIds: number[];
-    mode: 'word' | 'mean';
-    count: number;
-    memorizedFilter: boolean;
-  };
-  const [isLoading, setIsLoading] = useState(true);
-  const [problems, setProblems] = useState([]); // 전체 문제
-  const [length, setLength] = useState(0); // 문제 길이 //useRecoilState(globalState.quiz.quizCount);
+  //variables
+  const { bookIds, memorizedFilter, mode, quizCount, quizTime, timerOption } =
+    location.state as ILearnOptions;
 
-  // Extract Quiz Vars
-  // 현재 문제 목록
-  const [currentQuiz, setCurrentQuiz] = useState([]);
-  // 정답 번호
-  const [currentAnswerIndex, setCurrentAnswerIndex] = useState('');
-  // 맞출 문제
-  const [currentAnswer, setCurrentAnswer] = useState<IAnswerData>();
-  // 현재 문제의 ID
-  const [currentWordId, setCurrentWordId] = useState(0);
-  // 현재 문제의 암기상태
-  const [currentMemorize, setCurrentMemorize] = useState(false);
+  // api로 받아온 데이터 저장 변수
+  const { blindQuizData } = useBlindTypingLogics({
+    bookIds,
+    count: quizCount,
+    memorizedFilter,
+  });
 
-  // Result Vars
-  const [result, setResult] = useState(0); // 맞춘 정답수 //useRecoilState(globalState.quiz.result);
-  const [isMemorize, setMemorized] = useState(0); // 암기 체크수 // useRecoilState(globalState.quiz.memorize); // recoil 변수 추가
+  const [isConfirmPopOpen, setIsConfirmPopOpen] = useState(false);
+  const [showAnswer, setShowAnswer] = useState(false);
 
-  // Components Vars
-  const [number, setNumber] = useState(0); // 문제 진행도
-  const [isCheck, setIsCheck] = useState(false); // 암기 체크 여부
-  const [isAnswered, setIsAnswered] = useState(false); // 정답 화면 표기용
-  const [isCorrect, setIsCorrect] = useState(false); // 위 변수 통합용(체크 or 타임 아웃)
+  // 렌더링용 배열 데이터
+  const [currentQuiz, setCurrentQuiz] = useState<IBlindCurrentQuiz[]>([
+    { answer: { word: '', mean: '' }, is_memorized: false, word_id: 0 },
+    { answer: { word: '', mean: '' }, is_memorized: false, word_id: 0 },
+    { answer: { word: '', mean: '' }, is_memorized: false, word_id: 0 },
+    { answer: { word: '', mean: '' }, is_memorized: false, word_id: 0 },
+  ]);
 
-  //// Functions ////
-  const goChoice = () => {
-    navigate('/learn/choice');
+  const [btnMsg, setBtnMsg] = useState('정답 보기'); // 돌아가기 다음 정답 보기
+
+  // functions
+  const setQuiz = () => {
+    const newQuiz = [...currentQuiz];
+
+    newQuiz[4] = {
+      ...newQuiz[4], // 기존 요소의 값을 복사
+      userAnswer: myAnswer, // 새로운 키와 값 추가
+    };
+
+    newQuiz.shift();
+
+    setCurrentQuiz(newQuiz.concat(blindQuizData.splice(0, 1)));
   };
 
-  // 퀴즈 API
-  const getQuizAPI = async () => {
-    const toast = useToast();
+  // 다음 버튼
+  const onNext = () => {
+    if (!showAnswer) {
+      setShowAnswer(true);
+      setBtnMsg('정답 보기');
+      return;
+    }
 
-    try {
-      const { data: response } = await api.quiz.getBlindShortAnswerQuiz({
-        bookIds,
-        count,
-        memorizedFilter,
-      });
-
-      if (response.status === 'OK') {
-        setIsLoading(false);
-        const getData = response.data.problem;
-
-        setProblems(getData);
-        setLength(getData.length);
-        extractQuiz(getData, number);
+    if (showAnswer) {
+      if (currentQuiz.length === ENDPOINT) {
+        localStorage.setItem('reviewNote', JSON.stringify(reviewNote));
+        navigate('/learn/result', {
+          state: {
+            bookIds,
+            count: quizCount,
+            correct: result,
+            quizType: 'select',
+          },
+        });
+        toast.comment('퀴즈가 종료되었습니다.');
+        return;
       }
-    } catch (e: unknown) {
-      const err = e as AxiosError<{
-        message: string;
-      }>;
-      const errorMessage = err?.response?.data.message;
 
-      switch (errorMessage) {
-        case 'BOOK_IDS_NOT_INSERTED':
-          toast.error('단어장이 선택되지 않았습니다.');
+      setQuiz();
+      setShowAnswer(false);
+    }
+  };
+
+  // 나가기 기능
+  const onExitQuiz = () => {
+    setIsConfirmPopOpen(true);
+  };
+
+  // 답 제출
+  const [myAnswer, setMyAnswer] = useState('');
+
+  const inputMyAnswer = (e: ChangeEvent<HTMLInputElement>) => {
+    setMyAnswer(e.target.value);
+  };
+
+  const inputEnterEvent = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      onNext();
+    }
+  };
+
+  const [reviewNote, setReviewNote] = useState<IReviewNote[]>([]);
+
+  const [result, setResult] = useState(0); // 맞춘 정답수
+
+  // 초기 실행 함수
+  const initFunction = () => {
+    if (blindQuizData.length !== 0) {
+      const newData = currentQuiz.concat(blindQuizData.splice(0, 5));
+
+      setCurrentQuiz(
+        newData.filter((item) => item !== undefined) as BlindQuizData[],
+      );
+    }
+  };
+
+  // 초기 세팅
+  useEffect(() => {
+    localStorage.removeItem('reviewNote');
+    if (blindQuizData) {
+      initFunction();
+    }
+  }, [blindQuizData]);
+
+  // 오답노트
+  useEffect(() => {
+    let answer = '';
+    if (currentQuiz[4]) {
+      switch (mode) {
+        case 'word':
+          answer = currentQuiz[4].answer.mean;
           break;
-        case 'BOOK_ACCESS_DENIED':
-          toast.error('본인 소유의 단어장이 아닙니다.');
-          break;
-        case 'BOOK_NOT_FOUND':
-          toast.error('단어장이 존재하지 않습니다.');
+        case 'mean':
+          answer = currentQuiz[4].answer.mean;
           break;
         default:
-          toast.error('에러가 발생하였습니다.');
+          answer = currentQuiz[4].answer.mean;
           break;
       }
-
-      navigate('/learn/choice');
     }
-  };
 
-  // 문제 가져오기
-  const extractQuiz = (value: any, number: number) => {
-    const result = value[number];
+    if (showAnswer && myAnswer !== answer) {
+      setResult((count) => count + 1);
 
-    if (result) {
-      setCurrentQuiz(result.answers);
-      setCurrentAnswerIndex(result.answer_index);
-      setCurrentAnswer(result.answers[result.answer_index]);
-      setCurrentWordId(result.word_id);
-      setCurrentMemorize(result.is_memorized);
-    }
-  };
-
-  // 문항 선택 버튼에서 사용할 함수
-  const selectAnswer = (select: string) => {
-    if (select === currentAnswer?.mean) {
-      setResult((current) => current + 1);
-      setIsCorrect(true);
-    }
-  };
-
-  // 체크버튼 함수
-  const onClickCheckButton = async () => {
-    setCurrentMemorize((current) => !current);
-
-    try {
-      const { data: response } = await api.memo.patchMemoStatus({
-        wordId: currentWordId,
-        isMemorized: !currentMemorize,
-      });
-      if (response.status === 'OK') {
-        const memorizedStatus = response.data.is_memorized;
-        const toastMessage =
-          memorizedStatus === true ? '암기 완료' : '암기 미완료';
-        toast.comment(toastMessage);
-      }
-    } catch (e: unknown) {
-      console.log(e);
-    }
-  };
-
-  // 다음 버튼 함수
-  const onClickNextButton = () => {
-    setNumber(number + 1);
-    setIsAnswered((current) => !current);
-    setIsCorrect(false);
-    setTimer(0);
-    if (number + 1 === length) {
-      navigate('/learn/result', {
-        state: {
-          length: length,
-          answer: result,
-          memorize: 0, // 값 넣어야함
-          quizType: 'choice',
+      setReviewNote((prevItem) => [
+        ...prevItem,
+        {
+          word: currentQuiz[4].answer.word,
+          mean: currentQuiz[4].answer.mean,
+          isMemo: currentQuiz[4].is_memorized, // API 데이터로 요청할 것
+          wordId: currentQuiz[4].word_id, // 숫자 변경 요망
         },
-      });
+      ]);
     }
-  };
+  }, [showAnswer, myAnswer]);
 
-  //// useEffects ////
-  // 객관식 퀴즈 가져옴
-  useEffect(() => {
-    getQuizAPI();
-  }, []);
-
-  // 가져온 퀴즈를 화면에 뿌려줌
-  useEffect(() => {
-    extractQuiz(problems, number);
-  }, [number]);
-
-  // 타이머
-  useEffect(() => {
-    if (!isAnswered) {
-      const timeOutId = setTimeout(() => {
-        if (timer !== 10000) {
-          setTimer((current) => current + 500);
-        }
-        if (timer === 10000) {
-          setIsAnswered(true);
-          clearTimeout(timeOutId);
-        }
-
-        return () => clearTimeout(timeOutId);
-      }, 500);
-    }
-  }, [timer, isAnswered]);
-
-  //// Components ////
-
-  const CreateChoiceButtons = (props: any) => {
-    return (
-      <ChoiceButton
-        onClick={() => {
-          selectAnswer(props.example);
-          setIsAnswered((current) => !current);
-        }}
-      >
-        {props.example}
-      </ChoiceButton>
-    );
-  };
+  //Components
+  // API 빈 배열 방지용
+  if (currentQuiz.length === 0 || !mode) return null;
 
   return (
-    <MainWrapper>
-      {isLoading && <Loading>Loading...</Loading>}
+    <Container>
+      <ConfirmPop
+        isOpen={isConfirmPopOpen}
+        height="180px"
+        cancelText="뒤로가기"
+        confirmText="그만하기"
+        onCancel={() => setIsConfirmPopOpen(false)}
+        onConfirm={() => {
+          setIsConfirmPopOpen(false);
+          navigate('/learn');
+        }}
+        type="title"
+        title="암기를 중단할까요?"
+      />
+      <TopAppBarClose onClose={onExitQuiz} />
 
-      {!isLoading && (
-        <>
-          <Header>
-            <TitleWrapper>
-              <button onClick={goChoice}>
-                <img src={xButton} alt="" />
-              </button>
-              <Title>문제풀기</Title>
-            </TitleWrapper>
+      <Content>
+        <QuizWrapper>
+          {currentQuiz.map((item, idx) => {
+            let quiz = '';
+            if (mode === 'word') quiz = item.answer.word;
+            if (mode === 'mean') quiz = item.answer.mean;
 
-            <ProgressWrapper>
-              <ProgressBar value={(number + 1) * (100 / length)} max={100} />
+            return <QuizBox key={idx} word={quiz} />;
+          })}
+        </QuizWrapper>
+        <AnswerWrapper>
+          {currentQuiz.map((item, idx) => {
+            let answer = '';
+            if (mode === 'word') answer = item.answer.mean;
+            if (mode === 'mean') answer = item.answer.word;
 
-              <ProgressIndex>
-                {number + 1}/{length}
-              </ProgressIndex>
+            if (idx === 4) {
+              return (
+                <Div key={idx}>
+                  {!showAnswer && (
+                    <UserInput
+                      onChange={inputMyAnswer}
+                      onKeyDown={inputEnterEvent}
+                      placeholder="정답 입력"
+                    />
+                  )}
+                  {showAnswer && (
+                    <Result>
+                      {myAnswer !== answer && (
+                        <>
+                          <MyAnswer isCorrect={false}>
+                            {myAnswer === '' ? ' ' : myAnswer}
+                          </MyAnswer>
+                          <CorrectAnswer>{answer}</CorrectAnswer>
+                        </>
+                      )}
 
-              <ProgressTime value={(timer / timeMax) * 100} max={100} />
-            </ProgressWrapper>
-          </Header>
+                      {myAnswer === answer && (
+                        <MyAnswer isCorrect={true}>{answer}</MyAnswer>
+                      )}
+                    </Result>
+                  )}
+                </Div>
+              );
+            } else {
+              return (
+                <AnswerBox
+                  key={idx}
+                  showAnswer={showAnswer}
+                  answer={answer}
+                  userAnswer={item.userAnswer}
+                />
+              );
+            }
+          })}
+        </AnswerWrapper>
+      </Content>
 
-          <Content>
-            {/* 문제 컴포넌트 */}
-            {!isAnswered && mode === 'word' && (
-              <Word>{currentAnswer?.word}</Word>
-            )}
-            {!isAnswered && mode === 'mean' && (
-              <Word>{currentAnswer?.mean}</Word>
-            )}
-
-            {/* 정답 컴포넌트 */}
-            {isAnswered && (
-              <Answer>
-                <Correct>{isCorrect ? '정답!' : '오답!'}</Correct>
-                {/* 아래 부분 컴포넌트 이름 수정 필요 */}
-                {mode === 'word' && (
-                  <>
-                    <Word>{currentAnswer?.word}</Word>
-                    <Mean>{currentAnswer?.mean}</Mean>
-                  </>
-                )}
-                {mode === 'mean' && (
-                  <>
-                    <Word>{currentAnswer?.mean}</Word>
-                    <Mean>{currentAnswer?.word}</Mean>
-                  </>
-                )}
-
-                <CheckButton onClick={onClickCheckButton}>
-                  <CheckSVG fill={currentMemorize ? '#4ABC56' : '#FFFFFF'} />
-                </CheckButton>
-              </Answer>
-            )}
-          </Content>
-
-          <Footer>
-            {/* 문제 컴포넌트 */}
-            {!isAnswered &&
-              currentQuiz.map((items: any, index) => {
-                return (
-                  <div key={index}>
-                    {mode === 'word' && (
-                      <CreateChoiceButtons example={items?.mean} />
-                    )}
-                    {mode === 'mean' && (
-                      <CreateChoiceButtons example={items?.word} />
-                    )}
-                  </div>
-                );
-              })}
-
-            {/* 정답 컴포넌트 */}
-            {isAnswered && (
-              <NextButton onClick={onClickNextButton}>
-                {number + 1 === length ? '결과보기' : '다음'}
-              </NextButton>
-            )}
-          </Footer>
-        </>
-      )}
-    </MainWrapper>
+      <Footer>
+        {/* <WideButton onClick={onNext}>{btnMsg}</WideButton> */}
+        <WideButton onClick={onNext}>
+          {!showAnswer && '정답 보기'}
+          {showAnswer && currentQuiz.length !== ENDPOINT && '다음'}
+          {showAnswer && currentQuiz.length === ENDPOINT && '결과 보기'}
+        </WideButton>
+      </Footer>
+    </Container>
   );
 };
 
 export default ShortBlindPage;
 
-const MainWrapper = styled.div`
+const Container = styled.div`
+  position: relative;
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
 `;
 
-const Loading = styled.div`
+const Content = styled.main`
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  padding: 24px;
+  padding-bottom: 36px;
 `;
 
-const Header = styled.div`
-  width: 100%;
+const Wrapper = styled.div`
+  width: 50%;
+  height: 100%;
+  overflow-y: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  align-items: start;
 `;
 
-const TitleWrapper = styled.div`
-  position: relative;
+const QuizWrapper = styled(Wrapper)``;
+
+const AnswerWrapper = styled(Wrapper)``;
+
+const Div = styled.div`
   width: 100%;
-  height: 56px;
+  height: 10%;
+  flex-shrink: 0;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
-  button {
-    position: absolute;
-    left: 12px;
+  padding: 0 8px;
+  margin-top: 1.25%;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.gray[300]};
+  ${({ theme }) => theme.typography.pretendard.t2.sbd};
+`;
+
+const UserInput = styled.input`
+  width: 100%;
+  height: 100%;
+
+  font-weight: bold;
+  ::placeholder {
+    color: ${({ theme }) => theme.colors.gray[400]};
   }
 `;
 
-const Title = styled.div`
-  font-weight: 300;
-  font-size: 20px;
-  line-height: 20px;
-  text-align: center;
-  color: #0d0d0d;
-`;
-
-const Content = styled.div`
+const Result = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-`;
-
-const ProgressBar = styled.progress`
-  width: 100%;
-  height: 2px;
-  ::-webkit-progress-bar {
-    background: #d9d9d9;
-  }
-  ::-webkit-progress-value {
-    background: #e67979;
-  }
-  margin-bottom: 9px;
-`;
-
-const ProgressWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
 `;
 
-const ProgressIndex = styled.div`
-  width: 100%;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 10px;
-  text-align: center;
-  color: #0d0d0d;
-`;
-
-const ProgressTime = styled.progress`
-  position: absolute;
-  right: 9px;
-  width: 54px;
-  height: 2px;
-  ::-webkit-progress-bar {
-    background: #d9d9d9;
-  }
-  ::-webkit-progress-value {
-    transition: 0.5s linear;
-    background: #e67979;
-  }
-`;
-
-const Word = styled.div`
+const MyAnswer = styled.div<{ isCorrect: boolean }>`
+  width: auto;
+  height: 100%;
+  margin-right: 8px;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
-  font-weight: 700;
-  font-size: 64px;
-  color: #0d0d0d;
+
+  ${({ isCorrect }) => {
+    if (isCorrect) {
+      return css`
+        color: ${({ theme }) => theme.colors.secondary.default};
+      `;
+    } else {
+      return css`
+        color: ${({ theme }) => theme.colors.error};
+        text-decoration: line-through;
+      `;
+    }
+  }}
 `;
 
-const Answer = styled.div`
+const CorrectAnswer = styled.div`
+  width: auto;
+  height: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
 `;
-
-const Mean = styled.div`
-  font-size: 36px;
-`;
-
-const Correct = styled.div`
-  font-size: 36px;
-`;
-
-const CheckButton = styled.button``;
 
 const Footer = styled.footer`
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0 52px;
-  margin-bottom: 32px;
-
-  div {
-    :nth-child(n + 2) {
-      margin-top: 16px;
-    }
-  }
-`;
-
-const ChoiceButton = styled.button`
-  width: 278px;
-  height: 70px;
-  background: #ffffff;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 30px;
-  text-align: center;
-  color: #0d0d0d;
-`;
-
-const NextButton = styled.button`
-  width: 100%;
   height: 48px;
-  background-color: ${({ theme }) => theme.colors.primary.default};
-  color: white;
+  flex-shrink: 0;
+  padding: 0 20px;
+  margin-bottom: 32px;
 `;
