@@ -36,12 +36,12 @@ const LearnPage = () => {
 
       <Content>
         <LearnTypeContainer
-          haveBook={haveBooks}
+          haveBook={Boolean(haveBooks)}
           title={'memo'}
           ButtonList={memoList}
         />
         <LearnTypeContainer
-          haveBook={haveBooks}
+          haveBook={Boolean(haveBooks)}
           title={'quiz'}
           ButtonList={quizList}
         />

@@ -41,7 +41,7 @@ const useGetBlindMemo = () => {
           break;
       }
 
-      navigate('/learn/blind');
+      navigate('/learn');
     }
   };
 

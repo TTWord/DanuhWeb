@@ -6,13 +6,7 @@ interface getResultParams {
   correct: number;
 }
 
-interface quizParams {
-  bookIds: number[];
-  count: number;
-  memorizedFilter: boolean;
-}
-
-interface blindChoiceQuizParams extends quizParams {
+interface BlindChoiceQuizParams extends QuizParams {
   choiceCount: number;
 }
 
@@ -35,7 +29,7 @@ export const quizAPI = {
     return response;
   },
 
-  getSelectQuiz: async ({ bookIds, count, memorizedFilter }: quizParams) => {
+  getSelectQuiz: async ({ bookIds, count, memorizedFilter }: QuizParams) => {
     const response = await instance.post('/quiz/multiple', {
       book_ids: bookIds.join('&'),
       count,
@@ -45,7 +39,7 @@ export const quizAPI = {
     return response;
   },
 
-  getTypingQuiz: async ({ bookIds, count, memorizedFilter }: quizParams) => {
+  getTypingQuiz: async ({ bookIds, count, memorizedFilter }: QuizParams) => {
     const response = await instance.post('/quiz/short', {
       book_ids: bookIds.join('&'),
       count,
@@ -61,7 +55,7 @@ export const quizAPI = {
     count,
     memorizedFilter,
     choiceCount,
-  }: blindChoiceQuizParams) => {
+  }: BlindChoiceQuizParams) => {
     const response = await instance.post('/quiz/blind/multiple', {
       book_ids: bookIds.join('&'),
       count,
@@ -72,11 +66,11 @@ export const quizAPI = {
     return response;
   },
 
-  getBlindShortAnswerQuiz: async ({
+  getBlindTypingQuiz: async ({
     bookIds,
     count,
     memorizedFilter,
-  }: quizParams) => {
+  }: QuizParams) => {
     const response = await instance.post('/quiz/blind/short', {
       book_ids: bookIds.join('&'),
       count,
