@@ -6,8 +6,8 @@ import TopAppBarClose from '@/components/common/header/TopAppBarClose';
 import WideButton from '@/components/common/button/WideButton';
 import chevronDown from '@/assets/svg/icons/icon-chevron-down-small.svg';
 import AlertPop from '@/components/common/popup/AlertPop';
-import ReviewBox from './ReviewBox';
-import AlertBookBox from './AlertBookBox';
+import ReviewBox from './components/ReviewBox';
+import AlertBookBox from './components/AlertBookBox';
 
 interface IResultInfo {
   books: string;

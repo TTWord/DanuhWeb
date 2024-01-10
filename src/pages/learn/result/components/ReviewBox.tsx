@@ -21,7 +21,7 @@ const ReviewBox = (props: IReviewBox) => {
         wordId: props.info.wordId,
         isMemorized: !isToggle,
       });
-      setIsToggle((c) => !c);
+      setIsToggle((toggle) => !toggle);
     } catch (e) {
       console.log(e);
     }
@@ -51,7 +51,7 @@ const ReviewBox = (props: IReviewBox) => {
         <Toggle
           type={'quiz'}
           isToggle={isToggle}
-          onClick={(e: MouseEvent) => {
+          onClick={(e: MouseEvent<Element, MouseEvent>) => {
             e.stopPropagation();
             toggleMemo();
           }}

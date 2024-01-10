@@ -7,7 +7,7 @@ import ChoiceSelectPage from '@/pages/learn/quiz/select/ChoiceSelectPage';
 import ChoiceBlindPage from '@/pages/learn/quiz/blind/choice/ChoiceBlindPage';
 import ShortTypingPage from '@/pages/learn/quiz/typing/ShortTypingPage';
 import ShortBlindPage from '@/pages/learn/quiz/blind/shortanswer/ShortBlindPage';
-import ResultPage from '@/pages/learn/result/Result/ResultPage';
+import ResultPage from '@/pages/learn/result/ResultPage';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import RootLayout from '@/components/layout/RootLayout';
 import OptionSelectPage from '@/pages/learn/option/OptionSelect/OptionSelectPage';
@@ -45,11 +45,11 @@ const QuizRouter = () => {
             {/* 객관식 Select 문제 페이지 */}
             <Route path={'/select'} element={<ChoiceSelectPage />} />
             {/* 객관식 Blind 문제 페이지 */}
-            <Route path={'/blind/choice'} element={<ChoiceBlindPage />} />
+            <Route path={'/blind-choice'} element={<ChoiceBlindPage />} />
             {/* 주관식 Typing 문제 페이지 */}
             <Route path={'/typing'} element={<ShortTypingPage />} />
             {/* 주관식 Blind 문제 페이지 */}
-            <Route path={'/blind/shortanswer'} element={<ShortBlindPage />} />
+            <Route path={'/blind-typing'} element={<ShortBlindPage />} />
           </Routes>
         }
       />
