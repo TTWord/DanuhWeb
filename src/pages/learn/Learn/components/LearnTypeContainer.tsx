@@ -9,6 +9,7 @@ interface LearnTypeContainerProps {
   ButtonList: {
     title: string;
     type: string;
+    typeDetail?: string;
     icon: string;
     iconWidth: string;
   }[];
@@ -35,7 +36,8 @@ const LearnTypeContainer = ({
           return (
             <SelectButton
               onClick={() => {
-                onClick(item.type);
+                if (item.typeDetail) onClick(`${item.type}-${item.typeDetail}`);
+                else onClick(item.type);
               }}
               key={idx}
             >
