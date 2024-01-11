@@ -31,6 +31,10 @@ const useSettingPageLogic = () => {
     navigatePush('/setting/report');
   };
 
+  const moveBookManagePage = () => {
+    navigatePush('/setting/book-manage');
+  };
+
   const movePasswordPage = () => {
     navigatePush('/setting/password');
   };
@@ -52,6 +56,7 @@ const useSettingPageLogic = () => {
     moveProfilePage,
     moveNoticePage,
     moveReportPage,
+    moveBookManagePage,
     movePasswordPage,
     movePatchNotePage,
     moveAccountDeletePage,

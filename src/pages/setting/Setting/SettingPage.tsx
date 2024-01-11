@@ -18,6 +18,7 @@ const SettingPage = () => {
     about,
     moveProfilePage,
     moveNoticePage,
+    moveBookManagePage,
     movePasswordPage,
     movePatchNotePage,
     moveReportPage,
@@ -142,6 +143,10 @@ const SettingPage = () => {
             <ContentBox title="공지사항" onClick={moveNoticePage} />
             <ContentBox title="패치노트" onClick={movePatchNotePage} />
             <ContentBox title="건의하기 / 버그신고" onClick={moveReportPage} />
+            <ContentBox
+              title="가져오기 / 내보내기"
+              onClick={moveBookManagePage}
+            />
             {/* Local 가입 계정이 아니면 비밀번호 변경 미표시 */}
             {about.login_type === 'local' && (
               <ContentBox title="비밀번호 변경" onClick={movePasswordPage} />

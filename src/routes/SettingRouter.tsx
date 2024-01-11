@@ -11,6 +11,9 @@ import RootLayout from '@/components/layout/RootLayout';
 import NoticeDetPage from '@/pages/setting/notice/NoticeDet/NoticeDetPage';
 import PrivacyPolicyPage from '@/pages/setting/privacy/PrivacyPolicyPage';
 import PrivacyPolicySinglePage from '@/pages/setting/privacy/PrivacyPolicySinglePage';
+import BookManagePage from '@/pages/setting/book-manage/BookManage/BookManagePage';
+import ExportPage from '@/pages/setting/book-manage/export/ExportPage';
+import ImportPage from '@/pages/setting/book-manage/import/ImportPage';
 
 const SettingRouter = () => {
   const location = useLocation();
@@ -38,6 +41,22 @@ const SettingRouter = () => {
 
       {/* 건의하기 / 버그신고 페이지 */}
       <Route path={'/report'} element={<ReportPage />} />
+
+      {/* 단어장 가져오기/내보내기 페이지 */}
+
+      <Route
+        path={'/book-manage/*'}
+        element={
+          <Routes>
+            {/* 메인 페이지 */}
+            <Route path={'/'} element={<BookManagePage />} />
+            {/* 가져오기 페이지 */}
+            <Route path={'/import'} element={<ImportPage />} />
+            {/* 내보내기 페이지 */}
+            <Route path={'/export'} element={<ExportPage />} />
+          </Routes>
+        }
+      />
 
       {/* 비밀번호 변경 페이지 */}
       <Route path={'/password'} element={<PasswordPage />} />
