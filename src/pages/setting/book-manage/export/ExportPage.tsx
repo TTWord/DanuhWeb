@@ -1,23 +1,28 @@
-import TopAppBarStack from '@/components/common/header/TopAppBarStack';
-import useNavigatePush from '@/hooks/useNavigatePush';
 import styled from 'styled-components';
+import ManageLayout from '../layout/ManageLayout';
+import WideButton from '@/components/common/button/WideButton';
+import ExportBookList from './components/ExportBookList';
+import useExportLogics from './hooks/useExportLogics';
+import ExportOptionPop from './components/ExportOptionPop';
+import { useState } from 'react';
 
 const ExportPage = () => {
-  const navigatePush = useNavigatePush();
+  const { books } = useExportLogics();
 
-  const runPage = (to: string) => () => {
-    navigatePush(`/setting/book-manage/${to}`);
-  };
+  const [isPopOpen, setIsPopOpen] = useState(false);
+
+  // 기존 데이터 제거
+  localStorage.removeItem('selected');
+  localStorage.setItem('selected', JSON.stringify([]));
 
   return (
-    <Container>
-      <TopAppBarStack
-        type="default"
-        title="단어장 가져오기 / 내보내기"
-        navigate="/setting/book-manage"
-      />
-      <Div></Div>
-    </Container>
+    <ManageLayout type="export">
+      <ExportOptionPop isOpen={isPopOpen} close={() => setIsPopOpen(false)} />
+      <Container>
+        <ExportBookList books={books} />
+        <WideButton onClick={() => setIsPopOpen(true)}>내보내기</WideButton>
+      </Container>
+    </ManageLayout>
   );
 };
 
@@ -28,75 +33,8 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Div = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Button = styled.button`
-  width: 45%;
-  max-width: 300px;
-  aspect-ratio: 1/1;
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-  border-radius: 20px;
-  color: white;
-  ${({ theme }) => theme.fonts.gmarketSans};
-  line-height: 100%;
-
-  :last-child {
-    margin-top: 30px;
-  }
-`;
-
-const Text = styled.div`
-  width: auto;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-
-  div {
-    font-size: 24px;
-    font-style: normal;
-    font-weight: bold;
-    margin-bottom: 2px;
-  }
-
-  span {
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    text-transform: uppercase;
-  }
-`;
-
-const ImportButton = styled(Button)`
-  background-color: ${({ theme }) => theme.colors.primary.default};
-  ${Text} {
-    span {
-      color: #bdb5ff;
-    }
-  }
-`;
-
-const ExportButton = styled(Button)`
-  background-color: #8ee9f6;
-
-  ${Text} {
-    span {
-      color: #4c98c3;
-    }
-  }
+  padding: 0 20px;
+  margin-top: 38px;
+  margin-bottom: 36px;
+  overflow-y: hidden;
 `;
