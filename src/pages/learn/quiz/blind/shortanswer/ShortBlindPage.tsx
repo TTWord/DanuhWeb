@@ -77,7 +77,7 @@ const ShortBlindPage = () => {
         toast.comment('퀴즈가 종료되었습니다.');
         return;
       }
-
+      setMyAnswer('');
       setQuiz();
       setShowAnswer(false);
     }
