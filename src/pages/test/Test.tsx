@@ -2,6 +2,7 @@ import Snd from 'snd-lib';
 import styled, { css, keyframes } from 'styled-components';
 import { useEffect, useState } from 'react';
 import useToast from '@/hooks/useToast';
+import CSVSample from './book-manage-sample/CSVSample';
 
 const snd = new Snd();
 
@@ -17,6 +18,7 @@ const Test = () => {
   return (
     <Container>
       <div>Test Page 9</div>
+      <CSVSample />
     </Container>
   );
 };
@@ -24,6 +26,8 @@ const Test = () => {
 export default Test;
 
 const Container = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 16px;
